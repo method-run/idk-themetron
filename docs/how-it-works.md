@@ -1,0 +1,62 @@
+---
+id: how-it-works
+title: How it works
+summary: What themetron does with your inputs, step by step, from a tree of themes to CSS that components read. The engine is deterministic, and it uses no network.
+parent: idk-themetron
+kind: guide
+order: 1.5
+aliases: [How it works]
+tags: [system/how-it-works]
+---
+# How it works
+
+You give themetron a tree of themes. It gives back design tokens, in CSS and other formats, and every text and background pair in them passes the contrast setting. The same inputs always give the same tokens. The engine uses no network. Only the CSS names Google Fonts, for the fonts that you choose.
+
+```mermaid
+flowchart LR
+  inputs[Tree of themes] --> check[1. Check and resolve]
+  check --> ramps[2. Make ramps]
+  ramps --> prims[3. Make primitives]
+  prims --> modes[4. Pick tokens for each mode]
+  modes --> out[5. Write CSS, DTCG, Tailwind]
+  out --> page[6. Components on a page]
+```
+
+<!-- idk-plans:zoom:start (generated) -->
+Zoom in: [Inputs](../spec/inputs.md "inputs")
+<!-- idk-plans:zoom:end -->
+
+## 1. Check and resolve the themes
+
+The engine checks every field of every theme, and lists all problems at once. Then it works out each theme's full settings: its own fields, and its parent's for the rest. A theme that changes only its colors is a color theme. Any other child is a full theme. See [Inputs](../spec/inputs.md "inputs").
+
+## 2. Make the ramps
+
+Each theme has two ramps: one from its base color and one from its action color. A ramp has 13 [grades](../spec/grades.md "grades"), from 0 (white) to 100 (black). Each grade has a fixed luminance, so two grades a set distance apart always pass contrast, in any ramp.
+
+<details>
+<summary>How a grade gets its color</summary>
+
+The engine keeps the key color's hue and chroma, in the theme's color model, and finds the lightness that gives the grade's luminance. In OKLCH this is a formula: the luminance is a cubic in the lightness. In HSL no formula exists, so a solver finds it exactly in one or two steps. If the chroma does not fit in the sRGB gamut at that lightness, a short search lowers it. Grades far from the key color get less chroma, so tints and shades look calm.
+
+</details>
+
+## 3. Make the primitives
+
+The feels become sizes, radii, borders, shadows, and motion. For example, spaciousness sets the space unit and the text size, and bounciness sets how far the "enter" easing overshoots. See the table of formulas in [Inputs](../spec/inputs.md "inputs").
+
+## 4. Pick the tokens for each mode
+
+For light mode and for dark mode, the engine picks a grade for each semantic token, such as `bg.canvas`, `fg.base`, or `fill.action`. It starts near the key color and moves only as far as the contrast setting needs. Then it measures every pair that must pass, and records the result in the audit. If no grade can pass, it uses the grade with the most contrast, and the audit marks the failure.
+
+## 5. Write the formats
+
+- **CSS:** one rule for each theme, on the class `theme-<name>`. Each color value holds both modes with `light-dark()`. Each theme class sets every token from the tree, and themes with the same values share a rule.
+- **DTCG JSON:** one group for each theme, for design tools and token pipelines.
+- **Tailwind:** an `@theme inline` block whose values point at the CSS variables.
+
+See [Tokens](../spec/tokens.md "tokens").
+
+## 6. Use the tokens on a page
+
+[Components](../components/README.md "components") read only the tokens. Put `class="theme-danger"` on a part, or on an element around it, and the part uses that theme. The nearest theme class wins. The [Playground](../demo/README.md "playground") does all of these steps again each time you change an input.

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Update the generated parts, then add the files that fix changed.
+out=$(npx idk-plans fix) || { echo "$out"; exit 1; }
+echo "$out"
+echo "$out" | sed -n 's/^fixed //p' | while read -r file; do git add -- "$file"; done

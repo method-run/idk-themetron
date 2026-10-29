@@ -1,0 +1,21 @@
+{
+  "$schema": "../../spec/inputs.schema.json",
+  "version": 2,
+  "themes": {
+    "default": {
+      "base": "#6b7280",
+      "action": "#2456e8",
+      "font": { "family": "Figtree", "fallback": "sans-serif" }
+    },
+    "success": { "parent": "default", "color": "#1f8a3b" },
+    "warning": { "parent": "default", "color": "#e8890c" },
+    "danger": { "parent": "default", "color": "#d6336c" },
+    "promo": {
+      "parent": "default",
+      "action": "#8a4fff",
+      "headingFont": { "family": "Fraunces", "fallback": "serif" },
+      "feel": { "roundness": "pill", "shininess": "satin", "bounciness": "springy" }
+    },
+    "sale": { "parent": "promo", "action": "#e8590c" }
+  }
+}

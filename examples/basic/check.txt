@@ -1,0 +1,5 @@
+$ npx themetron check page.css
+page.css: 16 stable, 2 experimental, 0 unknown tokens.
+  ! --tm-fg-action: experimental. It can change in any version.
+  ! --tm-fill-action: experimental. It can change in any version.
+Stable tokens read: --tm-bg-canvas, --tm-bg-surface, --tm-border-base, --tm-border-width, --tm-elevation-2, --tm-fg-base, --tm-fg-base-muted, --tm-font-weight-bold, --tm-radius-full, --tm-radius-lg, --tm-radius-md, --tm-space-lg, --tm-space-md, --tm-space-sm, --tm-space-xl, --tm-space-xs

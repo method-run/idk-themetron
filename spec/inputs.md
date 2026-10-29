@@ -1,0 +1,220 @@
+---
+id: inputs
+title: Inputs
+summary: A theme set is a tree of themes. Each theme has a base color and an action color, and the root theme also has a font. Each child theme changes some fields of its parent and takes the rest from it.
+parent: idk-themetron
+kind: reference
+order: 2
+code: [src/inputs.js]
+tags: [system/inputs]
+---
+# Inputs
+
+<!-- idk-plans:progress:start (generated) -->
+◐ 37% (3/8)
+<!-- idk-plans:progress:end -->
+
+> **Status:** 0.1 draft. The engine and the playground use these inputs. The [plan](../docs/plan.md "plan") lists what is left.
+
+You make a theme set from a small set of inputs. A theme set is a tree of themes. The root theme is named `default`. Each other theme has a parent, and it takes every field that it does not set from that parent.
+
+```json
+{
+  "version": 2,
+  "themes": {
+    "default": {
+      "base": "#6b7280",
+      "action": "#2456e8",
+      "font": { "family": "Figtree", "fallback": "sans-serif" },
+      "preset": "balanced",
+      "contrast": { "method": "wcag" }
+    },
+    "danger": { "parent": "default", "color": "#d62828" },
+    "success": { "parent": "default", "color": "#1f8a3b" },
+    "brand": { "parent": "default", "action": "#8a4fff", "headingFont": { "family": "Fraunces", "fallback": "serif" } },
+    "playful": { "parent": "brand", "preset": "playful", "feel": { "roundness": "pill" } }
+  }
+}
+```
+
+## The theme tree
+
+- `themes` maps a name to a theme. A name uses lowercase letters, digits, and single hyphens, and starts with a letter. The name is the theme's ID in code: the class `theme-<name>`, its DTCG group, and what `parent` points at.
+- `label` is what people see, such as `"USA"` or `"Big Sale"`: any text, in any case, with spaces. Without one, the label comes from the name: `warning` is "Warning", `big-sale` is "Big sale", and the root, `default`, is "Default". A label is not inherited, and no token or class uses it.
+- A key that is not a valid name, such as `"Big Sale"`, is an error that suggests the name and the label: `"big-sale"`, with `"label": "Big Sale"`. The playground does this for you: type any text in a theme's Name field.
+- `default` is the root. It has no `parent`. Every other theme must have a `parent`, and the parents must not make a loop.
+- A theme sets only the fields that it changes. To take a field from the parent, leave it out.
+- Without any inputs, you get one theme, `default`, with all defaults.
+
+A theme's settings come from the tree, not from the page. A theme class sets every token of its theme, so `theme-danger` looks the same in any section of a page. See [Tokens](./tokens.md "tokens").
+
+There are two kinds of child theme. The difference is only a name: the playground and the audit show it.
+
+| Kind | It changes |
+|---|---|
+| **Color theme** | Only colors, and its label: `color`, `base`, `action`, and `label`. It has the fonts and feels of its parent. |
+| **Full theme** | Fonts, feels, contrast, or a preset too. |
+
+<details>
+<summary>Why a tree, and why two colors for each theme</summary>
+
+- **A tree.** Most sites have one main look and a few changes to it: a danger color, a marketing section with another font. A tree states each change once. A change to the root reaches every theme that does not set that field itself.
+- **Two roles.** A page has quiet parts, such as text, cards, and secondary buttons, and parts that you act on, such as links, primary buttons, and checks. A gray page with blue buttons is the most usual case, so each theme has a color for each role. A component chooses the role, and the theme chooses the color.
+- **`color` for both.** A status theme, such as danger, is often one color everywhere: a red box, red text, and a red button. `color` sets both roles at once.
+- **From the tree, not from the page.** The order of themes in the tree and the order of elements on a page are not always the same. A theme that depends on the page could look different in each place.
+
+</details>
+
+## Fields
+
+| Field | Default at the root | What it is |
+|---|---|---|
+| `parent` | None | The name of the parent theme. Required on every theme but `default`. |
+| `label` | Made from the name | The text that people see. Not inherited. |
+| `base` | `#808080` | The base color: backgrounds, text, borders, and quiet controls. `{ "color": "#808080" }` is the same. |
+| `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. |
+| `color` | None | Sets `base` and `action` to one color. `base` and `action` override it. |
+| `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback" }`. A string sets only `family`. |
+| `headingFont` | `font` | The font for headings. |
+| `monoFont` | The browser's default `monospace` font | The font for code. |
+| `preset` | `balanced` | A set of feels. See [Presets](#presets). |
+| `feel` | The preset's values | The feels. See [Feels](#feels). |
+| `contrast` | `{ "method": "wcag" }` | The contrast standard. See [Contrast](#contrast). |
+
+### Base and action
+
+Each role's color is a **key color**. The engine makes a ramp of [grades](./grades.md "grades") from each key color, and picks the grades that pass the contrast setting.
+
+- **`base`** gives its hue and chroma to the backgrounds, text, and borders, and to quiet fills and tints. A pure gray, such as the default, gives pure grays.
+- **`action`** gives the fills, tints, text, and edges of the parts that you act on. The default is `#0000ee`, the color that browsers use for links.
+
+A role that a theme does not set comes from its parent. In the example, `brand` sets only `action`, so its base is the gray of `default`. `danger` sets `color`, so its base and its action are both red.
+
+Every ramp goes from pure white to pure black. Limits for the lightest and darkest colors come after the first release. See the [plan](../docs/plan.md "plan").
+
+To add a color, add a child theme. Themetron adds no colors of its own, such as a red for danger. Apply a theme with the class `theme-<name>`. See [Tokens](./tokens.md "tokens").
+
+### Fonts
+
+A font is a `family` and a `fallback`.
+
+- `family` is a Google Fonts family name, for now. The CSS export loads it from Google Fonts. Your own font files are a later task.
+- `fallback` is a CSS font list that ends in a generic family, such as `Georgia, serif` or `system-ui, sans-serif`. The browser uses it while the font loads, and if the font does not load.
+
+```json
+{ "font": { "family": "Figtree", "fallback": "system-ui, sans-serif" } }
+```
+
+## Feels
+
+A feel is a number from 0 to 1. A word can stand for a number: the words are the stops on the scale. The playground shows the words under each slider.
+
+| Feel | 0 | Words | 1 | It changes |
+|---|---|---|---|---|
+| `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | The rhythm grid (2 to 6 px), and so padding, gaps, line heights, and text size |
+| `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
+| `thickness` | No borders | none, hairline, regular, heavy, chunky | 4 px borders | Border width. Heavy borders use the text color. |
+| `depth` | Flat | flat, low, raised, floating | Far above the page | Shadow size, and how far a part lifts on hover |
+| `shininess` | Matte | matte, satin, plastic, glassy | Glass | A gloss on buttons, switch thumbs, and bars |
+| `softness` | Hard ink shadows | hard, crisp, soft, pillowy | Soft light | Shadow blur and darkness. With depth, high softness makes a neumorphic look: raised parts sit on the canvas, with a light and a dark shadow, and the canvas is a little off white (grade 10, or 90 in dark mode, washed a third of the way toward the action color in OKLCH), so the light shadow shows. |
+| `solidity` | See-through | clear, frosted, tinted, solid | Opaque | The opacity of panels, fills, and tints, background blur, and how much shadows and card edges take on the action color |
+| `bounciness` | No overshoot | still, gentle, springy, bouncy | Large overshoot | The easing curve for parts that move in |
+| `snappiness` | Slow | languid, easy, brisk, snappy | Fast | Motion duration |
+
+Each feel of a theme comes from the first of these that has it:
+
+1. The theme's own `feel`.
+2. The theme's own `preset`. A preset sets every feel.
+3. The parent's feel. The root uses the defaults.
+
+A feel set to `"inherit"` skips the preset and takes the parent's value. So a child can take a look and keep its parent's sizes:
+
+```json
+{ "parent": "default", "preset": "brutalist", "feel": { "spaciousness": "inherit" } }
+```
+
+Spaciousness sets the rhythm grid, so a child that inherits it has the same grid, line heights, and control heights as its parent.
+
+The playground uses presets as a one-time stamp: picking one writes every feel into the theme's `feel`, and stores no `preset`. Removing a feel there removes it from `feel`.
+
+<details>
+<summary>How each feel becomes tokens</summary>
+
+The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In short, with `s` for spaciousness and so on:
+
+- Rhythm: `round(2 + 4 s)` px. This is the vertical grid. The space unit is 4 rhythm steps, and the space scale is ¼, ½, 1, 1½, 2, 3, and 4 units, so every space step is whole steps. The body text size is `14 + 2.5 s` px.
+- Line heights: for each text size, the multiple of the rhythm nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. themetron-3 did this for its text.
+- Controls: a tight line, plus padding and border that add up to whole steps, down and across. Small and large controls differ by whole pairs of steps.
+- Control radius: `r × control height ÷ 2`. So `r = 1` makes a pill, and `r = 0.5` rounds half as much.
+- Border width: `round(4 t)` px.
+- Shadow offset for elevation 1, 2, 3: `d × 2`, `d × 6`, `d × 16` px. Blur: offset `× 3 f`. With low softness, the shadow moves to the side and becomes solid ink.
+- Relief, the neumorphic amount: `max(0, (f − 0.6) ÷ 0.4) × d`. Relief adds a light shadow on the other side. Above 0.35, parts sit on the canvas, and the canvas is a little off white: grade 10 (90 in dark mode), washed a third of the way toward the action color in OKLCH.
+- Gloss: a white gradient whose strength is the shininess. Above about 0.6 it has a hard edge at the middle, like glass.
+- Panel opacity: `0.3 + 0.7 so`. Blur: `(1 − so) × 20` px.
+- Duration: `420 − 340 n` ms. The "enter" easing overshoots to `1 + 0.9 b`.
+
+</details>
+
+<details>
+<summary>Why feels are numbers from 0 to 1</summary>
+
+Words are easy to learn, but a slider needs numbers between the words. A number from 0 to 1 means the same thing for every feel, so a preset or another tool can set feels without knowing their units. The words are names for points on the scale. They do not limit the values.
+
+</details>
+
+## Presets
+
+A preset is a set of feels with a familiar name.
+
+| Preset | The look |
+|---|---|
+| `balanced` | The defaults. Slight rounding, low soft shadows, hairline borders. |
+| `flat` | No shadows, hairline borders, quick motion. |
+| `material` | No borders, soft shadows at a few heights. |
+| `brutalist` | Square corners, heavy ink borders, hard offset shadows, instant motion. |
+| `neumorphic` | No borders, an off-white canvas with a faint wash of the key color, light and dark shadows. Parts look pressed out of one material. |
+| `glass` | See-through panels with blur, soft shadows, a little shine. |
+| `glossy` | Pill shapes and strong gloss, like early-2000s app buttons. |
+| `playful` | Round, spacious, regular borders, bouncy motion. |
+| `dense` | Compact space, little rounding, fast motion. For data-heavy tools. |
+
+## Contrast
+
+`contrast.method` is `wcag` or `apca`. APCA keeps the WCAG 2 minimums as a floor. `contrast.model` is the color model of the ramps: `oklch` (the default) or `hsl`. The [Grades and contrast](./grades.md "grades") page gives the thresholds. A child theme can change the contrast setting. Then it is a full theme.
+
+Every theme ships both levels: the `standard` level, which readers get by default, and the `enhanced` level as a more-contrast variant, for readers who ask for more contrast. You do not choose a level: like dark mode, the variant comes with every theme. See [More contrast](./tokens.md "tokens"). Older inputs could set `contrast.level`. The engine now skips it, so those files still load, and the schema marks it deprecated.
+
+## Light and dark
+
+Each theme makes a light mode and a dark mode. You do not set the dark colors. The dark mode uses the mirror grade of each light token: grade `g` becomes grade `100 − g`. See [Grades and contrast](./grades.md "grades").
+
+## Schema and version
+
+[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, and that only `default` has no parent. The engine checks those.
+
+An inputs file can have two more fields:
+
+- `version`: the version of the inputs format. Now `2`. A file without it is read as version 2. The engine stops with a message for any other version. The playground's Inputs download and share links include it.
+- Version `1` still loads. In it, `neutral` was the base color, `color` was the action color only, and `fillLabel` flipped the labels on fills. The engine reads a version 1 file with those meanings. Without `"version": 1`, `neutral` is an error that names the new field.
+- `feel.tone` is gone too: neumorphic themes get their off-white canvas from softness and depth. The engine skips it.
+- `fillLabel` is gone in every version: every fill has light labels in light mode and dark labels in dark mode. The engine skips the field, so old files still load, and the schema marks it deprecated. To flip one part, put the class `tm-invert` on it.
+- `$schema`: a path or URL to the schema, for editors. The engine ignores it.
+
+## Checks
+
+The engine checks all inputs before it makes a theme set. It reports every problem at once, one line for each, with the theme name, and makes no themes. For example:
+
+- `themes.playful.feel.roundness: unknown word "curvy". Use a number from 0 to 1, or one of: square, slight, rounded, round, pill.`
+- `themes.brand.action: "blue" is not a hex color, such as #1e66f5.`
+- `themes.alerts.parent: no theme is named "alert".`
+
+## Tasks
+
+- [x] Change the engine and the playground to the theme tree
+- [x] Write a JSON Schema for the inputs, so that editors can check and complete them
+- [x] Start with the browser's own fonts, and add a Google font only when you choose one
+- [ ] Let a theme load its own font files, not only Google Fonts
+- [ ] Let a part override a feel, such as rounder buttons than cards. themetron-3 had this idea.
+- [ ] Add the "embossed" feel from themetron-3: text shadow on raised parts
+- [ ] Add a "vibrance" feel that sets the chroma of tints
+- [ ] Suggest font pairs, and match the x-height of fallback fonts with `size-adjust`

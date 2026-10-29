@@ -1,0 +1,336 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "idk-themetron inputs",
+  "description": "A tree of themes. Made by `npm run spec` from src/manifest.js. Draft: the inputs can change in any version before 1.0. See spec/inputs.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "description": "The version of the inputs format. Version 1 had \"neutral\" for base, and \"color\" for action only. Without a version, the inputs are version 2.",
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "themes": {
+      "description": "Theme names map to themes. The root theme is \"default\". Every other theme needs a parent.",
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/theme"
+      }
+    }
+  },
+  "$defs": {
+    "hex": {
+      "type": "string",
+      "pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "role": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/hex"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/hex"
+            }
+          }
+        }
+      ]
+    },
+    "font": {
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "A Google font family. The fallback comes from the role."
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "family": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "A Google font family, or null for the browser's font."
+            },
+            "fallback": {
+              "type": "string",
+              "description": "A CSS generic family, such as sans-serif."
+            }
+          }
+        }
+      ]
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "parent": {
+          "type": "string",
+          "description": "The name of the parent theme. Not allowed on \"default\"."
+        },
+        "label": {
+          "type": "string",
+          "pattern": "\\S",
+          "description": "The text that people see, such as \"Big Sale\". Any case, with spaces. The theme name is still the ID in classes and tokens. Not inherited."
+        },
+        "base": {
+          "$ref": "#/$defs/role",
+          "description": "The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set."
+        },
+        "action": {
+          "$ref": "#/$defs/role",
+          "description": "The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set."
+        },
+        "color": {
+          "$ref": "#/$defs/hex",
+          "description": "Sets both base and action. base and action override it."
+        },
+        "fillLabel": {
+          "deprecated": true,
+          "description": "Ignored. Every fill has light labels in light mode and dark labels in dark mode. To flip one part, put the class tm-invert on it."
+        },
+        "font": {
+          "$ref": "#/$defs/font"
+        },
+        "headingFont": {
+          "$ref": "#/$defs/font"
+        },
+        "monoFont": {
+          "$ref": "#/$defs/font"
+        },
+        "preset": {
+          "enum": [
+            "balanced",
+            "flat",
+            "material",
+            "brutalist",
+            "neumorphic",
+            "glass",
+            "glossy",
+            "playful",
+            "dense"
+          ],
+          "description": "A set of feels. The theme's own feels override it."
+        },
+        "feel": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "spaciousness": {
+              "description": "Spaciousness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "compact",
+                    "cozy",
+                    "comfortable",
+                    "relaxed",
+                    "spacious",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "roundness": {
+              "description": "Roundness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "square",
+                    "slight",
+                    "rounded",
+                    "round",
+                    "pill",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "thickness": {
+              "description": "Thickness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "none",
+                    "hairline",
+                    "regular",
+                    "heavy",
+                    "chunky",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "depth": {
+              "description": "Depth: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "flat",
+                    "low",
+                    "raised",
+                    "floating",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "shininess": {
+              "description": "Shininess: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "matte",
+                    "satin",
+                    "plastic",
+                    "glassy",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "softness": {
+              "description": "Softness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "hard",
+                    "crisp",
+                    "soft",
+                    "pillowy",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "solidity": {
+              "description": "Solidity: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "clear",
+                    "frosted",
+                    "tinted",
+                    "solid",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "bounciness": {
+              "description": "Bounciness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "still",
+                    "gentle",
+                    "springy",
+                    "bouncy",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "snappiness": {
+              "description": "Snappiness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "languid",
+                    "easy",
+                    "brisk",
+                    "snappy",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "tone": {
+              "deprecated": true,
+              "description": "Ignored. Neumorphic themes get an off-white canvas from softness and depth."
+            }
+          }
+        },
+        "contrast": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "method": {
+              "enum": [
+                "wcag",
+                "apca"
+              ]
+            },
+            "model": {
+              "enum": [
+                "oklch",
+                "hsl"
+              ]
+            },
+            "level": {
+              "deprecated": true,
+              "description": "Ignored. Every theme ships the standard level, and the enhanced level as its more-contrast variant."
+            }
+          }
+        }
+      }
+    }
+  }
+}

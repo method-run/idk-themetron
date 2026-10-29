@@ -1,0 +1,34 @@
+{
+  "name": "idk-themetron",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Make an accessible design-token theme from a few human-friendly inputs.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./components.css": "./components/components.css",
+    "./spec/*": "./spec/*"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/build-site.js",
+    "preview": "vite preview --outDir ../_site",
+    "plans:preview": "npm run build && vite preview --outDir ../_site",
+    "test": "node --test",
+    "spec": "node scripts/spec.js",
+    "examples": "node scripts/examples.js",
+    "docs:check": "idk-plans check",
+    "docs:fix": "idk-plans fix"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@method-run/idk-plans": "^0.2.0",
+    "vite": "^8.3.5"
+  },
+  "bin": {
+    "themetron": "./bin/themetron.js"
+  }
+}

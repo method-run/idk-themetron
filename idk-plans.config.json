@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/@method-run/idk-plans/schema/config.schema.json",
+  "root": {
+    "file": "README.md",
+    "id": "idk-themetron"
+  },
+  "trees": {
+    "system": {
+      "title": "System",
+      "primary": true
+    }
+  },
+  "exclude": [
+    "examples/*/audit.md"
+  ]
+}

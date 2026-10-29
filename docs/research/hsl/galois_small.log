@@ -1,0 +1,65 @@
+T1 numeric: L*=0.030131549 (piece needs 0.02697<L<0.04045), v^12+Av^5+B = -3.47e-18  (A=0.19237508, B=-0.021788205)
+T2 numeric: L*=0.295030145 (needs L>0.0809), |P2(a*)|/sum|terms| = 1.19e-17
+T3 numeric: L*=0.224273653 (needs L>0.0809), all channels in power segment: true
+selftest p=1009: deg=300 P(1)=0 (expect 0)  P(2)=535 (expect nonzero)
+selftest p=10007: deg=300 P(1)=0 (expect 0)  P(2)=7409 (expect nonzero)
+selftest p=65537: deg=300 P(1)=0 (expect 0)  P(2)=12608 (expect nonzero)
+
+[T1 trinomial v^12 + A v^5 + B (H=30, S=1/2, Y=1/400)] degree 12: examined 8 good primes
+  irreducible over Q: YES (common subset sums: 0,12)
+   p=11: 2^5 1^2
+   p=23: 5 4 3
+   p=29: 5 4 2 1
+   p=31: 8 3 1
+   p=37: 5 3 2 1^2
+   p=41: 8 4
+   p=43: 8 4
+   p=53: 7 5
+  prime cycle: p=53 pattern 7 5 -> Frobenius^m is a 7-cycle (12/2 < 7 <= 12-3) => Jordan: Gal contains A_12
+  odd permutation: p=11 pattern 2^5 1^2 => Gal not inside A_12, so Gal = S_12
+
+[T2 two power terms (H=0, S=1/2, Y=1/20)] degree 60: examined 15 good primes
+  irreducible over Q: YES (common subset sums: 0,60)
+   p=7: 33 19 6 2
+   p=11: 10^6
+   p=29: 22 18 8^2 4
+   p=37: 48 10 2
+   p=41: 56 4
+   p=43: 39 16 2 1^3
+   p=47: 59 1
+   p=53: 56 4
+  prime cycle: p=97 pattern 47 12 1 -> Frobenius^m is a 47-cycle (60/2 < 47 <= 60-3) => Jordan: Gal contains A_60
+  odd permutation: p=29 pattern 22 18 8^2 4 => Gal not inside A_60, so Gal = S_60
+
+[T2u upper half, two power terms (H=0, S=1/2, Y=1/2)] degree 60: examined 4 good primes
+  irreducible over Q: YES (common subset sums: 0,60)
+   p=7: 16 9^2 8^2 5^2
+   p=11: 49 2^4 1^3
+   p=23: 37 10 9 2^2
+   p=37: 55 5
+  prime cycle: p=23 pattern 37 10 9 2^2 -> Frobenius^m is a 37-cycle (60/2 < 37 <= 60-3) => Jordan: Gal contains A_60
+  odd permutation: p=7 pattern 16 9^2 8^2 5^2 => Gal not inside A_60, so Gal = S_60
+
+[T2s1 lower half, S=1, H=30 (two power terms, B identically 0)] degree 60: examined 25 good primes
+  irreducible over Q: YES (common subset sums: 0,60)
+   p=11: 10^5 5^2
+   p=23: 32 18 4 2^3
+   p=29: 28 11 8 4^3 1
+   p=31: 28 14 10 4 2 1^2
+   p=37: 24 19 15 2
+   p=41: 35 10^2 4 1
+   p=43: 51 4 3 2
+   p=47: 40 11 4 2^2 1
+  prime cycle: p=131 pattern 43 8 4 3 1^2 -> Frobenius^m is a 43-cycle (60/2 < 43 <= 60-3) => Jordan: Gal contains A_60
+  odd permutation: p=11 pattern 10^5 5^2 => Gal not inside A_60, so Gal = S_60
+
+[T2t lower half, two power terms + one toe channel (H=30, S=0.95, Y=1/20)] degree 60: examined 6 good primes
+  irreducible over Q: YES (common subset sums: 0,60)
+   p=7: 32 22 3 2 1
+   p=11: 40 10 5^2
+   p=23: 42 6^2 4 1^2
+   p=29: 52 3^2 2
+   p=31: 44 14 2
+   p=37: 31 12 7 6 3 1
+  prime cycle: p=37 pattern 31 12 7 6 3 1 -> Frobenius^m is a 31-cycle (60/2 < 31 <= 60-3) => Jordan: Gal contains A_60
+  odd permutation: p=7 pattern 32 22 3 2 1 => Gal not inside A_60, so Gal = S_60

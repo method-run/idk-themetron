@@ -1,0 +1,38 @@
+// Build the docs and the playground into one static site.
+// The docs come from idk-plans. Vite builds the playground into play/. Then this adds links between the two.
+// Usage: node scripts/build-site.js [out]   (default: _site)
+import { execFileSync } from 'node:child_process';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const OUT = path.resolve(ROOT, process.argv[2] ?? '_site');
+const run = (cmd, args) => execFileSync(cmd, args, { cwd: ROOT, stdio: 'inherit' });
+
+run('npx', ['idk-plans', 'site', '--out', OUT]);
+run('npx', ['vite', 'build', '--outDir', path.join(OUT, 'play')]);
+
+// Each docs page gets a "Playground" link in its top bar. The Playground page also gets a button.
+async function* htmlFiles(dir) {
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const file = path.join(dir, entry.name);
+    if (entry.isDirectory() && entry.name !== 'play' && entry.name !== 'assets') yield* htmlFiles(file);
+    else if (entry.name.endsWith('.html')) yield file;
+  }
+}
+for await (const file of htmlFiles(OUT)) {
+  const prefix = path.relative(path.dirname(file), OUT).split(path.sep).filter(Boolean).map(() => '../').join('');
+  let html = await readFile(file, 'utf8');
+  html = html.replace('<nav class="top-links">', `<nav class="top-links"><a href="${prefix}play/">Playground</a>`);
+  if (path.relative(OUT, file) === path.join('playground', 'index.html')) {
+    html = html.replace(/(<h1>[^<]*<\/h1>)/, `$1<p><a href="${prefix}play/"><strong>Open the playground →</strong></a></p>`);
+  }
+  await writeFile(file, html);
+}
+
+// The playground gets a link back to the docs.
+const play = path.join(OUT, 'play', 'index.html');
+await writeFile(play, (await readFile(play, 'utf8')).replace('<span>playground</span>', '<span>playground · <a href="../">docs</a></span>'));
+
+console.log(`Built the site in ${path.relative(ROOT, OUT)}/. Open play/ for the playground.`);

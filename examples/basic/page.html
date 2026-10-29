@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basic example</title>
+<!-- 1. The theme stylesheet. 2. themetron's reference components (optional). 3. The site's own CSS. -->
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="../../components/components.css">
+<link rel="stylesheet" href="page.css">
+</head>
+<!-- tm-theme on <body>: the canvas, text color, font, and size of the default theme. -->
+<body class="tm-theme">
+<div class="site">
+  <!-- A sidebar in the other mode: dark beside light content, light beside dark content. -->
+  <aside class="side tm-invert">
+    <strong class="tm-h3">Basic</strong>
+    <nav aria-label="Pages">
+      <a href="#" aria-current="page">Overview</a>
+      <a href="#">Tasks</a>
+      <a href="#">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <h1 class="tm-h1">Basic example</h1>
+    <p class="tm-text tm-muted">One root theme, three color themes for status, a full theme with its own font and feel, and a color theme inside it.</p>
+
+    <div class="switches" role="group" aria-label="Page settings">
+      <button class="tm-button tm-button--outline tm-button--sm" type="button" data-set="data-tm-mode" data-values=",light,dark">Mode: system</button>
+      <button class="tm-button tm-button--outline tm-button--sm" type="button" data-set="data-tm-contrast" data-values=",more,base">Contrast: system</button>
+    </div>
+
+    <section class="tm-stack" aria-label="Status">
+      <h2 class="tm-h2">Status</h2>
+      <!-- A theme class on a small part: the part reads the normal tokens, in that theme. The
+           status themes set "color", so both roles are their color. -->
+      <div class="tm-row">
+        <span class="status theme-success">Done</span>
+        <span class="status theme-warning">In progress</span>
+        <span class="status theme-danger">Blocked</span>
+      </div>
+      <div class="tm-row">
+        <button class="tm-button" type="button">Save</button>
+        <button class="tm-button theme-warning" type="button">Review</button>
+        <button class="tm-button theme-danger" type="button">Delete</button>
+        <button class="tm-button tm-button--quiet" type="button">Cancel</button>
+      </div>
+      <!-- The same alert CSS in two themes. In danger, both roles are red, so the box, its text,
+           its link, and its button are all red. In default, the box is gray, and the link and
+           button take the action color. -->
+      <div class="alert theme-danger" role="alert">
+        <p>Deleting this project removes 12 files.</p>
+        <div class="tm-row"><a href="#">Learn more</a> <button class="tm-button tm-button--sm" type="button">Delete</button></div>
+      </div>
+      <div class="alert" role="note">
+        <p>Archived projects stay for 30 days.</p>
+        <div class="tm-row"><a href="#">Learn more</a> <button class="tm-button tm-button--sm" type="button">Archive</button></div>
+      </div>
+    </section>
+
+    <!-- A full theme: its own action color, heading font, and feels, with default's base. Inside
+         it, a color theme (sale) is a child of promo, so it has promo's shape and fonts. -->
+    <section class="promo theme-promo tm-theme tm-stack" aria-label="Promo">
+      <h2 class="tm-h2">Promo, a full theme</h2>
+      <p class="tm-text tm-muted">Pill buttons, a satin shine, and a springy entrance.</p>
+      <div class="tm-row">
+        <button class="tm-button" type="button">Join</button>
+        <button class="tm-button theme-sale" type="button">Sale, a color theme in promo</button>
+        <button class="tm-button tm-button--soft theme-sale" type="button">Soft</button>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+  // Each switch steps through its values on <html>: empty means the reader's system setting.
+  for (const button of document.querySelectorAll('[data-set]')) {
+    const values = button.dataset.values.split(',');
+    const label = button.textContent.split(':')[0];
+    button.addEventListener('click', () => {
+      const html = document.documentElement;
+      const next = values[(values.indexOf(html.getAttribute(button.dataset.set) ?? '') + 1) % values.length];
+      if (next) html.setAttribute(button.dataset.set, next); else html.removeAttribute(button.dataset.set);
+      button.textContent = `${label}: ${next || 'system'}`;
+    });
+  }
+</script>
+</body>
+</html>

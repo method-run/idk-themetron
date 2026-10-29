@@ -1,0 +1,1072 @@
+{
+  "contract": "0.4.0",
+  "prefix": "tm",
+  "note": "Made by `npm run spec` from src/manifest.js. Do not edit. See spec/consumers.md.",
+  "selectors": {
+    "theme-<name>": "A class for each theme. It sets every token of that theme, from its place in the theme tree, on the element and everything in it. Use one theme class on an element. The root theme, \"default\", is also on :root.",
+    "tm-invert": "A class that shows an element, and everything in it, in the other mode.",
+    "data-tm-mode": "An attribute, \"light\" or \"dark\", that forces one mode on an element and everything in it.",
+    "data-tm-contrast": "An attribute, \"more\" or \"base\", on <html> or on an element with a theme class. \"more\" turns on the more-contrast variant for it and everything in it, and \"base\" turns it off. Without it, the reader's prefers-contrast: more setting decides."
+  },
+  "pairs": [
+    {
+      "fg": [
+        "fg-base",
+        "fg-base-muted",
+        "fg-action"
+      ],
+      "bg": [
+        "bg-canvas",
+        "bg-surface",
+        "bg-sunken",
+        "bg-field"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "fg-base-subtle",
+        "border-base-strong",
+        "border-action"
+      ],
+      "bg": [
+        "bg-canvas",
+        "bg-surface",
+        "bg-sunken",
+        "bg-field"
+      ],
+      "purpose": "ui"
+    },
+    {
+      "fg": [
+        "fill-base",
+        "fill-action"
+      ],
+      "bg": [
+        "bg-canvas"
+      ],
+      "purpose": "ui"
+    },
+    {
+      "fg": [
+        "on-fill-base"
+      ],
+      "bg": [
+        "fill-base",
+        "fill-base-hover"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-tint-base"
+      ],
+      "bg": [
+        "tint-base",
+        "tint-base-hover"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-fill-action"
+      ],
+      "bg": [
+        "fill-action",
+        "fill-action-hover"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-tint-action"
+      ],
+      "bg": [
+        "tint-action",
+        "tint-action-hover"
+      ],
+      "purpose": "text"
+    }
+  ],
+  "tokens": {
+    "base-0": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-5": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-10": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-20": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-30": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-40": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-50": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-60": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-70": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-80": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-90": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-95": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-100": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "action-0": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-5": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-10": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-20": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-30": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-40": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-50": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-60": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-70": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-80": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-90": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-95": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-100": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "base-key": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "action-key": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gap-text": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "stable"
+    },
+    "gap-large": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "stable"
+    },
+    "gap-ui": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-body": {
+      "tier": "primitive",
+      "type": "fontFamily",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-heading": {
+      "tier": "primitive",
+      "type": "fontFamily",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-mono": {
+      "tier": "primitive",
+      "type": "fontFamily",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-xs": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-md": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-2xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-size-3xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-weight-regular": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-weight-medium": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "stable"
+    },
+    "font-weight-bold": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "stable"
+    },
+    "line-height-body": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "line-height-heading": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "line-height-control": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "leading-xs": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-md": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-2xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-3xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-xs": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-md": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-2xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "leading-tight-3xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "rhythm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-xs": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-md": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-2xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "space-3xl": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "control-padding-y": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "control-padding-x": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "control-height": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "control-height-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "control-height-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "radius-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "radius-md": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "radius-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "radius-control": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "radius-full": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "border-width": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "focus-width": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "duration-fast": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-base": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "duration-slow": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "ease-standard": {
+      "tier": "primitive",
+      "type": "cubicBezier",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "ease-enter": {
+      "tier": "primitive",
+      "type": "cubicBezier",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "ease-exit": {
+      "tier": "primitive",
+      "type": "cubicBezier",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "gloss": {
+      "tier": "primitive",
+      "type": "gradient",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "panel-blur": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "lift": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "fill-alpha": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "panel-border-width": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "tint-alpha": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "fill-alpha-normal": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "fill-alpha-inverted": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "tint-alpha-normal": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "tint-alpha-inverted": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "bg-canvas": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "The page background."
+    },
+    "bg-surface": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "Cards, menus, and other surfaces on the canvas."
+    },
+    "bg-sunken": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "Wells, code blocks, and tracks below the canvas."
+    },
+    "bg-field": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "The inside of text fields and other inputs."
+    },
+    "fg-base": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "Body text and headings. Passes the text contrast on every background."
+    },
+    "fg-base-muted": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "Secondary text. Passes the text contrast on every background."
+    },
+    "fg-base-subtle": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "Placeholders and other hints. Passes the control contrast only."
+    },
+    "border-base": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "Dividers and the edges of surfaces. Decoration only."
+    },
+    "border-base-strong": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "stable",
+      "meaning": "The edges of fields and controls. Passes the control contrast."
+    },
+    "fill-base": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Quiet solid fills, such as a solid button that is not the main action."
+    },
+    "on-fill-base": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Text and icons on fill-base and its hover and active forms."
+    },
+    "fill-base-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "A quiet solid fill on hover."
+    },
+    "fill-base-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "A quiet solid fill while it is pressed."
+    },
+    "gloss-base-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "tint-base": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Quiet soft fills, such as secondary buttons and tags. They show on the canvas and on surfaces."
+    },
+    "tint-base-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "A quiet soft fill on hover."
+    },
+    "on-tint-base": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Text and icons on tint-base."
+    },
+    "fill-action": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Solid fills that you act on, such as primary buttons, checked boxes, and switches."
+    },
+    "on-fill-action": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Text and icons on fill-action and its hover and active forms."
+    },
+    "fill-action-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "An action fill on hover."
+    },
+    "fill-action-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "An action fill while it is pressed."
+    },
+    "gloss-action-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Soft fills that you act on, or that show a state: soft buttons, selected rows, badges."
+    },
+    "tint-action-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "An action tint on hover."
+    },
+    "on-tint-action": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Text and icons on tint-action."
+    },
+    "fg-action": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Links, and other text that you act on. Passes the text contrast on every background."
+    },
+    "border-action": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The edges of parts that you act on, such as outline buttons. Passes the control contrast."
+    },
+    "border-focus": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "stable",
+      "meaning": "Focus rings. The same as border-action."
+    },
+    "fill-action-exact": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The exact button: the darker of the key color and its partner (the lightest or darkest base color) in light mode, and the lighter in dark mode."
+    },
+    "on-fill-action-exact": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The label of the exact button: the other color of the pair. Not a guaranteed pair: the audit warns where it fails."
+    },
+    "border-action-exact": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The edge of the exact button: the key color, or border-base when the key color does not stand out from the canvas."
+    },
+    "bg-panel": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "panel-border": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "elevation-1": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-2": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-3": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-inset": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "highlight": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "experimental"
+    },
+    "bg-panel-normal": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "bg-panel-inverted": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "elevation-1-normal": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-1-flipped": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-2-normal": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-2-flipped": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-3-normal": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "elevation-3-flipped": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
+      "stability": "stable"
+    },
+    "gloss-base": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-action": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    }
+  }
+}

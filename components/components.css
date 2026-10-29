@@ -1,0 +1,422 @@
+/* themetron components. They read only the --tm-* tokens from a themetron theme.
+   A part takes its color from the nearest theme class, such as class="theme-danger". */
+
+/* ---- Base */
+
+.tm-theme {
+  background: var(--tm-bg-canvas);
+  color: var(--tm-fg-base);
+  font-family: var(--tm-font-body);
+  font-size: var(--tm-font-size-md);
+  line-height: var(--tm-leading-md);
+}
+.tm-theme *, .tm-theme *::before, .tm-theme *::after { box-sizing: border-box; }
+/* Inline text in another font or size (code, small print) sits on its own baseline, and can
+   stretch its line by a pixel, which pushes everything below off the rhythm grid. With no line
+   height of its own, it cannot stretch the line. */
+.tm-theme :where(code, kbd, samp, small, sub, sup, .tm-code) { line-height: 0; }
+
+.tm-h1, .tm-h2, .tm-h3 {
+  margin: 0;
+  font-family: var(--tm-font-heading);
+  font-weight: var(--tm-font-weight-bold);
+
+  text-wrap: balance;
+}
+.tm-h1 { font-size: var(--tm-font-size-3xl); line-height: var(--tm-leading-tight-3xl); }
+.tm-h2 { font-size: var(--tm-font-size-2xl); line-height: var(--tm-leading-tight-2xl); }
+.tm-h3 { font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
+.tm-text { margin: 0; }
+.tm-muted { color: var(--tm-fg-base-muted); }
+.tm-small { font-size: var(--tm-font-size-sm); }
+.tm-code { font-family: var(--tm-font-mono); font-size: 0.9em; padding: 0.1em 0.35em; border-radius: var(--tm-radius-sm); background: var(--tm-bg-sunken); }
+
+.tm-stack { display: flex; flex-direction: column; gap: var(--tm-space-md); }
+.tm-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--tm-space-sm); }
+
+/* A divider takes one rhythm step: a line drawn in the middle of it. */
+.tm-divider { height: var(--tm-rhythm); margin: 0; border: 0; background: linear-gradient(var(--tm-border-base), var(--tm-border-base)) center / 100% max(1px, var(--tm-border-width)) no-repeat; }
+
+.tm-link {
+  color: var(--tm-fg-action);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: max(1px, var(--tm-border-width));
+}
+.tm-link:hover { text-decoration-thickness: calc(max(1px, var(--tm-border-width)) + 1px); }
+
+:where(.tm-button, .tm-input, .tm-select, .tm-textarea, .tm-check, .tm-radio, .tm-switch, .tm-tabs button, .tm-link):focus-visible {
+  outline: var(--tm-focus-width) solid var(--tm-border-focus);
+  outline-offset: 2px;
+}
+
+/* ---- Button. Variants: solid (default), soft, quiet, outline, ghost, exact. Sizes: sm, md (default), lg.
+   Solid, soft, outline, and ghost use the action role. Quiet uses the base role, for buttons that
+   are not the main action. Exact shows the action key color itself, with
+   white or black: the darker of the two is the fill, as for every button. */
+
+.tm-button {
+  /* The shine of a solid fill. Each variant without it sets none. */
+  --btn-shine: var(--tm-gloss-action);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tm-space-sm);
+  min-height: var(--tm-control-height);
+  padding: var(--tm-control-padding-y) var(--tm-control-padding-x);
+  border: var(--tm-border-width) solid color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent);
+  border-radius: var(--tm-radius-control);
+  /* Fills and tints turn see-through at low solidity, as far as the label still passes:
+     --tm-fill-alpha for solid fills and edges, and --tm-tint-alpha for tints. */
+  background-color: color-mix(in oklab, var(--tm-fill-action) calc(var(--tm-fill-alpha) * 100%), transparent);
+  /* A light frost: a quarter of the cards' blur, so see-through buttons stay see-through. */
+  -webkit-backdrop-filter: blur(calc(var(--tm-panel-blur) / 4));
+  backdrop-filter: blur(calc(var(--tm-panel-blur) / 4));
+  color: var(--tm-on-fill-action);
+  font: inherit;
+  font-weight: var(--tm-font-weight-medium);
+  line-height: var(--tm-leading-tight-md);
+  box-shadow: var(--tm-highlight), var(--tm-elevation-1);
+  cursor: pointer;
+  transition:
+    background-color var(--tm-duration-fast) var(--tm-ease-standard),
+    color var(--tm-duration-fast) var(--tm-ease-standard),
+    box-shadow var(--tm-duration-base) var(--tm-ease-standard),
+    transform var(--tm-duration-base) var(--tm-ease-enter);
+}
+.tm-button:hover { background-color: color-mix(in oklab, var(--tm-fill-action-hover) calc(var(--tm-fill-alpha) * 100%), transparent); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-highlight), var(--tm-elevation-2); }
+.tm-button:active { background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
+.tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* The ramp gloss belongs to the fill and its label. A soft button has a tint and another
+   label color, so it gets the white sheen, blended so that it keeps the color. */
+/* The shine on a solid fill sits in a layer behind the label, at the fill's opacity, so it
+   cannot make a see-through button solid. */
+.tm-button::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background-image: var(--btn-shine); opacity: var(--tm-fill-alpha); pointer-events: none; }
+
+.tm-button--soft { --btn-shine: none; background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); background-image: var(--tm-gloss); background-blend-mode: soft-light; color: var(--tm-on-tint-action); border-color: transparent; }
+.tm-button--soft:hover, .tm-button--soft:active { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
+.tm-button--quiet { --btn-shine: none; background-color: color-mix(in oklab, var(--tm-tint-base) calc(var(--tm-tint-alpha) * 100%), transparent); background-image: var(--tm-gloss); background-blend-mode: soft-light; color: var(--tm-on-tint-base); border-color: transparent; }
+.tm-button--quiet:hover, .tm-button--quiet:active { background-color: color-mix(in oklab, var(--tm-tint-base-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
+
+/* The exact button keeps its colors on hover and press: they are the brand color, exactly.
+   The lift and the shadow show the state. */
+.tm-button--exact, .tm-button--exact:hover, .tm-button--exact:active { --btn-shine: none; background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
+
+/* No fill, so no frost: their labels read like any text on the page. */
+.tm-button--outline, .tm-button--ghost { --btn-shine: none; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
+/* The outline fades with the fill's opacity. The label identifies the button, so its edge can
+   be fainter than 3:1 at low solidity. Hover and press tints fade like soft buttons. */
+.tm-button--outline { border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent); }
+.tm-button--ghost { border-color: transparent; }
+.tm-button--outline:hover, .tm-button--ghost:hover { background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); box-shadow: none; }
+.tm-button--outline:active, .tm-button--ghost:active { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
+
+.tm-button--sm { min-height: var(--tm-control-height-sm); padding-block: 0; padding-inline: max(0px, calc(2 * var(--tm-rhythm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
+.tm-button--lg { min-height: var(--tm-control-height-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + 2 * var(--tm-rhythm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
+
+/* ---- Fields */
+
+.tm-field { display: flex; flex-direction: column; gap: var(--tm-space-xs); }
+.tm-label { font-weight: var(--tm-font-weight-medium); font-size: var(--tm-font-size-sm); }
+.tm-hint { font-size: var(--tm-font-size-sm); color: var(--tm-fg-base-muted); }
+
+.tm-input, .tm-select, .tm-textarea {
+  width: 100%;
+  min-height: var(--tm-control-height);
+  padding: var(--tm-control-padding-y) var(--tm-control-padding-x);
+  border: var(--tm-border-width) solid var(--tm-border-base-strong);
+  border-radius: min(var(--tm-radius-control), var(--tm-radius-lg));
+  background-color: var(--tm-bg-field);
+  color: var(--tm-fg-base);
+  font: inherit;
+  line-height: var(--tm-leading-tight-md);
+  box-shadow: var(--tm-elevation-inset);
+  transition: border-color var(--tm-duration-fast) var(--tm-ease-standard);
+}
+/* Browsers size a native select by its own rules, so one-line fields get a fixed height. */
+.tm-input, .tm-select { height: var(--tm-control-height); }
+.tm-textarea { min-height: calc(var(--tm-control-height) * 2); border-radius: var(--tm-radius-md); resize: vertical; }
+.tm-input::placeholder, .tm-textarea::placeholder { color: var(--tm-fg-base-subtle); }
+.tm-input:hover, .tm-select:hover, .tm-textarea:hover { border-color: var(--tm-fg-base-muted); }
+.tm-input[aria-invalid="true"] { border-color: var(--tm-border-action); }
+.tm-field .tm-error { font-size: var(--tm-font-size-sm); color: var(--tm-fg-action); }
+
+/* ---- Checkbox, radio, and switch: native inputs with a new look. */
+
+.tm-choice { display: inline-flex; align-items: center; gap: var(--tm-space-sm); cursor: pointer; }
+
+.tm-check, .tm-radio {
+  appearance: none;
+  flex: none;
+  display: inline-grid;
+  place-content: center;
+  width: 1.15em;
+  height: 1.15em;
+  margin: 0;
+  border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
+  border-radius: var(--tm-radius-sm);
+  background: var(--tm-bg-field);
+  box-shadow: var(--tm-elevation-inset);
+  cursor: pointer;
+  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), border-color var(--tm-duration-fast) var(--tm-ease-standard);
+}
+.tm-radio { border-radius: 50%; }
+.tm-check::after, .tm-radio::after {
+  content: "";
+  transform: scale(0);
+  transition: transform var(--tm-duration-base) var(--tm-ease-enter);
+}
+.tm-check::after { width: 0.3em; height: 0.6em; margin-top: -0.12em; border: solid var(--tm-on-fill-action); border-width: 0 0.14em 0.14em 0; rotate: 45deg; }
+.tm-radio::after { width: 0.45em; height: 0.45em; border-radius: 50%; background: var(--tm-on-fill-action); }
+.tm-check:checked, .tm-radio:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action); }
+.tm-check:checked::after, .tm-radio:checked::after { transform: scale(1); }
+
+.tm-switch {
+  appearance: none;
+  flex: none;
+  position: relative;
+  /* Rounded up to whole rhythm steps, so a switch taller than its line keeps the row on the grid. */
+  --_h: round(up, 1.4em, var(--tm-rhythm));
+  width: calc(var(--_h) * 1.7);
+  height: var(--_h);
+  margin: 0;
+  border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
+  border-radius: calc(var(--tm-radius-control) * 0.7 + 0.15em);
+  background: var(--tm-bg-sunken);
+  box-shadow: var(--tm-elevation-inset);
+  cursor: pointer;
+  transition: background-color var(--tm-duration-base) var(--tm-ease-standard);
+}
+.tm-switch::before {
+  content: "";
+  position: absolute;
+  top: 0.15em;
+  left: 0.15em;
+  width: calc(var(--_h) - 0.3em - 2 * max(1px, var(--tm-border-width)));
+  aspect-ratio: 1;
+  border-radius: calc(var(--tm-radius-control) * 0.7);
+  background: var(--tm-fg-base-muted);
+  background-image: var(--tm-gloss);
+  /* No fill and label pair here, so a white sheen, blended so that it keeps the color. */
+  background-blend-mode: soft-light;
+  box-shadow: var(--tm-elevation-1);
+  transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard);
+}
+.tm-switch:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action-active); }
+.tm-switch:checked::before { background-color: var(--tm-on-fill-action); transform: translateX(calc(var(--_h) * 0.7)); }
+
+/* ---- Card */
+
+.tm-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tm-space-md);
+  /* The edge is inside the padding, so the card's outer edges stay on the rhythm grid. */
+  padding: calc(var(--tm-space-lg) - var(--tm-panel-border-width));
+  border: var(--tm-panel-border-width) solid var(--tm-panel-border);
+  border-radius: var(--tm-radius-lg);
+  background: var(--tm-bg-panel);
+  -webkit-backdrop-filter: blur(var(--tm-panel-blur));
+  backdrop-filter: blur(var(--tm-panel-blur));
+  box-shadow: var(--tm-elevation-2);
+}
+.tm-card--flat { box-shadow: none; }
+.tm-card--raised { box-shadow: var(--tm-elevation-3); }
+
+/* ---- Badge, alert, avatar, progress */
+
+.tm-badge {
+  display: inline-flex;
+  flex: none;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0 max(0px, calc(2 * var(--tm-rhythm) - var(--tm-border-width)));
+  border: var(--tm-border-width) solid var(--tm-border-action);
+  border-radius: var(--tm-radius-md);
+  background: var(--tm-tint-action);
+  color: var(--tm-on-tint-action);
+  font-size: var(--tm-font-size-sm);
+  font-weight: var(--tm-font-weight-medium);
+  /* A body line, less one rhythm step above and one below: the badge sits in the middle of the
+     line beside it, on the rhythm grid. Its margins fill the rest of the line, in a row or in a
+     paragraph, so the line keeps its height. */
+  line-height: calc(var(--tm-leading-md) - 2 * var(--tm-rhythm) - 2 * var(--tm-border-width));
+  margin-block: var(--tm-rhythm);
+  vertical-align: top;
+  white-space: nowrap;
+}
+/* In a stack, a badge keeps its own width (flex-start). In a row, it sits in the middle. */
+.tm-row > .tm-badge { align-self: center; }
+.tm-badge--solid { background: var(--tm-fill-action); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); }
+
+.tm-alert {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tm-space-xs);
+  padding: calc(var(--tm-space-md) - var(--tm-border-width));
+  /* The thick left edge is inside the padding too. */
+  padding-left: calc(var(--tm-space-md) - max(4px, var(--tm-border-width)));
+  border: var(--tm-border-width) solid var(--tm-border-action);
+  border-left-width: max(4px, var(--tm-border-width));
+  border-radius: var(--tm-radius-md);
+  background: var(--tm-tint-action);
+  color: var(--tm-fg-base);
+}
+.tm-alert strong { color: var(--tm-on-tint-action); }
+
+.tm-avatar {
+  display: inline-grid;
+  flex: none;
+  place-content: center;
+  width: var(--tm-control-height);
+  height: var(--tm-control-height);
+  border: var(--tm-border-width) solid var(--tm-fill-action-active);
+  border-radius: max(var(--tm-radius-control), var(--tm-radius-sm));
+  background: var(--tm-fill-action);
+  background-image: var(--tm-gloss-action);
+  color: var(--tm-on-fill-action);
+  font-weight: var(--tm-font-weight-bold);
+  font-size: var(--tm-font-size-sm);
+}
+
+.tm-progress {
+  height: var(--tm-space-sm);
+  border: var(--tm-border-width) solid var(--tm-border-base-strong);
+  border-radius: var(--tm-radius-control);
+  background: var(--tm-bg-sunken);
+  box-shadow: var(--tm-elevation-inset);
+  overflow: hidden;
+}
+.tm-progress > span {
+  display: block;
+  height: 100%;
+  width: var(--value, 50%);
+  border-radius: inherit;
+  background: var(--tm-fill-action);
+  background-image: var(--tm-gloss-action);
+  transition: width var(--tm-duration-slow) var(--tm-ease-enter);
+}
+
+/* ---- Tabs: a row of buttons with aria-selected. */
+
+.tm-tabs { display: flex; gap: var(--tm-space-xs); border-bottom: max(1px, var(--tm-border-width)) solid var(--tm-border-base); }
+.tm-tabs button {
+  margin-bottom: calc(-1 * max(1px, var(--tm-border-width)));
+  /* Two rhythm steps above the line, and two below it with the underline inside them. */
+  padding: calc(2 * var(--tm-rhythm)) calc(var(--tm-control-padding-x) + var(--tm-border-width)) calc(2 * var(--tm-rhythm) - max(2px, var(--tm-border-width)));
+  border: 0;
+  border-bottom: max(2px, var(--tm-border-width)) solid transparent;
+  background: none;
+  color: var(--tm-fg-base-muted);
+  font: inherit;
+  font-weight: var(--tm-font-weight-medium);
+  line-height: var(--tm-leading-tight-md);
+  cursor: pointer;
+  transition: color var(--tm-duration-fast) var(--tm-ease-standard), border-color var(--tm-duration-base) var(--tm-ease-standard);
+}
+.tm-tabs button:hover { color: var(--tm-fg-base); }
+.tm-tabs button[aria-selected="true"] { color: var(--tm-fg-action); border-bottom-color: var(--tm-border-action); }
+
+/* ---- Segmented control: buttons joined in one box, for a choice of a few options. The
+   pressed button (aria-pressed="true") has the fill. The box, borders included, is one
+   control tall, so it lines up with buttons and fields. Sizes: sm, md (default). */
+
+.tm-segmented {
+  --seg-bw: max(1px, var(--tm-border-width));
+  --seg-height: var(--tm-control-height);
+  display: inline-flex;
+  vertical-align: top;
+  border: var(--seg-bw) solid var(--tm-border-base-strong);
+  border-radius: var(--tm-radius-control);
+  background-color: var(--tm-bg-field);
+}
+.tm-segmented button {
+  flex: 1 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--seg-height) - 2 * var(--seg-bw));
+  margin: 0;
+  padding: 0 max(0px, calc(var(--tm-control-padding-x) - var(--seg-bw)));
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--tm-fg-base-muted);
+  font: inherit;
+  font-weight: var(--tm-font-weight-medium);
+  line-height: var(--tm-leading-tight-md);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard);
+}
+/* The buttons round the outer corners only, inside the border. */
+.tm-segmented button:first-child { border-start-start-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); border-end-start-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); }
+.tm-segmented button:last-child { border-start-end-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); border-end-end-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); }
+.tm-segmented button + button { box-shadow: inset var(--seg-bw) 0 var(--tm-border-base); }
+.tm-segmented button:hover { background-color: var(--tm-tint-action); color: var(--tm-on-tint-action); }
+.tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-gloss-action); color: var(--tm-on-fill-action); box-shadow: none; }
+.tm-segmented button[aria-pressed="true"] + button { box-shadow: none; }
+.tm-segmented button:focus-visible { position: relative; z-index: 1; outline: var(--tm-focus-width) solid var(--tm-border-focus); outline-offset: 2px; }
+.tm-segmented[hidden] { display: none; }
+
+.tm-segmented--sm { --seg-height: var(--tm-control-height-sm); font-size: var(--tm-font-size-sm); }
+.tm-segmented--sm button { padding-inline: max(0px, calc(2 * var(--tm-rhythm) - var(--seg-bw))); line-height: var(--tm-leading-tight-sm); }
+
+/* ---- Dialog and drawer: a <dialog> that moves in and out with the theme's motion.
+   Open: call showModal(), then add .is-open on the next frame.
+   Close: remove .is-open, then call close() when the transition ends. */
+
+.tm-dialog, .tm-drawer {
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: calc(var(--tm-space-lg) - var(--tm-panel-border-width));
+  border: var(--tm-panel-border-width) solid var(--tm-panel-border);
+  /* Opaque, unlike cards: a dialog sits over anything, and text contrast is checked on the surface. */
+  background: var(--tm-bg-surface);
+  color: var(--tm-fg-base);
+  font-family: var(--tm-font-body);
+  box-shadow: var(--tm-elevation-3);
+  opacity: 0;
+  /* Leaving uses the exit curve; arriving (below) uses the enter curve, which can overshoot. */
+  transition: opacity var(--tm-duration-base) var(--tm-ease-exit), transform var(--tm-duration-base) var(--tm-ease-exit);
+}
+.tm-dialog::backdrop, .tm-drawer::backdrop { background: rgb(0 0 0 / 0); transition: background var(--tm-duration-base) var(--tm-ease-standard); }
+.tm-dialog.is-open::backdrop, .tm-drawer.is-open::backdrop { background: rgb(0 0 0 / 0.35); }
+.tm-dialog.is-open, .tm-drawer.is-open {
+  opacity: 1;
+  transform: none;
+  transition-timing-function: var(--tm-ease-enter);
+  transition-duration: var(--tm-duration-slow);
+}
+
+.tm-dialog {
+  inset: 0;
+  margin: auto;
+  width: min(90vw, 28rem);
+  border-radius: var(--tm-radius-lg);
+  transform: translateY(12px) scale(0.9);
+}
+
+.tm-drawer {
+  inset: 0 0 0 auto;
+  width: min(85vw, 22rem);
+  height: 100%;
+  border-radius: var(--tm-radius-lg) 0 0 var(--tm-radius-lg);
+  transform: translateX(100%);
+}
+
+/* ---- Widths on the grid. Parts that shrink to their text round their width up to whole
+   rhythm steps, so their right edges land on grid lines too. calc-size() is new (Chrome and
+   Edge 129+), so other browsers keep the natural width. */
+@supports (width: calc-size(fit-content, size)) {
+  .tm-button, .tm-badge, .tm-tabs button, .tm-segmented { width: calc-size(fit-content, round(up, size, var(--tm-rhythm))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-theme * { transition-duration: 0s !important; }
+}

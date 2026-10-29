@@ -1,0 +1,235 @@
+{
+  "$comment": "Not part of a spec: what the engine works out from the inputs. Each theme has every setting, its own or its parents'.",
+  "order": [
+    "default",
+    "success",
+    "warning",
+    "danger",
+    "promo",
+    "sale"
+  ],
+  "themes": {
+    "default": {
+      "name": "default",
+      "parent": null,
+      "label": "Default",
+      "kind": "full",
+      "base": "#6b7280",
+      "action": "#2456e8",
+      "font": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "headingFont": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "monoFont": {
+        "family": null,
+        "fallback": "monospace"
+      },
+      "preset": "balanced",
+      "feel": {
+        "spaciousness": 0.5,
+        "roundness": 0.35,
+        "thickness": 0.25,
+        "depth": 0.3,
+        "shininess": 0,
+        "softness": 0.7,
+        "solidity": 1,
+        "bounciness": 0.2,
+        "snappiness": 0.6
+      },
+      "contrast": {
+        "method": "wcag",
+        "level": "standard",
+        "model": "oklch"
+      }
+    },
+    "success": {
+      "name": "success",
+      "parent": "default",
+      "label": "Success",
+      "kind": "color",
+      "base": "#1f8a3b",
+      "action": "#1f8a3b",
+      "font": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "headingFont": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "monoFont": {
+        "family": null,
+        "fallback": "monospace"
+      },
+      "preset": "balanced",
+      "feel": {
+        "spaciousness": 0.5,
+        "roundness": 0.35,
+        "thickness": 0.25,
+        "depth": 0.3,
+        "shininess": 0,
+        "softness": 0.7,
+        "solidity": 1,
+        "bounciness": 0.2,
+        "snappiness": 0.6
+      },
+      "contrast": {
+        "method": "wcag",
+        "level": "standard",
+        "model": "oklch"
+      }
+    },
+    "warning": {
+      "name": "warning",
+      "parent": "default",
+      "label": "Warning",
+      "kind": "color",
+      "base": "#e8890c",
+      "action": "#e8890c",
+      "font": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "headingFont": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "monoFont": {
+        "family": null,
+        "fallback": "monospace"
+      },
+      "preset": "balanced",
+      "feel": {
+        "spaciousness": 0.5,
+        "roundness": 0.35,
+        "thickness": 0.25,
+        "depth": 0.3,
+        "shininess": 0,
+        "softness": 0.7,
+        "solidity": 1,
+        "bounciness": 0.2,
+        "snappiness": 0.6
+      },
+      "contrast": {
+        "method": "wcag",
+        "level": "standard",
+        "model": "oklch"
+      }
+    },
+    "danger": {
+      "name": "danger",
+      "parent": "default",
+      "label": "Danger",
+      "kind": "color",
+      "base": "#d6336c",
+      "action": "#d6336c",
+      "font": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "headingFont": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "monoFont": {
+        "family": null,
+        "fallback": "monospace"
+      },
+      "preset": "balanced",
+      "feel": {
+        "spaciousness": 0.5,
+        "roundness": 0.35,
+        "thickness": 0.25,
+        "depth": 0.3,
+        "shininess": 0,
+        "softness": 0.7,
+        "solidity": 1,
+        "bounciness": 0.2,
+        "snappiness": 0.6
+      },
+      "contrast": {
+        "method": "wcag",
+        "level": "standard",
+        "model": "oklch"
+      }
+    },
+    "promo": {
+      "name": "promo",
+      "parent": "default",
+      "label": "Promo",
+      "kind": "full",
+      "base": "#6b7280",
+      "action": "#8a4fff",
+      "font": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "headingFont": {
+        "family": "Fraunces",
+        "fallback": "serif"
+      },
+      "monoFont": {
+        "family": null,
+        "fallback": "monospace"
+      },
+      "preset": "balanced",
+      "feel": {
+        "spaciousness": 0.5,
+        "roundness": 1,
+        "thickness": 0.25,
+        "depth": 0.3,
+        "shininess": 0.33,
+        "softness": 0.7,
+        "solidity": 1,
+        "bounciness": 0.67,
+        "snappiness": 0.6
+      },
+      "contrast": {
+        "method": "wcag",
+        "level": "standard",
+        "model": "oklch"
+      }
+    },
+    "sale": {
+      "name": "sale",
+      "parent": "promo",
+      "label": "Sale",
+      "kind": "color",
+      "base": "#6b7280",
+      "action": "#e8590c",
+      "font": {
+        "family": "Figtree",
+        "fallback": "sans-serif"
+      },
+      "headingFont": {
+        "family": "Fraunces",
+        "fallback": "serif"
+      },
+      "monoFont": {
+        "family": null,
+        "fallback": "monospace"
+      },
+      "preset": "balanced",
+      "feel": {
+        "spaciousness": 0.5,
+        "roundness": 1,
+        "thickness": 0.25,
+        "depth": 0.3,
+        "shininess": 0.33,
+        "softness": 0.7,
+        "solidity": 1,
+        "bounciness": 0.67,
+        "snappiness": 0.6
+      },
+      "contrast": {
+        "method": "wcag",
+        "level": "standard",
+        "model": "oklch"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+/* The site's own CSS. It reads only themetron tokens, and gives each one a fallback. */
+body { margin: 0; }
+.site { display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); min-height: 100vh; }
+.side, .main { padding: var(--tm-space-xl, 2rem); display: flex; flex-direction: column; gap: var(--tm-space-lg, 1.5rem); }
+.side { background: var(--tm-bg-surface, Canvas); border-right: var(--tm-border-width, 1px) solid var(--tm-border-base, GrayText); }
+.side nav { display: flex; flex-direction: column; gap: var(--tm-space-xs, 0.25rem); }
+.side a { color: var(--tm-fg-base-muted, inherit); text-decoration: none; }
+.side a[aria-current="page"] { color: var(--tm-fg-action, LinkText); font-weight: var(--tm-font-weight-bold, 700); }
+.status { display: inline-flex; align-items: center; gap: var(--tm-space-xs, 0.25rem); color: var(--tm-fg-action, inherit); }
+.status::before { content: ""; width: 0.6em; height: 0.6em; border-radius: var(--tm-radius-full, 50%); background: var(--tm-fill-action, currentColor); }
+.promo { padding: var(--tm-space-lg, 1.5rem); border-radius: var(--tm-radius-lg, 12px); background: var(--tm-bg-canvas, Canvas); box-shadow: var(--tm-elevation-2, none); }
+.alert { padding: var(--tm-space-md, 1rem); border: var(--tm-border-width, 1px) solid var(--tm-border-base, GrayText); border-radius: var(--tm-radius-md, 6px); background: var(--tm-bg-canvas, Canvas); color: var(--tm-fg-base, CanvasText); }
+.alert p { margin: 0 0 var(--tm-space-sm, 0.5rem); }
+.alert a { color: var(--tm-fg-action, LinkText); }
+.switches { display: flex; gap: var(--tm-space-sm, 0.5rem); flex-wrap: wrap; }
+@media (max-width: 640px) { .site { grid-template-columns: minmax(0, 1fr); } }
