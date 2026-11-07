@@ -141,12 +141,12 @@
 /* The browser's own caret sits near the edge, whatever the padding. This one keeps the field's
    side padding: a chevron of two triangles, in the text color, inside the padding-x inset. */
 .tm-select {
-  --_caret: 0.3em;
+  --_caret-size: 0.3em;
   appearance: none;
-  padding-right: calc(var(--tm-control-padding-x) + 2 * var(--_caret) + var(--tm-space-sm));
+  padding-right: calc(var(--tm-control-padding-x) + 2 * var(--_caret-size) + var(--tm-space-sm));
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - var(--tm-control-padding-x) - var(--_caret)) 50%, calc(100% - var(--tm-control-padding-x)) 50%;
-  background-size: var(--_caret) var(--_caret);
+  background-position: calc(100% - var(--tm-control-padding-x) - var(--_caret-size)) 50%, calc(100% - var(--tm-control-padding-x)) 50%;
+  background-size: var(--_caret-size) var(--_caret-size);
   background-repeat: no-repeat;
 }
 .tm-textarea { min-height: calc(var(--tm-control-height) * 2); border-radius: var(--tm-radius-md); resize: vertical; }
@@ -164,8 +164,10 @@
   flex: none;
   display: inline-grid;
   place-content: center;
-  width: 1.15em;
-  height: 1.15em;
+  /* The same height as a switch: 1.2 times the font size, rounded up to whole grid squares. */
+  --_choice-size: round(up, 1.2em, var(--tm-rhythm));
+  width: var(--_choice-size);
+  height: var(--_choice-size);
   margin: 0;
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
   border-radius: var(--tm-radius-sm);
@@ -189,10 +191,11 @@
   appearance: none;
   flex: none;
   position: relative;
-  /* Rounded up to whole rhythm steps, so a switch taller than its line keeps the row on the grid. */
-  --_h: round(up, 1.4em, var(--tm-rhythm));
-  width: calc(var(--_h) * 1.7);
-  height: var(--_h);
+  /* Rounded up to whole grid squares, so a switch taller than its line keeps the row on the
+     grid. The same height as checks and radios. */
+  --_switch-height: round(up, 1.2em, var(--tm-rhythm));
+  width: calc(var(--_switch-height) * 1.7);
+  height: var(--_switch-height);
   margin: 0;
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
   border-radius: calc(var(--tm-radius-control) * 0.7 + 0.15em);
@@ -206,7 +209,7 @@
   position: absolute;
   top: 0.15em;
   left: 0.15em;
-  width: calc(var(--_h) - 0.3em - 2 * max(1px, var(--tm-border-width)));
+  width: calc(var(--_switch-height) - 0.3em - 2 * max(1px, var(--tm-border-width)));
   aspect-ratio: 1;
   border-radius: calc(var(--tm-radius-control) * 0.7);
   background: var(--tm-fg-base-muted);
@@ -217,7 +220,7 @@
   transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard);
 }
 .tm-switch:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action-active); }
-.tm-switch:checked::before { background-color: var(--tm-on-fill-action); transform: translateX(calc(var(--_h) * 0.7)); }
+.tm-switch:checked::before { background-color: var(--tm-on-fill-action); transform: translateX(calc(var(--_switch-height) * 0.7)); }
 
 /* ---- Card */
 

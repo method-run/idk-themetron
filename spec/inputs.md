@@ -139,7 +139,7 @@ The playground uses presets as a one-time stamp: picking one writes every feel i
 The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In short, with `s` for spaciousness and so on:
 
 - Grid: 4 px squares, down and across, for every theme. The `rhythm` token holds it.
-- Space unit: `2 + 4 s` squares (8 to 24 px). The space scale is ¼, ½, 1, 1½, 2, 3, and 4 units. Each step rounds to whole squares on its own, and is at least one square. So the steps change at different points along the slider.
+- Space unit: `2 + 4 s` squares (8 to 24 px). The space scale is 0.3, ½, 1, 1½, 2, 3, and 4 units. The `xs` step is 0.3, not ¼, so that it grows at about spaciousness 0.75, not only at 1. Each step rounds to whole squares on its own, and is at least one square. So the steps change at different points along the slider.
 - Text size: 15 px body, on a 1.2 scale. Spaciousness does not change it.
 - Line heights: for each text size, the whole number of squares nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
 - Controls: a tight line, plus padding and border that add up to whole squares. The padding is the `sm` space step down, and about one space unit across. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.

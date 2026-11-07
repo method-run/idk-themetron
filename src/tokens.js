@@ -59,10 +59,11 @@ export function buildPrimitives(settings, palettes, gaps) {
   // lines up with fewer grid lines, and a spacious one with more.
   const rhythm = GRID;
   // The space unit, in squares: 2 (8 px) at spaciousness 0, to 6 (24 px) at 1. Each space step
-  // rounds on its own, so the steps change at different points along the slider.
+  // rounds on its own, so the steps change at different points along the slider. xs is 0.3 of
+  // a unit, not a quarter, so that it grows in the middle of the slider, not only at the end.
   const unit = 2 + 4 * s;
   const squares = (x) => Math.max(1, Math.round(x));
-  const space = Object.fromEntries(Object.entries({ xs: 0.25, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
+  const space = Object.fromEntries(Object.entries({ xs: 0.3, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
 
   // Text sizes do not change with spaciousness. Typography settings will set them.
   const fontSize = Object.fromEntries(Object.entries({ xs: -2, sm: -1, md: 0, lg: 1, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, step]) => [k, Math.round(FONT_SIZE * 1.2 ** step)]));
