@@ -136,20 +136,35 @@
   box-shadow: var(--tm-elevation-inset);
   transition: border-color var(--tm-duration-fast) var(--tm-ease-standard);
 }
-/* Browsers size a native select by its own rules, so one-line fields get a fixed height. */
-.tm-input, .tm-select { height: var(--tm-control-height); }
+/* Browsers size a native select by its own rules, so one-line fields get a fixed height.
+   Round fields move their text in from the curve: the side padding is at least the corner
+   radius, rounded up to whole grid squares, so the text's edge stays on a grid line. */
+.tm-input, .tm-select {
+  --_field-inset: max(var(--tm-control-padding-x), calc(round(up, min(var(--tm-radius-control), var(--tm-radius-lg)), var(--tm-rhythm)) - var(--tm-border-width)));
+  height: var(--tm-control-height);
+  padding-inline: var(--_field-inset);
+}
 /* The browser's own caret sits near the edge, whatever the padding. This one keeps the field's
-   side padding: a chevron of two triangles, in the text color, inside the padding-x inset. */
+   side padding: a chevron of two triangles, in the text color, inside the field's inset. */
 .tm-select {
   --_caret-size: 0.3em;
   appearance: none;
-  padding-right: calc(var(--tm-control-padding-x) + 2 * var(--_caret-size) + var(--tm-space-sm));
+  padding-right: calc(var(--_field-inset) + 2 * var(--_caret-size) + var(--tm-space-sm));
   background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - var(--tm-control-padding-x) - var(--_caret-size)) 50%, calc(100% - var(--tm-control-padding-x)) 50%;
+  background-position: calc(100% - var(--_field-inset) - var(--_caret-size)) 50%, calc(100% - var(--_field-inset)) 50%;
   background-size: var(--_caret-size) var(--_caret-size);
   background-repeat: no-repeat;
 }
-.tm-textarea { min-height: calc(var(--tm-control-height) * 2); border-radius: var(--tm-radius-md); resize: vertical; }
+/* A text area has larger corners than a one-line field, so it is padded like a small card: by
+   its corner radius, rounded up to whole grid squares, on all four sides. At low roundness the
+   field padding is larger, and wins. */
+.tm-textarea {
+  --_textarea-inset: calc(round(up, var(--tm-radius-md), var(--tm-rhythm)) - var(--tm-border-width));
+  min-height: calc(var(--tm-control-height) * 2);
+  padding: max(var(--tm-control-padding-y), var(--_textarea-inset)) max(var(--tm-control-padding-x), var(--_textarea-inset));
+  border-radius: var(--tm-radius-md);
+  resize: vertical;
+}
 .tm-input::placeholder, .tm-textarea::placeholder { color: var(--tm-fg-base-subtle); }
 .tm-input:hover, .tm-select:hover, .tm-textarea:hover { border-color: var(--tm-fg-base-muted); }
 .tm-input[aria-invalid="true"] { border-color: var(--tm-border-action); }
@@ -198,7 +213,8 @@
   height: var(--_switch-height);
   margin: 0;
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
-  border-radius: calc(var(--tm-radius-control) * 0.7 + 0.15em);
+  /* A share of its own height, like every control: a pill at full roundness. */
+  border-radius: calc(var(--tm-roundness) * var(--_switch-height) / 2);
   background: var(--tm-bg-sunken);
   box-shadow: var(--tm-elevation-inset);
   cursor: pointer;
@@ -209,9 +225,10 @@
   position: absolute;
   top: 0.15em;
   left: 0.15em;
-  width: calc(var(--_switch-height) - 0.3em - 2 * max(1px, var(--tm-border-width)));
+  --_thumb-size: calc(var(--_switch-height) - 0.3em - 2 * max(1px, var(--tm-border-width)));
+  width: var(--_thumb-size);
   aspect-ratio: 1;
-  border-radius: calc(var(--tm-radius-control) * 0.7);
+  border-radius: calc(var(--tm-roundness) * var(--_thumb-size) / 2);
   background: var(--tm-fg-base-muted);
   background-image: var(--tm-gloss);
   /* No fill and label pair here, so a white sheen, blended so that it keeps the color. */
@@ -250,7 +267,6 @@
   gap: 0.3em;
   padding: 0 max(0px, calc(var(--tm-space-sm) - var(--tm-border-width)));
   border: var(--tm-border-width) solid var(--tm-border-action);
-  border-radius: var(--tm-radius-md);
   background: var(--tm-tint-action);
   color: var(--tm-on-tint-action);
   font-size: var(--tm-font-size-sm);
@@ -262,6 +278,8 @@
   --_badge-margin: max(0px, round(down, calc((var(--tm-leading-md) - var(--tm-font-size-sm) - 2 * var(--tm-border-width)) / 2), var(--tm-rhythm)));
   line-height: calc(var(--tm-leading-md) - 2 * var(--_badge-margin) - 2 * var(--tm-border-width));
   margin-block: var(--_badge-margin);
+  /* A share of its own height, like every control: a pill at full roundness. */
+  border-radius: calc(var(--tm-roundness) * (var(--tm-leading-md) - 2 * var(--_badge-margin)) / 2);
   vertical-align: top;
   white-space: nowrap;
 }
@@ -302,7 +320,8 @@
 .tm-progress {
   height: var(--tm-space-sm);
   border: var(--tm-border-width) solid var(--tm-border-base-strong);
-  border-radius: var(--tm-radius-control);
+  /* A share of its own height, like every control: a pill at full roundness. */
+  border-radius: calc(var(--tm-roundness) * var(--tm-space-sm) / 2);
   background: var(--tm-bg-sunken);
   box-shadow: var(--tm-elevation-inset);
   overflow: hidden;

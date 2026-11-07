@@ -65,6 +65,7 @@
   --tm-radius-control-sm: 4.9px;
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
+  --tm-roundness: 0.35;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -153,6 +154,7 @@
   --tm-radius-control-sm: 4.9px;
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
+  --tm-roundness: 0.35;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -241,6 +243,7 @@
   --tm-radius-control-sm: 4.9px;
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
+  --tm-roundness: 0.35;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -329,6 +332,7 @@
   --tm-radius-control-sm: 4.9px;
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
+  --tm-roundness: 0.35;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -417,6 +421,7 @@
   --tm-radius-control-sm: 14px;
   --tm-radius-control-lg: 22px;
   --tm-radius-full: 9999px;
+  --tm-roundness: 1;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;

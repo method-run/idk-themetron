@@ -55,6 +55,7 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 | `space.<step>` | `space.md` | `xs` to `3xl`. |
 | `control.height`, `control.heightSm`, `control.heightLg`, `control.paddingX`, `control.paddingY` | | For buttons, fields, and avatars. Heights are whole rhythm steps. |
 | `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `controlSm`, `controlLg`, `full`. Each control radius is a pill at full roundness, for its own control size. `sm`, `md`, and `lg` round as far as the padding of the parts that use them. |
+| `roundness` | `roundness` | The roundness feel, from 0 to 1. A part of height `h` that has no radius token of its own rounds by `roundness × h ÷ 2`, so it is a pill at 1. The components use it for badges, switches, and progress bars. Experimental. |
 | `border.width`, `border.focusWidth` | | The focus width is at least 2 px. |
 | `duration.<speed>` | `duration.base` | `fast`, `base`, `slow`. |
 | `easing.<use>` | `easing.enter` | `standard`, `enter` (can overshoot), `exit`. |

@@ -554,6 +554,11 @@
           }
         }
       },
+      "roundness": {
+        "$type": "number",
+        "$value": 0.35,
+        "$description": "The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1."
+      },
       "border": {
         "width": {
           "$type": "dimension",
@@ -2125,6 +2130,11 @@
             "unit": "px"
           }
         }
+      },
+      "roundness": {
+        "$type": "number",
+        "$value": 0.35,
+        "$description": "The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1."
       },
       "border": {
         "width": {
@@ -3698,6 +3708,11 @@
           }
         }
       },
+      "roundness": {
+        "$type": "number",
+        "$value": 0.35,
+        "$description": "The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1."
+      },
       "border": {
         "width": {
           "$type": "dimension",
@@ -5269,6 +5284,11 @@
             "unit": "px"
           }
         }
+      },
+      "roundness": {
+        "$type": "number",
+        "$value": 0.35,
+        "$description": "The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1."
       },
       "border": {
         "width": {
@@ -6842,6 +6862,11 @@
           }
         }
       },
+      "roundness": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1."
+      },
       "border": {
         "width": {
           "$type": "dimension",
@@ -8413,6 +8438,11 @@
             "unit": "px"
           }
         }
+      },
+      "roundness": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1."
       },
       "border": {
         "width": {

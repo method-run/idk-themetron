@@ -603,6 +603,12 @@
       "modes": false,
       "stability": "stable"
     },
+    "roundness": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
     "border-width": {
       "tier": "primitive",
       "type": "dimension",

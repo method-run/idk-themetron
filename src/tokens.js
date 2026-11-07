@@ -132,6 +132,8 @@ export function buildPrimitives(settings, palettes, gaps) {
     space,
     control,
     radius,
+    // The roundness itself, so that a part can round as a share of its own size in CSS.
+    roundness: r,
     border: { width: borderWidth, focus: Math.max(2, borderWidth + 1) },
     motion: MOTION,
     effect: {
