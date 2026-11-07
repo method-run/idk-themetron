@@ -1,5 +1,4 @@
 // Build the themes: for each theme, primitive tokens from its settings, then semantic tokens for each mode.
-import { parseHex } from './color.js';
 import { GRADES, contrastTest, gradeGaps, makePalette, measure } from './palette.js';
 import { normalizeInputs, ROLES } from './inputs.js';
 
@@ -33,26 +32,23 @@ function buildLevel(settings, palettes, variant = false) {
   const primitives = buildPrimitives(settings, palettes, gaps);
   const modes = {};
   for (const mode of MODES) modes[mode] = buildMode(mode, settings, palettes, primitives, test, variant);
-  const e = primitives.effect;
-  e.fillAlphaInverted = seeThrough(e.fillAlphaInverted, modes, test, 'fill', true);
-  e.tintAlpha = seeThrough(e.panelAlpha, modes, test, 'tint', false);
-  e.tintAlphaInverted = seeThrough(e.panelAlpha, modes, test, 'tint', true);
-  e.fillAlpha = seeThrough(e.fillAlpha, modes, test, 'fill', false);
-  // Cards: an inverted card is this mode's surface over the other mode's page, such as a light
-  // card on a dark page. At low solidity the page would show through and darken it, and its dark
-  // text would fail. So inverted cards get their own opacity, raised until text passes.
-  e.panelAlphaInverted = panelSeeThrough(e.panelAlpha, modes, test);
-  for (const { tokens, computed } of Object.values(modes)) {
-    computed['bg.panel-normal'] = computed['bg.panel'];
-    computed['bg.panel-inverted'] = rgba(tokens['bg.surface'].value, e.panelAlphaInverted);
-  }
   return { settings, gaps, primitives, modes };
 }
 
 // ---- Primitives: values that do not change with the mode.
 
+// Fixed values for the parts that the removed feels (thickness, depth, softness, solidity,
+// bounciness, snappiness) used to set. The tokens stay, so components still work: hairline
+// borders, no shadows and no lift, opaque parts with no blur, and calm motion with no overshoot.
+const BORDER_WIDTH = 1;
+const MOTION = {
+  duration: { fast: 130, base: 220, slow: 370 },
+  easing: { standard: [0.3, 0, 0.45, 1], enter: [0.25, 1, 0.64, 1], exit: [0.4, 0, 1, 1] },
+};
+const FLAT = { panelAlpha: 1, panelAlphaInverted: 1, fillAlpha: 1, fillAlphaInverted: 1, tintAlpha: 1, tintAlphaInverted: 1, blur: 0, lift: 0 };
+
 export function buildPrimitives(settings, palettes, gaps) {
-  const { spaciousness: s, roundness: r, thickness: t, depth: d, softness: f, shininess: sh, solidity: so, bounciness: b, snappiness: n } = settings.feel;
+  const { spaciousness: s, roundness: r, shininess: sh } = settings.feel;
 
   // Vertical rhythm: an invisible grid, `rhythm` px apart. Space steps, line heights, and
   // the heights of parts (with their borders) are whole multiples of it.
@@ -70,7 +66,7 @@ export function buildPrimitives(settings, palettes, gaps) {
   const leading = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, bodyRatio)]));
   const leadingTight = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, tightRatio)]));
 
-  const borderWidth = Math.round(t * 4);
+  const borderWidth = BORDER_WIDTH;
   // A control is a tight line plus padding and border that add up to whole rhythm steps.
   let steps = 2;
   while (steps * rhythm < borderWidth) steps++;
@@ -101,15 +97,6 @@ export function buildPrimitives(settings, palettes, gaps) {
   const fonts = { body: settings.font, heading: settings.headingFont, mono: settings.monoFont };
   for (const [role, { family, fallback }] of Object.entries(fonts)) font[role] = [family, ...fallback.split(',').map((x) => x.trim())].filter(Boolean);
 
-  const duration = Math.round(420 - 340 * n);
-  const motion = {
-    duration: { fast: Math.round(duration * 0.6), base: duration, slow: Math.round(duration * 1.7) },
-    easing: {
-      standard: [round(0.5 - 0.3 * n), 0, round(0.6 - 0.3 * b), round(1 + 0.6 * b)],
-      enter: [round(0.34 - 0.14 * n), round(1 + 0.9 * b), 0.64, 1],
-      exit: [0.4, 0, 1, 1],
-    },
-  };
 
   return {
     color: Object.fromEntries(Object.entries(palettes).map(([name, p]) => [name, { ...p.steps }])),
@@ -128,19 +115,12 @@ export function buildPrimitives(settings, palettes, gaps) {
     control,
     radius,
     border: { width: borderWidth, focus: Math.max(2, borderWidth + 1) },
-    motion,
+    motion: MOTION,
     effect: {
+      ...FLAT,
       // A gloss overlay. High shininess makes a hard edge at the middle, like glass.
       gloss: sh === 0 ? 'none' : `linear-gradient(180deg, rgba(255,255,255,${round(0.55 * sh)}) 0%, rgba(255,255,255,${round(0.12 * sh)}) 50%, rgba(255,255,255,0) ${round(50 + (1 - sh) * 50)}%, rgba(0,0,0,${round(0.1 * sh)}) 100%)`,
       highlight: round(0.6 * sh),
-      panelAlpha: round(0.15 + 0.85 * so),
-      // See-through button fills for low solidity, from 75% (clear) to 100% (solid). The engine
-      // picks fills that pass at this opacity, and seeThrough() raises it if a label still fails.
-      fillAlpha: round(0.75 + 0.25 * so),
-      // Inverted fills can be far more see-through: from 5% (clear).
-      fillAlphaInverted: round(0.05 + 0.95 * so),
-      blur: Math.round((1 - so) * 20),
-      lift: round(d * 2),
     },
     panelBorderWidth: borderWidth,
   };
@@ -180,8 +160,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const canvasGrade = layout.canvas;
   const bgs = [set('bg.canvas', base, layout.canvas), set('bg.surface', base, layout.surface), set('bg.sunken', base, layout.sunken)];
   const passesAll = (purpose) => (hex) => bgs.every((bg) => test(hex, bg, purpose));
-  // Fields without a border are sunken, so that they still look like fields.
-  set('bg.field', base, primitives.border.width ? layout.surface : layout.sunken);
+  set('bg.field', base, layout.surface);
 
   // From the canvas outward: the first grade that passes.
   const outward = GRADES.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
@@ -213,28 +192,18 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const labels = [0].map((g) => (dark ? 100 - g : g));
     const extreme = GRADES.filter((g) => g !== 0 && g !== 100);
     if (dark) extreme.reverse();
-    const onFillFor = (g) => labels.find((o) => test(palette.steps[o], palette.steps[g], 'text'));
+    const labelFor = (g) => labels.find((o) => test(palette.steps[o], palette.steps[g], 'text'));
 
-    // Low solidity makes fills see-through, at the opacity that the solidity sets. A see-through
-    // fill is paler (or darker) where the canvas and surface show through it. So the label must
-    // pass on the fill as it is seen, not only on the fill itself.
-    const canvas = tokens['bg.canvas'].value;
-    const behind = [canvas, tokens['bg.surface'].value];
-    const alpha = primitives.effect.fillAlpha;
-    const seen = (g, bg) => over(palette.steps[g], bg, alpha);
-    const labelFor = (g) => labels.find((o) => test(palette.steps[o], palette.steps[g], 'text') && behind.every((bg) => test(palette.steps[o], seen(g, bg), 'text')));
-
-    // The fill nearest the key color whose plain label (5 or 0) passes, seen at that opacity,
-    // and that stands out from the canvas and surface (3:1), so a button's shape shows. At full
-    // solidity this is the usual fill. The lower the solidity, the further from its label a fill
-    // may move.
-    const fits = (g) => labelFor(g) !== undefined && test(palette.steps[g], canvas, 'ui') && behind.every((bg) => test(seen(g, bg), bg, 'ui'));
+    // A fill whose label passes, and that stands out from the canvas and surface (3:1), so a
+    // button's shape shows.
+    const behind = [tokens['bg.canvas'].value, tokens['bg.surface'].value];
+    const fits = (g) => labelFor(g) !== undefined && behind.every((bg) => test(palette.steps[g], bg, 'ui'));
     // TEMPORARY: the min-contrast grade is the lightest fill where the label passes (the
     // darkest in dark mode). It is kept for the shine. The fill is one grade more contrasty.
-    const minContrast = extreme.find(fits) ?? extreme.find((g) => onFillFor(g) !== undefined) ?? near[0];
+    const minContrast = extreme.find(fits) ?? extreme.find((g) => labelFor(g) !== undefined) ?? near[0];
     const contrasty = dark ? -1 : 1;
     const fill = step(minContrast, contrasty);
-    const onFill = labelFor(fill) ?? onFillFor(fill) ?? (fill > 50 ? 0 : 100);
+    const onFill = labelFor(fill) ?? (fill > 50 ? 0 : 100);
     set(`fill.${role}`, palette, fill);
     set(`on-fill.${role}`, palette, onFill);
     // Hover and active move away from the label color, so contrast only gets better.
@@ -312,76 +281,27 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
   }
 
-  return { tokens, audit, computed: computed(dark, tokens, primitives, settings.feel) };
+  return { tokens, audit, computed: computed(dark, tokens, primitives) };
 }
 
 // An empty shadow that can still join a list of shadows, which "none" cannot.
 const NO_SHADOW = '0 0 #0000';
 
-// Values for one mode that are not one palette color: see-through panels and shadows.
-function computed(dark, tokens, primitives, feel) {
+// Values for one mode that are not one palette color: panels and shadows. With no depth and
+// no see-through parts, panels are the surface, and the shadows are empty.
+function computed(dark, tokens, primitives) {
   const e = primitives.effect;
+  const panel = tokens['bg.surface'].value;
   return {
-    'bg.panel': rgba(tokens['bg.surface'].value, e.panelAlpha),
-    'elevation.1': shadow(1, dark, feel),
-    'elevation.2': shadow(2, dark, feel),
-    'elevation.3': shadow(3, dark, feel),
+    'bg.panel': panel,
+    'bg.panel-normal': panel,
+    'bg.panel-inverted': panel,
+    'elevation.1': NO_SHADOW,
+    'elevation.2': NO_SHADOW,
+    'elevation.3': NO_SHADOW,
     'elevation.inset': NO_SHADOW,
     highlight: e.highlight ? `inset 0 1px 0 rgba(255,255,255,${dark ? round(e.highlight * 0.5) : e.highlight})` : NO_SHADOW,
   };
-}
-
-function shadow(level, dark, feel) {
-  const { depth: d, softness: f } = feel;
-  if (d === 0) return NO_SHADOW;
-  const y = round(d * [2, 6, 16][level - 1], 1);
-  const blur = round(y * 3 * f, 1);
-  const x = round(y * (1 - f) ** 2, 1);
-  const alpha = Math.min(1, ((1 - f) * 0.85 + 0.12) * (dark ? 1.8 : 1));
-  return `${x}px ${y}px ${blur}px rgba(0,0,0,${round(alpha)})`;
-}
-
-// The lowest opacity, from `start` up to 1, at which a see-through part still passes, in both
-// modes, over the canvas and the surface. `part` is "fill" (solid buttons) or "tint" (soft and
-// quiet buttons). Each label must pass on its fill or tint as it is seen. A solid fill must also
-// stand out from what is behind it (3:1).
-// `inverted`: the part uses the other mode's colors, over this mode's page, as with tm-invert. A
-// light fill with a dark label on a light page: the page showing through keeps the fill on the
-// label's far side, so inverted fills can be very see-through. The edge is not checked: an
-// inverted part sits on the other mode's canvas, which no pair covers.
-function seeThrough(start, modes, test, part, inverted) {
-  if (start >= 1) return 1;
-  const other = { light: 'dark', dark: 'light' };
-  const passes = (alpha) => Object.entries(modes).every(([mode, { tokens }]) => ['bg.canvas', 'bg.surface'].every((bg) => {
-    const back = modes[inverted ? other[mode] : mode].tokens[bg].value;
-    return ROLES.every((role) => [`${part}.${role}`, `${part}.${role}-hover`].every((name) => {
-      const seen = over(tokens[name].value, back, alpha);
-      return test(tokens[`on-${part}.${role}`].value, seen, 'text') && (part !== 'fill' || inverted || test(seen, back, 'ui'));
-    }));
-  }));
-  for (let a = start; a < 1; a = round(a + 0.05)) if (passes(a)) return a;
-  return 1;
-}
-
-// The lowest card opacity, from `start` up to 1, at which body and muted text pass on a card
-// laid over the other mode's canvas and surface, in both modes. For tm-invert.
-function panelSeeThrough(start, modes, test) {
-  if (start >= 1) return 1;
-  const other = { light: 'dark', dark: 'light' };
-  const passes = (alpha) => Object.entries(modes).every(([mode, { tokens }]) => ['bg.canvas', 'bg.surface'].every((bg) => {
-    const seen = over(tokens['bg.surface'].value, modes[other[mode]].tokens[bg].value, alpha);
-    return ['fg.base', 'fg.base-muted'].every((fg) => test(tokens[fg].value, seen, 'text'));
-  }));
-  for (let a = start; a < 1; a = round(a + 0.05)) if (passes(a)) return a;
-  return 1;
-}
-
-// A color with this opacity, laid over a background, as a browser mixes them. Browsers lay a
-// see-through layer over the page in sRGB, whatever color-mix() the layer's color came from,
-// so this stays in sRGB: the contrast checks must see what the screen shows.
-function over(fg, bg, alpha) {
-  const [f, b] = [parseHex(fg), parseHex(bg)];
-  return '#' + f.map((c, i) => Math.round((c * alpha + b[i] * (1 - alpha)) * 255).toString(16).padStart(2, '0')).join('');
 }
 
 // ---- Helpers
@@ -407,12 +327,6 @@ function step(grade, by) {
 
 function paletteName(palettes, palette) {
   return Object.keys(palettes).find((k) => palettes[k] === palette);
-}
-
-function rgba(hex, alpha) {
-  if (alpha >= 1) return hex;
-  const [r, g, b] = parseHex(hex).map((c) => Math.round(c * 255));
-  return `rgba(${r},${g},${b},${alpha})`;
 }
 
 function scale(unit, factors) {

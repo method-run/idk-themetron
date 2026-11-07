@@ -168,45 +168,6 @@
                 }
               ]
             },
-            "thickness": {
-              "description": "Thickness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "none",
-                    "hairline",
-                    "regular",
-                    "heavy",
-                    "chunky",
-                    "inherit"
-                  ]
-                }
-              ]
-            },
-            "depth": {
-              "description": "Depth: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "flat",
-                    "low",
-                    "raised",
-                    "floating",
-                    "inherit"
-                  ]
-                }
-              ]
-            },
             "shininess": {
               "description": "Shininess: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
               "anyOf": [
@@ -226,85 +187,33 @@
                 }
               ]
             },
+            "thickness": {
+              "deprecated": true,
+              "description": "Ignored. This feel is removed for now."
+            },
+            "depth": {
+              "deprecated": true,
+              "description": "Ignored. This feel is removed for now."
+            },
             "softness": {
-              "description": "Softness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "hard",
-                    "crisp",
-                    "soft",
-                    "pillowy",
-                    "inherit"
-                  ]
-                }
-              ]
+              "deprecated": true,
+              "description": "Ignored. This feel is removed for now."
             },
             "solidity": {
-              "description": "Solidity: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "clear",
-                    "frosted",
-                    "tinted",
-                    "solid",
-                    "inherit"
-                  ]
-                }
-              ]
+              "deprecated": true,
+              "description": "Ignored. This feel is removed for now."
             },
             "bounciness": {
-              "description": "Bounciness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "still",
-                    "gentle",
-                    "springy",
-                    "bouncy",
-                    "inherit"
-                  ]
-                }
-              ]
+              "deprecated": true,
+              "description": "Ignored. This feel is removed for now."
             },
             "snappiness": {
-              "description": "Snappiness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "languid",
-                    "easy",
-                    "brisk",
-                    "snappy",
-                    "inherit"
-                  ]
-                }
-              ]
+              "deprecated": true,
+              "description": "Ignored. This feel is removed for now."
             },
             "tone": {
               "deprecated": true,
-              "description": "Ignored."
+              "description": "Ignored. This feel is removed for now."
             }
           }
         },

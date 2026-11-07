@@ -3,7 +3,7 @@
 // `npm run spec` writes them to spec/. A test fails when the files and the code differ.
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
-import { FEELS, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME } from './inputs.js';
+import { FEELS, REMOVED_FEELS, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME } from './inputs.js';
 
 // The version of the token contract. It is not the package version.
 // Major: a stable token is removed or renamed, or its type or meaning changes.
@@ -181,7 +181,7 @@ export function inputsSchema() {
             additionalProperties: false,
             properties: {
               ...Object.fromEntries(Object.entries(FEELS).map(([name, spec]) => [name, feel(name, spec)])),
-              tone: { deprecated: true, description: 'Ignored.' },
+              ...Object.fromEntries(REMOVED_FEELS.map((name) => [name, { deprecated: true, description: 'Ignored. This feel is removed for now.' }])),
             },
           },
           contrast: {

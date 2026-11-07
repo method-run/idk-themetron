@@ -6,26 +6,22 @@ import { isHex, parseHex, toHex } from './color.js';
 export const FEELS = {
   spaciousness: { label: 'Spaciousness', default: 0.5, stops: { compact: 0, cozy: 0.25, comfortable: 0.5, relaxed: 0.75, spacious: 1 } },
   roundness: { label: 'Roundness', default: 0.35, stops: { square: 0, slight: 0.25, rounded: 0.5, round: 0.75, pill: 1 } },
-  thickness: { label: 'Thickness', default: 0.25, stops: { none: 0, hairline: 0.25, regular: 0.5, heavy: 0.75, chunky: 1 } },
-  depth: { label: 'Depth', default: 0.3, stops: { flat: 0, low: 0.33, raised: 0.67, floating: 1 } },
   shininess: { label: 'Shininess', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
-  softness: { label: 'Softness', default: 0.7, stops: { hard: 0, crisp: 0.33, soft: 0.67, pillowy: 1 } },
-  solidity: { label: 'Solidity', default: 1, stops: { clear: 0, frosted: 0.33, tinted: 0.67, solid: 1 } },
-  bounciness: { label: 'Bounciness', default: 0.2, stops: { still: 0, gentle: 0.33, springy: 0.67, bouncy: 1 } },
-  snappiness: { label: 'Snappiness', default: 0.6, stops: { languid: 0, easy: 0.33, brisk: 0.67, snappy: 1 } },
 };
+// Feels that are gone for now. Old inputs that set them still load: the engine skips them.
+export const REMOVED_FEELS = ['thickness', 'depth', 'softness', 'solidity', 'bounciness', 'snappiness', 'tone'];
 
 // A preset is a set of feels with a familiar name. A theme's own feels override it.
 export const PRESETS = {
   balanced: { label: 'Balanced', feel: {} },
-  flat: { label: 'Flat', feel: { roundness: 0.2, thickness: 0.25, depth: 0, shininess: 0, softness: 0.5, bounciness: 0, snappiness: 0.75 } },
-  material: { label: 'Material', feel: { roundness: 0.25, thickness: 0, depth: 0.5, softness: 0.8, shininess: 0, bounciness: 0.1, snappiness: 0.6 } },
-  brutalist: { label: 'Brutalist', feel: { spaciousness: 0.4, roundness: 0, thickness: 0.75, depth: 0.6, softness: 0, shininess: 0, bounciness: 0, snappiness: 1 } },
-  neumorphic: { label: 'Neumorphic', feel: { roundness: 0.6, thickness: 0, depth: 0.7, softness: 1, shininess: 0, bounciness: 0.2, snappiness: 0.4 } },
-  glass: { label: 'Glass', feel: { roundness: 0.6, thickness: 0.25, depth: 0.5, softness: 0.85, shininess: 0.3, solidity: 0.35, bounciness: 0.2, snappiness: 0.5 } },
-  glossy: { label: 'Glossy', feel: { roundness: 1, thickness: 0.25, depth: 0.5, softness: 0.7, shininess: 1, bounciness: 0.3, snappiness: 0.5 } },
-  playful: { label: 'Playful', feel: { spaciousness: 0.65, roundness: 0.9, thickness: 0.5, depth: 0.45, softness: 0.3, bounciness: 0.9, snappiness: 0.6 } },
-  dense: { label: 'Dense', feel: { spaciousness: 0, roundness: 0.15, thickness: 0.25, depth: 0.15, softness: 0.6, bounciness: 0, snappiness: 0.9 } },
+  flat: { label: 'Flat', feel: { roundness: 0.2, shininess: 0 } },
+  material: { label: 'Material', feel: { roundness: 0.25, shininess: 0 } },
+  brutalist: { label: 'Brutalist', feel: { spaciousness: 0.4, roundness: 0, shininess: 0 } },
+  neumorphic: { label: 'Neumorphic', feel: { roundness: 0.6, shininess: 0 } },
+  glass: { label: 'Glass', feel: { roundness: 0.6, shininess: 0.3 } },
+  glossy: { label: 'Glossy', feel: { roundness: 1, shininess: 1 } },
+  playful: { label: 'Playful', feel: { spaciousness: 0.65, roundness: 0.9 } },
+  dense: { label: 'Dense', feel: { spaciousness: 0, roundness: 0.15 } },
 };
 
 export const ROOT = 'default';
@@ -242,8 +238,7 @@ function feelField(value, at, fail) {
   const out = {};
   if (!value || typeof value !== 'object') { fail(`${at}: use an object of feels.`); return out; }
   for (const [name, raw] of Object.entries(value)) {
-    // `tone` is gone.
-    if (name === 'tone') continue;
+    if (REMOVED_FEELS.includes(name)) continue;
     const spec = FEELS[name];
     if (!spec) { fail(`${at}.${name}: unknown feel. Use one of: ${Object.keys(FEELS).join(', ')}.`); continue; }
     let n = raw;

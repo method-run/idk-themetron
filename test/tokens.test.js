@@ -132,10 +132,9 @@ test('feels change the primitives', () => {
   assert.ok(p({ spaciousness: 1 }).space.md > p({ spaciousness: 0 }).space.md);
   assert.equal(p({ roundness: 0 }).radius.control, 0);
   assert.equal(p({ roundness: 1 }).radius.control, p({ roundness: 1 }).control.height / 2);
-  assert.equal(p({ thickness: 0 }).border.width, 0);
   assert.equal(p({ shininess: 0 }).effect.gloss, 'none');
-  assert.ok(p({ snappiness: 1 }).motion.duration.base < p({ snappiness: 0 }).motion.duration.base);
-  assert.ok(p({ bounciness: 1 }).motion.easing.enter[1] > 1.5);
+  // Removed feels still load, and change nothing.
+  assert.deepEqual(p({ thickness: 0, depth: 1, softness: 0, solidity: 0, bounciness: 1, snappiness: 1 }), p({}));
 });
 
 test('the shadcn/ui export has its variables, for the root and each child theme', () => {
@@ -166,28 +165,16 @@ test('every fill has light labels in light mode and dark labels in dark mode, wh
   }
 });
 
-test('an inverted part keeps the page\'s mode for its outer shadows, and flips everything else', () => {
-  const built = buildThemes({ themes: { default: { preset: 'neumorphic' } } });
-  const css = toCss(built);
-  // Each outer shadow has twins: the same modes, and the modes swapped.
-  const value = (name) => new RegExp(`--tm-${name}: ([^;]+);`).exec(css)[1];
-  assert.equal(value('elevation-1-normal'), value('elevation-1'));
-  const swap = (v) => v.replace(/light-dark\((rgba\([^)]*\)), (rgba\([^)]*\))\)/g, 'light-dark($2, $1)');
-  assert.match(value('elevation-1'), /light-dark\(rgba/);
-  assert.equal(value('elevation-1-flipped'), swap(value('elevation-1')));
-  // tm-invert takes the flipped twin, and its contents take the normal one back, after the theme rules.
+test('tm-invert swaps in the twins of shadows, opacities, and panels, after the theme rules', () => {
+  // The removed feels left no shadows and no see-through parts, so the twins hold fixed values.
+  // The wiring stays, for when those effects come back.
+  const css = toCss(buildThemes({}));
   const invert = css.indexOf('.tm-invert { --tm-elevation-1: var(--tm-elevation-1-flipped);');
   assert.ok(invert > css.indexOf(':root, .theme-default {'));
   assert.match(css, /\.tm-invert \* \{ --tm-elevation-1: var\(--tm-elevation-1-normal\);/);
-  // Inset shadows are inside the part, so they flip with it.
   assert.doesNotMatch(css, /elevation-inset-flipped/);
-  // An inverted fill can be more see-through: the page behind it is on its label's far side.
   assert.match(css, /\.tm-invert \{[^}]*--tm-fill-alpha: var\(--tm-fill-alpha-inverted\);/);
   assert.match(css, /\.tm-invert \* \{[^}]*--tm-fill-alpha: var\(--tm-fill-alpha-normal\);/);
-  const glass = buildThemes({ themes: { default: { feel: { solidity: 0 } } } }).themes.default.primitives.effect;
-  assert.ok(glass.fillAlphaInverted < glass.fillAlpha, `${glass.fillAlphaInverted} < ${glass.fillAlpha}`);
-  // An inverted card must be more solid: its text sits on its surface over the other mode's page.
-  assert.ok(glass.panelAlphaInverted > glass.panelAlpha, `${glass.panelAlphaInverted} > ${glass.panelAlpha}`);
   assert.match(css, /\.tm-invert \{[^}]*--tm-bg-panel: var\(--tm-bg-panel-inverted\);/);
   assert.match(css, /\.tm-invert \* \{[^}]*--tm-bg-panel: var\(--tm-bg-panel-normal\);/);
 });

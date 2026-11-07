@@ -54,13 +54,9 @@ A part takes its color from the nearest theme class, such as `theme-danger`. `tm
 |---|---|
 | Spaciousness | Padding, gaps, control height, text size |
 | Roundness | Every radius. At full roundness, buttons and badges are pills, and cards round a lot. |
-| Thickness | Every border. Without borders, fields are sunken. Heavy borders are ink-colored. |
-| Depth | Card and button shadows, and the lift of a button on hover |
 | Shininess | Gloss on buttons, avatars, switch thumbs, and progress bars |
-| Softness | Shadow blur. Low softness gives hard offset shadows. |
-| Solidity | See-through cards with background blur |
-| Bounciness | The overshoot of switch thumbs, checks, progress bars, dialogs, and drawers |
-| Snappiness | The speed of every transition |
+
+The other feels are removed for now. Until they come back, borders are 1 px, parts have no shadows and do not lift on hover, everything is opaque, and motion does not overshoot. The components still read the same tokens, so the effects come back without changes here.
 
 <details>
 <summary>How it works</summary>

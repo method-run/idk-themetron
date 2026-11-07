@@ -18,13 +18,7 @@ const el = (tag, attrs = {}, ...children) => {
 const FEEL_HINTS = {
   spaciousness: 'Padding, gaps, text size, and line height.',
   roundness: 'Corners, as a share of the most a part can round.',
-  thickness: 'Border width.',
-  depth: 'Shadow size, and how far parts lift on hover.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
-  softness: 'Shadow blur. Low is hard ink, high is soft light.',
-  solidity: 'See-through panels with blur. Low is glass.',
-  bounciness: 'Overshoot when parts move.',
-  snappiness: 'How fast parts move.',
 };
 
 const FONT_CHOICES = {
@@ -146,6 +140,8 @@ const SECTIONS = [
   ['fonts', 'Fonts', ['font', 'headingFont', 'monoFont']],
   ['feel', 'Feel', ['preset', 'feel']],
 ];
+// Sections that the playground does not show for now. Their values still load and apply.
+const HIDDEN_SECTIONS = ['fonts'];
 // Sections that a child shows: the ones it overrides, and the ones you just added.
 const added = {};
 const shows = (name, key) => name === ROOT || key === 'color' || (added[name]?.has(key) ?? false) || SECTIONS.find((s) => s[0] === key)[2].some((f) => f in state.themes[name]);
@@ -202,6 +198,7 @@ function cardBody(name) {
   }
   const missing = [];
   for (const [key, label] of SECTIONS) {
+    if (HIDDEN_SECTIONS.includes(key)) continue;
     if (!shows(name, key)) { missing.push([key, label]); continue; }
     const closed = pane.closedSections.includes(key);
     const head = el('div', { class: 'group-head' },
@@ -248,8 +245,8 @@ function toRoles(themes, version) {
     delete t.fillLabel;
     // Every theme now ships both contrast levels, so a saved level goes away.
     if (t.contrast) delete t.contrast.level;
-    // Tone is gone.
-    if (t.feel) delete t.feel.tone;
+    // Removed feels stay in the saved themes, so they come back on a branch that has them.
+    // The engine skips them.
     if (version === 1 && 'neutral' in t) { t.base ??= t.neutral; delete t.neutral; }
     if ('color' in t) {
       if (version !== 1) t.base ??= t.color;
@@ -378,7 +375,9 @@ const SECTION_CONTROLS = {
           'data-preset': key,
           onclick: () => {
             const preset = p.feel;
-            own().feel = Object.fromEntries(Object.entries(FEELS).map(([k, spec]) => [k, preset[k] ?? spec.default]));
+            // Removed feels stay, so they come back on a branch that has them.
+            const kept = Object.fromEntries(Object.entries(own().feel ?? {}).filter(([k]) => !FEELS[k]));
+            own().feel = { ...kept, ...Object.fromEntries(Object.entries(FEELS).map(([k, spec]) => [k, preset[k] ?? spec.default])) };
             delete own().preset;
             $('#preset-menu').open = false;
             update();
@@ -622,7 +621,6 @@ function renderPreview() {
       return section;
     }));
   }
-  for (const stage of box.querySelectorAll('.stage[data-stage-theme]')) stage.style.setProperty('--solidity', built.themes[stage.dataset.stageTheme].settings.feel.solidity);
 }
 
 // With more than one theme shown: each theme's button and a card, side by side,

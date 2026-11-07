@@ -62,7 +62,7 @@ test('a child takes what it does not set from its parent', () => {
   const { resolved, order } = normalizeInputs({
     themes: {
       sale: { parent: 'playful', color: '#e8590c' },
-      default: { color: '#2456e8', font: 'Figtree', feel: { depth: 0.9 }, contrast: { method: 'apca' } },
+      default: { color: '#2456e8', font: 'Figtree', feel: { spaciousness: 0.9 }, contrast: { method: 'apca' } },
       playful: { parent: 'default', feel: { roundness: 'pill' }, headingFont: 'Fraunces' },
       danger: { parent: 'default', color: '#d6336c' },
     },
@@ -75,7 +75,7 @@ test('a child takes what it does not set from its parent', () => {
   assert.equal(playful.action, '#2456e8');
   assert.equal(playful.base, '#2456e8', 'color sets both roles');
   assert.equal(playful.feel.roundness, 1);
-  assert.equal(playful.feel.depth, 0.9, 'feels merge with the parent');
+  assert.equal(playful.feel.spaciousness, 0.9, 'feels merge with the parent');
   assert.equal(playful.font.family, 'Figtree');
   assert.equal(playful.headingFont.family, 'Fraunces');
   assert.equal(sale.headingFont.family, 'Fraunces');
@@ -98,7 +98,7 @@ test('a preset starts the feels again, and the heading font follows the nearest 
 test('bad inputs give one message for each problem', () => {
   const bad = {
     themes: {
-      default: { parent: 'x', color: 'blue', feel: { depth: 2, roundness: 'curvy' }, preset: 'retro' },
+      default: { parent: 'x', color: 'blue', feel: { spaciousness: 2, roundness: 'curvy' }, preset: 'retro' },
       Big: { parent: 'default' },
       orphan: { color: '#fff' },
       lost: { parent: 'nobody' },

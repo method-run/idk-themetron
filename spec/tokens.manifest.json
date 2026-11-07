@@ -986,6 +986,20 @@
       "role": "base",
       "stability": "experimental"
     },
+    "bg-panel-normal": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "bg-panel-inverted": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "elevation-1": {
       "tier": "semantic",
       "type": "shadow",
@@ -1014,20 +1028,6 @@
       "tier": "semantic",
       "type": "shadow",
       "modes": true,
-      "stability": "experimental"
-    },
-    "bg-panel-normal": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "bg-panel-inverted": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
       "stability": "experimental"
     },
     "elevation-1-normal": {

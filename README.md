@@ -48,7 +48,7 @@ const built = buildThemes({
   themes: {
     default: { color: '#2456e8', font: 'Figtree', headingFont: 'Fraunces', preset: 'glossy' },
     danger: { parent: 'default', color: '#d6336c' },
-    airy: { parent: 'default', feel: { spaciousness: 'relaxed', bounciness: 0.8 } },
+    airy: { parent: 'default', feel: { spaciousness: 'relaxed', roundness: 'pill' } },
   },
 });
 const css = toCss(built);   // one rule for each theme: :root and .theme-default, .theme-danger, .theme-airy

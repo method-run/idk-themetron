@@ -113,13 +113,9 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 |---|---|---|---|---|
 | `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | The rhythm grid (2 to 6 px), and so padding, gaps, line heights, and text size |
 | `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
-| `thickness` | No borders | none, hairline, regular, heavy, chunky | 4 px borders | Border width. |
-| `depth` | Flat | flat, low, raised, floating | Far above the page | Shadow size, and how far a part lifts on hover |
 | `shininess` | Matte | matte, satin, plastic, glassy | Glass | A gloss on buttons, switch thumbs, and bars |
-| `softness` | Hard ink shadows | hard, crisp, soft, pillowy | Soft light | Shadow blur and darkness. |
-| `solidity` | See-through | clear, frosted, tinted, solid | Opaque | The opacity of panels, fills, and tints, and background blur |
-| `bounciness` | No overshoot | still, gentle, springy, bouncy | Large overshoot | The easing curve for parts that move in |
-| `snappiness` | Slow | languid, easy, brisk, snappy | Fast | Motion duration |
+
+The other feels (`thickness`, `depth`, `softness`, `solidity`, `bounciness`, and `snappiness`) are removed for now. They will come back one at a time. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, the tokens that they set have fixed values: 1 px borders, no shadows and no lift on hover, opaque parts with no blur, and motion with no overshoot.
 
 Each feel of a theme comes from the first of these that has it:
 
@@ -146,11 +142,7 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 - Line heights: for each text size, the multiple of the rhythm nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. themetron-3 did this for its text.
 - Controls: a tight line, plus padding and border that add up to whole steps, down and across. Small and large controls differ by whole pairs of steps.
 - Control radius: `r × control height ÷ 2`. So `r = 1` makes a pill, and `r = 0.5` rounds half as much.
-- Border width: `round(4 t)` px.
-- Shadow offset for elevation 1, 2, 3: `d × 2`, `d × 6`, `d × 16` px. Blur: offset `× 3 f`. With low softness, the shadow moves to the side and becomes solid ink.
 - Gloss: a white gradient whose strength is the shininess. Above about 0.6 it has a hard edge at the middle, like glass.
-- Panel opacity: `0.3 + 0.7 so`. Blur: `(1 − so) × 20` px.
-- Duration: `420 − 340 n` ms. The "enter" easing overshoots to `1 + 0.9 b`.
 
 </details>
 
@@ -163,19 +155,19 @@ Words are easy to learn, but a slider needs numbers between the words. A number 
 
 ## Presets
 
-A preset is a set of feels with a familiar name.
+A preset is a set of feels with a familiar name. With only three feels for now, most presets set only roundness and shininess, and some look the same. Their names stay, so inputs that use them still load.
 
-| Preset | The look |
-|---|---|
-| `balanced` | The defaults. Slight rounding, low soft shadows, hairline borders. |
-| `flat` | No shadows, hairline borders, quick motion. |
-| `material` | No borders, soft shadows at a few heights. |
-| `brutalist` | Square corners, heavy ink borders, hard offset shadows, instant motion. |
-| `neumorphic` | No borders, deep and very soft shadows. The full neumorphic look (light and dark shadows, an off-white canvas) is removed for now, and will come back as a continuous effect. |
-| `glass` | See-through panels with blur, soft shadows, a little shine. |
-| `glossy` | Pill shapes and strong gloss, like early-2000s app buttons. |
-| `playful` | Round, spacious, regular borders, bouncy motion. |
-| `dense` | Compact space, little rounding, fast motion. For data-heavy tools. |
+| Preset | Spaciousness | Roundness | Shininess |
+|---|---|---|---|
+| `balanced` | default | default | default |
+| `flat` | default | 0.2 | 0 |
+| `material` | default | 0.25 | 0 |
+| `brutalist` | 0.4 | 0 | 0 |
+| `neumorphic` | default | 0.6 | 0 |
+| `glass` | default | 0.6 | 0.3 |
+| `glossy` | default | 1 | 1 |
+| `playful` | 0.65 | 0.9 | default |
+| `dense` | 0 | 0.15 | default |
 
 ## Contrast
 
@@ -195,7 +187,7 @@ An inputs file can have two more fields:
 
 - `version`: the version of the inputs format. Now `2`. A file without it is read as version 2. The engine stops with a message for any other version. The playground's Inputs download and share links include it.
 - Version `1` still loads. In it, `neutral` was the base color, `color` was the action color only, and `fillLabel` flipped the labels on fills. The engine reads a version 1 file with those meanings. Without `"version": 1`, `neutral` is an error that names the new field.
-- `feel.tone` is gone too. The engine skips it.
+- `feel.tone` is gone too, and so are the other removed feels. The engine skips them.
 - `fillLabel` is gone in every version: every fill has light labels in light mode and dark labels in dark mode. The engine skips the field, so old files still load, and the schema marks it deprecated. To flip one part, put the class `tm-invert` on it.
 - `$schema`: a path or URL to the schema, for editors. The engine ignores it.
 
