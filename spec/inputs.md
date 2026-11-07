@@ -111,7 +111,7 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 
 | Feel | 0 | Words | 1 | It changes |
 |---|---|---|---|---|
-| `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | The rhythm grid (2 to 6 px), and so padding, gaps, line heights, and text size |
+| `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | How many grid squares padding, gaps, and line heights take. The grid itself is always 4 px. |
 | `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
 | `shininess` | Matte | matte, satin, plastic, glassy | Glass | A gloss on buttons, switch thumbs, and bars |
 
@@ -129,7 +129,7 @@ A feel set to `"inherit"` skips the preset and takes the parent's value. So a ch
 { "parent": "default", "preset": "brutalist", "feel": { "spaciousness": "inherit" } }
 ```
 
-Spaciousness sets the rhythm grid, so a child that inherits it has the same grid, line heights, and control heights as its parent.
+Spaciousness sets how many grid squares each space step takes, so a child that inherits it has the same space steps, line heights, and control heights as its parent.
 
 The playground uses presets as a one-time stamp: picking one writes every feel into the theme's `feel`, and stores no `preset`. Removing a feel there removes it from `feel`.
 
@@ -138,10 +138,12 @@ The playground uses presets as a one-time stamp: picking one writes every feel i
 
 The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In short, with `s` for spaciousness and so on:
 
-- Rhythm: `round(2 + 4 s)` px. This is the vertical grid. The space unit is 4 rhythm steps, and the space scale is ¼, ½, 1, 1½, 2, 3, and 4 units, so every space step is whole steps. The body text size is `14 + 2.5 s` px.
-- Line heights: for each text size, the multiple of the rhythm nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. themetron-3 did this for its text.
-- Controls: a tight line, plus padding and border that add up to whole steps, down and across. Small and large controls differ by whole pairs of steps.
-- Control radius: `r × control height ÷ 2`. So `r = 1` makes a pill, and `r = 0.5` rounds half as much.
+- Grid: 4 px squares, down and across, for every theme. The `rhythm` token holds it.
+- Space unit: `2 + 4 s` squares (8 to 24 px). The space scale is ¼, ½, 1, 1½, 2, 3, and 4 units. Each step rounds to whole squares on its own, and is at least one square. So the steps change at different points along the slider.
+- Text size: 15 px body, on a 1.2 scale. Spaciousness does not change it.
+- Line heights: for each text size, the whole number of squares nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
+- Controls: a tight line, plus padding and border that add up to whole squares. The padding is the `sm` space step down, and about one space unit across. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.
+- Radius: a share of the most that each part can round. Controls: `r × height ÷ 2`, for each control size, so `r = 1` makes every size a pill. Cards: `r ×` their padding (`space.lg`). Alerts and text areas: `r × space.md`. Small parts: `r × space.xs`. So a corner never cuts into the content.
 - Gloss: a white gradient whose strength is the shininess. Above about 0.6 it has a hard edge at the middle, like glass.
 
 </details>

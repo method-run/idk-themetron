@@ -25,7 +25,7 @@ export function primitiveEntries(p) {
   out.push(['rhythm', px(p.rhythm)]);
   for (const [k, v] of Object.entries(p.space)) out.push([`space-${k}`, px(v)]);
   for (const [k, v] of Object.entries(p.control)) out.push([`control-${cssName(k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase()))}`, px(v)]);
-  for (const [k, v] of Object.entries(p.radius)) out.push([`radius-${k}`, px(v)]);
+  for (const [k, v] of Object.entries(p.radius)) out.push([`radius-${cssName(k.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase()))}`, px(v)]);
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
   for (const [k, v] of Object.entries(p.motion.easing)) out.push([`ease-${k}`, bezier(v)]);

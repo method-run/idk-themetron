@@ -41,6 +41,9 @@ function buildLevel(settings, palettes, variant = false) {
 // bounciness, snappiness) used to set. The tokens stay, so components still work: hairline
 // borders, no shadows and no lift, opaque parts with no blur, and calm motion with no overshoot.
 const BORDER_WIDTH = 1;
+// The grid square, in px, and the body text size, until typography settings set it.
+const GRID = 4;
+const FONT_SIZE = 15;
 const MOTION = {
   duration: { fast: 130, base: 220, slow: 370 },
   easing: { standard: [0.3, 0, 0.45, 1], enter: [0.25, 1, 0.64, 1], exit: [0.4, 0, 1, 1] },
@@ -50,46 +53,58 @@ const FLAT = { panelAlpha: 1, panelAlphaInverted: 1, fillAlpha: 1, fillAlphaInve
 export function buildPrimitives(settings, palettes, gaps) {
   const { spaciousness: s, roundness: r, shininess: sh } = settings.feel;
 
-  // Vertical rhythm: an invisible grid, `rhythm` px apart. Space steps, line heights, and
-  // the heights of parts (with their borders) are whole multiples of it.
-  const rhythm = Math.round(2 + 4 * s);
-  const unit = 4 * rhythm;
-  const space = scale(unit, { xs: 0.25, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 });
+  // The grid: an invisible grid of GRID px squares, down and across. Its size never changes.
+  // Space steps, line heights, and the heights of parts (with their borders) are whole
+  // multiples of it. Spaciousness sets how many squares each step takes, so a compact theme
+  // lines up with fewer grid lines, and a spacious one with more.
+  const rhythm = GRID;
+  // The space unit, in squares: 2 (8 px) at spaciousness 0, to 6 (24 px) at 1. Each space step
+  // rounds on its own, so the steps change at different points along the slider.
+  const unit = 2 + 4 * s;
+  const squares = (x) => Math.max(1, Math.round(x));
+  const space = Object.fromEntries(Object.entries({ xs: 0.25, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
 
-  const base = Math.round(14 + 2.5 * s);
-  const fontSize = Object.fromEntries(Object.entries({ xs: -2, sm: -1, md: 0, lg: 1, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, step]) => [k, Math.round(base * 1.2 ** step)]));
+  // Text sizes do not change with spaciousness. Typography settings will set them.
+  const fontSize = Object.fromEntries(Object.entries({ xs: -2, sm: -1, md: 0, lg: 1, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, step]) => [k, Math.round(FONT_SIZE * 1.2 ** step)]));
   const bodyRatio = round(1.35 + 0.25 * s);
   const tightRatio = round(1.15 + 0.1 * s);
-  // A line height for each size: the nearest multiple of the rhythm, and never less than the size.
-  // themetron-3 did this for its text. Here every part uses it.
-  const snap = (size, ratio) => Math.max(Math.ceil(size / rhythm) * rhythm, Math.round((size * ratio) / rhythm) * rhythm);
+  // A line height for each size: the nearest whole number of squares, and never less than the
+  // size. The grid does not change, and the ratios only grow with spaciousness, so line heights
+  // never get smaller as spaciousness grows.
+  const snap = (size, ratio) => Math.max(Math.ceil(size / GRID), Math.round((size * ratio) / GRID)) * GRID;
   const leading = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, bodyRatio)]));
   const leadingTight = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, tightRatio)]));
 
   const borderWidth = BORDER_WIDTH;
-  // A control is a tight line plus padding and border that add up to whole rhythm steps.
-  let steps = 2;
-  while (steps * rhythm < borderWidth) steps++;
-  // Across, too: padding and border add up to whole steps, so left edges stay on the grid.
-  let stepsX = Math.max(1, Math.round((unit * 0.9) / rhythm));
-  while (stepsX * rhythm < borderWidth) stepsX++;
+  // A control is a tight line plus padding and border that add up to whole squares: as many
+  // squares as the space step sm, down, and about one space unit across.
+  const padY = Math.max(squares(unit * 0.5), Math.ceil(borderWidth / GRID));
+  const padX = Math.max(squares(unit * 0.9), Math.ceil(borderWidth / GRID));
   const control = {
-    paddingY: steps * rhythm - borderWidth,
-    paddingX: stepsX * rhythm - borderWidth,
+    paddingY: padY * GRID - borderWidth,
+    paddingX: padX * GRID - borderWidth,
   };
-  control.height = leadingTight.md + 2 * steps * rhythm;
-  // Small and large controls differ from the default by whole pairs of steps, so that a mix
-  // of sizes centered in one row still starts and ends on grid lines.
-  control.heightSm = control.height - 2 * rhythm;
-  while (control.heightSm < leadingTight.sm + 2 * borderWidth) control.heightSm += 2 * rhythm;
-  control.heightLg = control.height + 2 * rhythm;
-  while (control.heightLg < leadingTight.lg + 4 * rhythm) control.heightLg += 2 * rhythm;
+  control.height = leadingTight.md + 2 * padY * GRID;
+  // Small and large controls differ from the default by whole pairs of squares, so that a mix
+  // of sizes centered in one row still starts and ends on grid lines: about half the padding on
+  // each side. A small control is never shorter than its text line and border, so in the most
+  // compact themes it is as tall as the default.
+  const sizeStep = 2 * squares(padY / 2) * GRID;
+  control.heightSm = control.height - sizeStep;
+  while (control.heightSm < leadingTight.sm + 2 * borderWidth) control.heightSm += 2 * GRID;
+  control.heightLg = control.height + sizeStep;
 
+  // Roundness is a share of the most that each part can round. A control can round to half its
+  // height, so at roundness 1 every control size is a pill. Other parts can round as far as
+  // their padding, so a corner never cuts into the content: cards (padding lg), alerts and text
+  // areas (padding md), and small parts such as checks and code (space xs).
   const radius = {
-    sm: round(r * 6),
-    md: round(r * 12),
-    lg: round(r * 24),
-    control: round(r * control.height / 2),
+    sm: round(r * space.xs),
+    md: round(r * space.md),
+    lg: round(r * space.lg),
+    control: round((r * control.height) / 2),
+    controlSm: round((r * control.heightSm) / 2),
+    controlLg: round((r * control.heightLg) / 2),
     full: 9999,
   };
 
@@ -327,10 +342,6 @@ function step(grade, by) {
 
 function paletteName(palettes, palette) {
   return Object.keys(palettes).find((k) => palettes[k] === palette);
-}
-
-function scale(unit, factors) {
-  return Object.fromEntries(Object.entries(factors).map(([k, x]) => [k, Math.round(unit * x)]));
 }
 
 const round = (x, digits = 2) => Math.round(x * 10 ** digits) / 10 ** digits;

@@ -51,10 +51,10 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 | `font.weight.<name>` | `font.weight.bold` | `regular`, `medium`, `bold`. |
 | `font.lineHeight.<use>` | `font.lineHeight.body` | `body`, `heading`, `control`, as ratios. |
 | `font.leading.<step>`, `font.leadingTight.<step>` | `font.leading.md` | The line height in px for each text size, on the rhythm grid. Tight is for headings and controls. |
-| `rhythm` | `rhythm` = 4px | The vertical grid. Space steps, line heights, and the heights of parts are whole multiples of it. |
+| `rhythm` | `rhythm` = 4px | The grid: 4 px squares in every theme. Space steps, line heights, and the heights of parts are whole multiples of it. |
 | `space.<step>` | `space.md` | `xs` to `3xl`. |
 | `control.height`, `control.heightSm`, `control.heightLg`, `control.paddingX`, `control.paddingY` | | For buttons, fields, and avatars. Heights are whole rhythm steps. |
-| `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `full`. `control` is a pill at full roundness. |
+| `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `controlSm`, `controlLg`, `full`. Each control radius is a pill at full roundness, for its own control size. `sm`, `md`, and `lg` round as far as the padding of the parts that use them. |
 | `border.width`, `border.focusWidth` | | The focus width is at least 2 px. |
 | `duration.<speed>` | `duration.base` | `fast`, `base`, `slow`. |
 | `easing.<use>` | `easing.enter` | `standard`, `enter` (can overshoot), `exit`. |

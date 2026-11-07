@@ -35,7 +35,7 @@
 .tm-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--tm-space-sm); }
 
 /* A divider takes one rhythm step: a line drawn in the middle of it. */
-.tm-divider { height: var(--tm-rhythm); margin: 0; border: 0; background: linear-gradient(var(--tm-border-base), var(--tm-border-base)) center / 100% max(1px, var(--tm-border-width)) no-repeat; }
+.tm-divider { height: var(--tm-space-xs); margin: 0; border: 0; background: linear-gradient(var(--tm-border-base), var(--tm-border-base)) center / 100% max(1px, var(--tm-border-width)) no-repeat; }
 
 .tm-link {
   color: var(--tm-fg-action);
@@ -114,8 +114,8 @@
 .tm-button--outline:hover, .tm-button--ghost:hover { background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); box-shadow: none; }
 .tm-button--outline:active, .tm-button--ghost:active { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
 
-.tm-button--sm { min-height: var(--tm-control-height-sm); padding-block: 0; padding-inline: max(0px, calc(2 * var(--tm-rhythm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
-.tm-button--lg { min-height: var(--tm-control-height-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + 2 * var(--tm-rhythm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
+.tm-button--sm { min-height: var(--tm-control-height-sm); border-radius: var(--tm-radius-control-sm); padding-block: 0; padding-inline: max(0px, calc(var(--tm-space-sm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
+.tm-button--lg { min-height: var(--tm-control-height-lg); border-radius: var(--tm-radius-control-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + var(--tm-space-sm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
 
 /* ---- Fields */
 
@@ -138,6 +138,17 @@
 }
 /* Browsers size a native select by its own rules, so one-line fields get a fixed height. */
 .tm-input, .tm-select { height: var(--tm-control-height); }
+/* The browser's own caret sits near the edge, whatever the padding. This one keeps the field's
+   side padding: a chevron of two triangles, in the text color, inside the padding-x inset. */
+.tm-select {
+  --_caret: 0.3em;
+  appearance: none;
+  padding-right: calc(var(--tm-control-padding-x) + 2 * var(--_caret) + var(--tm-space-sm));
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - var(--tm-control-padding-x) - var(--_caret)) 50%, calc(100% - var(--tm-control-padding-x)) 50%;
+  background-size: var(--_caret) var(--_caret);
+  background-repeat: no-repeat;
+}
 .tm-textarea { min-height: calc(var(--tm-control-height) * 2); border-radius: var(--tm-radius-md); resize: vertical; }
 .tm-input::placeholder, .tm-textarea::placeholder { color: var(--tm-fg-base-subtle); }
 .tm-input:hover, .tm-select:hover, .tm-textarea:hover { border-color: var(--tm-fg-base-muted); }
@@ -234,18 +245,20 @@
   align-self: flex-start;
   align-items: center;
   gap: 0.3em;
-  padding: 0 max(0px, calc(2 * var(--tm-rhythm) - var(--tm-border-width)));
+  padding: 0 max(0px, calc(var(--tm-space-sm) - var(--tm-border-width)));
   border: var(--tm-border-width) solid var(--tm-border-action);
   border-radius: var(--tm-radius-md);
   background: var(--tm-tint-action);
   color: var(--tm-on-tint-action);
   font-size: var(--tm-font-size-sm);
   font-weight: var(--tm-font-weight-medium);
-  /* A body line, less one rhythm step above and one below: the badge sits in the middle of the
-     line beside it, on the rhythm grid. Its margins fill the rest of the line, in a row or in a
-     paragraph, so the line keeps its height. */
-  line-height: calc(var(--tm-leading-md) - 2 * var(--tm-rhythm) - 2 * var(--tm-border-width));
-  margin-block: var(--tm-rhythm);
+  /* A badge fits in a body line, so a line with a badge keeps its height, in a row or in a
+     paragraph. Its margins are the most whole grid squares that still leave room for its text
+     and border, so the badge sits in the middle of the line, on the grid, and never squeezes
+     its text. */
+  --_badge-margin: max(0px, round(down, calc((var(--tm-leading-md) - var(--tm-font-size-sm) - 2 * var(--tm-border-width)) / 2), var(--tm-rhythm)));
+  line-height: calc(var(--tm-leading-md) - 2 * var(--_badge-margin) - 2 * var(--tm-border-width));
+  margin-block: var(--_badge-margin);
   vertical-align: top;
   white-space: nowrap;
 }
@@ -307,7 +320,7 @@
 .tm-tabs button {
   margin-bottom: calc(-1 * max(1px, var(--tm-border-width)));
   /* Two rhythm steps above the line, and two below it with the underline inside them. */
-  padding: calc(2 * var(--tm-rhythm)) calc(var(--tm-control-padding-x) + var(--tm-border-width)) calc(2 * var(--tm-rhythm) - max(2px, var(--tm-border-width)));
+  padding: calc(var(--tm-space-sm)) calc(var(--tm-control-padding-x) + var(--tm-border-width)) calc(var(--tm-space-sm) - max(2px, var(--tm-border-width)));
   border: 0;
   border-bottom: max(2px, var(--tm-border-width)) solid transparent;
   background: none;
@@ -328,10 +341,11 @@
 .tm-segmented {
   --seg-bw: max(1px, var(--tm-border-width));
   --seg-height: var(--tm-control-height);
+  --seg-radius: var(--tm-radius-control);
   display: inline-flex;
   vertical-align: top;
   border: var(--seg-bw) solid var(--tm-border-base-strong);
-  border-radius: var(--tm-radius-control);
+  border-radius: var(--seg-radius);
   background-color: var(--tm-bg-field);
 }
 .tm-segmented button {
@@ -354,8 +368,8 @@
   transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard);
 }
 /* The buttons round the outer corners only, inside the border. */
-.tm-segmented button:first-child { border-start-start-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); border-end-start-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); }
-.tm-segmented button:last-child { border-start-end-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); border-end-end-radius: max(0px, calc(var(--tm-radius-control) - var(--seg-bw))); }
+.tm-segmented button:first-child { border-start-start-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); border-end-start-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); }
+.tm-segmented button:last-child { border-start-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); border-end-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); }
 .tm-segmented button + button { box-shadow: inset var(--seg-bw) 0 var(--tm-border-base); }
 .tm-segmented button:hover { background-color: var(--tm-tint-action); color: var(--tm-on-tint-action); }
 .tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-gloss-action); color: var(--tm-on-fill-action); box-shadow: none; }
@@ -363,8 +377,8 @@
 .tm-segmented button:focus-visible { position: relative; z-index: 1; outline: var(--tm-focus-width) solid var(--tm-border-focus); outline-offset: 2px; }
 .tm-segmented[hidden] { display: none; }
 
-.tm-segmented--sm { --seg-height: var(--tm-control-height-sm); font-size: var(--tm-font-size-sm); }
-.tm-segmented--sm button { padding-inline: max(0px, calc(2 * var(--tm-rhythm) - var(--seg-bw))); line-height: var(--tm-leading-tight-sm); }
+.tm-segmented--sm { --seg-height: var(--tm-control-height-sm); --seg-radius: var(--tm-radius-control-sm); font-size: var(--tm-font-size-sm); }
+.tm-segmented--sm button { padding-inline: max(0px, calc(var(--tm-space-sm) - var(--seg-bw))); line-height: var(--tm-leading-tight-sm); }
 
 /* ---- Dialog and drawer: a <dialog> that moves in and out with the theme's motion.
    Open: call showModal(), then add .is-open on the next frame.

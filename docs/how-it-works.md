@@ -43,7 +43,7 @@ The engine keeps the key color's hue and chroma, in the theme's color model, and
 
 ## 3. Make the primitives
 
-The feels become sizes, radii, borders, shadows, and motion. For example, spaciousness sets the space unit and the text size, and bounciness sets how far the "enter" easing overshoots. See the table of formulas in [Inputs](../spec/inputs.md "inputs"). To follow one feel through every layer, see [How shininess becomes styles](./shininess-flow.md "shininess-flow").
+The feels become sizes, radii, borders, shadows, and motion. For example, spaciousness sets how many grid squares the space unit takes, and roundness sets each radius as a share of the most that part can round. See the table of formulas in [Inputs](../spec/inputs.md "inputs"). To follow one feel through every layer, see [How shininess becomes styles](./shininess-flow.md "shininess-flow").
 
 ## 4. Pick the tokens for each mode
 

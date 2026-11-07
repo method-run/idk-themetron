@@ -203,3 +203,20 @@ test('space, line heights, and control heights sit on the rhythm grid', () => {
     }
   }
 });
+
+test('the grid stays 4 px, and space, line heights, and control heights never shrink as spaciousness grows', () => {
+  const p = (s) => buildThemes({ themes: { default: { feel: { spaciousness: s, roundness: 1 } } } }).themes.default.primitives;
+  let prev = null;
+  for (let i = 0; i <= 100; i++) {
+    const now = p(i / 100);
+    assert.equal(now.rhythm, 4);
+    assert.equal(now.font.size.md, 15, 'spaciousness does not change the text size');
+    const sizes = [...Object.values(now.space), ...Object.values(now.font.leading), ...Object.values(now.font.leadingTight), now.control.heightSm, now.control.height, now.control.heightLg];
+    if (prev) sizes.forEach((v, k) => assert.ok(v >= prev[k], `spaciousness ${i / 100}: ${v} < ${prev[k]}`));
+    prev = sizes;
+    // At full roundness, every control size is a pill.
+    assert.equal(now.radius.controlSm, now.control.heightSm / 2);
+    assert.equal(now.radius.controlLg, now.control.heightLg / 2);
+    assert.ok(now.radius.lg <= now.space.lg, 'a card corner does not cut into its padding');
+  }
+});

@@ -35,7 +35,7 @@ The component library is one CSS file. It has no JavaScript. Each component read
 | Checkbox and radio | `tm-check`, `tm-radio`, inside `tm-choice` | |
 | Switch | `tm-switch` on a checkbox with `role="switch"` | |
 | Card | `tm-card` | `--flat`, `--raised` |
-| Badge | `tm-badge`: one body line less two rhythm steps, with one step of margin above and below, so it sits in the middle of the line beside it, on the grid | `--solid` |
+| Badge | `tm-badge`: one body line, less the most whole grid squares of margin above and below that still leave room for its text, so it sits in the middle of the line beside it, on the grid | `--solid` |
 | Alert | `tm-alert` | |
 | Avatar | `tm-avatar` | |
 | Progress | `tm-progress` with a `span`, and `--value` | |
@@ -52,7 +52,7 @@ A part takes its color from the nearest theme class, such as `theme-danger`. `tm
 
 | Feel | Where you see it |
 |---|---|
-| Spaciousness | Padding, gaps, control height, text size |
+| Spaciousness | Padding, gaps, line heights, control height |
 | Roundness | Every radius. At full roundness, buttons and badges are pills, and cards round a lot. |
 | Shininess | Gloss on buttons, avatars, switch thumbs, and progress bars |
 

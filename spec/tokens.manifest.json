@@ -585,6 +585,18 @@
       "modes": false,
       "stability": "stable"
     },
+    "radius-control-sm": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
+    "radius-control-lg": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "stable"
+    },
     "radius-full": {
       "tier": "primitive",
       "type": "dimension",
