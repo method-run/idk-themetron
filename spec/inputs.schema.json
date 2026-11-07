@@ -304,7 +304,7 @@
             },
             "tone": {
               "deprecated": true,
-              "description": "Ignored. Neumorphic themes get an off-white canvas from softness and depth."
+              "description": "Ignored."
             }
           }
         },

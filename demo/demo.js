@@ -248,7 +248,7 @@ function toRoles(themes, version) {
     delete t.fillLabel;
     // Every theme now ships both contrast levels, so a saved level goes away.
     if (t.contrast) delete t.contrast.level;
-    // Tone is gone: neumorphic themes get their off-white canvas from softness and depth.
+    // Tone is gone.
     if (t.feel) delete t.feel.tone;
     if (version === 1 && 'neutral' in t) { t.base ??= t.neutral; delete t.neutral; }
     if ('color' in t) {

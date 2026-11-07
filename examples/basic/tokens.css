@@ -74,6 +74,8 @@
   --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0.6px;
+  --tm-backdrop: none;
+  --tm-backdrop-control: none;
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
@@ -81,17 +83,17 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-elevation-1: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-inset: inset 1.2px 1.2px 2.4px light-dark(rgba(0,0,0,0.18), rgba(0,0,0,0.5)), inset -1.2px -1.2px 2.4px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0));
+  --tm-elevation-1: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-inset: 0 0 #0000;
   --tm-highlight: 0 0 #0000;
-  --tm-elevation-1-normal: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-1-flipped: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-2-normal: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2-flipped: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-3-normal: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3-flipped: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  --tm-elevation-1-normal: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-1-flipped: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-2-normal: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2-flipped: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-3-normal: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3-flipped: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
 }
 
 .theme-success {
@@ -158,6 +160,8 @@
   --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0.6px;
+  --tm-backdrop: none;
+  --tm-backdrop-control: none;
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
@@ -165,17 +169,17 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-elevation-1: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-inset: inset 1.2px 1.2px 2.4px light-dark(rgba(0,0,0,0.18), rgba(0,0,0,0.5)), inset -1.2px -1.2px 2.4px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0));
+  --tm-elevation-1: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-inset: 0 0 #0000;
   --tm-highlight: 0 0 #0000;
-  --tm-elevation-1-normal: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-1-flipped: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-2-normal: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2-flipped: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-3-normal: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3-flipped: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  --tm-elevation-1-normal: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-1-flipped: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-2-normal: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2-flipped: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-3-normal: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3-flipped: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
 }
 
 .theme-warning {
@@ -242,6 +246,8 @@
   --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0.6px;
+  --tm-backdrop: none;
+  --tm-backdrop-control: none;
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
@@ -249,17 +255,17 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-elevation-1: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-inset: inset 1.2px 1.2px 2.4px light-dark(rgba(0,0,0,0.18), rgba(0,0,0,0.5)), inset -1.2px -1.2px 2.4px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0));
+  --tm-elevation-1: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-inset: 0 0 #0000;
   --tm-highlight: 0 0 #0000;
-  --tm-elevation-1-normal: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-1-flipped: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-2-normal: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2-flipped: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-3-normal: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3-flipped: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  --tm-elevation-1-normal: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-1-flipped: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-2-normal: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2-flipped: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-3-normal: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3-flipped: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
 }
 
 .theme-danger {
@@ -326,6 +332,8 @@
   --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0.6px;
+  --tm-backdrop: none;
+  --tm-backdrop-control: none;
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
@@ -333,17 +341,17 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-elevation-1: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-inset: inset 1.2px 1.2px 2.4px light-dark(rgba(0,0,0,0.18), rgba(0,0,0,0.5)), inset -1.2px -1.2px 2.4px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0));
+  --tm-elevation-1: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-inset: 0 0 #0000;
   --tm-highlight: 0 0 #0000;
-  --tm-elevation-1-normal: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-1-flipped: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-2-normal: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2-flipped: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-3-normal: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3-flipped: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  --tm-elevation-1-normal: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-1-flipped: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-2-normal: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2-flipped: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-3-normal: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3-flipped: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
 }
 
 .theme-promo, .theme-sale {
@@ -410,6 +418,8 @@
   --tm-gloss: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 83.5%, rgba(0,0,0,0.03) 100%);
   --tm-panel-blur: 0px;
   --tm-lift: 0.6px;
+  --tm-backdrop: none;
+  --tm-backdrop-control: none;
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
@@ -417,17 +427,17 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-elevation-1: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-inset: inset 1.2px 1.2px 2.4px light-dark(rgba(0,0,0,0.18), rgba(0,0,0,0.5)), inset -1.2px -1.2px 2.4px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0));
+  --tm-elevation-1: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-inset: 0 0 #0000;
   --tm-highlight: inset 0 1px 0 light-dark(rgba(255,255,255,0.2), rgba(255,255,255,0.1));
-  --tm-elevation-1-normal: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-1-flipped: -0.6px -0.6px 1.3px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 0.6px 0.6px 1.3px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.3px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-2-normal: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-2-flipped: -1.8px -1.8px 3.8px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 1.8px 1.8px 3.8px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 1.9px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
-  --tm-elevation-3-normal: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.06), rgba(255,255,255,0.01)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.34), rgba(0,0,0,0.61)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.01), rgba(0,0,0,0.02));
-  --tm-elevation-3-flipped: -4.8px -4.8px 10.1px light-dark(rgba(255,255,255,0.01), rgba(255,255,255,0.06)), 4.8px 4.8px 10.1px light-dark(rgba(0,0,0,0.61), rgba(0,0,0,0.34)), 0 -1px 3.4px light-dark(rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  --tm-elevation-1-normal: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-1-flipped: 0.1px 0.6px 1.3px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-2-normal: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-2-flipped: 0.2px 1.8px 3.8px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
+  --tm-elevation-3-normal: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.38), rgba(0,0,0,0.68));
+  --tm-elevation-3-flipped: 0.4px 4.8px 10.1px light-dark(rgba(0,0,0,0.68), rgba(0,0,0,0.38));
 }
 
 :root, .theme-default {
@@ -452,6 +462,7 @@
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
   --tm-fill-base: var(--tm-base-50);
   --tm-on-fill-base: light-dark(var(--tm-base-0), var(--tm-base-100));
@@ -463,7 +474,6 @@
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-bg-panel: light-dark(#ffffff, #20242c);
-  --tm-panel-border: light-dark(#b9bfcb, #353a44);
   --tm-bg-panel-normal: light-dark(#ffffff, #20242c);
   --tm-bg-panel-inverted: light-dark(#ffffff, #20242c);
   --tm-gloss-base: none;
@@ -491,6 +501,7 @@
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
   --tm-fill-base: var(--tm-base-50);
   --tm-on-fill-base: light-dark(var(--tm-base-0), var(--tm-base-100));
@@ -502,7 +513,6 @@
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-bg-panel: light-dark(#ffffff, #002b0b);
-  --tm-panel-border: light-dark(#83d08e, #004415);
   --tm-bg-panel-normal: light-dark(#ffffff, #002b0b);
   --tm-bg-panel-inverted: light-dark(#ffffff, #002b0b);
   --tm-gloss-base: none;
@@ -530,6 +540,7 @@
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
   --tm-fill-base: light-dark(var(--tm-base-50), var(--tm-base-30));
   --tm-on-fill-base: light-dark(var(--tm-base-0), var(--tm-base-95));
@@ -541,7 +552,6 @@
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-bg-panel: light-dark(#ffffff, #391d00);
-  --tm-panel-border: light-dark(#ffad5e, #583000);
   --tm-bg-panel-normal: light-dark(#ffffff, #391d00);
   --tm-bg-panel-inverted: light-dark(#ffffff, #391d00);
   --tm-gloss-base: none;
@@ -569,6 +579,7 @@
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
   --tm-fill-base: var(--tm-base-50);
   --tm-on-fill-base: light-dark(var(--tm-base-0), var(--tm-base-100));
@@ -580,7 +591,6 @@
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-bg-panel: light-dark(#ffffff, #4f0020);
-  --tm-panel-border: light-dark(#ffa6ba, #770034);
   --tm-bg-panel-normal: light-dark(#ffffff, #4f0020);
   --tm-bg-panel-inverted: light-dark(#ffffff, #4f0020);
   --tm-gloss-base: none;
@@ -608,6 +618,7 @@
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
   --tm-fill-base: var(--tm-base-50);
   --tm-on-fill-base: light-dark(var(--tm-base-0), var(--tm-base-100));
@@ -619,7 +630,6 @@
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-bg-panel: light-dark(#ffffff, #20242c);
-  --tm-panel-border: light-dark(#b9bfcb, #353a44);
   --tm-bg-panel-normal: light-dark(#ffffff, #20242c);
   --tm-bg-panel-inverted: light-dark(#ffffff, #20242c);
   --tm-gloss-base: linear-gradient(180deg in oklch, var(--tm-gloss-base-top) 0%, transparent 60%, transparent 70%, var(--tm-gloss-base-bottom) 100%);

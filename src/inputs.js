@@ -242,7 +242,7 @@ function feelField(value, at, fail) {
   const out = {};
   if (!value || typeof value !== 'object') { fail(`${at}: use an object of feels.`); return out; }
   for (const [name, raw] of Object.entries(value)) {
-    // `tone` is gone: neumorphic themes get their off-white canvas from softness and depth.
+    // `tone` is gone.
     if (name === 'tone') continue;
     const spec = FEELS[name];
     if (!spec) { fail(`${at}.${name}: unknown feel. Use one of: ${Object.keys(FEELS).join(', ')}.`); continue; }

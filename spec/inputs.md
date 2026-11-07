@@ -113,11 +113,11 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 |---|---|---|---|---|
 | `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | The rhythm grid (2 to 6 px), and so padding, gaps, line heights, and text size |
 | `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
-| `thickness` | No borders | none, hairline, regular, heavy, chunky | 4 px borders | Border width. Heavy borders use the text color. |
+| `thickness` | No borders | none, hairline, regular, heavy, chunky | 4 px borders | Border width. |
 | `depth` | Flat | flat, low, raised, floating | Far above the page | Shadow size, and how far a part lifts on hover |
 | `shininess` | Matte | matte, satin, plastic, glassy | Glass | A gloss on buttons, switch thumbs, and bars |
-| `softness` | Hard ink shadows | hard, crisp, soft, pillowy | Soft light | Shadow blur and darkness. With depth, high softness makes a neumorphic look: raised parts sit on the canvas, with a light and a dark shadow, and the canvas is a little off white (grade 10, or 90 in dark mode, washed a third of the way toward the action color in OKLCH), so the light shadow shows. |
-| `solidity` | See-through | clear, frosted, tinted, solid | Opaque | The opacity of panels, fills, and tints, background blur, and how much shadows and card edges take on the action color |
+| `softness` | Hard ink shadows | hard, crisp, soft, pillowy | Soft light | Shadow blur and darkness. |
+| `solidity` | See-through | clear, frosted, tinted, solid | Opaque | The opacity of panels, fills, and tints, and background blur |
 | `bounciness` | No overshoot | still, gentle, springy, bouncy | Large overshoot | The easing curve for parts that move in |
 | `snappiness` | Slow | languid, easy, brisk, snappy | Fast | Motion duration |
 
@@ -148,7 +148,6 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 - Control radius: `r × control height ÷ 2`. So `r = 1` makes a pill, and `r = 0.5` rounds half as much.
 - Border width: `round(4 t)` px.
 - Shadow offset for elevation 1, 2, 3: `d × 2`, `d × 6`, `d × 16` px. Blur: offset `× 3 f`. With low softness, the shadow moves to the side and becomes solid ink.
-- Relief, the neumorphic amount: `max(0, (f − 0.6) ÷ 0.4) × d`. Relief adds a light shadow on the other side. Above 0.35, parts sit on the canvas, and the canvas is a little off white: grade 10 (90 in dark mode), washed a third of the way toward the action color in OKLCH.
 - Gloss: a white gradient whose strength is the shininess. Above about 0.6 it has a hard edge at the middle, like glass.
 - Panel opacity: `0.3 + 0.7 so`. Blur: `(1 − so) × 20` px.
 - Duration: `420 − 340 n` ms. The "enter" easing overshoots to `1 + 0.9 b`.
@@ -172,7 +171,7 @@ A preset is a set of feels with a familiar name.
 | `flat` | No shadows, hairline borders, quick motion. |
 | `material` | No borders, soft shadows at a few heights. |
 | `brutalist` | Square corners, heavy ink borders, hard offset shadows, instant motion. |
-| `neumorphic` | No borders, an off-white canvas with a faint wash of the key color, light and dark shadows. Parts look pressed out of one material. |
+| `neumorphic` | No borders, deep and very soft shadows. The full neumorphic look (light and dark shadows, an off-white canvas) is removed for now, and will come back as a continuous effect. |
 | `glass` | See-through panels with blur, soft shadows, a little shine. |
 | `glossy` | Pill shapes and strong gloss, like early-2000s app buttons. |
 | `playful` | Round, spacious, regular borders, bouncy motion. |
@@ -196,7 +195,7 @@ An inputs file can have two more fields:
 
 - `version`: the version of the inputs format. Now `2`. A file without it is read as version 2. The engine stops with a message for any other version. The playground's Inputs download and share links include it.
 - Version `1` still loads. In it, `neutral` was the base color, `color` was the action color only, and `fillLabel` flipped the labels on fills. The engine reads a version 1 file with those meanings. Without `"version": 1`, `neutral` is an error that names the new field.
-- `feel.tone` is gone too: neumorphic themes get their off-white canvas from softness and depth. The engine skips it.
+- `feel.tone` is gone too. The engine skips it.
 - `fillLabel` is gone in every version: every fill has light labels in light mode and dark labels in dark mode. The engine skips the field, so old files still load, and the schema marks it deprecated. To flip one part, put the class `tm-invert` on it.
 - `$schema`: a path or URL to the schema, for editors. The engine ignores it.
 

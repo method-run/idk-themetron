@@ -740,6 +740,12 @@
               "$value": "{themes.default.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.default.base.20}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -830,21 +836,10 @@
               "$value": "{themes.default.action.60}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#b9bfcb",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -853,7 +848,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -862,7 +857,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -871,7 +866,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -975,6 +970,12 @@
               "$value": "{themes.default.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.default.base.80}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -1065,21 +1066,10 @@
               "$value": "{themes.default.action.40}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#353a44",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1088,7 +1078,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1097,7 +1087,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1106,7 +1096,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1237,6 +1227,12 @@
                 "$value": "{themes.default.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.default.base.20}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -1327,21 +1323,10 @@
                 "$value": "{themes.default.action.80}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#b9bfcb",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1350,7 +1335,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1359,7 +1344,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1368,7 +1353,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1472,6 +1457,12 @@
                 "$value": "{themes.default.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.default.base.80}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -1562,21 +1553,10 @@
                 "$value": "{themes.default.action.20}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#353a44",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1585,7 +1565,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1594,7 +1574,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -1603,7 +1583,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2318,6 +2298,12 @@
               "$value": "{themes.success.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.success.base.20}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -2408,21 +2394,10 @@
               "$value": "{themes.success.action.60}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#83d08e",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2431,7 +2406,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2440,7 +2415,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2449,7 +2424,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2553,6 +2528,12 @@
               "$value": "{themes.success.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.success.base.80}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -2643,21 +2624,10 @@
               "$value": "{themes.success.action.40}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#004415",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2666,7 +2636,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2675,7 +2645,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2684,7 +2654,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2815,6 +2785,12 @@
                 "$value": "{themes.success.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.success.base.20}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -2905,21 +2881,10 @@
                 "$value": "{themes.success.action.80}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#83d08e",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2928,7 +2893,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2937,7 +2902,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2946,7 +2911,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3050,6 +3015,12 @@
                 "$value": "{themes.success.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.success.base.80}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -3140,21 +3111,10 @@
                 "$value": "{themes.success.action.20}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#004415",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3163,7 +3123,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3172,7 +3132,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3181,7 +3141,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3896,6 +3856,12 @@
               "$value": "{themes.warning.base.20}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.warning.base.20}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -3986,21 +3952,10 @@
               "$value": "{themes.warning.action.60}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#ffad5e",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4009,7 +3964,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4018,7 +3973,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4027,7 +3982,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4131,6 +4086,12 @@
               "$value": "{themes.warning.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.warning.base.80}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -4221,21 +4182,10 @@
               "$value": "{themes.warning.action.30}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#583000",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4244,7 +4194,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4253,7 +4203,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4262,7 +4212,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4393,6 +4343,12 @@
                 "$value": "{themes.warning.base.20}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.warning.base.20}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -4483,21 +4439,10 @@
                 "$value": "{themes.warning.action.80}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#ffad5e",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4506,7 +4451,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4515,7 +4460,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4524,7 +4469,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4628,6 +4573,12 @@
                 "$value": "{themes.warning.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.warning.base.80}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -4718,21 +4669,10 @@
                 "$value": "{themes.warning.action.20}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#583000",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4741,7 +4681,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4750,7 +4690,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4759,7 +4699,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -5474,6 +5414,12 @@
               "$value": "{themes.danger.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.danger.base.20}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -5564,21 +5510,10 @@
               "$value": "{themes.danger.action.60}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#ffa6ba",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5587,7 +5522,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5596,7 +5531,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5605,7 +5540,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5709,6 +5644,12 @@
               "$value": "{themes.danger.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.danger.base.80}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -5799,21 +5740,10 @@
               "$value": "{themes.danger.action.40}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#770034",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5822,7 +5752,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5831,7 +5761,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5840,7 +5770,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5971,6 +5901,12 @@
                 "$value": "{themes.danger.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.danger.base.20}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -6061,21 +5997,10 @@
                 "$value": "{themes.danger.action.80}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#ffa6ba",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6084,7 +6009,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6093,7 +6018,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6102,7 +6027,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6206,6 +6131,12 @@
                 "$value": "{themes.danger.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.danger.base.80}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -6296,21 +6227,10 @@
                 "$value": "{themes.danger.action.20}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#770034",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6319,7 +6239,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6328,7 +6248,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6337,7 +6257,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7052,6 +6972,12 @@
               "$value": "{themes.promo.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.promo.base.20}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -7142,21 +7068,10 @@
               "$value": "{themes.promo.action.60}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#b9bfcb",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7165,7 +7080,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7174,7 +7089,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7183,7 +7098,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7287,6 +7202,12 @@
               "$value": "{themes.promo.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.promo.base.80}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -7377,21 +7298,10 @@
               "$value": "{themes.promo.action.40}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#353a44",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7400,7 +7310,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7409,7 +7319,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7418,7 +7328,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7549,6 +7459,12 @@
                 "$value": "{themes.promo.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.promo.base.20}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -7639,21 +7555,10 @@
                 "$value": "{themes.promo.action.80}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#b9bfcb",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7662,7 +7567,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7671,7 +7576,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7680,7 +7585,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7784,6 +7689,12 @@
                 "$value": "{themes.promo.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.promo.base.80}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -7874,21 +7785,10 @@
                 "$value": "{themes.promo.action.20}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#353a44",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7897,7 +7797,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7906,7 +7806,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7915,7 +7815,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -8630,6 +8530,12 @@
               "$value": "{themes.sale.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.sale.base.20}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -8720,21 +8626,10 @@
               "$value": "{themes.sale.action.60}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#b9bfcb",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8743,7 +8638,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8752,7 +8647,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8761,7 +8656,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8865,6 +8760,12 @@
               "$value": "{themes.sale.action.key}"
             }
           },
+          "panel": {
+            "border": {
+              "$type": "color",
+              "$value": "{themes.sale.base.80}"
+            }
+          },
           "fill": {
             "base": {
               "$type": "color",
@@ -8955,21 +8856,10 @@
               "$value": "{themes.sale.action.40}"
             }
           },
-          "panel": {
-            "border": {
-              "$type": "shadow",
-              "$value": "#353a44",
-              "$extensions": {
-                "themetron": {
-                  "css": true
-                }
-              }
-            }
-          },
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+              "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8978,7 +8868,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+              "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8987,7 +8877,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+              "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8996,7 +8886,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+              "$value": "0 0 #0000",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9127,6 +9017,12 @@
                 "$value": "{themes.sale.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.sale.base.20}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -9217,21 +9113,10 @@
                 "$value": "{themes.sale.action.80}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#b9bfcb",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.06), 0.6px 0.6px 1.3px rgba(0,0,0,0.34), 0 -1px 1.3px rgba(0,0,0,0.01)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9240,7 +9125,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.06), 1.8px 1.8px 3.8px rgba(0,0,0,0.34), 0 -1px 1.9px rgba(0,0,0,0.01)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9249,7 +9134,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.06), 4.8px 4.8px 10.1px rgba(0,0,0,0.34), 0 -1px 3.4px rgba(0,0,0,0.01)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.38)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9258,7 +9143,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.18), inset -1.2px -1.2px 2.4px rgba(255,255,255,0.06)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9362,6 +9247,12 @@
                 "$value": "{themes.sale.action.key}"
               }
             },
+            "panel": {
+              "border": {
+                "$type": "color",
+                "$value": "{themes.sale.base.80}"
+              }
+            },
             "fill": {
               "base": {
                 "$type": "color",
@@ -9452,21 +9343,10 @@
                 "$value": "{themes.sale.action.20}"
               }
             },
-            "panel": {
-              "border": {
-                "$type": "shadow",
-                "$value": "#353a44",
-                "$extensions": {
-                  "themetron": {
-                    "css": true
-                  }
-                }
-              }
-            },
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "-0.6px -0.6px 1.3px rgba(255,255,255,0.01), 0.6px 0.6px 1.3px rgba(0,0,0,0.61), 0 -1px 1.3px rgba(0,0,0,0.02)",
+                "$value": "0.1px 0.6px 1.3px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9475,7 +9355,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "-1.8px -1.8px 3.8px rgba(255,255,255,0.01), 1.8px 1.8px 3.8px rgba(0,0,0,0.61), 0 -1px 1.9px rgba(0,0,0,0.02)",
+                "$value": "0.2px 1.8px 3.8px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9484,7 +9364,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "-4.8px -4.8px 10.1px rgba(255,255,255,0.01), 4.8px 4.8px 10.1px rgba(0,0,0,0.61), 0 -1px 3.4px rgba(0,0,0,0.02)",
+                "$value": "0.4px 4.8px 10.1px rgba(0,0,0,0.68)",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9493,7 +9373,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "inset 1.2px 1.2px 2.4px rgba(0,0,0,0.5), inset -1.2px -1.2px 2.4px rgba(255,255,255,0)",
+                "$value": "0 0 #0000",
                 "$extensions": {
                   "themetron": {
                     "css": true

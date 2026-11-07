@@ -94,7 +94,8 @@ export function tokenManifest() {
   const sems = semanticEntries(root).map(([name, value]) => [name, value, 'semantic']);
   const tokens = {};
   for (const [name, value, tier] of [...prims, ...sems]) {
-    const type = typeOf(value);
+    // A backdrop is a CSS filter value, such as blur(8px) or none.
+    const type = name.startsWith('backdrop') ? 'filter' : typeOf(value);
     tokens[name] = {
       tier,
       type,
@@ -180,7 +181,7 @@ export function inputsSchema() {
             additionalProperties: false,
             properties: {
               ...Object.fromEntries(Object.entries(FEELS).map(([name, spec]) => [name, feel(name, spec)])),
-              tone: { deprecated: true, description: 'Ignored. Neumorphic themes get an off-white canvas from softness and depth.' },
+              tone: { deprecated: true, description: 'Ignored.' },
             },
           },
           contrast: {

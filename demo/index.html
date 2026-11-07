@@ -185,6 +185,9 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .theme-preview[open] > summary::before { transform: rotate(90deg); }
 .theme-preview > summary span { font: 12px var(--mono); color: var(--muted); font-weight: 400; }
 .stages { display: grid; gap: 16px; margin-top: 6px; }
+/* Each stage is a whole sample page. The browser skips the work for stages that are off screen,
+   and keeps their last size, so the page does not jump while you scroll. */
+.stages > .stage { content-visibility: auto; contain-intrinsic-size: auto 1400px; }
 .compare-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 12px; margin-top: 6px; }
 .compare-row + .compare-row { margin-top: 12px; }
 .compare-tile { display: flex; flex-direction: column; gap: var(--tm-space-md); padding: calc(var(--tm-rhythm) * 8) calc(var(--tm-rhythm) * 4) calc(var(--tm-rhythm) * 4); }

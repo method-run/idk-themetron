@@ -658,6 +658,18 @@
       "modes": false,
       "stability": "experimental"
     },
+    "backdrop": {
+      "tier": "primitive",
+      "type": "filter",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "backdrop-control": {
+      "tier": "primitive",
+      "type": "filter",
+      "modes": false,
+      "stability": "experimental"
+    },
     "fill-alpha": {
       "tier": "primitive",
       "type": "number",
@@ -763,6 +775,13 @@
       "role": "base",
       "stability": "stable",
       "meaning": "Dividers and the edges of surfaces. Decoration only."
+    },
+    "panel-border": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
     },
     "border-base-strong": {
       "tier": "semantic",
@@ -961,13 +980,6 @@
       "meaning": "The edge of the exact button: the key color, or border-base when the key color does not stand out from the canvas."
     },
     "bg-panel": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "panel-border": {
       "tier": "semantic",
       "type": "color",
       "modes": true,

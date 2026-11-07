@@ -72,8 +72,8 @@
      --tm-fill-alpha for solid fills and edges, and --tm-tint-alpha for tints. */
   background-color: color-mix(in oklab, var(--tm-fill-action) calc(var(--tm-fill-alpha) * 100%), transparent);
   /* A light frost: a quarter of the cards' blur, so see-through buttons stay see-through. */
-  -webkit-backdrop-filter: blur(calc(var(--tm-panel-blur) / 4));
-  backdrop-filter: blur(calc(var(--tm-panel-blur) / 4));
+  -webkit-backdrop-filter: var(--tm-backdrop-control);
+  backdrop-filter: var(--tm-backdrop-control);
   color: var(--tm-on-fill-action);
   font: inherit;
   font-weight: var(--tm-font-weight-medium);
@@ -219,8 +219,8 @@
   border: var(--tm-panel-border-width) solid var(--tm-panel-border);
   border-radius: var(--tm-radius-lg);
   background: var(--tm-bg-panel);
-  -webkit-backdrop-filter: blur(var(--tm-panel-blur));
-  backdrop-filter: blur(var(--tm-panel-blur));
+  -webkit-backdrop-filter: var(--tm-backdrop);
+  backdrop-filter: var(--tm-backdrop);
   box-shadow: var(--tm-elevation-2);
 }
 .tm-card--flat { box-shadow: none; }

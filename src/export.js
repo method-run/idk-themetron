@@ -7,6 +7,7 @@ const ms = (n) => `${n}ms`;
 const bezier = (b) => `cubic-bezier(${b.join(', ')})`;
 const fontList = (list) => list.map((f) => (/[\s\d]/.test(f) && !/^(ui-|system-ui)/.test(f) ? `"${f}"` : f)).join(', ');
 const cssName = (path) => path.replace(/\./g, '-');
+const round1 = (n) => Math.round(n * 10) / 10;
 
 // The primitive tokens of one theme as flat [name, CSS value] pairs.
 export function primitiveEntries(p) {
@@ -29,6 +30,11 @@ export function primitiveEntries(p) {
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
   for (const [k, v] of Object.entries(p.motion.easing)) out.push([`ease-${k}`, bezier(v)]);
   out.push(['gloss', p.effect.gloss], ['panel-blur', px(p.effect.blur)], ['lift', px(p.effect.lift)]);
+  // The whole backdrop-filter value, for cards and for controls (a quarter of the blur). It is
+  // "none" when there is no blur: even blur(0px) makes a browser give the part its own layer
+  // and re-capture what is behind it, which costs memory and can flicker on hover.
+  const blur = (b) => (b > 0 ? `blur(${round1(b)}px)` : 'none');
+  out.push(['backdrop', blur(p.effect.blur)], ['backdrop-control', blur(p.effect.blur / 4)]);
   out.push(['fill-alpha', String(p.effect.fillAlpha)], ['panel-border-width', px(p.panelBorderWidth)]);
   // The opacity of soft and quiet buttons' tints.
   out.push(['tint-alpha', String(p.effect.tintAlpha)]);
@@ -67,17 +73,14 @@ function refCss(t, prefix) {
   return t.mix ? `color-mix(in oklch, ${v(t.ref)}, ${v(t.mix.ref)} ${Math.round(t.mix.amount * 100)}%)` : v(t.ref);
 }
 
-// The shine on solid fills: the gloss-top grade fading out, and the gloss-bottom grade
-// fading in, over the fill. The fill shows through in the middle, so hover still shows.
-// Glassy shine (0.6 and up) has a hard edge at the middle. The gradient blends in OKLCH, so the
-// shine keeps the fill's hue as it fades, with no gray in between.
+// The shine on solid fills, over the fill. TEMPORARY, in both modes and at any shininess: the
+// gloss-top grade (the shine) fades out by 40%, and the gloss-bottom grade (the shadow) fades in
+// from 60%, so the fill shows in the middle. The gradient blends in OKLCH, so it keeps the
+// fill's hue as it fades.
 function glossGradient(shine, prefix, role) {
-  if (!shine) return 'none';
   const top = `var(--${prefix}-gloss-${role}-top)`;
   const bottom = `var(--${prefix}-gloss-${role}-bottom)`;
-  return shine < 0.6
-    ? `linear-gradient(180deg in oklch, ${top} 0%, transparent 60%, transparent 70%, ${bottom} 100%)`
-    : `linear-gradient(180deg in oklch, ${top} 0%, color-mix(in oklch, ${top} 60%, transparent) 48%, transparent 50%, transparent 72%, ${bottom} 100%)`;
+  return `linear-gradient(180deg in oklch, ${top} 0%, transparent 40%, transparent 60%, ${bottom} 100%)`;
 }
 
 // Join the light and dark forms of a value. Shadows differ only in their colors,

@@ -117,18 +117,14 @@ test('the exact button pairs the key color with the lightest or darkest base col
   assert.equal(gray.more.modes.light.tokens['fill.action-exact'].ref, gray.more.modes.light.tokens['fill.action'].ref);
 });
 
-test('a neumorphic canvas is a little off white, washed toward the action color, and dark mode mirrors it', () => {
-  const canvas = (preset, feel) => {
-    const { modes } = buildThemes({ themes: { default: { action: '#a01fa0', ...(preset && { preset }), ...(feel && { feel }) } } }).themes.default;
-    return ['light', 'dark'].map((m) => { const t = modes[m].tokens['bg.canvas']; return t.mix ? `${t.ref} + ${t.mix.ref}` : t.ref; });
-  };
-  assert.deepEqual(canvas(), ['base.5', 'base.95']);
-  assert.deepEqual(canvas('flat'), ['base.5', 'base.95']);
-  assert.deepEqual(canvas('neumorphic'), ['base.10 + action.10', 'base.90 + action.90']);
-  // In CSS, the mix is in OKLCH, between the two grades.
-  assert.match(toCss(buildThemes({ themes: { default: { preset: 'neumorphic' } } })), /--tm-bg-canvas: light-dark\(color-mix\(in oklch, var\(--tm-base-10\), var\(--tm-action-10\) 35%\), color-mix\(in oklch, var\(--tm-base-90\), var\(--tm-action-90\) 35%\)\);/);
+test('backgrounds are base grades in every preset, and dark mode mirrors them', () => {
+  for (const preset of ['balanced', 'neumorphic', 'glass']) {
+    const { modes } = buildThemes({ themes: { default: { action: '#a01fa0', preset } } }).themes.default;
+    assert.deepEqual(['light', 'dark'].map((m) => modes[m].tokens['bg.canvas'].ref), ['base.5', 'base.95'], preset);
+  }
   // Old inputs with a tone still load: it is skipped.
-  assert.deepEqual(canvas(undefined, { tone: 1 }), ['base.5', 'base.95']);
+  const { modes } = buildThemes({ themes: { default: { feel: { tone: 1 } } } }).themes.default;
+  assert.equal(modes.light.tokens['bg.canvas'].ref, 'base.5');
 });
 
 test('feels change the primitives', () => {
