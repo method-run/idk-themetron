@@ -59,11 +59,11 @@ export function buildPrimitives(settings, palettes, gaps) {
   // lines up with fewer grid lines, and a spacious one with more.
   const rhythm = GRID;
   // The space unit, in squares: 2 (8 px) at spaciousness 0, to 6 (24 px) at 1. Each space step
-  // rounds on its own, so the steps change at different points along the slider. xs is 0.3 of
+  // rounds on its own, so the steps change at different points along the slider. xs is 0.32 of
   // a unit, not a quarter, so that it grows in the middle of the slider, not only at the end.
   const unit = 2 + 4 * s;
   const squares = (x) => Math.max(1, Math.round(x));
-  const space = Object.fromEntries(Object.entries({ xs: 0.3, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
+  const space = Object.fromEntries(Object.entries({ xs: 0.32, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
 
   // Text sizes do not change with spaciousness. Typography settings will set them.
   const fontSize = Object.fromEntries(Object.entries({ xs: -2, sm: -1, md: 0, lg: 1, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, step]) => [k, Math.round(FONT_SIZE * 1.2 ** step)]));
@@ -77,10 +77,12 @@ export function buildPrimitives(settings, palettes, gaps) {
   const leadingTight = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, tightRatio)]));
 
   const borderWidth = BORDER_WIDTH;
-  // A control is a tight line plus padding and border that add up to whole squares: as many
-  // squares as the space step sm, down, and about one space unit across.
-  const padY = Math.max(squares(unit * 0.5), Math.ceil(borderWidth / GRID));
-  const padX = Math.max(squares(unit * 0.9), Math.ceil(borderWidth / GRID));
+  // A control is a tight line plus padding and border that add up to whole squares: a bit less
+  // than half a space unit down, and about one unit across. The factors are not the space
+  // steps' factors, so that the padding and the space steps grow at different points along the
+  // slider, not all at once.
+  const padY = Math.max(squares(unit * 0.45), Math.ceil(borderWidth / GRID));
+  const padX = Math.max(squares(unit * 0.95), Math.ceil(borderWidth / GRID));
   const control = {
     paddingY: padY * GRID - borderWidth,
     paddingX: padX * GRID - borderWidth,
