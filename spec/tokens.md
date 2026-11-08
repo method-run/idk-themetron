@@ -59,7 +59,7 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 | `border.width`, `border.focusWidth` | | The focus width is at least 2 px. |
 | `duration.<speed>` | `duration.base` | `fast`, `base`, `slow`. |
 | `easing.<use>` | `easing.enter` | `standard`, `enter` (can overshoot), `exit`. |
-| `effect.gloss`, `effect.panelBlur`, `effect.lift` | | A CSS gradient, a blur radius, and the hover lift. |
+| `shininess`, `effect.panelBlur`, `effect.lift` | | The shininess (0 to 1), a blur radius, and the hover lift. The shine itself is `shine-image`, built on each element: see [consumers](./consumers.md "consumers"). |
 
 ## Semantic tokens
 

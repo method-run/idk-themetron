@@ -34,7 +34,7 @@ export function primitiveEntries(p) {
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
   for (const [k, v] of Object.entries(p.motion.easing)) out.push([`ease-${k}`, bezier(v)]);
-  out.push(['gloss', p.effect.gloss], ['panel-blur', px(p.effect.blur)], ['lift', px(p.effect.lift)]);
+  out.push(['panel-blur', px(p.effect.blur)], ['lift', px(p.effect.lift)]);
   // The whole backdrop-filter value, for cards and for controls (a quarter of the blur). It is
   // "none" when there is no blur: even blur(0px) makes a browser give the part its own layer
   // and re-capture what is behind it, which costs memory and can flicker on hover.
@@ -72,9 +72,6 @@ export function semanticEntries(theme, prefix = 'tm') {
     out.push([`elevation-${level}-normal`, bothModes(light.computed[name], dark.computed[name])]);
     out.push([`elevation-${level}-flipped`, bothModes(dark.computed[name], light.computed[name])]);
   }
-  // A finished gradient of the resting shine, for parts that do not use the shared shine yet.
-  // Buttons use the shared shine instead: see shineRules.
-  for (const role of ROLES) out.push([`gloss-${role}`, glossGradient(theme.settings.feel.shininess, prefix, role)]);
   const shined = [...ROLES, 'quiet', 'action-exact'];
   // The top edge of a filled part catches the light: a 1 px line of a lighter grade of the
   // part's own color, with the shininess as its opacity. One for fills, and one for tints.
@@ -113,26 +110,23 @@ function refCss(t, prefix) {
 const SHINE_SHAPE = [['rim', 0.8, 0], ['top', 0.8, 3], [null, 0, 50], ['shadow', 1, 80], ['bottom', 0.5, 100]];
 
 // The gradient, from a color for each part and an opacity for each share.
-function shineGradient(color, opacity) {
+function shineGradient(color, opacity, prefix) {
   const stops = SHINE_SHAPE.map(([part, share, at]) => `${part ? `color-mix(in oklch, ${color(part)} ${opacity(share)}, transparent)` : 'transparent'} ${at}%`);
-  return `linear-gradient(180deg in oklch, ${stops.join(', ')})`;
-}
-
-function glossGradient(shine, prefix, role) {
-  if (!shine) return 'none';
-  return shineGradient((part) => `var(--${prefix}-gloss-${role}-${part})`, (share) => `${round1(shine * share * 100)}%`);
+  // --tm-shine-direction: 0deg turns it upside down, light from below, so the part looks inset.
+  return `linear-gradient(var(--${prefix}-shine-direction, 180deg) in oklch, ${stops.join(', ')})`;
 }
 
 // The shared shine, for any part. A part sets four colors, --tm-shine-rim, -top, -shadow and
 // -bottom (usually its state's gloss grades), and paints var(--tm-shine-image). The rule is on
-// every element, so each element builds the gradient from its own colors, and the gradient
+// every element and pseudo-element (a pseudo-element cannot go inside :where()), so each
+// builds the gradient from its own colors, and the gradient
 // follows a part's state. The colors are registered, so a change of state animates. The
 // opacity is the theme's shininess, times --tm-shine-strength (1 by default; tints use less).
 function shineRules(prefix) {
   const v = (name) => `--${prefix}-shine-${name}`;
   const props = ['rim', 'top', 'shadow', 'bottom'].map((part) => `@property ${v(part)} { syntax: '<color>'; inherits: true; initial-value: transparent; }`);
-  const image = shineGradient((part) => `var(${v(part)})`, (share) => `calc(var(--${prefix}-shininess, 0) * var(${v('strength')}, 1) * ${round1(share * 100)}%)`);
-  return `${props.join('\n')}\n:where(*) { ${v('image')}: ${image}; }\n`;
+  const image = shineGradient((part) => `var(${v(part)})`, (share) => `calc(var(--${prefix}-shininess, 0) * var(${v('strength')}, 1) * ${round1(share * 100)}%)`, prefix);
+  return `${props.join('\n')}\n:where(*), ::before, ::after { ${v('image')}: ${image}; }\n`;
 }
 
 // Join the light and dark forms of a value. Shadows differ only in their colors,
@@ -300,7 +294,6 @@ export function toDtcg(built) {
     group.duration = Object.fromEntries(Object.entries(p.motion.duration).map(([k, v]) => [k, tok('duration', { value: v, unit: 'ms' })]));
     group.easing = Object.fromEntries(Object.entries(p.motion.easing).map(([k, v]) => [k, tok('cubicBezier', v)]));
     group.effect = {
-      gloss: tok('gradient', p.effect.gloss, { $extensions: { themetron: { css: true } } }),
       panelBlur: tok('dimension', { value: p.effect.blur, unit: 'px' }),
       fillAlpha: tok('number', p.effect.fillAlpha),
       fillAlphaInverted: tok('number', p.effect.fillAlphaInverted, { $description: 'The fill opacity of a part with tm-invert.' }),

@@ -133,7 +133,7 @@ test('feels change the primitives', () => {
   assert.ok(p({ spaciousness: 1 }).space.md > p({ spaciousness: 0 }).space.md);
   assert.equal(p({ roundness: 0 }).radius.control, 0);
   assert.equal(p({ roundness: 1 }).radius.control, p({ roundness: 1 }).control.height / 2);
-  assert.equal(p({ shininess: 0 }).effect.gloss, 'none');
+  assert.equal(p({ shininess: 0.4 }).shininess, 0.4);
   // Removed feels still load, and change nothing.
   assert.deepEqual(p({ thickness: 0, depth: 1, softness: 0, solidity: 0, bounciness: 1, snappiness: 1 }), p({}));
 });

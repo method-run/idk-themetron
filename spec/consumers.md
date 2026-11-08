@@ -143,6 +143,25 @@ Every color token holds both modes, with `light-dark()`. The browser picks one f
 
 A consumer must not set `color-scheme` on a theme class, or on an element that holds theme classes, except through these selectors.
 
+## Shine
+
+The stylesheet defines one shine gradient, `--tm-shine-image`, on every element. Each element builds it from four colors that it sets itself. To give a part the theme's shine:
+
+```css
+.my-chip[aria-selected="true"] {
+  --tm-shine-rim: var(--tm-gloss-action-rim);
+  --tm-shine-top: var(--tm-gloss-action-top);
+  --tm-shine-shadow: var(--tm-gloss-action-shadow);
+  --tm-shine-bottom: var(--tm-gloss-action-bottom);
+  background: var(--tm-shine-image), var(--tm-fill-action);
+}
+```
+
+- Use the gloss grades of the part's fill and state: `gloss-<role>-hover-rim` on hover, `gloss-tint-<role>-rim` on a tint, and so on.
+- The four colors are registered with `@property`, so add them to the part's `transition` and the shine fades with the fill.
+- The opacity is `--tm-shininess`, times `--tm-shine-strength` (1 unless you set it; tints look right at 0.5). At shininess 0 the gradient is clear.
+- An element that sets no colors has a clear gradient. Children inherit the colors, so a nested part sets its own.
+
 ## Fonts
 
 The theme stylesheet starts with an `@import` from Google Fonts when a theme names a web font. Read the fonts with `var(--tm-font-body)`, `var(--tm-font-heading)`, and `var(--tm-font-mono)`. Each one ends with a CSS generic family, so text shows before the font loads, and without it.

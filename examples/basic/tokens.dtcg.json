@@ -692,15 +692,6 @@
         }
       },
       "effect": {
-        "gloss": {
-          "$type": "gradient",
-          "$value": "none",
-          "$extensions": {
-            "themetron": {
-              "css": true
-            }
-          }
-        },
         "panelBlur": {
           "$type": "dimension",
           "$value": {
@@ -3645,15 +3636,6 @@
         }
       },
       "effect": {
-        "gloss": {
-          "$type": "gradient",
-          "$value": "none",
-          "$extensions": {
-            "themetron": {
-              "css": true
-            }
-          }
-        },
         "panelBlur": {
           "$type": "dimension",
           "$value": {
@@ -6598,15 +6580,6 @@
         }
       },
       "effect": {
-        "gloss": {
-          "$type": "gradient",
-          "$value": "none",
-          "$extensions": {
-            "themetron": {
-              "css": true
-            }
-          }
-        },
         "panelBlur": {
           "$type": "dimension",
           "$value": {
@@ -9551,15 +9524,6 @@
         }
       },
       "effect": {
-        "gloss": {
-          "$type": "gradient",
-          "$value": "none",
-          "$extensions": {
-            "themetron": {
-              "css": true
-            }
-          }
-        },
         "panelBlur": {
           "$type": "dimension",
           "$value": {
@@ -12504,15 +12468,6 @@
         }
       },
       "effect": {
-        "gloss": {
-          "$type": "gradient",
-          "$value": "none",
-          "$extensions": {
-            "themetron": {
-              "css": true
-            }
-          }
-        },
         "panelBlur": {
           "$type": "dimension",
           "$value": {
@@ -15457,15 +15412,6 @@
         }
       },
       "effect": {
-        "gloss": {
-          "$type": "gradient",
-          "$value": "none",
-          "$extensions": {
-            "themetron": {
-              "css": true
-            }
-          }
-        },
         "panelBlur": {
           "$type": "dimension",
           "$value": {

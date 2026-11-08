@@ -152,9 +152,6 @@ export function buildPrimitives(settings, palettes, gaps) {
     motion: MOTION,
     effect: {
       ...FLAT,
-      // EXPERIMENT (shininess): the white sheen is off, so the ramp shine can be judged alone.
-      // The token stays.
-      gloss: 'none',
     },
     panelBorderWidth: borderWidth,
   };

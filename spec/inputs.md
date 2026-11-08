@@ -144,9 +144,11 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 - Line heights: for each text size, the whole number of squares nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
 - Controls: a tight line, plus padding and border that add up to whole squares. The padding is 0.45 of a space unit down, and 0.95 across, rounded to whole squares. These factors differ from the space steps' factors, so the padding and the space steps grow at different points along the slider. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.
 - Radius: a share of the most that each part can round. Controls: `r × height ÷ 2`, for each control size, so `r = 1` makes every size a pill. Cards: `r ×` their padding (`space.lg`). Alerts and text areas: `r × space.md`. Small parts: `r × space.xs`. So a corner never cuts into the content. Badges, switches, and progress bars round by `r ×` their own height `÷ 2`, from the `roundness` token, so they too are pills only at `r = 1`.
-- Gloss: a white gradient whose strength is the shininess. Above about 0.6 it has a hard edge at the middle, like glass.
+- Shine: from the fill's own ramp, not white. A gradient (a lighter rim and top, a darker shadow and bottom), a thin edge band, and a soft glow at the top. The shininess is their opacity, from none at 0. Each state of a button has its own shine grades, so the shine follows hover and press.
 
 </details>
+
+More about the feels: the [Feel audit](../docs/feel-audit.md "feel-audit") lists where each feel's output jumps and what it changes outside its own domain, and the [Shine notes](../docs/shine-notes.md "shine-notes") have the hand-tuned gradients that the shine started from.
 
 <details>
 <summary>Why feels are numbers from 0 to 1</summary>

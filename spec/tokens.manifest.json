@@ -826,12 +826,6 @@
       "modes": false,
       "stability": "experimental"
     },
-    "gloss": {
-      "tier": "primitive",
-      "type": "gradient",
-      "modes": false,
-      "stability": "experimental"
-    },
     "panel-blur": {
       "tier": "primitive",
       "type": "dimension",
@@ -1881,20 +1875,6 @@
       "type": "shadow",
       "modes": true,
       "stability": "stable"
-    },
-    "gloss-base": {
-      "tier": "semantic",
-      "type": "gradient",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-action": {
-      "tier": "semantic",
-      "type": "gradient",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
     },
     "highlight-base": {
       "tier": "semantic",

@@ -22,6 +22,10 @@
   --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
   /* The band also reaches in from the left, half as far, as if lit from the upper left. */
   --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+  /* The gradient, var(--tm-shine-image), is built from four colors that each part sets from its
+     state's gloss grades. Parts add this list to their transition, so the gradient fades with
+     the fill. */
+  --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
 }
 /* Inline text in another font or size (code, small print) sits on its own baseline, and can
    stretch its line by a pixel, which pushes everything below off the rhythm grid. With no line
@@ -107,10 +111,7 @@
   transition:
     background-color var(--tm-duration-fast) var(--tm-ease-standard),
     color var(--tm-duration-fast) var(--tm-ease-standard),
-    --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard),
-    --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard),
-    --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard),
-    --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard),
+    var(--_shine-transition),
     box-shadow var(--tm-duration-base) var(--tm-ease-standard),
     transform var(--tm-duration-base) var(--tm-ease-enter);
 }
@@ -223,7 +224,7 @@
   background: var(--tm-bg-field);
   box-shadow: var(--tm-elevation-inset);
   cursor: pointer;
-  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), border-color var(--tm-duration-fast) var(--tm-ease-standard);
+  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), border-color var(--tm-duration-fast) var(--tm-ease-standard), var(--_shine-transition);
 }
 .tm-radio { border-radius: 50%; }
 .tm-check::after, .tm-radio::after {
@@ -233,7 +234,7 @@
 }
 .tm-check::after { width: 0.3em; height: 0.6em; margin-top: -0.12em; border: solid var(--tm-on-fill-action); border-width: 0 0.14em 0.14em 0; rotate: 45deg; }
 .tm-radio::after { width: 0.45em; height: 0.45em; border-radius: 50%; background: var(--tm-on-fill-action); }
-.tm-check:checked, .tm-radio:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action); --_shine-height: var(--_choice-size); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
+.tm-check:checked, .tm-radio:checked { background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); border-color: var(--tm-fill-action); --_shine-height: var(--_choice-size); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
 .tm-check:checked::after, .tm-radio:checked::after { transform: scale(1); }
 
 .tm-switch {
@@ -249,10 +250,14 @@
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
   /* A share of its own height, like every control: a pill at full roundness. */
   border-radius: calc(var(--tm-roundness) * var(--_switch-height) / 2);
-  background: var(--tm-bg-sunken);
+  /* Off, the track is clear: only its edge shows, and the knob shows the state. On, the track
+     is the action fill, with its shine upside down so it looks inset. No edge band or glow. */
+  --tm-shine-direction: 0deg;
+  background: transparent;
+  background-image: var(--tm-shine-image);
   box-shadow: var(--tm-elevation-inset);
   cursor: pointer;
-  transition: background-color var(--tm-duration-base) var(--tm-ease-standard);
+  transition: background-color var(--tm-duration-base) var(--tm-ease-standard), var(--_shine-transition);
 }
 .tm-switch::before {
   content: "";
@@ -263,19 +268,20 @@
   width: var(--_thumb-size);
   aspect-ratio: 1;
   border-radius: calc(var(--tm-roundness) * var(--_thumb-size) / 2);
+  /* Off, the knob is a base-colored fill with the base shine, like a quiet part. */
   background: var(--tm-fg-base-muted);
-  background-image: var(--tm-gloss);
-  /* No fill and label pair here, so a white sheen, blended so that it keeps the color. */
-  background-blend-mode: soft-light;
-  /* The thumb is a quiet base-colored fill, so it gets the base shine. */
+  --tm-shine-rim: var(--tm-gloss-base-rim); --tm-shine-top: var(--tm-gloss-base-top); --tm-shine-shadow: var(--tm-gloss-base-shadow); --tm-shine-bottom: var(--tm-gloss-base-bottom);
+  --tm-shine-direction: 180deg;
+  background-image: var(--tm-shine-image);
   --_shine-height: var(--_thumb-size);
   --_shine-color: var(--tm-highlight-base);
   --_glow-color: var(--tm-glow-base);
   box-shadow: var(--_shine), var(--tm-elevation-1);
-  transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard);
+  transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard), var(--_shine-transition);
 }
-.tm-switch:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action-active); --_shine-height: var(--_switch-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
-.tm-switch:checked::before { background-color: var(--tm-on-fill-action); box-shadow: var(--tm-elevation-1); transform: translateX(calc(var(--_switch-height) * 0.7)); }
+.tm-switch:checked { background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); border-color: var(--tm-fill-action-active); box-shadow: var(--tm-elevation-inset); }
+/* The knob of a switch that is on is the label color, with no shine. */
+.tm-switch:checked::before { --tm-shine-rim: transparent; --tm-shine-top: transparent; --tm-shine-shadow: transparent; --tm-shine-bottom: transparent; background-color: var(--tm-on-fill-action); box-shadow: var(--tm-elevation-1); transform: translateX(calc(var(--_switch-height) * 0.7)); }
 
 /* ---- Card */
 
@@ -306,6 +312,10 @@
   padding: 0 max(0px, calc(var(--tm-space-sm) - var(--tm-border-width)));
   border: var(--tm-border-width) solid var(--tm-border-action);
   background: var(--tm-tint-action);
+  /* A tint shines faintly, as on a soft button. */
+  background-image: var(--tm-shine-image);
+  --tm-shine-strength: 0.5;
+  --tm-shine-rim: var(--tm-gloss-tint-action-rim); --tm-shine-top: var(--tm-gloss-tint-action-top); --tm-shine-shadow: var(--tm-gloss-tint-action-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-bottom);
   --_shine-height: calc(var(--tm-leading-md) - 2 * var(--_badge-margin));
   --_shine-color: var(--tm-highlight-tint-action);
   --_glow-color: var(--tm-glow-tint-action);
@@ -327,7 +337,7 @@
 }
 /* In a stack, a badge keeps its own width (flex-start). In a row, it sits in the middle. */
 .tm-row > .tm-badge { align-self: center; }
-.tm-badge--solid { background: var(--tm-fill-action); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); }
+.tm-badge--solid { background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-strength: 1; --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); }
 
 .tm-alert {
   display: flex;
@@ -353,7 +363,8 @@
   border: var(--tm-border-width) solid var(--tm-fill-action-active);
   border-radius: max(var(--tm-radius-control), var(--tm-radius-sm));
   background: var(--tm-fill-action);
-  background-image: var(--tm-gloss-action);
+  background-image: var(--tm-shine-image);
+  --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom);
   --_shine-height: var(--tm-control-height);
   --_shine-color: var(--tm-highlight-action);
   --_glow-color: var(--tm-glow-action);
@@ -378,7 +389,8 @@
   width: var(--value, 50%);
   border-radius: inherit;
   background: var(--tm-fill-action);
-  background-image: var(--tm-gloss-action);
+  background-image: var(--tm-shine-image);
+  --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom);
   --_shine-height: var(--tm-space-sm);
   --_shine-color: var(--tm-highlight-action);
   --_glow-color: var(--tm-glow-action);
@@ -437,14 +449,14 @@
   line-height: var(--tm-leading-tight-md);
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard);
+  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard), var(--_shine-transition);
 }
 /* The buttons round the outer corners only, inside the border. */
 .tm-segmented button:first-child { border-start-start-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); border-end-start-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); }
 .tm-segmented button:last-child { border-start-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); border-end-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); }
 .tm-segmented button + button { box-shadow: inset var(--seg-bw) 0 var(--tm-border-base); }
 .tm-segmented button:hover { background-color: var(--tm-tint-action); color: var(--tm-on-tint-action); }
-.tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-gloss-action); color: var(--tm-on-fill-action); --_shine-height: var(--seg-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
+.tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); color: var(--tm-on-fill-action); --_shine-height: var(--seg-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
 .tm-segmented button[aria-pressed="true"] + button { box-shadow: none; }
 .tm-segmented button:focus-visible { position: relative; z-index: 1; outline: var(--tm-focus-width) solid var(--tm-border-focus); outline-offset: 2px; }
 .tm-segmented[hidden] { display: none; }

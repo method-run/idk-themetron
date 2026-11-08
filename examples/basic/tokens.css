@@ -8,7 +8,7 @@
 @property --tm-shine-top { syntax: '<color>'; inherits: true; initial-value: transparent; }
 @property --tm-shine-shadow { syntax: '<color>'; inherits: true; initial-value: transparent; }
 @property --tm-shine-bottom { syntax: '<color>'; inherits: true; initial-value: transparent; }
-:where(*) { --tm-shine-image: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-shine-rim) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 80%), transparent) 0%, color-mix(in oklch, var(--tm-shine-top) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 80%), transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-shine-shadow) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 100%), transparent) 80%, color-mix(in oklch, var(--tm-shine-bottom) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 50%), transparent) 100%); }
+:where(*), ::before, ::after { --tm-shine-image: linear-gradient(var(--tm-shine-direction, 180deg) in oklch, color-mix(in oklch, var(--tm-shine-rim) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 80%), transparent) 0%, color-mix(in oklch, var(--tm-shine-top) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 80%), transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-shine-shadow) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 100%), transparent) 80%, color-mix(in oklch, var(--tm-shine-bottom) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 50%), transparent) 100%); }
 
 .tm-invert { color-scheme: dark; }
 @media (prefers-color-scheme: dark) { .tm-invert { color-scheme: light; } }
@@ -81,7 +81,6 @@
   --tm-ease-standard: cubic-bezier(0.3, 0, 0.45, 1);
   --tm-ease-enter: cubic-bezier(0.25, 1, 0.64, 1);
   --tm-ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0px;
   --tm-backdrop: none;
@@ -188,7 +187,6 @@
   --tm-ease-standard: cubic-bezier(0.3, 0, 0.45, 1);
   --tm-ease-enter: cubic-bezier(0.25, 1, 0.64, 1);
   --tm-ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0px;
   --tm-backdrop: none;
@@ -295,7 +293,6 @@
   --tm-ease-standard: cubic-bezier(0.3, 0, 0.45, 1);
   --tm-ease-enter: cubic-bezier(0.25, 1, 0.64, 1);
   --tm-ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0px;
   --tm-backdrop: none;
@@ -402,7 +399,6 @@
   --tm-ease-standard: cubic-bezier(0.3, 0, 0.45, 1);
   --tm-ease-enter: cubic-bezier(0.25, 1, 0.64, 1);
   --tm-ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0px;
   --tm-backdrop: none;
@@ -509,7 +505,6 @@
   --tm-ease-standard: cubic-bezier(0.3, 0, 0.45, 1);
   --tm-ease-enter: cubic-bezier(0.25, 1, 0.64, 1);
   --tm-ease-exit: cubic-bezier(0.4, 0, 1, 1);
-  --tm-gloss: none;
   --tm-panel-blur: 0px;
   --tm-lift: 0px;
   --tm-backdrop: none;
@@ -551,7 +546,7 @@
   --tm-glow-tint-base: color-mix(in oklch, var(--tm-gloss-tint-base-rim) 6.6%, transparent);
 }
 
-:root, .theme-default {
+:root, .theme-default, .theme-promo, .theme-sale {
   --tm-base-0: #ffffff;
   --tm-base-5: #eaeef6;
   --tm-base-10: #d9dde7;
@@ -628,7 +623,6 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
-  --tm-gloss-base: none;
 }
 
 .theme-success {
@@ -708,7 +702,6 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
-  --tm-gloss-base: none;
 }
 
 .theme-warning {
@@ -788,7 +781,6 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
-  --tm-gloss-base: none;
 }
 
 .theme-danger {
@@ -868,87 +860,6 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
-  --tm-gloss-base: none;
-}
-
-.theme-promo, .theme-sale {
-  --tm-base-0: #ffffff;
-  --tm-base-5: #eaeef6;
-  --tm-base-10: #d9dde7;
-  --tm-base-15: #c9ced9;
-  --tm-base-20: #b9bfcb;
-  --tm-base-25: #abb2be;
-  --tm-base-30: #9ea4b2;
-  --tm-base-35: #9198a6;
-  --tm-base-40: #858c9a;
-  --tm-base-45: #7a818f;
-  --tm-base-50: #6f7684;
-  --tm-base-55: #646b79;
-  --tm-base-60: #5a616e;
-  --tm-base-65: #515764;
-  --tm-base-70: #474d5a;
-  --tm-base-75: #3e444f;
-  --tm-base-80: #353a44;
-  --tm-base-85: #2b3039;
-  --tm-base-90: #20242c;
-  --tm-base-95: #13161d;
-  --tm-base-100: #000000;
-  --tm-bg-canvas: light-dark(var(--tm-base-5), var(--tm-base-95));
-  --tm-bg-surface: light-dark(var(--tm-base-0), var(--tm-base-90));
-  --tm-bg-sunken: light-dark(var(--tm-base-10), var(--tm-base-100));
-  --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
-  --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
-  --tm-fg-base-subtle: var(--tm-base-50);
-  --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
-  --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
-  --tm-border-base-strong: var(--tm-base-50);
-  --tm-fill-base: light-dark(var(--tm-base-60), var(--tm-base-40));
-  --tm-on-fill-base: light-dark(var(--tm-base-0), var(--tm-base-100));
-  --tm-fill-base-hover: light-dark(var(--tm-base-70), var(--tm-base-30));
-  --tm-on-fill-base-hover: light-dark(var(--tm-base-10), var(--tm-base-90));
-  --tm-fill-base-active: light-dark(var(--tm-base-80), var(--tm-base-20));
-  --tm-on-fill-base-active: light-dark(var(--tm-base-20), var(--tm-base-80));
-  --tm-gloss-base-rim: light-dark(var(--tm-base-30), var(--tm-base-10));
-  --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
-  --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
-  --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
-  --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
-  --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
-  --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
-  --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
-  --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
-  --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
-  --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
-  --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
-  --tm-tint-base: light-dark(var(--tm-base-10), var(--tm-base-80));
-  --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
-  --tm-on-tint-base-hover: light-dark(var(--tm-base-100), var(--tm-base-0));
-  --tm-tint-base-active: light-dark(var(--tm-base-30), var(--tm-base-60));
-  --tm-on-tint-base-active: light-dark(var(--tm-base-100), var(--tm-base-0));
-  --tm-fill-quiet: light-dark(var(--tm-base-10), var(--tm-base-80));
-  --tm-on-fill-quiet: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fill-quiet-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
-  --tm-on-fill-quiet-hover: light-dark(var(--tm-base-100), var(--tm-base-0));
-  --tm-fill-quiet-active: light-dark(var(--tm-base-30), var(--tm-base-60));
-  --tm-on-fill-quiet-active: light-dark(var(--tm-base-100), var(--tm-base-0));
-  --tm-gloss-quiet-rim: light-dark(var(--tm-base-5), var(--tm-base-50));
-  --tm-gloss-quiet-top: light-dark(var(--tm-base-5), var(--tm-base-60));
-  --tm-gloss-quiet-shadow: light-dark(var(--tm-base-30), var(--tm-base-95));
-  --tm-gloss-quiet-bottom: light-dark(var(--tm-base-20), var(--tm-base-90));
-  --tm-gloss-quiet-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-40));
-  --tm-gloss-quiet-hover-top: light-dark(var(--tm-base-5), var(--tm-base-50));
-  --tm-gloss-quiet-hover-shadow: light-dark(var(--tm-base-40), var(--tm-base-90));
-  --tm-gloss-quiet-hover-bottom: light-dark(var(--tm-base-30), var(--tm-base-80));
-  --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
-  --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
-  --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
-  --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
-  --tm-bg-panel: var(--tm-bg-surface);
-  --tm-bg-panel-normal: var(--tm-bg-surface);
-  --tm-bg-panel-inverted: var(--tm-bg-surface);
-  --tm-gloss-base: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-base-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-base-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-base-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-base-bottom) 16.5%, transparent) 100%);
 }
 
 :root, .theme-default {
@@ -1032,7 +943,6 @@
   --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
   --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-border-action-exact: var(--tm-action-key);
-  --tm-gloss-action: none;
   --tm-highlight-action: transparent;
   --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1122,7 +1032,6 @@
   --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-45));
   --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-35));
   --tm-border-action-exact: var(--tm-action-key);
-  --tm-gloss-action: none;
   --tm-highlight-action: transparent;
   --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1212,7 +1121,6 @@
   --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-30));
   --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-20));
   --tm-border-action-exact: light-dark(var(--tm-base-20), var(--tm-action-key));
-  --tm-gloss-action: none;
   --tm-highlight-action: transparent;
   --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1302,7 +1210,6 @@
   --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
   --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-85), var(--tm-action-30));
   --tm-border-action-exact: var(--tm-action-key);
-  --tm-gloss-action: none;
   --tm-highlight-action: transparent;
   --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1392,7 +1299,6 @@
   --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-45));
   --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-35));
   --tm-border-action-exact: var(--tm-action-key);
-  --tm-gloss-action: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-action-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-action-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-action-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-action-bottom) 16.5%, transparent) 100%);
   --tm-highlight-action: light-dark(color-mix(in oklch, var(--tm-gloss-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-rim) 16.5%, transparent));
   --tm-highlight-action-exact: light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-exact-rim) 16.5%, transparent));
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
@@ -1482,7 +1388,6 @@
   --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
   --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-border-action-exact: var(--tm-action-key);
-  --tm-gloss-action: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-action-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-action-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-action-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-action-bottom) 16.5%, transparent) 100%);
   --tm-highlight-action: light-dark(color-mix(in oklch, var(--tm-gloss-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-rim) 16.5%, transparent));
   --tm-highlight-action-exact: light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-exact-rim) 16.5%, transparent));
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));

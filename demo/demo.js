@@ -432,6 +432,8 @@ function renderSegs() {
   seg($('#model'), [['oklch', 'OKLCH'], ['hsl', 'HSL']], contrast.model, (v) => setContrast('model', v));
   seg($('#mode'), [['light', 'Light'], ['dark', 'Dark'], ['both', 'Both']], ui.mode, (v) => { ui.mode = v; renderSegs(); renderView(); });
   seg($('#contrast-view'), [['base', 'Base'], ['more', 'More contrast']], ui.contrast, (v) => { ui.contrast = v; renderSegs(); renderControlsState(); renderView(); });
+  const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
+  $('#view-summary').textContent = `· ${ui.view === 'tokens' ? 'Both modes' : modeLabel}${ui.contrast === 'more' && ui.view !== 'tokens' ? ' · More contrast' : ''}`;
   seg($('#format'), [['stylesheet', 'Stylesheet'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
 }
 
@@ -550,8 +552,12 @@ function showView(view) {
   for (const v of VIEWS) $(`#view-${v}`).hidden = v !== view;
   // Tokens hold both modes, so the mode switch does not apply there.
   $('#mode').hidden = view === 'tokens';
-  $('#contrast-view').hidden = view === 'tokens';
+  $('#menu-contrast').hidden = view === 'tokens';
   $('#mode-note').hidden = view !== 'tokens';
+  // What the preview shows applies to the Preview tab only.
+  $('#preview-bar').hidden = view !== 'preview';
+  $('#preview-note').hidden = view === 'preview';
+  renderSegs();
   renderView();
 }
 for (const tab of document.querySelectorAll('[role="tab"][data-view]')) {
@@ -560,6 +566,14 @@ for (const tab of document.querySelectorAll('[role="tab"][data-view]')) {
     try { history.replaceState(null, '', `#${tab.dataset.view}`); } catch { /* the frame can refuse this */ }
   });
 }
+
+// The view menu opens under its button, at its right edge. The popover closes on Escape and on
+// a click outside it.
+$('#view-menu').addEventListener('toggle', (e) => {
+  if (e.newState !== 'open') return;
+  const r = $('#view-menu-btn').getBoundingClientRect();
+  Object.assign($('#view-menu').style, { top: `${r.bottom + 6}px`, right: `${Math.max(16, innerWidth - r.right)}px`, left: 'auto' });
+});
 
 function renderView() {
   if (!built) return;
@@ -593,10 +607,10 @@ function renderPreviewBar() {
     }, built.themes[n].settings.action)),
     el('span', { class: 'sep' }),
     chip('All', !preview.follow && shown.length === built.order.length, () => setShown([...built.order])),
-    el('span', { class: 'sep' }),
+    el('span', { class: 'break' }),
     el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.grid), title: 'Show the rhythm grid. Shortcut: the period key.', onclick: toggleGrid }, 'Grid ·'),
     el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.photo), title: 'Show a photo behind the samples, colored with each theme\'s ramps.', onclick: () => { pane.photo = !pane.photo; applyPane(); renderPreviewBar(); paintPhotos(); } }, 'Photo backdrop'),
-    ...(pane.photo ? photoSliders() : []),
+    ...(pane.photo ? [el('span', { class: 'break' }), ...photoSliders()] : []),
   );
 }
 
@@ -718,7 +732,7 @@ function photoSliders() {
       cancelAnimationFrame(photoFrame);
       photoFrame = requestAnimationFrame(paintPhotos);
     } });
-    return el('label', { class: 'photo-slider' }, label, input, out);
+    return el('label', { class: 'photo-slider' }, el('span', {}, label), input, out);
   };
   return [
     slider('Hue', 'hue', 0, 1, 0.05, (v) => (v === 0 ? 'base' : v === 1 ? 'action' : `${Math.round(v * 100)}% action`)),
