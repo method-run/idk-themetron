@@ -33,7 +33,7 @@ From the package: `idk-themetron/spec/tokens.manifest.json` and `idk-themetron/s
 
 1. **Load the theme stylesheet, then your own.** The theme stylesheet holds only custom properties, the mode rules, and a font `@import`. It does not style elements.
 2. **Read tokens only with `var()`.** Do not define a `--tm-*` property yourself. The theme rules would fight yours.
-3. **Read stable tokens.** Experimental tokens can change in any version. If you read one, give it a fallback: `var(--tm-gloss-action, none)`.
+3. **Read stable tokens.** Experimental tokens can change in any version. If you read one, give it a fallback: `var(--tm-glow-action, transparent)`.
 4. **Take colors from semantic tokens when one fits.** Semantic tokens such as `--tm-fg-base` hold both modes and pass contrast. A ramp grade such as `--tm-base-90` is stable too, but it holds one value for both modes, and you must check its pairs yourself with the `gap-*` tokens. See [Grades and contrast](./grades.md "grades").
 5. **Choose a role for each part.** Use the action role (`*-action`) for parts that you act on, or that show their state: links, primary buttons, checks, selected tabs. Use the base role for everything else. The theme chooses the colors. See [Roles](#roles).
 6. **Use only the pairs that pass.** Put a text token only on a background that the pair table lists for it. See [Pairs that pass](#pairs-that-pass).

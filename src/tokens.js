@@ -251,22 +251,21 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   for (const role of ROLES) {
     const palette = palettes[role];
     const near = nearest(palette.keyGrade);
-    // Every fill has the same label polarity, whatever the key color: light labels on darker
-    // fills in light mode, and dark labels on lighter fills in dark mode. To flip a part, use
-    // tm-invert.
-    // TEMPORARY: pure white labels (black in dark mode), on the lightest fill where they pass
-    // (the darkest in dark mode). The usual rule is [5, 0], on the fill nearest the key grade.
-    const labels = [0].map((g) => (dark ? 100 - g : g));
+    // Every fill has the same label polarity, whatever the key color: a pure white label on a
+    // darker fill in light mode, and pure black on a lighter fill in dark mode. To flip a part,
+    // use tm-invert.
+    const label = dark ? 100 : 0;
     const extreme = STOPS.filter((g) => g !== 0 && g !== 100);
     if (dark) extreme.reverse();
-    const labelFor = (g) => labels.find((o) => test(palette.steps[o], palette.steps[g], 'text'));
+    const labelFor = (g) => (test(palette.steps[label], palette.steps[g], 'text') ? label : undefined);
 
     // A fill whose label passes, and that stands out from the canvas and surface (3:1), so a
     // button's shape shows.
     const behind = [tokens['bg.canvas'].value, tokens['bg.surface'].value];
     const fits = (g) => labelFor(g) !== undefined && behind.every((bg) => test(palette.steps[g], bg, 'ui'));
-    // TEMPORARY: the min-contrast grade is the lightest fill where the label passes (the
-    // darkest in dark mode). It is kept for the shine. The fill is one grade more contrasty.
+    // The min-contrast grade is the lightest fill where the label passes (the darkest in dark
+    // mode). The fill is one grade beyond it, so the shine's highlight, which is lighter than the
+    // fill, stays close to passing above the label.
     const minContrast = extreme.find(fits) ?? extreme.find((g) => labelFor(g) !== undefined) ?? near[0];
     const contrasty = dark ? -1 : 1;
     const fill = step(minContrast, contrasty);
@@ -276,13 +275,11 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const away = onFill < 50 ? 1 : -1;
     states(`fill.${role}`, `on-fill.${role}`, palette, fill, onFill, away);
     // Shine comes from the ramp itself, not from white, with light from above in both modes:
-    // lighter grades at the top (a rim three grades lighter than the fill, then two lighter),
-    // and darker ones at the bottom (a shadow two grades darker, then one darker at the edge).
+    // a rim and a top lighter than the fill, and a shadow and a bottom darker (see SHINE).
     // Lighter means a lower grade number in both modes. The shine sits above and below the
     // text, so these grades need not pass with the label: the audit shows them, but does not
-    // require them.
-    // EXPERIMENT (shininess): the shape from docs/shine-notes.md, counted from the fill.
-    // Each state has its own shine, counted from its own fill, so the shine follows the fill.
+    // require them. Each state has its own shine, counted from its own fill, so the shine
+    // follows the fill.
     shine(`gloss.${role}`, `fill.${role}`, palette, SHINE, 5, 95);
 
     // Action tints are the faintest wash of the color. Base tints are one grade beyond the
