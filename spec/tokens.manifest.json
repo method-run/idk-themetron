@@ -49,11 +49,28 @@
     },
     {
       "fg": [
+        "on-fill-quiet"
+      ],
+      "bg": [
+        "fill-quiet"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-fill-quiet-hover"
+      ],
+      "bg": [
+        "fill-quiet-hover"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
         "on-fill-base"
       ],
       "bg": [
-        "fill-base",
-        "fill-base-hover"
+        "fill-base"
       ],
       "purpose": "text"
     },
@@ -62,7 +79,24 @@
         "on-tint-base"
       ],
       "bg": [
-        "tint-base",
+        "tint-base"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-fill-base-hover"
+      ],
+      "bg": [
+        "fill-base-hover"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-tint-base-hover"
+      ],
+      "bg": [
         "tint-base-hover"
       ],
       "purpose": "text"
@@ -72,8 +106,7 @@
         "on-fill-action"
       ],
       "bg": [
-        "fill-action",
-        "fill-action-hover"
+        "fill-action"
       ],
       "purpose": "text"
     },
@@ -82,7 +115,24 @@
         "on-tint-action"
       ],
       "bg": [
-        "tint-action",
+        "tint-action"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-fill-action-hover"
+      ],
+      "bg": [
+        "fill-action-hover"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-tint-action-hover"
+      ],
+      "bg": [
         "tint-action-hover"
       ],
       "purpose": "text"
@@ -110,7 +160,21 @@
       "role": "base",
       "stability": "stable"
     },
+    "base-15": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
     "base-20": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-25": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -124,7 +188,21 @@
       "role": "base",
       "stability": "stable"
     },
+    "base-35": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
     "base-40": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-45": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -138,7 +216,21 @@
       "role": "base",
       "stability": "stable"
     },
+    "base-55": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
     "base-60": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-65": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -152,7 +244,21 @@
       "role": "base",
       "stability": "stable"
     },
+    "base-75": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
     "base-80": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "base",
+      "stability": "stable"
+    },
+    "base-85": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -201,7 +307,21 @@
       "role": "action",
       "stability": "stable"
     },
+    "action-15": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
     "action-20": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-25": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -215,7 +335,21 @@
       "role": "action",
       "stability": "stable"
     },
+    "action-35": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
     "action-40": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-45": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -229,7 +363,21 @@
       "role": "action",
       "stability": "stable"
     },
+    "action-55": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
     "action-60": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-65": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -243,7 +391,21 @@
       "role": "action",
       "stability": "stable"
     },
+    "action-75": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
     "action-80": {
+      "tier": "primitive",
+      "type": "color",
+      "modes": false,
+      "role": "action",
+      "stability": "stable"
+    },
+    "action-85": {
       "tier": "primitive",
       "type": "color",
       "modes": false,
@@ -823,7 +985,7 @@
       "modes": true,
       "role": "base",
       "stability": "experimental",
-      "meaning": "Text and icons on fill-base and its hover and active forms."
+      "meaning": "Text and icons on fill-base."
     },
     "fill-base-hover": {
       "tier": "semantic",
@@ -833,6 +995,14 @@
       "stability": "experimental",
       "meaning": "A quiet solid fill on hover."
     },
+    "on-fill-base-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Text and icons on fill-base-hover: the label moved as far as the fill, so the contrast stays the same."
+    },
     "fill-base-active": {
       "tier": "semantic",
       "type": "color",
@@ -841,7 +1011,29 @@
       "stability": "experimental",
       "meaning": "A quiet solid fill while it is pressed."
     },
+    "on-fill-base-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Text and icons on fill-base-active: the label moved as far as the fill, so the contrast stays the same."
+    },
+    "gloss-base-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "gloss-base-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-shadow": {
       "tier": "semantic",
       "type": "color",
       "modes": true,
@@ -863,14 +1055,6 @@
       "stability": "experimental",
       "meaning": "Quiet soft fills, such as secondary buttons and tags. They show on the canvas and on surfaces."
     },
-    "tint-base-hover": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "A quiet soft fill on hover."
-    },
     "on-tint-base": {
       "tier": "semantic",
       "type": "color",
@@ -878,6 +1062,45 @@
       "role": "base",
       "stability": "experimental",
       "meaning": "Text and icons on tint-base."
+    },
+    "tint-base-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "A quiet soft fill on hover: 10 grade numbers from the tint, toward the text."
+    },
+    "on-tint-base-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Text and icons on tint-base-hover: the label moved as far as the tint, so the contrast stays the same."
+    },
+    "tint-base-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "A quiet soft fill while it is pressed: 20 grade numbers from the tint, toward the text."
+    },
+    "on-tint-base-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Text and icons on tint-base-active: the label moved as far as the tint, so the contrast stays the same."
+    },
+    "gloss-tint-base-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
     },
     "fill-action": {
       "tier": "semantic",
@@ -893,7 +1116,7 @@
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "Text and icons on fill-action and its hover and active forms."
+      "meaning": "Text and icons on fill-action."
     },
     "fill-action-hover": {
       "tier": "semantic",
@@ -903,6 +1126,14 @@
       "stability": "experimental",
       "meaning": "An action fill on hover."
     },
+    "on-fill-action-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Text and icons on fill-action-hover: the label moved as far as the fill, so the contrast stays the same."
+    },
     "fill-action-active": {
       "tier": "semantic",
       "type": "color",
@@ -911,7 +1142,29 @@
       "stability": "experimental",
       "meaning": "An action fill while it is pressed."
     },
+    "on-fill-action-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Text and icons on fill-action-active: the label moved as far as the fill, so the contrast stays the same."
+    },
+    "gloss-action-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
     "gloss-action-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-shadow": {
       "tier": "semantic",
       "type": "color",
       "modes": true,
@@ -933,14 +1186,6 @@
       "stability": "experimental",
       "meaning": "Soft fills that you act on, or that show a state: soft buttons, selected rows, badges."
     },
-    "tint-action-hover": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental",
-      "meaning": "An action tint on hover."
-    },
     "on-tint-action": {
       "tier": "semantic",
       "type": "color",
@@ -948,6 +1193,121 @@
       "role": "action",
       "stability": "experimental",
       "meaning": "Text and icons on tint-action."
+    },
+    "tint-action-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "An action tint on hover: 10 grade numbers from the tint, toward the text."
+    },
+    "on-tint-action-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Text and icons on tint-action-hover: the label moved as far as the tint, so the contrast stays the same."
+    },
+    "tint-action-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "An action tint while it is pressed: 20 grade numbers from the tint, toward the text."
+    },
+    "on-tint-action-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "Text and icons on tint-action-active: the label moved as far as the tint, so the contrast stays the same."
+    },
+    "gloss-tint-action-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "fill-quiet": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "The quiet button: a solid button with the polarity flipped, in the base color. Light in light mode and dark in dark mode."
+    },
+    "on-fill-quiet": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "The label of the quiet button: the text color where it passes on fill-quiet, else the nearest base grade that does."
+    },
+    "fill-quiet-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "The quiet button on hover: 10 grade numbers from its fill, toward the label."
+    },
+    "on-fill-quiet-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "The label of the quiet button on hover: moved as far as the fill."
+    },
+    "fill-quiet-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "The quiet button while it is pressed: 20 grade numbers from its fill, toward the label. Also its edge."
+    },
+    "on-fill-quiet-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "The label of the quiet button while it is pressed: moved as far as the fill."
+    },
+    "gloss-quiet-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
     },
     "fg-action": {
       "tier": "semantic",
@@ -979,7 +1339,7 @@
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "The exact button: the darker of the key color and its partner (the lightest or darkest base color) in light mode, and the lighter in dark mode."
+      "meaning": "The exact button: the darker of the key color and its partner (white or black, from the action ramp) in light mode, and the lighter in dark mode."
     },
     "on-fill-action-exact": {
       "tier": "semantic",
@@ -988,6 +1348,38 @@
       "role": "action",
       "stability": "experimental",
       "meaning": "The label of the exact button: the other color of the pair. Not a guaranteed pair: the audit warns where it fails."
+    },
+    "fill-action-exact-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The exact button on hover: the nearest grade at least 10 grade numbers from its resting fill, away from the label. When the fill is white or black, toward the label."
+    },
+    "on-fill-action-exact-hover": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The label of the exact button on hover: moved as far as the fill."
+    },
+    "fill-action-exact-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The exact button while it is pressed: the nearest grade at least 20 grade numbers from its resting fill, away from the label. When the fill is white or black, toward the label."
+    },
+    "on-fill-action-exact-active": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The label of the exact button while it is pressed: moved as far as the fill."
     },
     "border-action-exact": {
       "tier": "semantic",
@@ -1042,12 +1434,6 @@
       "modes": true,
       "stability": "stable"
     },
-    "highlight": {
-      "tier": "semantic",
-      "type": "shadow",
-      "modes": true,
-      "stability": "experimental"
-    },
     "elevation-1-normal": {
       "tier": "semantic",
       "type": "shadow",
@@ -1094,6 +1480,83 @@
     "gloss-action": {
       "tier": "semantic",
       "type": "gradient",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-quiet": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "highlight-base": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "highlight-action": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "highlight-quiet": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "highlight-tint-base": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "highlight-tint-action": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "glow-base": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "glow-action": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "glow-quiet": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "glow-tint-base": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "glow-tint-action": {
+      "tier": "semantic",
+      "type": "fontFamily",
       "modes": true,
       "role": "action",
       "stability": "experimental"

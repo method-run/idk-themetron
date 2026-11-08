@@ -39,21 +39,41 @@ const MEANING = {
   'fill-base': 'Quiet solid fills, such as a solid button that is not the main action.',
   'fill-base-hover': 'A quiet solid fill on hover.',
   'fill-base-active': 'A quiet solid fill while it is pressed.',
-  'on-fill-base': 'Text and icons on fill-base and its hover and active forms.',
+  'on-fill-base': 'Text and icons on fill-base.',
+  'on-fill-base-hover': 'Text and icons on fill-base-hover: the label moved as far as the fill, so the contrast stays the same.',
+  'on-fill-base-active': 'Text and icons on fill-base-active: the label moved as far as the fill, so the contrast stays the same.',
   'tint-base': 'Quiet soft fills, such as secondary buttons and tags. They show on the canvas and on surfaces.',
-  'tint-base-hover': 'A quiet soft fill on hover.',
+  'tint-base-hover': 'A quiet soft fill on hover: 10 grade numbers from the tint, toward the text.',
+  'tint-base-active': 'A quiet soft fill while it is pressed: 20 grade numbers from the tint, toward the text.',
   'on-tint-base': 'Text and icons on tint-base.',
+  'on-tint-base-hover': 'Text and icons on tint-base-hover: the label moved as far as the tint, so the contrast stays the same.',
+  'on-tint-base-active': 'Text and icons on tint-base-active: the label moved as far as the tint, so the contrast stays the same.',
   'fg-action': 'Links, and other text that you act on. Passes the text contrast on every background.',
   'border-action': 'The edges of parts that you act on, such as outline buttons. Passes the control contrast.',
   'fill-action': 'Solid fills that you act on, such as primary buttons, checked boxes, and switches.',
   'fill-action-hover': 'An action fill on hover.',
   'fill-action-active': 'An action fill while it is pressed.',
-  'on-fill-action': 'Text and icons on fill-action and its hover and active forms.',
+  'on-fill-action': 'Text and icons on fill-action.',
+  'on-fill-action-hover': 'Text and icons on fill-action-hover: the label moved as far as the fill, so the contrast stays the same.',
+  'on-fill-action-active': 'Text and icons on fill-action-active: the label moved as far as the fill, so the contrast stays the same.',
   'tint-action': 'Soft fills that you act on, or that show a state: soft buttons, selected rows, badges.',
-  'tint-action-hover': 'An action tint on hover.',
+  'tint-action-hover': 'An action tint on hover: 10 grade numbers from the tint, toward the text.',
+  'tint-action-active': 'An action tint while it is pressed: 20 grade numbers from the tint, toward the text.',
   'on-tint-action': 'Text and icons on tint-action.',
-  'fill-action-exact': 'The exact button: the darker of the key color and its partner (the lightest or darkest base color) in light mode, and the lighter in dark mode.',
+  'on-tint-action-hover': 'Text and icons on tint-action-hover: the label moved as far as the tint, so the contrast stays the same.',
+  'on-tint-action-active': 'Text and icons on tint-action-active: the label moved as far as the tint, so the contrast stays the same.',
+  'fill-quiet': 'The quiet button: a solid button with the polarity flipped, in the base color. Light in light mode and dark in dark mode.',
+  'fill-quiet-hover': 'The quiet button on hover: 10 grade numbers from its fill, toward the label.',
+  'fill-quiet-active': 'The quiet button while it is pressed: 20 grade numbers from its fill, toward the label. Also its edge.',
+  'on-fill-quiet': 'The label of the quiet button: the text color where it passes on fill-quiet, else the nearest base grade that does.',
+  'on-fill-quiet-hover': 'The label of the quiet button on hover: moved as far as the fill.',
+  'on-fill-quiet-active': 'The label of the quiet button while it is pressed: moved as far as the fill.',
+  'fill-action-exact': 'The exact button: the darker of the key color and its partner (white or black, from the action ramp) in light mode, and the lighter in dark mode.',
   'on-fill-action-exact': 'The label of the exact button: the other color of the pair. Not a guaranteed pair: the audit warns where it fails.',
+  'on-fill-action-exact-hover': 'The label of the exact button on hover: moved as far as the fill.',
+  'on-fill-action-exact-active': 'The label of the exact button while it is pressed: moved as far as the fill.',
+  'fill-action-exact-hover': 'The exact button on hover: the nearest grade at least 10 grade numbers from its resting fill, away from the label. When the fill is white or black, toward the label.',
+  'fill-action-exact-active': 'The exact button while it is pressed: the nearest grade at least 20 grade numbers from its resting fill, away from the label. When the fill is white or black, toward the label.',
   'border-action-exact': 'The edge of the exact button: the key color, or border-base when the key color does not stand out from the canvas.',
 };
 
@@ -67,13 +87,19 @@ export const PAIRS = [
   // A solid fill stands out from the canvas, so a button's shape shows.
   { fg: ['fill-base', 'fill-action'], bg: ['bg-canvas'], purpose: 'ui' },
   ...ROLES.flatMap((role) => [
-    { fg: [`on-fill-${role}`], bg: [`fill-${role}`, `fill-${role}-hover`], purpose: 'text' },
-    { fg: [`on-tint-${role}`], bg: [`tint-${role}`, `tint-${role}-hover`], purpose: 'text' },
   ]),
+  // Press is not listed: it lasts a moment, and where the label is already white or black it
+  // cannot follow the background, so the audit only warns.
+  { fg: ['on-fill-quiet'], bg: ['fill-quiet'], purpose: 'text' },
+  { fg: ['on-fill-quiet-hover'], bg: ['fill-quiet-hover'], purpose: 'text' },
+  ...ROLES.flatMap((role) => ['', '-hover'].flatMap((state) => [
+    { fg: [`on-fill-${role}${state}`], bg: [`fill-${role}${state}`], purpose: 'text' },
+    { fg: [`on-tint-${role}${state}`], bg: [`tint-${role}${state}`], purpose: 'text' },
+  ])),
 ];
 
 // The role of a token, from its name: "base", "action", or none.
-const roleOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /(^|-)base(-|$)|^bg-|^panel-border$/.test(name) ? 'base' : undefined);
+const roleOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /(^|-)base(-|$)|^bg-|^panel-border$|-quiet(-|$)/.test(name) ? 'base' : undefined);
 
 // The type of a token, from its CSS value. The names match DTCG types where one fits.
 function typeOf(value) {

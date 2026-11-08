@@ -86,12 +86,13 @@ Each mode has these tokens. The engine picks each grade so that the pairs in the
 | `on-tint.<role>` | Text on the tint. For base, the body text color when it passes. | text, on tint and tint-hover |
 | `fg.action` | Colored text on the canvas, such as links | text, on canvas and surface |
 | `border.action` | Colored borders | ui, on surface |
-| `fill.action-exact`, `on-fill.action-exact` | The exact button: the key color, with the lightest or darkest base color, whichever has more contrast. Like every fill, light mode puts the lighter color on the darker one, and dark mode mirrors it. | text, as a warning only. The more-contrast variant uses the normal button's colors where it fails. |
+| `fill.action-exact`, `on-fill.action-exact` | The exact button: the key color, with white or black from the action ramp, whichever has more contrast. Like every fill, light mode puts the lighter color on the darker one, and dark mode mirrors it. | text, as a warning only. The more-contrast variant uses the normal button's colors where it fails. |
 | `border.action-exact` | The exact button's edge: the key color, or `border.base` when the key color is below 3:1 on the canvas | |
 | `gloss.<role>-top`, `gloss.<role>-bottom` | The shine on solid fills: up to two grades lighter at the top and one darker at the bottom, as shininess allows | text, on-fill on each |
 | `gloss-<role>` | A gradient of the two gloss grades over the fill, or `none`. It blends in OKLCH (`linear-gradient(180deg in oklch, …)`), so the shine keeps the fill's hue. CSS only. | Built from the two above |
 | `elevation.1`, `.2`, `.3`, `elevation.inset` | Box shadows. Empty for now: depth and softness are removed. | Computed |
-| `highlight` | An inset top highlight for shiny parts | Computed |
+| `highlight.<role>`, `highlight.tint-<role>` | The top edge of a filled part, which catches the light: a lighter grade of the part's own color (three grades lighter than a fill, one lighter than a tint), with the shininess as its opacity in light mode, and half that in dark mode. Components draw it as a band at the top edge, about a twenty-first of the part's height and at least 1 px, and half as wide along the left edge, as if lit from the upper left: `box-shadow: inset <band ÷ 2> <band> 0 <color>`. Transparent at shininess 0. | Computed |
+| `glow.<role>`, `glow.tint-<role>` | A soft glow at the top of a filled part, in the same color as the highlight. It grows with the shininess: transparent at 0, and 20% opacity at 1. Components draw it as an inset shadow, offset by about a third of the part's height and blurred by a fifth, so it follows the part's rounded outline. | Computed |
 
 Each theme has an audit: a list of the checked pairs, with the WCAG ratio, the APCA Lc value, and pass or fail. The playground shows it.
 
@@ -102,7 +103,7 @@ Each theme has an audit: a list of the checked pairs, with the WCAG ratio, the A
 - **Text.** `fg.base` is grade 90 (light) or 5 (dark) if that passes. `fg.base-muted` and `fg.base-subtle` are the first grades out from the canvas that pass.
 - **Fills.** Every fill has light labels in light mode, and dark labels in dark mode, whatever the key color. The fill is the grade nearest the key grade where that label passes, and that stands out from the canvas (3:1). So a yellow key color makes a deep golden fill with a light label. To show a part the other way, put `tm-invert` on it. Hover and active move the fill away from the label, so the contrast only grows.
 - **Shine.** `gloss.<role>-top` and `gloss.<role>-bottom` are lighter and darker grades of the fill's ramp, as far as the label still passes.
-- **Tints.** Action tints are grade 5 (light) or 95 (dark). Base tints are one grade beyond the canvas and the surface, toward the text, because those grades already hold the base color. The hover tint is one grade further, or the tint itself when no label passes on it.
+- **Tints.** Action tints are grade 5 (light) or 95 (dark). Base tints are one grade beyond the canvas and the surface, toward the text, because those grades already hold the base color. Hover and press are 10 and 20 grade numbers further, toward the text. The label follows by the same distance, as far as it still passes. With APCA in light mode, body text passes only on the lightest grades, so a tint moves only as far as some label can pass.
 - **Action text and borders.** The grade nearest the key grade that passes on all backgrounds.
 - **If nothing passes.** The engine takes the grade with the most contrast, and the audit marks the pair as failed.
 

@@ -98,11 +98,11 @@ test('the Tailwind theme names grades the Tailwind way, and points at the CSS va
   assert.match(tw, /--color-tint-base: var\(--tm-tint-base\);/);
 });
 
-test('the exact button pairs the key color with the lightest or darkest base color', () => {
+test('the exact button pairs the key color with white or black from the action ramp', () => {
   const tokensOf = (action, contrast) => buildThemes({ themes: { default: { action, ...(contrast && { contrast }) } } }).themes.default;
   // Navy pairs with white, and a pale yellow with black. Like every fill, light mode has the
   // lighter color as the label: a navy fill, and a yellow label on black. Dark mode mirrors it.
-  const cases = [['#1b2a6b', { light: ['action.key', 'base.0'], dark: ['base.0', 'action.key'] }], ['#f7e37a', { light: ['base.100', 'action.key'], dark: ['action.key', 'base.100'] }]];
+  const cases = [['#1b2a6b', { light: ['action.key', 'action.0'], dark: ['action.0', 'action.key'] }], ['#f7e37a', { light: ['action.100', 'action.key'], dark: ['action.key', 'action.100'] }]];
   for (const [action, want] of cases) {
     const { modes } = tokensOf(action);
     for (const mode of ['light', 'dark']) assert.deepEqual([modes[mode].tokens['fill.action-exact'].ref, modes[mode].tokens['on-fill.action-exact'].ref], want[mode], `${action} ${mode}`);

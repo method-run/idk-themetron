@@ -1,7 +1,7 @@
 // Palettes with fixed-luminance grades, and the contrast checks that use them.
 import { apcaContrast, colorAtLuminance, hslAtLuminance, luminance, parseHex, srgbToHsl, srgbToOklch, toHex, wcagContrast } from './color.js';
 
-export const GRADES = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
+export const GRADES = Array.from({ length: 21 }, (_, i) => i * 5);
 
 // Each grade has the same WCAG luminance in every palette. The scale is
 // exponential in (Y + 0.05), so the contrast ratio between two grades

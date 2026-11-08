@@ -656,8 +656,8 @@ function zone(name, names, mode, top) {
     el('span', { class: top ? 'stage-label' : 'zone-label' }, `${labelOf(name)}${top ? ` · ${mode}` : ` · ${t.kind}`}`),
     el('div', { class: 'tm-row' },
       el('button', { class: 'tm-button', type: 'button' }, `${labelOf(name)} button`),
-      el('button', { class: 'tm-button tm-button--soft', type: 'button' }, 'Soft'),
-      el('button', { class: 'tm-button tm-button--quiet', type: 'button' }, 'Quiet')),
+      el('button', { class: 'tm-button tm-button--quiet', type: 'button' }, 'Quiet'),
+      el('button', { class: 'tm-button tm-button--soft', type: 'button' }, 'Soft')),
     el('div', { class: 'tm-card' },
       el('h3', { class: 'tm-h3' }, `${labelOf(name)} card`),
       el('p', { class: 'tm-text tm-muted tm-small' }, 'A surface with its border, radius, and shadow.'),
@@ -755,7 +755,7 @@ function renderPalettes() {
         if (!ui.pickA || ui.pickB) { ui.pickA = id; ui.pickB = null; } else ui.pickB = id;
         renderPalettes();
       },
-    }, el('b', {}, g), hex.slice(1), tokens.length ? el('span', { class: 'uses' }, `×${tokens.length}`) : null);
+    }, el('b', {}, g), tokens.length ? el('span', { class: 'uses', title: `Used by ${tokens.length} token${tokens.length > 1 ? 's' : ''}` }, `×${tokens.length}`) : null);
   };
   const hexOf = (id) => { const i = id.lastIndexOf('.'); return byId[id.slice(0, i)]?.steps[id.slice(i + 1)]; };
   const compare = () => {
@@ -763,12 +763,14 @@ function renderPalettes() {
     const a = hexOf(ui.pickA);
     const b = ui.pickB ? hexOf(ui.pickB) : null;
     if (!a) { ui.pickA = null; return compare(); }
-    if (!b) return el('div', { class: 'compare' }, el('span', {}, `Text: ${ui.pickA}. Now select a background.`));
+    // The hex codes are not on the chips, to keep each ramp on one row: copy them from here.
+    const copy = (id, hex) => el('button', { type: 'button', class: 'small-btn', title: `Copy ${hex}`, onclick: (e) => { navigator.clipboard?.writeText(hex); e.currentTarget.textContent = 'Copied'; } }, `${id} ${hex} ⧉`);
+    if (!b) return el('div', { class: 'compare' }, copy(ui.pickA, a), el('span', {}, 'Text. Now select a background.'));
     const m = measure(a, b);
     const grade = (id) => Number(id.slice(id.lastIndexOf('.') + 1));
     return el('div', { class: 'compare' },
       el('span', { class: 'demo-text', style: `color:${a};background:${b}` }, 'Field report'),
-      el('span', {}, `${ui.pickA} on ${ui.pickB}`),
+      copy(ui.pickA, a), el('span', {}, 'on'), copy(ui.pickB, b),
       el('span', { class: 'fader-hint' }, `grade difference ${Math.abs(grade(ui.pickA) - grade(ui.pickB))}`),
       el('b', {}, `${m.wcag}:1`), el('b', {}, `Lc ${m.apca}`),
       ...['text', 'large', 'ui'].map((p) => passPill(p, a, b)),

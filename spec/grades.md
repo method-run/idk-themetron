@@ -1,7 +1,7 @@
 ---
 id: grades
 title: Grades and contrast
-summary: Each key color becomes a palette of 13 grades. A grade has the same luminance in every palette, so the grade numbers alone tell you which pairs pass contrast.
+summary: Each key color becomes a palette of 21 grades, 5 apart. A grade has the same luminance in every palette, so the grade numbers alone tell you which pairs pass contrast.
 parent: tokens
 kind: reference
 order: 1
@@ -15,7 +15,7 @@ tags: [system/tokens/grades]
 ◐ 42% (3/7) · 2 deferred
 <!-- idk-plans:progress:end -->
 
-Each key color becomes a palette of 13 grades: 0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, and 100. Grade 0 is pure white and grade 100 is pure black. The grades between them keep the hue of the key color.
+Each key color becomes a palette of 21 grades, 5 apart: 0, 5, 10, 15, and so on to 100. Grade 0 is pure white and grade 100 is pure black. The grades between them keep the hue of the key color.
 
 Within a theme, a grade has the same luminance in every palette. So `harbor.20` and `coral.20` are equally light, and the contrast between two grades depends only on the grade numbers. A green 40 on a red 90 has the same contrast as a blue 40 on a gray 90.
 
@@ -44,13 +44,21 @@ APCA does not give the same result in both directions, and it gives less contras
 | 0 | 1.000 | 1.00:1 | 21.00:1 |
 | 5 | 0.852 | 1.16:1 | 18.03:1 |
 | 10 | 0.724 | 1.36:1 | 15.49:1 |
+| 15 | 0.615 | 1.58:1 | 13.30:1 |
 | 20 | 0.521 | 1.84:1 | 11.42:1 |
+| 25 | 0.440 | 2.14:1 | 9.81:1 |
 | 30 | 0.371 | 2.49:1 | 8.42:1 |
+| 35 | 0.312 | 2.90:1 | 7.24:1 |
 | 40 | 0.261 | 3.38:1 | 6.21:1 |
+| 45 | 0.217 | 3.94:1 | 5.34:1 |
 | 50 | 0.179 | 4.58:1 | 4.58:1 |
+| 55 | 0.147 | 5.34:1 | 3.94:1 |
 | 60 | 0.119 | 6.21:1 | 3.38:1 |
+| 65 | 0.095 | 7.24:1 | 2.90:1 |
 | 70 | 0.075 | 8.42:1 | 2.49:1 |
+| 75 | 0.057 | 9.81:1 | 2.14:1 |
 | 80 | 0.042 | 11.42:1 | 1.84:1 |
+| 85 | 0.029 | 13.30:1 | 1.58:1 |
 | 90 | 0.018 | 15.49:1 | 1.36:1 |
 | 95 | 0.008 | 18.03:1 | 1.16:1 |
 | 100 | 0.000 | 21.00:1 | 1.00:1 |
@@ -79,6 +87,7 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 - **Fixed luminance, not contrast against one background.** themetron-3 made each palette against its own background, so two palettes did not line up. With fixed luminance, one rule works for all palettes, and designers can mix colors freely.
 - **An exponential scale.** With equal steps in luminance, the contrast between neighbors would be large at the dark end and small at the light end. The exponential scale gives each step of 10 the same contrast ratio, 1.36:1.
 - **OKLCH, not HSL.** A change of HSL lightness also changes the hue and the felt saturation, so blues turned purple. OKLCH keeps the hue.
+- **Every 5 grades.** Most rules choose from the grades 10 apart, plus 5 and 95 near white and black. Hover and press states use all of them, so a tint at 5 has neighbors at 15 and 25, the same distance apart as in the middle of the scale.
 - **Grade numbers from 0 to 100.** The US Web Design System uses the same numbers and the same idea of a "magic number". Multiply by 10, and grades 5 to 95 match Tailwind's 50 to 950.
 
 </details>

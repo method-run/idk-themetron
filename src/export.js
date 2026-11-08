@@ -57,7 +57,11 @@ export function semanticEntries(theme, prefix = 'tm') {
     const d = refCss(dark.tokens[name], prefix);
     out.push([cssName(name), l === d ? l : `light-dark(${l}, ${d})`]);
   }
-  for (const [name, value] of Object.entries(light.computed)) out.push([cssName(name), bothModes(value, dark.computed[name])]);
+  for (const [name, value] of Object.entries(light.computed)) {
+    const d = dark.computed[name];
+    const css = value.alias ? (value.alias === d.alias ? `var(--${prefix}-${cssName(value.alias)})` : bothModes(value.value, d.value)) : bothModes(value, d);
+    out.push([cssName(name), css]);
+  }
   // Outer shadows fall on the page around a part, so an inverted part draws them in the page's
   // mode: the flipped twin swaps the modes. The normal twin restores them inside the part.
   // tm-invert uses both; see invertShadowRules.
@@ -66,7 +70,25 @@ export function semanticEntries(theme, prefix = 'tm') {
     out.push([`elevation-${level}-normal`, bothModes(light.computed[name], dark.computed[name])]);
     out.push([`elevation-${level}-flipped`, bothModes(dark.computed[name], light.computed[name])]);
   }
-  for (const role of ROLES) out.push([`gloss-${role}`, glossGradient(theme.settings.feel.shininess, prefix, role)]);
+  // Solid fills of each role, and the quiet button, have the ramp shine.
+  const shined = [...ROLES, 'quiet'];
+  for (const part of shined) out.push([`gloss-${part}`, glossGradient(theme.settings.feel.shininess, prefix, part)]);
+  // The top edge of a filled part catches the light: a 1 px line of a lighter grade of the
+  // part's own color, with the shininess as its opacity. One for fills, and one for tints.
+  // The components draw it with box-shadow: inset 0 1px 0 <color>.
+  const shine = theme.settings.feel.shininess;
+  // In dark mode the band is half as strong: a light line on a light fill stands out more.
+  const mixed = (ref, share) => `color-mix(in oklch, var(--${prefix}-${ref}) ${round1(share * 100)}%, transparent)`;
+  const lit = (ref) => (shine ? `light-dark(${mixed(ref, shine)}, ${mixed(ref, shine / 2)})` : 'transparent');
+  for (const part of shined) out.push([`highlight-${part}`, lit(`gloss-${part}-rim`)]);
+  for (const role of ROLES) out.push([`highlight-tint-${role}`, lit(`gloss-tint-${role}-rim`)]);
+  // A soft glow of the same color also fills the top of the part: none at shininess 0, and
+  // 20% opacity at 1. With the gradient's highlight at 80%, the shine is split 80/20 between
+  // the highlight and the glow.
+  const glow = shine * 0.2;
+  const glowing = (ref) => (glow ? `color-mix(in oklch, var(--${prefix}-${ref}) ${round1(glow * 100)}%, transparent)` : 'transparent');
+  for (const part of shined) out.push([`glow-${part}`, glowing(`gloss-${part}-rim`)]);
+  for (const role of ROLES) out.push([`glow-tint-${role}`, glowing(`gloss-tint-${role}-rim`)]);
   return out;
 }
 
@@ -76,14 +98,26 @@ function refCss(t, prefix) {
   return t.mix ? `color-mix(in oklch, ${v(t.ref)}, ${v(t.mix.ref)} ${Math.round(t.mix.amount * 100)}%)` : v(t.ref);
 }
 
-// The shine on solid fills, over the fill. TEMPORARY, in both modes and at any shininess: the
-// gloss-top grade (the shine) fades out by 40%, and the gloss-bottom grade (the shadow) fades in
-// from 60%, so the fill shows in the middle. The gradient blends in OKLCH, so it keeps the
-// fill's hue as it fades.
+// The shine on solid fills, over the fill, with light from above: a bright rim at the top edge
+// that fades out toward the middle, the plain fill only at the middle (50%), and a shadow that
+// peaks at 80% and eases off at the bottom edge. The gradient blends in OKLCH, so it keeps the
+// fill's hue.
+// The shape is the same at every shininess, and each color's opacity grows with it, so 0 has
+// no shine. At 1, the highlight is at 80% opacity and the shadow at 100%: the shape from
+// docs/shine-notes.md, with the highlight tuned down to share the shine with the glow.
 function glossGradient(shine, prefix, role) {
-  const top = `var(--${prefix}-gloss-${role}-top)`;
-  const bottom = `var(--${prefix}-gloss-${role}-bottom)`;
-  return `linear-gradient(180deg in oklch, ${top} 0%, transparent 40%, transparent 60%, ${bottom} 100%)`;
+  if (!shine) return 'none';
+  const v = (part) => `var(--${prefix}-gloss-${role}-${part})`;
+  const at = (color, share) => `color-mix(in oklch, ${color} ${round1(shine * share * 100)}%, transparent)`;
+  // The highlight at the top: 80% of the shininess.
+  const stops = [
+    [at(v('rim'), 0.8), 0],
+    [at(v('top'), 0.8), 3],
+    ['transparent', 50],
+    [at(v('shadow'), 1), 80],
+    [at(v('bottom'), 0.5), 100],
+  ];
+  return `linear-gradient(180deg in oklch, ${stops.map(([c, p]) => `${c} ${p}%`).join(', ')})`;
 }
 
 // Join the light and dark forms of a value. Shadows differ only in their colors,
@@ -103,7 +137,7 @@ function bothModes(light, dark) {
 
 // Tokens in groups that often hold the same values across themes: the action role, the base
 // role, and the rest. Themes with the same values in a group share one rule for it.
-const groupOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /^(base-\d|bg-|fg-base|border-base|(on-)?(fill|tint)-base|gloss-base|panel-border$)/.test(name) ? 'base' : 'rest');
+const groupOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /^(base-\d|bg-|fg-base|border-base|(on-)?(fill|tint)-base|gloss-base|panel-border$)|^(on-)?(fill|gloss)-quiet/.test(name) ? 'base' : 'rest');
 
 // CSS custom properties. Each theme class sets every token, from the theme's place in the tree,
 // so a theme looks the same wherever it is on the page. The root theme also applies to :root,
@@ -264,7 +298,10 @@ export function toDtcg(built) {
         const m = {};
         // A mixed token has no single grade to point at, so DTCG gets its value.
         for (const [token, t] of Object.entries(mode.tokens)) setPath(m, token, tok('color', t.mix ? t.value : `{themes.${name}.${t.ref}}`));
-        for (const [token, value] of Object.entries(mode.computed)) setPath(m, token, tok(token.startsWith('bg') ? 'color' : 'shadow', value, { $extensions: { themetron: { css: true } } }));
+        for (const [token, value] of Object.entries(mode.computed)) {
+          if (value.alias) setPath(m, token, tok('color', `{themes.${name}.${mode.tokens[value.alias].ref}}`));
+          else setPath(m, token, tok(token.startsWith('bg') ? 'color' : 'shadow', value, { $extensions: { themetron: { css: true } } }));
+        }
         out[modeName] = m;
       }
       return out;

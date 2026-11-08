@@ -11,6 +11,18 @@
   line-height: var(--tm-leading-md);
 }
 .tm-theme *, .tm-theme *::before, .tm-theme *::after { box-sizing: border-box; }
+
+/* ---- Shine on filled parts. The top edge catches the light: a band of a lighter grade of the
+   part's own color, about a twenty-first of the part's height, and at least 1 px. At high
+   shininess a soft glow also fills the top of the part, and follows its rounded outline. The
+   tokens hold the colors, with the shininess as their opacity. Each part sets its height and
+   its two colors, and puts var(--_shine) in its box-shadow. */
+/* A pseudo-element cannot go inside :where(), so the switch thumb is listed on its own. */
+:where(.tm-button, .tm-check, .tm-radio, .tm-switch, .tm-badge, .tm-avatar, .tm-progress > span, .tm-segmented button), .tm-switch::before {
+  --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
+  /* The band also reaches in from the left, half as far, as if lit from the upper left. */
+  --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+}
 /* Inline text in another font or size (code, small print) sits on its own baseline, and can
    stretch its line by a pixel, which pushes everything below off the rhythm grid. With no line
    height of its own, it cannot stretch the line. */
@@ -51,13 +63,21 @@
 }
 
 /* ---- Button. Variants: solid (default), soft, quiet, outline, ghost, exact. Sizes: sm, md (default), lg.
-   Solid, soft, outline, and ghost use the action role. Quiet uses the base role, for buttons that
-   are not the main action. Exact shows the action key color itself, with
+   Solid, soft, outline, and ghost use the action role. Quiet is a solid button with the
+   polarity flipped, all in the base color, with the same shine, for buttons that are not the
+   main action. Exact shows the action key color itself, with
    white or black: the darker of the two is the fill, as for every button. */
 
 .tm-button {
   /* The shine of a solid fill. Each variant without it sets none. */
   --btn-shine: var(--tm-gloss-action);
+  /* The top edge catches the light: a lighter grade of the part's own color, as strong as the
+     shininess. Each kind of fill sets its own. */
+  --btn-highlight: var(--tm-highlight-action);
+  --btn-glow: var(--tm-glow-action);
+  --_shine-height: var(--tm-control-height);
+  --_shine-color: var(--btn-highlight);
+  --_glow-color: var(--btn-glow);
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -78,7 +98,7 @@
   font: inherit;
   font-weight: var(--tm-font-weight-medium);
   line-height: var(--tm-leading-tight-md);
-  box-shadow: var(--tm-highlight), var(--tm-elevation-1);
+  box-shadow: var(--_shine), var(--tm-elevation-1);
   cursor: pointer;
   transition:
     background-color var(--tm-duration-fast) var(--tm-ease-standard),
@@ -86,8 +106,8 @@
     box-shadow var(--tm-duration-base) var(--tm-ease-standard),
     transform var(--tm-duration-base) var(--tm-ease-enter);
 }
-.tm-button:hover { background-color: color-mix(in oklab, var(--tm-fill-action-hover) calc(var(--tm-fill-alpha) * 100%), transparent); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-highlight), var(--tm-elevation-2); }
-.tm-button:active { background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
+.tm-button:hover { background-color: color-mix(in oklab, var(--tm-fill-action-hover) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--_shine), var(--tm-elevation-2); }
+.tm-button:active { background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
 .tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* The ramp gloss belongs to the fill and its label. A soft button has a tint and another
@@ -96,14 +116,18 @@
    cannot make a see-through button solid. */
 .tm-button::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background-image: var(--btn-shine); opacity: var(--tm-fill-alpha); pointer-events: none; }
 
-.tm-button--soft { --btn-shine: none; background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); background-image: var(--tm-gloss); background-blend-mode: soft-light; color: var(--tm-on-tint-action); border-color: transparent; }
-.tm-button--soft:hover, .tm-button--soft:active { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
-.tm-button--quiet { --btn-shine: none; background-color: color-mix(in oklab, var(--tm-tint-base) calc(var(--tm-tint-alpha) * 100%), transparent); background-image: var(--tm-gloss); background-blend-mode: soft-light; color: var(--tm-on-tint-base); border-color: transparent; }
-.tm-button--quiet:hover, .tm-button--quiet:active { background-color: color-mix(in oklab, var(--tm-tint-base-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
+.tm-button--soft { --btn-shine: none; --btn-highlight: var(--tm-highlight-tint-action); --btn-glow: var(--tm-glow-tint-action); background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); background-image: var(--tm-gloss); background-blend-mode: soft-light; color: var(--tm-on-tint-action); border-color: transparent; }
+.tm-button--soft:hover { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-hover); }
+.tm-button--soft:active { background-color: color-mix(in oklab, var(--tm-tint-action-active) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-active); }
+.tm-button--quiet { --btn-shine: var(--tm-gloss-quiet); --btn-highlight: var(--tm-highlight-quiet); --btn-glow: var(--tm-glow-quiet); background-color: color-mix(in oklab, var(--tm-fill-quiet) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet); border-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-fill-alpha) * 100%), transparent); }
+.tm-button--quiet:hover { background-color: color-mix(in oklab, var(--tm-fill-quiet-hover) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet-hover); }
+.tm-button--quiet:active { background-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet-active); }
 
-/* The exact button keeps its colors on hover and press: they are the brand color, exactly.
-   The lift and the shadow show the state. */
-.tm-button--exact, .tm-button--exact:hover, .tm-button--exact:active { --btn-shine: none; background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
+/* The exact button is the brand color, exactly, at rest. Hover and press move to ramp grades
+   one and two grades from it, like other fills. */
+.tm-button--exact { --btn-shine: none; --btn-highlight: transparent; --btn-glow: transparent; background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
+.tm-button--exact:hover { background-color: var(--tm-fill-action-exact-hover); color: var(--tm-on-fill-action-exact-hover); }
+.tm-button--exact:active { background-color: var(--tm-fill-action-exact-active); color: var(--tm-on-fill-action-exact-active); }
 
 /* No fill, so no frost: their labels read like any text on the page. */
 .tm-button--outline, .tm-button--ghost { --btn-shine: none; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
@@ -111,11 +135,11 @@
    be fainter than 3:1 at low solidity. Hover and press tints fade like soft buttons. */
 .tm-button--outline { border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent); }
 .tm-button--ghost { border-color: transparent; }
-.tm-button--outline:hover, .tm-button--ghost:hover { background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); box-shadow: none; }
-.tm-button--outline:active, .tm-button--ghost:active { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); }
+.tm-button--outline:hover, .tm-button--ghost:hover { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-hover); box-shadow: none; }
+.tm-button--outline:active, .tm-button--ghost:active { background-color: color-mix(in oklab, var(--tm-tint-action-active) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-active); }
 
-.tm-button--sm { min-height: var(--tm-control-height-sm); border-radius: var(--tm-radius-control-sm); padding-block: 0; padding-inline: max(0px, calc(var(--tm-space-sm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
-.tm-button--lg { min-height: var(--tm-control-height-lg); border-radius: var(--tm-radius-control-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + var(--tm-space-sm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
+.tm-button--sm { --_shine-height: var(--tm-control-height-sm); min-height: var(--tm-control-height-sm); border-radius: var(--tm-radius-control-sm); padding-block: 0; padding-inline: max(0px, calc(var(--tm-space-sm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
+.tm-button--lg { --_shine-height: var(--tm-control-height-lg); min-height: var(--tm-control-height-lg); border-radius: var(--tm-radius-control-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + var(--tm-space-sm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
 
 /* ---- Fields */
 
@@ -199,7 +223,7 @@
 }
 .tm-check::after { width: 0.3em; height: 0.6em; margin-top: -0.12em; border: solid var(--tm-on-fill-action); border-width: 0 0.14em 0.14em 0; rotate: 45deg; }
 .tm-radio::after { width: 0.45em; height: 0.45em; border-radius: 50%; background: var(--tm-on-fill-action); }
-.tm-check:checked, .tm-radio:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action); }
+.tm-check:checked, .tm-radio:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action); --_shine-height: var(--_choice-size); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
 .tm-check:checked::after, .tm-radio:checked::after { transform: scale(1); }
 
 .tm-switch {
@@ -233,11 +257,15 @@
   background-image: var(--tm-gloss);
   /* No fill and label pair here, so a white sheen, blended so that it keeps the color. */
   background-blend-mode: soft-light;
-  box-shadow: var(--tm-elevation-1);
+  /* The thumb is a quiet base-colored fill, so it gets the base shine. */
+  --_shine-height: var(--_thumb-size);
+  --_shine-color: var(--tm-highlight-base);
+  --_glow-color: var(--tm-glow-base);
+  box-shadow: var(--_shine), var(--tm-elevation-1);
   transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard);
 }
-.tm-switch:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action-active); }
-.tm-switch:checked::before { background-color: var(--tm-on-fill-action); transform: translateX(calc(var(--_switch-height) * 0.7)); }
+.tm-switch:checked { background: var(--tm-fill-action); border-color: var(--tm-fill-action-active); --_shine-height: var(--_switch-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
+.tm-switch:checked::before { background-color: var(--tm-on-fill-action); box-shadow: var(--tm-elevation-1); transform: translateX(calc(var(--_switch-height) * 0.7)); }
 
 /* ---- Card */
 
@@ -268,6 +296,10 @@
   padding: 0 max(0px, calc(var(--tm-space-sm) - var(--tm-border-width)));
   border: var(--tm-border-width) solid var(--tm-border-action);
   background: var(--tm-tint-action);
+  --_shine-height: calc(var(--tm-leading-md) - 2 * var(--_badge-margin));
+  --_shine-color: var(--tm-highlight-tint-action);
+  --_glow-color: var(--tm-glow-tint-action);
+  box-shadow: var(--_shine);
   color: var(--tm-on-tint-action);
   font-size: var(--tm-font-size-sm);
   font-weight: var(--tm-font-weight-medium);
@@ -285,7 +317,7 @@
 }
 /* In a stack, a badge keeps its own width (flex-start). In a row, it sits in the middle. */
 .tm-row > .tm-badge { align-self: center; }
-.tm-badge--solid { background: var(--tm-fill-action); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); }
+.tm-badge--solid { background: var(--tm-fill-action); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); }
 
 .tm-alert {
   display: flex;
@@ -312,6 +344,10 @@
   border-radius: max(var(--tm-radius-control), var(--tm-radius-sm));
   background: var(--tm-fill-action);
   background-image: var(--tm-gloss-action);
+  --_shine-height: var(--tm-control-height);
+  --_shine-color: var(--tm-highlight-action);
+  --_glow-color: var(--tm-glow-action);
+  box-shadow: var(--_shine);
   color: var(--tm-on-fill-action);
   font-weight: var(--tm-font-weight-bold);
   font-size: var(--tm-font-size-sm);
@@ -333,6 +369,10 @@
   border-radius: inherit;
   background: var(--tm-fill-action);
   background-image: var(--tm-gloss-action);
+  --_shine-height: var(--tm-space-sm);
+  --_shine-color: var(--tm-highlight-action);
+  --_glow-color: var(--tm-glow-action);
+  box-shadow: var(--_shine);
   transition: width var(--tm-duration-slow) var(--tm-ease-enter);
 }
 
@@ -394,7 +434,7 @@
 .tm-segmented button:last-child { border-start-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); border-end-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); }
 .tm-segmented button + button { box-shadow: inset var(--seg-bw) 0 var(--tm-border-base); }
 .tm-segmented button:hover { background-color: var(--tm-tint-action); color: var(--tm-on-tint-action); }
-.tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-gloss-action); color: var(--tm-on-fill-action); box-shadow: none; }
+.tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-gloss-action); color: var(--tm-on-fill-action); --_shine-height: var(--seg-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
 .tm-segmented button[aria-pressed="true"] + button { box-shadow: none; }
 .tm-segmented button:focus-visible { position: relative; z-index: 1; outline: var(--tm-focus-width) solid var(--tm-border-focus); outline-offset: 2px; }
 .tm-segmented[hidden] { display: none; }

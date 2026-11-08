@@ -73,8 +73,8 @@ test('the components read no token outside the contract', async () => {
 });
 
 test('check skips token definitions, and finds unknown and experimental reads', () => {
-  const css = ':root { --tm-bg-canvas: var(--tm-base-5); } a { color: var(--tm-fg-base); background: var(--tm-nope, red); box-shadow: var(--tm-highlight); }';
-  assert.deepEqual(checkCss(css), { unknown: ['nope'], experimental: ['highlight'], stable: ['fg-base'] });
+  const css = ':root { --tm-bg-canvas: var(--tm-base-5); } a { color: var(--tm-fg-base); background: var(--tm-nope, red); box-shadow: var(--tm-highlight-action); }';
+  assert.deepEqual(checkCss(css), { unknown: ['nope'], experimental: ['highlight-action'], stable: ['fg-base'] });
 });
 
 // A small JSON Schema validator: the keywords that inputs.schema.json uses, and no more.

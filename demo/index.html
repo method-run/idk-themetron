@@ -238,12 +238,12 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .pal-head { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-bottom: 6px; }
 .pal-head h3 { margin: 0; font-size: 15px; }
 .pal-head span { font-family: var(--mono); font-size: 12px; opacity: 0.7; }
-.swatches { display: grid; grid-template-columns: repeat(13, minmax(44px, 1fr)); gap: 3px; overflow-x: auto; }
-.sw { position: relative; height: 62px; border: 0; border-radius: 6px; padding: 5px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; font: 11px/1.2 var(--mono); cursor: pointer; text-align: left; }
+.swatches { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(30px, 1fr); gap: 3px; overflow-x: auto; }
+.sw { position: relative; height: 48px; min-width: 0; border: 0; border-radius: 6px; padding: 4px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; font: 11px/1.2 var(--mono); cursor: pointer; text-align: left; }
 .sw:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.sw b { font-size: 13px; font-weight: 500; }
-.sw .uses { position: absolute; right: 5px; bottom: 5px; font-size: 10px; opacity: 0.85; }
-.sw.key::after { content: ""; position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.sw b { font-size: 12px; font-weight: 500; }
+.sw .uses { font-size: 10px; opacity: 0.85; }
+.sw.key::after { content: ""; position: absolute; bottom: 6px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .sw.pick-a { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--ink); }
 .sw.pick-b { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--muted); }
 .compare { position: sticky; bottom: 12px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 10px 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
@@ -363,6 +363,7 @@ td code { font-family: var(--mono); font-size: 12px; }
         <button class="tm-button tm-button--lg" type="button">Large</button>
       </div>
       <div class="tm-row">
+        <button class="tm-button tm-button--quiet" type="button">Quiet</button>
         <button class="tm-button tm-button--soft" type="button">Soft</button>
         <button class="tm-button tm-button--outline" type="button">Outline</button>
         <button class="tm-button tm-button--ghost" type="button">Ghost</button>
@@ -372,6 +373,7 @@ td code { font-family: var(--mono); font-size: 12px; }
         <summary class="tm-small tm-muted">Inverted: class="tm-invert" shows a part in the other mode</summary>
         <div class="tm-row">
           <button class="tm-button tm-invert" type="button">Inverted</button>
+          <button class="tm-button tm-button--quiet tm-invert" type="button">Inverted quiet</button>
           <button class="tm-button tm-button--soft tm-invert" type="button">Inverted soft</button>
           <button class="tm-button tm-button--exact tm-invert" type="button">Inverted exact</button>
         </div>
