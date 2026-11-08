@@ -24,8 +24,8 @@
   --tm-font-body: Figtree, sans-serif;
   --tm-font-heading: Figtree, sans-serif;
   --tm-font-mono: monospace;
-  --tm-font-size-xs: 10px;
-  --tm-font-size-sm: 13px;
+  --tm-font-size-xs: 11px;
+  --tm-font-size-sm: 12px;
   --tm-font-size-md: 15px;
   --tm-font-size-lg: 18px;
   --tm-font-size-xl: 22px;
@@ -34,7 +34,7 @@
   --tm-font-weight-regular: 400;
   --tm-font-weight-medium: 500;
   --tm-font-weight-bold: 700;
-  --tm-line-height-body: 1.48;
+  --tm-line-height-body: 1.53;
   --tm-line-height-heading: 1.2;
   --tm-line-height-control: 1.25;
   --tm-leading-xs: 16px;
@@ -43,7 +43,7 @@
   --tm-leading-lg: 28px;
   --tm-leading-xl: 32px;
   --tm-leading-2xl: 40px;
-  --tm-leading-3xl: 44px;
+  --tm-leading-3xl: 48px;
   --tm-leading-tight-xs: 12px;
   --tm-leading-tight-sm: 16px;
   --tm-leading-tight-md: 20px;
@@ -130,8 +130,8 @@
   --tm-font-body: Figtree, sans-serif;
   --tm-font-heading: Figtree, sans-serif;
   --tm-font-mono: monospace;
-  --tm-font-size-xs: 10px;
-  --tm-font-size-sm: 13px;
+  --tm-font-size-xs: 11px;
+  --tm-font-size-sm: 12px;
   --tm-font-size-md: 15px;
   --tm-font-size-lg: 18px;
   --tm-font-size-xl: 22px;
@@ -140,7 +140,7 @@
   --tm-font-weight-regular: 400;
   --tm-font-weight-medium: 500;
   --tm-font-weight-bold: 700;
-  --tm-line-height-body: 1.48;
+  --tm-line-height-body: 1.53;
   --tm-line-height-heading: 1.2;
   --tm-line-height-control: 1.25;
   --tm-leading-xs: 16px;
@@ -149,7 +149,7 @@
   --tm-leading-lg: 28px;
   --tm-leading-xl: 32px;
   --tm-leading-2xl: 40px;
-  --tm-leading-3xl: 44px;
+  --tm-leading-3xl: 48px;
   --tm-leading-tight-xs: 12px;
   --tm-leading-tight-sm: 16px;
   --tm-leading-tight-md: 20px;
@@ -236,8 +236,8 @@
   --tm-font-body: Figtree, sans-serif;
   --tm-font-heading: Figtree, sans-serif;
   --tm-font-mono: monospace;
-  --tm-font-size-xs: 10px;
-  --tm-font-size-sm: 13px;
+  --tm-font-size-xs: 11px;
+  --tm-font-size-sm: 12px;
   --tm-font-size-md: 15px;
   --tm-font-size-lg: 18px;
   --tm-font-size-xl: 22px;
@@ -246,7 +246,7 @@
   --tm-font-weight-regular: 400;
   --tm-font-weight-medium: 500;
   --tm-font-weight-bold: 700;
-  --tm-line-height-body: 1.48;
+  --tm-line-height-body: 1.53;
   --tm-line-height-heading: 1.2;
   --tm-line-height-control: 1.25;
   --tm-leading-xs: 16px;
@@ -255,7 +255,7 @@
   --tm-leading-lg: 28px;
   --tm-leading-xl: 32px;
   --tm-leading-2xl: 40px;
-  --tm-leading-3xl: 44px;
+  --tm-leading-3xl: 48px;
   --tm-leading-tight-xs: 12px;
   --tm-leading-tight-sm: 16px;
   --tm-leading-tight-md: 20px;
@@ -342,8 +342,8 @@
   --tm-font-body: Figtree, sans-serif;
   --tm-font-heading: Figtree, sans-serif;
   --tm-font-mono: monospace;
-  --tm-font-size-xs: 10px;
-  --tm-font-size-sm: 13px;
+  --tm-font-size-xs: 11px;
+  --tm-font-size-sm: 12px;
   --tm-font-size-md: 15px;
   --tm-font-size-lg: 18px;
   --tm-font-size-xl: 22px;
@@ -352,7 +352,7 @@
   --tm-font-weight-regular: 400;
   --tm-font-weight-medium: 500;
   --tm-font-weight-bold: 700;
-  --tm-line-height-body: 1.48;
+  --tm-line-height-body: 1.53;
   --tm-line-height-heading: 1.2;
   --tm-line-height-control: 1.25;
   --tm-leading-xs: 16px;
@@ -361,7 +361,7 @@
   --tm-leading-lg: 28px;
   --tm-leading-xl: 32px;
   --tm-leading-2xl: 40px;
-  --tm-leading-3xl: 44px;
+  --tm-leading-3xl: 48px;
   --tm-leading-tight-xs: 12px;
   --tm-leading-tight-sm: 16px;
   --tm-leading-tight-md: 20px;
@@ -448,8 +448,8 @@
   --tm-font-body: Figtree, sans-serif;
   --tm-font-heading: Fraunces, serif;
   --tm-font-mono: monospace;
-  --tm-font-size-xs: 10px;
-  --tm-font-size-sm: 13px;
+  --tm-font-size-xs: 11px;
+  --tm-font-size-sm: 12px;
   --tm-font-size-md: 15px;
   --tm-font-size-lg: 18px;
   --tm-font-size-xl: 22px;
@@ -458,7 +458,7 @@
   --tm-font-weight-regular: 400;
   --tm-font-weight-medium: 500;
   --tm-font-weight-bold: 700;
-  --tm-line-height-body: 1.48;
+  --tm-line-height-body: 1.53;
   --tm-line-height-heading: 1.2;
   --tm-line-height-control: 1.25;
   --tm-leading-xs: 16px;
@@ -467,7 +467,7 @@
   --tm-leading-lg: 28px;
   --tm-leading-xl: 32px;
   --tm-leading-2xl: 40px;
-  --tm-leading-3xl: 44px;
+  --tm-leading-3xl: 48px;
   --tm-leading-tight-xs: 12px;
   --tm-leading-tight-sm: 16px;
   --tm-leading-tight-md: 20px;

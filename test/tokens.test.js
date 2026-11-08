@@ -134,6 +134,18 @@ test('feels change the primitives', () => {
   assert.equal(p({ roundness: 0 }).radius.control, 0);
   assert.equal(p({ roundness: 1 }).radius.control, p({ roundness: 1 }).control.height / 2);
   assert.equal(p({ shininess: 0.4 }).shininess, 0.4);
+  // Type variance: small text stays at 11 px or more, body text at 15 or 16, and every larger
+  // size only grows. The default keeps the classic 1.2 scale.
+  let last = null;
+  for (let i = 0; i <= 20; i++) {
+    const v = i / 20;
+    const size = buildThemes({ themes: { default: { typeVariance: v } } }).themes.default.primitives.font.size;
+    assert.ok(size.sm >= 11 && size.sm <= 13 && size.xs >= 11, `small text at ${v}`);
+    assert.ok(size.md === 15 || size.md === 16, `body text at ${v}`);
+    if (last) for (const k of ['md', 'lg', 'xl', '2xl', '3xl']) assert.ok(size[k] >= last[k], `${k} grows at ${v}`);
+    last = size;
+  }
+  assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 15, lg: 18, xl: 22, '2xl': 26, '3xl': 31 });
   // Removed feels still load, and change nothing.
   assert.deepEqual(p({ thickness: 0, depth: 1, softness: 0, solidity: 0, bounciness: 1, snappiness: 1 }), p({}));
 });

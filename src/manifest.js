@@ -3,7 +3,7 @@
 // `npm run spec` writes them to spec/. A test fails when the files and the code differ.
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
-import { FEELS, REMOVED_FEELS, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME } from './inputs.js';
+import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME } from './inputs.js';
 
 // The version of the token contract. It is not the package version.
 // Major: a stable token is removed or renamed, or its type or meaning changes.
@@ -210,6 +210,10 @@ export function inputsSchema() {
           font: { $ref: '#/$defs/font' },
           headingFont: { $ref: '#/$defs/font' },
           monoFont: { $ref: '#/$defs/font' },
+          typeVariance: {
+            description: `${TYPE_VARIANCE.label}: how fast text grows above body size, a number from 0 to 1 or a word for one. Small and body text barely move. From the parent if not set.`,
+            anyOf: [{ type: 'number', minimum: 0, maximum: 1 }, enumOf(Object.keys(TYPE_VARIANCE.stops))],
+          },
           preset: { ...enumOf(Object.keys(PRESETS)), description: 'A set of feels. The theme\'s own feels override it.' },
           feel: {
             type: 'object',

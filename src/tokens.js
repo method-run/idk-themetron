@@ -43,7 +43,6 @@ function buildLevel(settings, palettes, variant = false) {
 const BORDER_WIDTH = 1;
 // The grid square, in px, and the body text size, until typography settings set it.
 const GRID = 4;
-const FONT_SIZE = 15;
 const MOTION = {
   duration: { fast: 130, base: 220, slow: 370 },
   easing: { standard: [0.3, 0, 0.45, 1], enter: [0.25, 1, 0.64, 1], exit: [0.4, 0, 1, 1] },
@@ -65,6 +64,7 @@ const FLAT = { panelAlpha: 1, panelAlphaInverted: 1, fillAlpha: 1, fillAlphaInve
 
 export function buildPrimitives(settings, palettes, gaps) {
   const { spaciousness: s, roundness: r, shininess: sh } = settings.feel;
+  const v = settings.typeVariance;
 
   // The grid: an invisible grid of GRID px squares, down and across. Its size never changes.
   // Space steps, line heights, and the heights of parts (with their borders) are whole
@@ -78,9 +78,12 @@ export function buildPrimitives(settings, palettes, gaps) {
   const squares = (x) => Math.max(1, Math.round(x));
   const space = Object.fromEntries(Object.entries({ xs: 0.32, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
 
-  // Text sizes do not change with spaciousness. Typography settings will set them.
-  const fontSize = Object.fromEntries(Object.entries({ xs: -2, sm: -1, md: 0, lg: 1, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, step]) => [k, Math.round(FONT_SIZE * 1.2 ** step)]));
-  const bodyRatio = round(1.35 + 0.25 * s);
+  // Text sizes come from the type variance (a typography setting), not from spaciousness. Small and body text barely
+  // move: small text is 13, 12, then 11 px, and body text is 15 px, then 16 px in the top
+  // quarter. Larger text grows by a ratio for each step, from 1.125 through 1.2 (the default)
+  // to 1.5, so headings spread out as the variance grows.
+  const fontSize = typeSizes(v);
+  const bodyRatio = round(1.4 + 0.25 * s);
   const tightRatio = round(1.15 + 0.1 * s);
   // A line height for each size: the nearest whole number of squares, and never less than the
   // size. The grid does not change, and the ratios only grow with spaciousness, so line heights
@@ -431,6 +434,17 @@ function computed(dark, tokens) {
 }
 
 // ---- Helpers
+
+// Text sizes for a type variance from 0 to 1. Every size above body text only grows with it.
+function typeSizes(v) {
+  const sm = Math.round(13 - 2 * v);
+  const md = Math.round(15 + 2 * Math.max(0, v - 0.5));
+  // The heading ratio: 1.125 at 0, 1.2 at 0.5, and 1.5 at 1, even in log steps between.
+  const [from, to, t] = v <= 0.5 ? [1.125, 1.2, v / 0.5] : [1.2, 1.5, (v - 0.5) / 0.5];
+  const ratio = from * (to / from) ** t;
+  const up = (n) => Math.round(md * ratio ** n);
+  return { xs: Math.max(11, sm - 1), sm, md, lg: up(1), xl: up(2), '2xl': up(3), '3xl': up(4) };
+}
 
 // Stop grades, nearest to a grade first.
 function nearest(grade) {

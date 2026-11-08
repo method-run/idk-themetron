@@ -28,6 +28,7 @@
         "family": null,
         "fallback": "monospace"
       },
+      "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
         "spaciousness": 0.5,
@@ -59,6 +60,7 @@
         "family": null,
         "fallback": "monospace"
       },
+      "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
         "spaciousness": 0.5,
@@ -90,6 +92,7 @@
         "family": null,
         "fallback": "monospace"
       },
+      "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
         "spaciousness": 0.5,
@@ -121,6 +124,7 @@
         "family": null,
         "fallback": "monospace"
       },
+      "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
         "spaciousness": 0.5,
@@ -152,6 +156,7 @@
         "family": null,
         "fallback": "monospace"
       },
+      "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
         "spaciousness": 0.5,
@@ -183,6 +188,7 @@
         "family": null,
         "fallback": "monospace"
       },
+      "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
         "spaciousness": 0.5,

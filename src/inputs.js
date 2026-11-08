@@ -8,6 +8,9 @@ export const FEELS = {
   roundness: { label: 'Roundness', default: 0.35, stops: { square: 0, slight: 0.25, rounded: 0.5, round: 0.75, pill: 1 } },
   shininess: { label: 'Shininess', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
 };
+// Typography: how fast text grows above body size, from 0 to 1. Not a feel: it sits with the
+// fonts, and presets do not set it. A word from `stops` can stand for its number.
+export const TYPE_VARIANCE = { label: 'Type variance', default: 0.5, stops: { flat: 0, gentle: 0.25, classic: 0.5, bold: 0.75, dramatic: 1 } };
 // Feels that are gone for now. Old inputs that set them still load: the engine skips them.
 export const REMOVED_FEELS = ['thickness', 'depth', 'softness', 'solidity', 'bounciness', 'snappiness', 'tone'];
 
@@ -27,7 +30,7 @@ export const PRESETS = {
 export const ROOT = 'default';
 // A feel set to this takes the parent's value, even when the theme has a preset.
 export const INHERIT = 'inherit';
-export const THEME_FIELDS = ['parent', 'label', 'base', 'action', 'color', 'font', 'headingFont', 'monoFont', 'preset', 'feel', 'contrast'];
+export const THEME_FIELDS = ['parent', 'label', 'base', 'action', 'color', 'font', 'headingFont', 'monoFont', 'typeVariance', 'preset', 'feel', 'contrast'];
 export const FONT_FIELDS = ['font', 'headingFont', 'monoFont'];
 // APCA keeps the WCAG 2 minimums as a floor, so it is always at least as strict.
 export const CONTRAST_METHODS = ['wcag', 'apca'];
@@ -56,6 +59,7 @@ export const ROOT_DEFAULTS = {
   // The browser's own default fonts. A theme adds a web font only when it names one.
   font: { family: null, fallback: 'sans-serif' },
   monoFont: { family: null, fallback: 'monospace' },
+  typeVariance: TYPE_VARIANCE.default,
   preset: 'balanced',
   contrast: { method: 'wcag', level: 'standard', model: 'oklch' },
 };
@@ -133,6 +137,9 @@ export function normalizeInputs(raw = {}) {
       if (PRESETS[t.preset]) own.preset = t.preset;
       else fail(`${at}.preset: unknown preset "${t.preset}". Use one of: ${Object.keys(PRESETS).join(', ')}.`);
     }
+    if ('typeVariance' in t) own.typeVariance = varianceField(t.typeVariance, `${at}.typeVariance`, fail);
+    // Type variance was a feel for a short while. A saved playground can still have it there.
+    else if (t.feel?.variance !== undefined && t.feel.variance !== INHERIT) own.typeVariance = varianceField(t.feel.variance, `${at}.feel.variance`, fail);
     if ('feel' in t) own.feel = feelField(t.feel, `${at}.feel`, fail);
     if ('contrast' in t) own.contrast = contrastField(t.contrast, `${at}.contrast`, fail);
     themes[name] = own;
@@ -188,6 +195,7 @@ function resolveTheme(name, own, parent) {
     // The heading font follows the nearest theme that sets either font.
     headingFont: own.headingFont ?? own.font ?? from.headingFont,
     monoFont: own.monoFont ?? from.monoFont,
+    typeVariance: own.typeVariance ?? from.typeVariance,
     preset,
     feel,
     contrast: { ...from.contrast, ...own.contrast },
@@ -238,7 +246,7 @@ function feelField(value, at, fail) {
   const out = {};
   if (!value || typeof value !== 'object') { fail(`${at}: use an object of feels.`); return out; }
   for (const [name, raw] of Object.entries(value)) {
-    if (REMOVED_FEELS.includes(name)) continue;
+    if (REMOVED_FEELS.includes(name) || name === 'variance') continue;
     const spec = FEELS[name];
     if (!spec) { fail(`${at}.${name}: unknown feel. Use one of: ${Object.keys(FEELS).join(', ')}.`); continue; }
     let n = raw;
@@ -271,7 +279,15 @@ function contrastField(value, at, fail) {
 }
 
 // The word for a feel value: the nearest stop.
+function varianceField(raw, at, fail) {
+  const n = typeof raw === 'string' ? TYPE_VARIANCE.stops[raw] : raw;
+  if (typeof n === 'number' && n >= 0 && n <= 1) return n;
+  fail(`${at}: use a number from 0 to 1, or one of: ${Object.keys(TYPE_VARIANCE.stops).join(', ')}.`);
+  return undefined;
+}
+
+// The word nearest to a value: of a feel, or of the type variance ("typeVariance").
 export function feelWord(name, value) {
-  const stops = Object.entries(FEELS[name].stops);
+  const stops = Object.entries((name === 'typeVariance' ? TYPE_VARIANCE : FEELS[name]).stops);
   return stops.reduce((best, s) => (Math.abs(s[1] - value) < Math.abs(best[1] - value) ? s : best))[0];
 }

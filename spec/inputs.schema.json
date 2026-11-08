@@ -110,6 +110,25 @@
         "monoFont": {
           "$ref": "#/$defs/font"
         },
+        "typeVariance": {
+          "description": "Type variance: how fast text grows above body size, a number from 0 to 1 or a word for one. Small and body text barely move. From the parent if not set.",
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "enum": [
+                "flat",
+                "gentle",
+                "classic",
+                "bold",
+                "dramatic"
+              ]
+            }
+          ]
+        },
         "preset": {
           "enum": [
             "balanced",

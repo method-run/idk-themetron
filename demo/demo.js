@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -137,11 +137,11 @@ const SECTIONS = [
   ['contrast', 'Contrast', ['contrast']],
   ['base', 'Base color', ['base']],
   ['color', 'Action color', ['action']],
-  ['fonts', 'Fonts', ['font', 'headingFont', 'monoFont']],
+  ['fonts', 'Typography', ['font', 'headingFont', 'monoFont', 'typeVariance']],
   ['feel', 'Feel', ['preset', 'feel']],
 ];
 // Sections that the playground does not show for now. Their values still load and apply.
-const HIDDEN_SECTIONS = ['fonts'];
+const HIDDEN_SECTIONS = [];
 // Sections that a child shows: the ones it overrides, and the ones you just added.
 const added = {};
 const shows = (name, key) => name === ROOT || key === 'color' || (added[name]?.has(key) ?? false) || SECTIONS.find((s) => s[0] === key)[2].some((f) => f in state.themes[name]);
@@ -361,7 +361,7 @@ const SECTION_CONTROLS = {
         onchange: (e) => setFont(field, e.target.value.trim()),
       }),
       el('button', { class: 'x', type: 'button', id: `font-x-${field}`, 'aria-label': `Clear the ${label.toLowerCase()} font`, title: 'Clear', onclick: () => setFont(field, '') }, '×'),
-    ));
+    )).concat(varianceFader());
   },
   feel: () => [
     // Apply a preset: a one-time stamp. It sets every feel as the theme's own, and the theme
@@ -411,6 +411,22 @@ function unsetFeel(name) {
   if (Object.keys(feel).length) mine.feel = feel;
   else delete mine.feel;
   update();
+}
+
+// The type variance: a slider like a feel's, in the typography section.
+function varianceFader() {
+  const spec = TYPE_VARIANCE;
+  const setVariance = (v) => { own().typeVariance = v; update(); };
+  return el('div', { class: 'fader', 'data-fader': 'typeVariance' },
+    el('div', { class: 'fader-head' }, el('label', { for: 'type-variance' }, spec.label),
+      el('span', { class: 'fader-right' }, el('output', { id: 'out-typeVariance', for: 'type-variance' }),
+        el('button', { class: 'x', type: 'button', id: 'variance-x', 'aria-label': "Use the parent's type variance", title: "Use the parent's value", onclick: () => { delete own().typeVariance; update(); } }, '×'))),
+    el('div', { class: 'fader-hint' }, 'How fast headings grow. Small and body text barely move.'),
+    el('input', { type: 'range', id: 'type-variance', min: 0, max: 100, step: 1, oninput: (e) => setVariance(Number(e.target.value) / 100) }),
+    el('div', { class: 'words' }, ...Object.entries(spec.stops).map(([word, value]) => el('button', {
+      type: 'button', style: `left: ${value * 100}%`, 'data-word': word, onclick: () => setVariance(value),
+    }, word))),
+  );
 }
 
 const BROWSER_FONT = 'Browser default';
@@ -511,6 +527,17 @@ function renderControlsState() {
     const shown = sameAsBody ? 'Same as body' : font.family ? font.family : `Browser ${font.fallback}`;
     input.placeholder = shown + (isRoot() || sameAsBody ? '' : fromParent);
     $(`#font-x-${field}`).hidden = !(field in mine);
+  }
+
+  if ($('#type-variance')) {
+    const value = settings.typeVariance;
+    const word = feelWord('typeVariance', value);
+    const size = theme.primitives.font.size;
+    $('#type-variance').value = Math.round(value * 100);
+    $('#out-typeVariance').textContent = `${word} · ${value.toFixed(2)} · h1 ${size['3xl']} px`;
+    document.querySelector('[data-fader="typeVariance"]').classList.toggle('own-feel', 'typeVariance' in mine);
+    $('#variance-x').hidden = !('typeVariance' in mine);
+    for (const b of document.querySelectorAll('#type-variance ~ .words button')) b.setAttribute('aria-current', String(b.dataset.word === word));
   }
 
   if ($('#preset-menu')) {

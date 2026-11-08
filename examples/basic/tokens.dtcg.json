@@ -294,14 +294,14 @@
           "xs": {
             "$type": "dimension",
             "$value": {
-              "value": 10,
+              "value": 11,
               "unit": "px"
             }
           },
           "sm": {
             "$type": "dimension",
             "$value": {
-              "value": 13,
+              "value": 12,
               "unit": "px"
             }
           },
@@ -358,7 +358,7 @@
         "lineHeight": {
           "body": {
             "$type": "number",
-            "$value": 1.48
+            "$value": 1.53
           },
           "heading": {
             "$type": "number",
@@ -415,7 +415,7 @@
           "3xl": {
             "$type": "dimension",
             "$value": {
-              "value": 44,
+              "value": 48,
               "unit": "px"
             }
           }
@@ -3238,14 +3238,14 @@
           "xs": {
             "$type": "dimension",
             "$value": {
-              "value": 10,
+              "value": 11,
               "unit": "px"
             }
           },
           "sm": {
             "$type": "dimension",
             "$value": {
-              "value": 13,
+              "value": 12,
               "unit": "px"
             }
           },
@@ -3302,7 +3302,7 @@
         "lineHeight": {
           "body": {
             "$type": "number",
-            "$value": 1.48
+            "$value": 1.53
           },
           "heading": {
             "$type": "number",
@@ -3359,7 +3359,7 @@
           "3xl": {
             "$type": "dimension",
             "$value": {
-              "value": 44,
+              "value": 48,
               "unit": "px"
             }
           }
@@ -6182,14 +6182,14 @@
           "xs": {
             "$type": "dimension",
             "$value": {
-              "value": 10,
+              "value": 11,
               "unit": "px"
             }
           },
           "sm": {
             "$type": "dimension",
             "$value": {
-              "value": 13,
+              "value": 12,
               "unit": "px"
             }
           },
@@ -6246,7 +6246,7 @@
         "lineHeight": {
           "body": {
             "$type": "number",
-            "$value": 1.48
+            "$value": 1.53
           },
           "heading": {
             "$type": "number",
@@ -6303,7 +6303,7 @@
           "3xl": {
             "$type": "dimension",
             "$value": {
-              "value": 44,
+              "value": 48,
               "unit": "px"
             }
           }
@@ -9126,14 +9126,14 @@
           "xs": {
             "$type": "dimension",
             "$value": {
-              "value": 10,
+              "value": 11,
               "unit": "px"
             }
           },
           "sm": {
             "$type": "dimension",
             "$value": {
-              "value": 13,
+              "value": 12,
               "unit": "px"
             }
           },
@@ -9190,7 +9190,7 @@
         "lineHeight": {
           "body": {
             "$type": "number",
-            "$value": 1.48
+            "$value": 1.53
           },
           "heading": {
             "$type": "number",
@@ -9247,7 +9247,7 @@
           "3xl": {
             "$type": "dimension",
             "$value": {
-              "value": 44,
+              "value": 48,
               "unit": "px"
             }
           }
@@ -12070,14 +12070,14 @@
           "xs": {
             "$type": "dimension",
             "$value": {
-              "value": 10,
+              "value": 11,
               "unit": "px"
             }
           },
           "sm": {
             "$type": "dimension",
             "$value": {
-              "value": 13,
+              "value": 12,
               "unit": "px"
             }
           },
@@ -12134,7 +12134,7 @@
         "lineHeight": {
           "body": {
             "$type": "number",
-            "$value": 1.48
+            "$value": 1.53
           },
           "heading": {
             "$type": "number",
@@ -12191,7 +12191,7 @@
           "3xl": {
             "$type": "dimension",
             "$value": {
-              "value": 44,
+              "value": 48,
               "unit": "px"
             }
           }
@@ -15014,14 +15014,14 @@
           "xs": {
             "$type": "dimension",
             "$value": {
-              "value": 10,
+              "value": 11,
               "unit": "px"
             }
           },
           "sm": {
             "$type": "dimension",
             "$value": {
-              "value": 13,
+              "value": 12,
               "unit": "px"
             }
           },
@@ -15078,7 +15078,7 @@
         "lineHeight": {
           "body": {
             "$type": "number",
-            "$value": 1.48
+            "$value": 1.53
           },
           "heading": {
             "$type": "number",
@@ -15135,7 +15135,7 @@
           "3xl": {
             "$type": "dimension",
             "$value": {
-              "value": 44,
+              "value": 48,
               "unit": "px"
             }
           }

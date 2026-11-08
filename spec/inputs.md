@@ -77,6 +77,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 | `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback" }`. A string sets only `family`. |
 | `headingFont` | `font` | The font for headings. |
 | `monoFont` | The browser's default `monospace` font | The font for code. |
+| `typeVariance` | `0.5` (`classic`) | How fast text grows above body size, from 0 to 1, or a word: `flat`, `gentle`, `classic`, `bold`, `dramatic`. Small and body text barely move. Not a feel: presets do not set it. See [Type sizes](#type-sizes). |
 | `preset` | `balanced` | A set of feels. See [Presets](#presets). |
 | `feel` | The preset's values | The feels. See [Feels](#feels). |
 | `contrast` | `{ "method": "wcag" }` | The contrast standard. See [Contrast](#contrast). |
@@ -113,7 +114,7 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 |---|---|---|---|---|
 | `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | How many grid squares padding, gaps, and line heights take. The grid itself is always 4 px. |
 | `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
-| `shininess` | Matte | matte, satin, plastic, glassy | Glass | A gloss on buttons, switch thumbs, and bars |
+| `shininess` | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts: a gradient, an edge band, and a glow, from the part's own ramp |
 
 The other feels (`thickness`, `depth`, `softness`, `solidity`, `bounciness`, and `snappiness`) are removed for now. They will come back one at a time. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, the tokens that they set have fixed values: 1 px borders, no shadows and no lift on hover, opaque parts with no blur, and motion with no overshoot.
 
@@ -140,8 +141,8 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 
 - Grid: 4 px squares, down and across, for every theme. The `rhythm` token holds it.
 - Space unit: `2 + 4 s` squares (8 to 24 px). The space scale is 0.32, ½, 1, 1½, 2, 3, and 4 units. The `xs` step is 0.32, not ¼, so that it grows at about spaciousness 0.67, not only at 1. Each step rounds to whole squares on its own, and is at least one square. So the steps change at different points along the slider.
-- Text size: 15 px body, on a 1.2 scale. Spaciousness does not change it.
-- Line heights: for each text size, the whole number of squares nearest to the size × `1.35 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
+- Text sizes do not change with any feel. See [Type sizes](#type-sizes).
+- Line heights: for each text size, the whole number of squares nearest to the size × `1.4 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
 - Controls: a tight line, plus padding and border that add up to whole squares. The padding is 0.45 of a space unit down, and 0.95 across, rounded to whole squares. These factors differ from the space steps' factors, so the padding and the space steps grow at different points along the slider. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.
 - Radius: a share of the most that each part can round. Controls: `r × height ÷ 2`, for each control size, so `r = 1` makes every size a pill. Cards: `r ×` their padding (`space.lg`). Alerts and text areas: `r × space.md`. Small parts: `r × space.xs`. So a corner never cuts into the content. Badges, switches, and progress bars round by `r ×` their own height `÷ 2`, from the `roundness` token, so they too are pills only at `r = 1`.
 - Shine: from the fill's own ramp, not white. A gradient (a lighter rim and top, a darker shadow and bottom), a thin edge band, and a soft glow at the top. The shininess is their opacity, from none at 0. Each state of a button has its own shine grades, so the shine follows hover and press.
@@ -156,6 +157,18 @@ More about the feels: the [Feel audit](../docs/feel-audit.md "feel-audit") lists
 Words are easy to learn, but a slider needs numbers between the words. A number from 0 to 1 means the same thing for every feel, so a preset or another tool can set feels without knowing their units. The words are names for points on the scale. They do not limit the values.
 
 </details>
+
+## Type sizes
+
+The type variance `v` sets every text size. Small text is `round(13 − 2v)` px: 13, then 12 at the default, then 11 at the most. Body text is 15 px, or 16 px in the top quarter. Each step above body text is the step below it times a ratio: 1.125 at `v = 0`, 1.2 at the default, and 1.5 at `v = 1`, even in log steps between. `xs` is one pixel under small text, and at least 11 px.
+
+| `typeVariance` | `sm` | `md` | Ratio | h1 (`3xl`) |
+|---|---|---|---|---|
+| 0, flat | 13 | 15 | 1.125 | 24 |
+| 0.5, classic | 12 | 15 | 1.2 | 31 |
+| 1, dramatic | 11 | 16 | 1.5 | 81 |
+
+Every line height is still a whole number of grid squares, so the grid holds at every size. Small text stays at 11 px or more, and body text at 15 px or more: smaller text is not safe to read.
 
 ## Presets
 
