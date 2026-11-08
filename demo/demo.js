@@ -595,7 +595,8 @@ function renderPreviewBar() {
     chip('All', !preview.follow && shown.length === built.order.length, () => setShown([...built.order])),
     el('span', { class: 'sep' }),
     el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.grid), title: 'Show the rhythm grid. Shortcut: the period key.', onclick: toggleGrid }, 'Grid ·'),
-    el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.busy), title: 'Paint stripes and dots behind the samples, to see through see-through parts.', onclick: () => { pane.busy = !pane.busy; applyPane(); renderPreviewBar(); } }, 'Busy backdrop'),
+    el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.photo), title: 'Show a photo behind the samples, colored with each theme\'s ramps.', onclick: () => { pane.photo = !pane.photo; applyPane(); renderPreviewBar(); paintPhotos(); } }, 'Photo backdrop'),
+    ...(pane.photo ? photoSliders() : []),
   );
 }
 
@@ -621,6 +622,110 @@ function renderPreview() {
       return section;
     }));
   }
+  paintPhotos();
+}
+
+// ---- Photo backdrop: a photo behind each stage, as a gradient map of that theme's ramps.
+// Each pixel's lightness picks the grade with the same luminance, from the base ramp, the
+// action ramp, or a mix of the two. Contrast and brightness change the lightness first.
+// Each stage draws it on its own canvas. Blur is a CSS filter, so it needs no new image.
+const PHOTO = { hue: 0, blur: 8, contrast: 1, brightness: 0 };
+let photoPixels = null; // the photo's lightness, 0 to 1 (the cube root of its luminance)
+const photoImages = new Map(); // ramps and settings → the colored photo, as ImageData
+
+async function loadPhoto() {
+  if (photoPixels) return photoPixels;
+  const img = new Image();
+  await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = new URL('./backdrop.jpg', import.meta.url).href; });
+  const w = 960;
+  const h = Math.round((img.height * w) / img.width);
+  const canvas = Object.assign(document.createElement('canvas'), { width: w, height: h });
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, w, h);
+  const { data } = ctx.getImageData(0, 0, w, h);
+  const light = new Float32Array(w * h);
+  const lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+  for (let i = 0; i < light.length; i++) light[i] = Math.cbrt(0.2126 * lin(data[4 * i]) + 0.7152 * lin(data[4 * i + 1]) + 0.0722 * lin(data[4 * i + 2]));
+  photoPixels = { w, h, light };
+  return photoPixels;
+}
+
+// 1024 colors, one for each lightness: the grade with that luminance, between ramp steps, in
+// linear RGB. Grades of the same number have the same luminance in both ramps, so a linear mix
+// of the two keeps it.
+function photoLut(base, action) {
+  const lin = (hex) => [1, 3, 5].map((i) => { const c = parseInt(hex.slice(i, i + 2), 16) / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; });
+  const enc = (c) => Math.round(255 * (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055));
+  const ramps = [base, action].map((steps) => GRADES.map((g) => lin(steps[g])));
+  const lut = new Uint8ClampedArray(1024 * 3);
+  for (let i = 0; i < 1024; i++) {
+    const l = Math.min(1, Math.max(0, ((i / 1023 - 0.5) * PHOTO.contrast) + 0.5 + PHOTO.brightness));
+    const y = l ** 3;
+    const grade = Math.min(100, Math.max(0, (-100 * Math.log((y + 0.05) / 1.05)) / Math.log(21)));
+    const k = Math.min(GRADES.length - 2, Math.floor(grade / 5));
+    const f = grade / 5 - k;
+    const at = (ramp, ch) => ramp[k][ch] * (1 - f) + ramp[k + 1][ch] * f;
+    for (let ch = 0; ch < 3; ch++) lut[3 * i + ch] = enc(at(ramps[0], ch) * (1 - PHOTO.hue) + at(ramps[1], ch) * PHOTO.hue);
+  }
+  return lut;
+}
+
+async function photoImage(name) {
+  const { base, action } = built.themes[name].palettes;
+  const key = JSON.stringify([base.steps, action.steps, PHOTO.hue, PHOTO.contrast, PHOTO.brightness]);
+  if (photoImages.has(key)) return photoImages.get(key);
+  const { w, h, light } = await loadPhoto();
+  const lut = photoLut(base.steps, action.steps);
+  const out = new ImageData(w, h);
+  for (let i = 0; i < light.length; i++) {
+    const j = 3 * Math.round(light[i] * 1023);
+    out.data[4 * i] = lut[j]; out.data[4 * i + 1] = lut[j + 1]; out.data[4 * i + 2] = lut[j + 2]; out.data[4 * i + 3] = 255;
+  }
+  // Keep a few: old settings are rarely needed again.
+  if (photoImages.size > 24) photoImages.clear();
+  photoImages.set(key, out);
+  return out;
+}
+
+let photoRun = 0;
+async function paintPhotos() {
+  $('#previews').style.setProperty('--photo-blur', `${PHOTO.blur}px`);
+  if (!pane.photo) return;
+  const run = ++photoRun;
+  for (const stage of document.querySelectorAll('#previews .stage[data-stage-theme]')) {
+    const name = stage.dataset.stageTheme;
+    if (!built.themes[name]) continue;
+    const image = await photoImage(name);
+    if (run !== photoRun) return; // newer settings started painting
+    let canvas = stage.querySelector(':scope > canvas.stage-photo');
+    if (!canvas) { canvas = el('canvas', { class: 'stage-photo', 'aria-hidden': 'true' }); stage.prepend(canvas); }
+    if (canvas.width !== image.width) Object.assign(canvas, { width: image.width, height: image.height });
+    canvas.getContext('2d').putImageData(image, 0, 0);
+  }
+}
+
+// Sliders for the photo. Blur only changes CSS; the others color the photo again, at most once
+// per frame while you drag.
+let photoFrame = 0;
+function photoSliders() {
+  const slider = (label, key, min, max, step, show) => {
+    const out = el('output', {}, show(PHOTO[key]));
+    const input = el('input', { type: 'range', min, max, step, value: PHOTO[key], 'aria-label': label, oninput: (e) => {
+      PHOTO[key] = Number(e.target.value);
+      out.textContent = show(PHOTO[key]);
+      pane.photoSettings = { ...PHOTO };
+      store(PANE_KEY, pane);
+      cancelAnimationFrame(photoFrame);
+      photoFrame = requestAnimationFrame(paintPhotos);
+    } });
+    return el('label', { class: 'photo-slider' }, label, input, out);
+  };
+  return [
+    slider('Hue', 'hue', 0, 1, 0.05, (v) => (v === 0 ? 'base' : v === 1 ? 'action' : `${Math.round(v * 100)}% action`)),
+    slider('Blur', 'blur', 0, 40, 1, (v) => `${v}px`),
+    slider('Contrast', 'contrast', 0.2, 2, 0.05, (v) => `${Math.round(v * 100)}%`),
+    slider('Brightness', 'brightness', -0.5, 0.5, 0.02, (v) => `${v > 0 ? '+' : ''}${Math.round(v * 100)}`),
+  ];
 }
 
 // With more than one theme shown: each theme's button and a card, side by side,
@@ -755,7 +860,7 @@ function renderPalettes() {
         if (!ui.pickA || ui.pickB) { ui.pickA = id; ui.pickB = null; } else ui.pickB = id;
         renderPalettes();
       },
-    }, el('b', {}, g), tokens.length ? el('span', { class: 'uses', title: `Used by ${tokens.length} token${tokens.length > 1 ? 's' : ''}` }, `×${tokens.length}`) : null);
+    }, el('b', {}, g));
   };
   const hexOf = (id) => { const i = id.lastIndexOf('.'); return byId[id.slice(0, i)]?.steps[id.slice(i + 1)]; };
   const compare = () => {
@@ -993,7 +1098,8 @@ document.addEventListener('keydown', (e) => {
 // ---- The inputs pane: drag or arrow keys to resize, a button to hide it.
 
 const PANE_KEY = 'themetron-playground-pane';
-const pane = { width: 340, collapsed: false, grid: false, busy: false, closedSections: [], ...load(PANE_KEY) };
+const pane = { width: 340, collapsed: false, grid: false, photo: false, closedSections: [], ...load(PANE_KEY) };
+Object.assign(PHOTO, pane.photoSettings);
 const MIN_W = 260;
 const MAX_W = 640;
 function applyPane() {
@@ -1002,7 +1108,7 @@ function applyPane() {
   app.style.setProperty('--controls-w', `${pane.width}px`);
   app.classList.toggle('collapsed', pane.collapsed);
   $('#previews').classList.toggle('show-grid', pane.grid);
-  $('#previews').classList.toggle('busy-backdrop', pane.busy);
+  $('#previews').classList.toggle('photo-backdrop', pane.photo);
   $('#splitter').setAttribute('aria-valuenow', pane.width);
   // A chevron on screen, which CSS turns when the pane is hidden. The label says what it does.
   const label = pane.collapsed ? 'Show inputs' : 'Hide inputs';

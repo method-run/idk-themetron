@@ -52,6 +52,11 @@ const MOTION = {
 // moves with it, so the pair keeps its contrast.
 const STATE_GRADES = 10;
 const STATES = ['', '-hover', '-active'];
+// The shine's grades, in grade numbers from the fill: a rim and a top lighter than it, and a
+// shadow and a bottom darker. Lighter is a lower number in both modes. Tints get half the
+// distances, and the components draw them at half the opacity.
+const SHINE = { rim: -30, top: -20, shadow: 20, bottom: 10 };
+const TINT_SHINE = { rim: -15, top: -10, shadow: 10, bottom: 5 };
 // The grades that the rules other than states choose from: 10 apart, and 5 apart near white
 // and black. States use every grade in GRADES, 5 apart, so a tint at 5 has neighbors at 15
 // and 25.
@@ -142,6 +147,7 @@ export function buildPrimitives(settings, palettes, gaps) {
     radius,
     // The roundness itself, so that a part can round as a share of its own size in CSS.
     roundness: r,
+    shininess: sh,
     border: { width: borderWidth, focus: Math.max(2, borderWidth + 1) },
     motion: MOTION,
     effect: {
@@ -185,6 +191,14 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   };
   // A background and its label at rest, on hover, and while pressed. Hover moves the
   // background STATE_GRADES in direction dir, and press twice as far; the label follows.
+  // The shine grades of each state of a background, such as gloss.action-hover-rim for
+  // fill.action-hover, within [lo, hi].
+  const shine = (glossName, bgName, palette, offsets, lo, hi) => {
+    for (const state of STATES) {
+      const g = Number(tokens[`${bgName}${state}`].ref.split('.')[1]);
+      for (const [part, by] of Object.entries(offsets)) set(`${glossName}${state}-${part}`, palette, Math.min(hi, Math.max(lo, g + by)));
+    }
+  };
   // The label can come from another palette than the background.
   const states = (bgName, labelName, palette, bg, label, dir, labelPalette = palette) => {
     for (const [i, state] of STATES.entries()) {
@@ -271,10 +285,8 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     // text, so these grades need not pass with the label: the audit shows them, but does not
     // require them.
     // EXPERIMENT (shininess): the shape from docs/shine-notes.md, counted from the fill.
-    set(`gloss.${role}-rim`, palette, step(fill, -3));
-    set(`gloss.${role}-top`, palette, step(fill, -2));
-    set(`gloss.${role}-shadow`, palette, step(fill, 2));
-    set(`gloss.${role}-bottom`, palette, step(fill, 1));
+    // Each state has its own shine, counted from its own fill, so the shine follows the fill.
+    shine(`gloss.${role}`, `fill.${role}`, palette, SHINE, 5, 95);
 
     // Action tints are the faintest wash of the color. Base tints are one grade beyond the
     // surfaces, as the base color is already on them. Hover and active move toward the text,
@@ -293,9 +305,9 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const onTint = labelGrades.find((n) => test(palette.steps[n], palette.steps[tint], 'text') && followsToHover(n))
       ?? pick(palette, labelGrades, (hex) => test(hex, palette.steps[tint], 'text'), [palette.steps[tint]]);
     states(`tint.${role}`, `on-tint.${role}`, palette, tint, onTint, toward);
-    // The top edge of a tint catches the light too: one grade lighter than the tint. A tint
-    // can be near white, so this one may go to grade 0.
-    set(`gloss.tint-${role}-rim`, palette, STOPS[Math.max(0, STOPS.indexOf(tint) - 1)]);
+    // Tints shine too, more faintly. A tint can be near white or black, so its shine may go to
+    // grade 0 or 100.
+    shine(`gloss.tint-${role}`, `tint.${role}`, palette, TINT_SHINE, 0, 100);
 
     // Rest and hover must pass. Press lasts a moment: where the label has no room left to
     // follow (it is already white or black), the audit warns instead.
@@ -329,10 +341,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const label = candidates.find((n) => passesOn(n, fill) && passesOn(labelAfter(base, n, fill, hover), hover))
       ?? pick(base, candidates, (hex) => test(hex, base.steps[fill], 'text'), [base.steps[fill]]);
     states('fill.quiet', 'on-fill.quiet', base, fill, label, toward);
-    set('gloss.quiet-rim', base, step(fill, -3));
-    set('gloss.quiet-top', base, step(fill, -2));
-    set('gloss.quiet-shadow', base, step(fill, 2));
-    set('gloss.quiet-bottom', base, step(fill, 1));
+    shine('gloss.quiet', 'fill.quiet', base, SHINE, 5, 95);
     for (const state of STATES) {
       check(`on-fill.quiet${state}`, `fill.quiet${state}`, 'text', state !== '-active');
       if (state === '-active') audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
@@ -368,6 +377,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
         tokens[`fill.action-exact${state}`] = { ...tokens[`fill.action${state}`] };
         tokens[`on-fill.action-exact${state}`] = { ...tokens[`on-fill.action${state}`] };
       }
+      for (const state of STATES) for (const part of Object.keys(SHINE)) tokens[`gloss.action-exact${state}-${part}`] = { ...tokens[`gloss.action${state}-${part}`] };
     } else {
       const fill = dark ? lighter : darker;
       tokens['fill.action-exact'] = fill;
@@ -387,6 +397,13 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
         set(`fill.action-exact${state}`, action, to);
         if (to === from) tokens[`on-fill.action-exact${state}`] = { ...label };
         else set(`on-fill.action-exact${state}`, action, labelAfter(action, labelGrade, from, to));
+      }
+      // The same shine as solid fills, counted from where each state's fill sits: the key
+      // color's own grade at rest, rounded to the nearest grade. It can reach white and black,
+      // so a black fill has no shadow below it, and a white fill no highlight above it.
+      for (const [i, state] of STATES.entries()) {
+        const g = i ? Number(tokens[`fill.action-exact${state}`].ref.split('.')[1]) : from;
+        for (const [part, by] of Object.entries(SHINE)) set(`gloss.action-exact${state}-${part}`, action, Math.min(100, Math.max(0, Math.round((g + by) / 5) * 5)));
       }
     }
     tokens['border.action-exact'] = test(action.key, tokens['bg.canvas'].value, 'ui') ? key : { ...tokens['border.base'] };

@@ -132,6 +132,15 @@ export function tokenManifest() {
       ...(MEANING[name] ? { meaning: MEANING[name] } : {}),
     };
   }
+  // The shared shine is defined on every element, not per theme: see shineRules in export.js.
+  tokens['shine-image'] = {
+    tier: 'semantic',
+    type: 'gradient',
+    modes: false,
+    global: true,
+    stability: 'experimental',
+    meaning: 'The shine gradient, built on each element from the four colors it sets: --tm-shine-rim, --tm-shine-top, --tm-shine-shadow, and --tm-shine-bottom, usually the gloss grades of its state. Its opacity is --tm-shininess times --tm-shine-strength (1 by default). The colors are registered with @property, so a change of state animates.',
+  };
   return {
     contract: CONTRACT_VERSION,
     prefix: 'tm',

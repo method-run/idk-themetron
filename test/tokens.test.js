@@ -65,7 +65,8 @@ test('every theme class sets every token once, and themes with the same values s
   const names = (body) => [...body.matchAll(/--tm-([a-z0-9-]+):/g)].map((m) => m[1]);
   for (const name of built.order) {
     const set = rules.filter(([sels]) => sels.includes(`.theme-${name}`)).flatMap(([, body]) => names(body));
-    assert.deepEqual(set.sort(), Object.keys(tokens).sort(), `theme-${name}`);
+    // Global tokens, such as the shared shine, are set once for every element, not per theme.
+    assert.deepEqual(set.sort(), Object.keys(tokens).filter((n) => !tokens[n].global).sort(), `theme-${name}`);
   }
   // brand keeps default's base, so they share the rule that sets the backgrounds. danger does not.
   const [sels] = rules.find(([s, body]) => s.includes('.theme-default') && names(body).includes('bg-canvas'));

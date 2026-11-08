@@ -4,6 +4,12 @@
 [data-tm-mode="light"] { color-scheme: light; }
 [data-tm-mode="dark"] { color-scheme: dark; }
 
+@property --tm-shine-rim { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --tm-shine-top { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --tm-shine-shadow { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --tm-shine-bottom { syntax: '<color>'; inherits: true; initial-value: transparent; }
+:where(*) { --tm-shine-image: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-shine-rim) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 80%), transparent) 0%, color-mix(in oklch, var(--tm-shine-top) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 80%), transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-shine-shadow) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 100%), transparent) 80%, color-mix(in oklch, var(--tm-shine-bottom) calc(var(--tm-shininess, 0) * var(--tm-shine-strength, 1) * 50%), transparent) 100%); }
+
 .tm-invert { color-scheme: dark; }
 @media (prefers-color-scheme: dark) { .tm-invert { color-scheme: light; } }
 @scope ([data-tm-mode="light"]) { .tm-invert { color-scheme: dark; } }
@@ -66,6 +72,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -86,7 +93,18 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-5), var(--tm-base-70));
+  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-0), var(--tm-base-65));
+  --tm-gloss-tint-base-top: light-dark(var(--tm-base-0), var(--tm-base-70));
+  --tm-gloss-tint-base-shadow: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-tint-base-bottom: light-dark(var(--tm-base-15), var(--tm-base-85));
+  --tm-gloss-tint-base-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-55));
+  --tm-gloss-tint-base-hover-top: light-dark(var(--tm-base-10), var(--tm-base-60));
+  --tm-gloss-tint-base-hover-shadow: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-tint-base-hover-bottom: light-dark(var(--tm-base-25), var(--tm-base-75));
+  --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-45));
+  --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-50));
+  --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-70));
+  --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-65));
   --tm-elevation-1: 0 0 #0000;
   --tm-elevation-2: 0 0 #0000;
   --tm-elevation-3: 0 0 #0000;
@@ -161,6 +179,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -181,7 +200,18 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-5), var(--tm-base-70));
+  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-0), var(--tm-base-65));
+  --tm-gloss-tint-base-top: light-dark(var(--tm-base-0), var(--tm-base-70));
+  --tm-gloss-tint-base-shadow: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-tint-base-bottom: light-dark(var(--tm-base-15), var(--tm-base-85));
+  --tm-gloss-tint-base-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-55));
+  --tm-gloss-tint-base-hover-top: light-dark(var(--tm-base-10), var(--tm-base-60));
+  --tm-gloss-tint-base-hover-shadow: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-tint-base-hover-bottom: light-dark(var(--tm-base-25), var(--tm-base-75));
+  --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-45));
+  --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-50));
+  --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-70));
+  --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-65));
   --tm-elevation-1: 0 0 #0000;
   --tm-elevation-2: 0 0 #0000;
   --tm-elevation-3: 0 0 #0000;
@@ -256,6 +286,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -276,7 +307,18 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-5), var(--tm-base-70));
+  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-0), var(--tm-base-65));
+  --tm-gloss-tint-base-top: light-dark(var(--tm-base-0), var(--tm-base-70));
+  --tm-gloss-tint-base-shadow: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-tint-base-bottom: light-dark(var(--tm-base-15), var(--tm-base-85));
+  --tm-gloss-tint-base-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-55));
+  --tm-gloss-tint-base-hover-top: light-dark(var(--tm-base-10), var(--tm-base-60));
+  --tm-gloss-tint-base-hover-shadow: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-tint-base-hover-bottom: light-dark(var(--tm-base-25), var(--tm-base-75));
+  --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-45));
+  --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-50));
+  --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-70));
+  --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-65));
   --tm-elevation-1: 0 0 #0000;
   --tm-elevation-2: 0 0 #0000;
   --tm-elevation-3: 0 0 #0000;
@@ -351,6 +393,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -371,7 +414,18 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-5), var(--tm-base-70));
+  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-0), var(--tm-base-65));
+  --tm-gloss-tint-base-top: light-dark(var(--tm-base-0), var(--tm-base-70));
+  --tm-gloss-tint-base-shadow: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-tint-base-bottom: light-dark(var(--tm-base-15), var(--tm-base-85));
+  --tm-gloss-tint-base-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-55));
+  --tm-gloss-tint-base-hover-top: light-dark(var(--tm-base-10), var(--tm-base-60));
+  --tm-gloss-tint-base-hover-shadow: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-tint-base-hover-bottom: light-dark(var(--tm-base-25), var(--tm-base-75));
+  --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-45));
+  --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-50));
+  --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-70));
+  --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-65));
   --tm-elevation-1: 0 0 #0000;
   --tm-elevation-2: 0 0 #0000;
   --tm-elevation-3: 0 0 #0000;
@@ -446,6 +500,7 @@
   --tm-radius-control-lg: 22px;
   --tm-radius-full: 9999px;
   --tm-roundness: 1;
+  --tm-shininess: 0.33;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
   --tm-duration-fast: 130ms;
@@ -466,7 +521,18 @@
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
   --tm-tint-alpha-inverted: 1;
-  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-5), var(--tm-base-70));
+  --tm-gloss-tint-base-rim: light-dark(var(--tm-base-0), var(--tm-base-65));
+  --tm-gloss-tint-base-top: light-dark(var(--tm-base-0), var(--tm-base-70));
+  --tm-gloss-tint-base-shadow: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-tint-base-bottom: light-dark(var(--tm-base-15), var(--tm-base-85));
+  --tm-gloss-tint-base-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-55));
+  --tm-gloss-tint-base-hover-top: light-dark(var(--tm-base-10), var(--tm-base-60));
+  --tm-gloss-tint-base-hover-shadow: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-tint-base-hover-bottom: light-dark(var(--tm-base-25), var(--tm-base-75));
+  --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-45));
+  --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-50));
+  --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-70));
+  --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-65));
   --tm-elevation-1: 0 0 #0000;
   --tm-elevation-2: 0 0 #0000;
   --tm-elevation-3: 0 0 #0000;
@@ -527,6 +593,14 @@
   --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
   --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
   --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
+  --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
+  --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
+  --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
+  --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
+  --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
+  --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
+  --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
+  --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
   --tm-tint-base: light-dark(var(--tm-base-10), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
@@ -543,11 +617,18 @@
   --tm-gloss-quiet-top: light-dark(var(--tm-base-5), var(--tm-base-60));
   --tm-gloss-quiet-shadow: light-dark(var(--tm-base-30), var(--tm-base-95));
   --tm-gloss-quiet-bottom: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-quiet-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-40));
+  --tm-gloss-quiet-hover-top: light-dark(var(--tm-base-5), var(--tm-base-50));
+  --tm-gloss-quiet-hover-shadow: light-dark(var(--tm-base-40), var(--tm-base-90));
+  --tm-gloss-quiet-hover-bottom: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
+  --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
+  --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
+  --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
   --tm-gloss-base: none;
-  --tm-gloss-quiet: none;
 }
 
 .theme-success {
@@ -592,6 +673,14 @@
   --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
   --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
   --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
+  --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
+  --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
+  --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
+  --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
+  --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
+  --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
+  --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
+  --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
   --tm-tint-base: light-dark(var(--tm-base-10), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
@@ -608,11 +697,18 @@
   --tm-gloss-quiet-top: light-dark(var(--tm-base-5), var(--tm-base-60));
   --tm-gloss-quiet-shadow: light-dark(var(--tm-base-30), var(--tm-base-95));
   --tm-gloss-quiet-bottom: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-quiet-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-40));
+  --tm-gloss-quiet-hover-top: light-dark(var(--tm-base-5), var(--tm-base-50));
+  --tm-gloss-quiet-hover-shadow: light-dark(var(--tm-base-40), var(--tm-base-90));
+  --tm-gloss-quiet-hover-bottom: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
+  --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
+  --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
+  --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
   --tm-gloss-base: none;
-  --tm-gloss-quiet: none;
 }
 
 .theme-warning {
@@ -657,6 +753,14 @@
   --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
   --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
   --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
+  --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
+  --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
+  --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
+  --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
+  --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
+  --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
+  --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
+  --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
   --tm-tint-base: light-dark(var(--tm-base-10), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
@@ -673,11 +777,18 @@
   --tm-gloss-quiet-top: light-dark(var(--tm-base-5), var(--tm-base-60));
   --tm-gloss-quiet-shadow: light-dark(var(--tm-base-30), var(--tm-base-95));
   --tm-gloss-quiet-bottom: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-quiet-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-40));
+  --tm-gloss-quiet-hover-top: light-dark(var(--tm-base-5), var(--tm-base-50));
+  --tm-gloss-quiet-hover-shadow: light-dark(var(--tm-base-40), var(--tm-base-90));
+  --tm-gloss-quiet-hover-bottom: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
+  --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
+  --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
+  --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
   --tm-gloss-base: none;
-  --tm-gloss-quiet: none;
 }
 
 .theme-danger {
@@ -722,6 +833,14 @@
   --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
   --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
   --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
+  --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
+  --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
+  --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
+  --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
+  --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
+  --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
+  --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
+  --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
   --tm-tint-base: light-dark(var(--tm-base-10), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
@@ -738,11 +857,18 @@
   --tm-gloss-quiet-top: light-dark(var(--tm-base-5), var(--tm-base-60));
   --tm-gloss-quiet-shadow: light-dark(var(--tm-base-30), var(--tm-base-95));
   --tm-gloss-quiet-bottom: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-quiet-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-40));
+  --tm-gloss-quiet-hover-top: light-dark(var(--tm-base-5), var(--tm-base-50));
+  --tm-gloss-quiet-hover-shadow: light-dark(var(--tm-base-40), var(--tm-base-90));
+  --tm-gloss-quiet-hover-bottom: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
+  --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
+  --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
+  --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
   --tm-gloss-base: none;
-  --tm-gloss-quiet: none;
 }
 
 .theme-promo, .theme-sale {
@@ -787,6 +913,14 @@
   --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
   --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
   --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
+  --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
+  --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
+  --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
+  --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
+  --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
+  --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
+  --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
+  --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
   --tm-tint-base: light-dark(var(--tm-base-10), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-20), var(--tm-base-70));
@@ -803,11 +937,18 @@
   --tm-gloss-quiet-top: light-dark(var(--tm-base-5), var(--tm-base-60));
   --tm-gloss-quiet-shadow: light-dark(var(--tm-base-30), var(--tm-base-95));
   --tm-gloss-quiet-bottom: light-dark(var(--tm-base-20), var(--tm-base-90));
+  --tm-gloss-quiet-hover-rim: light-dark(var(--tm-base-5), var(--tm-base-40));
+  --tm-gloss-quiet-hover-top: light-dark(var(--tm-base-5), var(--tm-base-50));
+  --tm-gloss-quiet-hover-shadow: light-dark(var(--tm-base-40), var(--tm-base-90));
+  --tm-gloss-quiet-hover-bottom: light-dark(var(--tm-base-30), var(--tm-base-80));
+  --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
+  --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
+  --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
+  --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
   --tm-gloss-base: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-base-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-base-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-base-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-base-bottom) 16.5%, transparent) 100%);
-  --tm-gloss-quiet: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-quiet-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-quiet-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-quiet-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-quiet-bottom) 16.5%, transparent) 100%);
 }
 
 :root, .theme-default {
@@ -843,13 +984,32 @@
   --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
   --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
   --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+  --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+  --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+  --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+  --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+  --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+  --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-tint-action: light-dark(var(--tm-action-5), var(--tm-action-95));
   --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-tint-action-hover: light-dark(var(--tm-action-15), var(--tm-action-85));
   --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
   --tm-tint-action-active: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
-  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-90));
+  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-80));
+  --tm-gloss-tint-action-top: light-dark(var(--tm-action-0), var(--tm-action-85));
+  --tm-gloss-tint-action-shadow: light-dark(var(--tm-action-15), var(--tm-action-100));
+  --tm-gloss-tint-action-bottom: light-dark(var(--tm-action-10), var(--tm-action-100));
+  --tm-gloss-tint-action-hover-rim: light-dark(var(--tm-action-0), var(--tm-action-70));
+  --tm-gloss-tint-action-hover-top: light-dark(var(--tm-action-5), var(--tm-action-75));
+  --tm-gloss-tint-action-hover-shadow: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-gloss-tint-action-hover-bottom: light-dark(var(--tm-action-20), var(--tm-action-90));
+  --tm-gloss-tint-action-active-rim: light-dark(var(--tm-action-10), var(--tm-action-60));
+  --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
+  --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
+  --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: light-dark(var(--tm-action-60), var(--tm-action-50));
   --tm-border-focus: light-dark(var(--tm-action-60), var(--tm-action-50));
@@ -859,11 +1019,25 @@
   --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-70));
   --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-20));
   --tm-on-fill-action-exact-active: light-dark(var(--tm-action-20), var(--tm-action-80));
+  --tm-gloss-action-exact-rim: light-dark(var(--tm-action-30), var(--tm-action-0));
+  --tm-gloss-action-exact-top: light-dark(var(--tm-action-40), var(--tm-action-0));
+  --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-80), var(--tm-action-20));
+  --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-70), var(--tm-action-10));
+  --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-30));
+  --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-20));
+  --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-0));
+  --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-gloss-action: none;
   --tm-highlight-action: transparent;
+  --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
+  --tm-glow-action-exact: transparent;
   --tm-glow-tint-action: transparent;
 }
 
@@ -900,13 +1074,32 @@
   --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
   --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
   --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+  --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+  --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+  --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+  --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+  --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+  --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-tint-action: light-dark(var(--tm-action-5), var(--tm-action-95));
   --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-tint-action-hover: light-dark(var(--tm-action-15), var(--tm-action-85));
   --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
   --tm-tint-action-active: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
-  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-90));
+  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-80));
+  --tm-gloss-tint-action-top: light-dark(var(--tm-action-0), var(--tm-action-85));
+  --tm-gloss-tint-action-shadow: light-dark(var(--tm-action-15), var(--tm-action-100));
+  --tm-gloss-tint-action-bottom: light-dark(var(--tm-action-10), var(--tm-action-100));
+  --tm-gloss-tint-action-hover-rim: light-dark(var(--tm-action-0), var(--tm-action-70));
+  --tm-gloss-tint-action-hover-top: light-dark(var(--tm-action-5), var(--tm-action-75));
+  --tm-gloss-tint-action-hover-shadow: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-gloss-tint-action-hover-bottom: light-dark(var(--tm-action-20), var(--tm-action-90));
+  --tm-gloss-tint-action-active-rim: light-dark(var(--tm-action-10), var(--tm-action-60));
+  --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
+  --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
+  --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: var(--tm-action-50);
   --tm-border-focus: var(--tm-action-50);
@@ -916,11 +1109,25 @@
   --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-35), var(--tm-action-90));
   --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-25));
   --tm-on-fill-action-exact-active: light-dark(var(--tm-action-25), var(--tm-action-80));
+  --tm-gloss-action-exact-rim: light-dark(var(--tm-action-70), var(--tm-action-20));
+  --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-30));
+  --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-70));
+  --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-60));
+  --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-15));
+  --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-100), var(--tm-action-55));
+  --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-100), var(--tm-action-45));
+  --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-45));
+  --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-35));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-gloss-action: none;
   --tm-highlight-action: transparent;
+  --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
+  --tm-glow-action-exact: transparent;
   --tm-glow-tint-action: transparent;
 }
 
@@ -957,13 +1164,32 @@
   --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
   --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
   --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+  --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+  --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+  --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+  --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+  --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+  --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-tint-action: light-dark(var(--tm-action-5), var(--tm-action-95));
   --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-30));
   --tm-tint-action-hover: light-dark(var(--tm-action-15), var(--tm-action-85));
   --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-20));
   --tm-tint-action-active: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-10));
-  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-90));
+  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-80));
+  --tm-gloss-tint-action-top: light-dark(var(--tm-action-0), var(--tm-action-85));
+  --tm-gloss-tint-action-shadow: light-dark(var(--tm-action-15), var(--tm-action-100));
+  --tm-gloss-tint-action-bottom: light-dark(var(--tm-action-10), var(--tm-action-100));
+  --tm-gloss-tint-action-hover-rim: light-dark(var(--tm-action-0), var(--tm-action-70));
+  --tm-gloss-tint-action-hover-top: light-dark(var(--tm-action-5), var(--tm-action-75));
+  --tm-gloss-tint-action-hover-shadow: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-gloss-tint-action-hover-bottom: light-dark(var(--tm-action-20), var(--tm-action-90));
+  --tm-gloss-tint-action-active-rim: light-dark(var(--tm-action-10), var(--tm-action-60));
+  --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
+  --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
+  --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-30));
   --tm-border-action: light-dark(var(--tm-action-50), var(--tm-action-30));
   --tm-border-focus: light-dark(var(--tm-action-50), var(--tm-action-30));
@@ -973,11 +1199,25 @@
   --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-20), var(--tm-action-90));
   --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-10));
   --tm-on-fill-action-exact-active: light-dark(var(--tm-action-10), var(--tm-action-80));
+  --tm-gloss-action-exact-rim: light-dark(var(--tm-action-70), var(--tm-action-0));
+  --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-10));
+  --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-50));
+  --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-100), var(--tm-action-30));
+  --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-0));
+  --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-30));
+  --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-20));
   --tm-border-action-exact: light-dark(var(--tm-base-20), var(--tm-action-key));
   --tm-gloss-action: none;
   --tm-highlight-action: transparent;
+  --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
+  --tm-glow-action-exact: transparent;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1014,13 +1254,32 @@
   --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
   --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
   --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+  --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+  --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+  --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+  --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+  --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+  --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-tint-action: light-dark(var(--tm-action-5), var(--tm-action-95));
   --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-tint-action-hover: light-dark(var(--tm-action-15), var(--tm-action-85));
   --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
   --tm-tint-action-active: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
-  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-90));
+  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-80));
+  --tm-gloss-tint-action-top: light-dark(var(--tm-action-0), var(--tm-action-85));
+  --tm-gloss-tint-action-shadow: light-dark(var(--tm-action-15), var(--tm-action-100));
+  --tm-gloss-tint-action-bottom: light-dark(var(--tm-action-10), var(--tm-action-100));
+  --tm-gloss-tint-action-hover-rim: light-dark(var(--tm-action-0), var(--tm-action-70));
+  --tm-gloss-tint-action-hover-top: light-dark(var(--tm-action-5), var(--tm-action-75));
+  --tm-gloss-tint-action-hover-shadow: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-gloss-tint-action-hover-bottom: light-dark(var(--tm-action-20), var(--tm-action-90));
+  --tm-gloss-tint-action-active-rim: light-dark(var(--tm-action-10), var(--tm-action-60));
+  --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
+  --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
+  --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: var(--tm-action-50);
   --tm-border-focus: var(--tm-action-50);
@@ -1030,11 +1289,25 @@
   --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-65));
   --tm-fill-action-exact-active: light-dark(var(--tm-action-75), var(--tm-action-20));
   --tm-on-fill-action-exact-active: light-dark(var(--tm-action-20), var(--tm-action-75));
+  --tm-gloss-action-exact-rim: light-dark(var(--tm-action-20), var(--tm-action-0));
+  --tm-gloss-action-exact-top: light-dark(var(--tm-action-30), var(--tm-action-0));
+  --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-70), var(--tm-action-20));
+  --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-60), var(--tm-action-10));
+  --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-35), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-45), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-85), var(--tm-action-30));
+  --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-75), var(--tm-action-20));
+  --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-45), var(--tm-action-0));
+  --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-55), var(--tm-action-0));
+  --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-85), var(--tm-action-30));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-gloss-action: none;
   --tm-highlight-action: transparent;
+  --tm-highlight-action-exact: transparent;
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
+  --tm-glow-action-exact: transparent;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1071,13 +1344,32 @@
   --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
   --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
   --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+  --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+  --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+  --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+  --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+  --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+  --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-tint-action: light-dark(var(--tm-action-5), var(--tm-action-95));
   --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-tint-action-hover: light-dark(var(--tm-action-15), var(--tm-action-85));
   --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
   --tm-tint-action-active: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
-  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-90));
+  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-80));
+  --tm-gloss-tint-action-top: light-dark(var(--tm-action-0), var(--tm-action-85));
+  --tm-gloss-tint-action-shadow: light-dark(var(--tm-action-15), var(--tm-action-100));
+  --tm-gloss-tint-action-bottom: light-dark(var(--tm-action-10), var(--tm-action-100));
+  --tm-gloss-tint-action-hover-rim: light-dark(var(--tm-action-0), var(--tm-action-70));
+  --tm-gloss-tint-action-hover-top: light-dark(var(--tm-action-5), var(--tm-action-75));
+  --tm-gloss-tint-action-hover-shadow: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-gloss-tint-action-hover-bottom: light-dark(var(--tm-action-20), var(--tm-action-90));
+  --tm-gloss-tint-action-active-rim: light-dark(var(--tm-action-10), var(--tm-action-60));
+  --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
+  --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
+  --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: var(--tm-action-50);
   --tm-border-focus: var(--tm-action-50);
@@ -1087,11 +1379,25 @@
   --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-35), var(--tm-action-90));
   --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-25));
   --tm-on-fill-action-exact-active: light-dark(var(--tm-action-25), var(--tm-action-80));
+  --tm-gloss-action-exact-rim: light-dark(var(--tm-action-70), var(--tm-action-20));
+  --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-30));
+  --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-70));
+  --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-60));
+  --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-15));
+  --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-100), var(--tm-action-55));
+  --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-100), var(--tm-action-45));
+  --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-45));
+  --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-35));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-gloss-action: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-action-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-action-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-action-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-action-bottom) 16.5%, transparent) 100%);
   --tm-highlight-action: light-dark(color-mix(in oklch, var(--tm-gloss-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-rim) 16.5%, transparent));
+  --tm-highlight-action-exact: light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-exact-rim) 16.5%, transparent));
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
   --tm-glow-action: color-mix(in oklch, var(--tm-gloss-action-rim) 6.6%, transparent);
+  --tm-glow-action-exact: color-mix(in oklch, var(--tm-gloss-action-exact-rim) 6.6%, transparent);
   --tm-glow-tint-action: color-mix(in oklch, var(--tm-gloss-tint-action-rim) 6.6%, transparent);
 }
 
@@ -1128,13 +1434,32 @@
   --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
   --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
   --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+  --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+  --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+  --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+  --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+  --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+  --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-tint-action: light-dark(var(--tm-action-5), var(--tm-action-95));
   --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-tint-action-hover: light-dark(var(--tm-action-15), var(--tm-action-85));
   --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
   --tm-tint-action-active: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
-  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-90));
+  --tm-gloss-tint-action-rim: light-dark(var(--tm-action-0), var(--tm-action-80));
+  --tm-gloss-tint-action-top: light-dark(var(--tm-action-0), var(--tm-action-85));
+  --tm-gloss-tint-action-shadow: light-dark(var(--tm-action-15), var(--tm-action-100));
+  --tm-gloss-tint-action-bottom: light-dark(var(--tm-action-10), var(--tm-action-100));
+  --tm-gloss-tint-action-hover-rim: light-dark(var(--tm-action-0), var(--tm-action-70));
+  --tm-gloss-tint-action-hover-top: light-dark(var(--tm-action-5), var(--tm-action-75));
+  --tm-gloss-tint-action-hover-shadow: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-gloss-tint-action-hover-bottom: light-dark(var(--tm-action-20), var(--tm-action-90));
+  --tm-gloss-tint-action-active-rim: light-dark(var(--tm-action-10), var(--tm-action-60));
+  --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
+  --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
+  --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: light-dark(var(--tm-action-50), var(--tm-action-40));
   --tm-border-focus: light-dark(var(--tm-action-50), var(--tm-action-40));
@@ -1144,11 +1469,25 @@
   --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-30), var(--tm-action-90));
   --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-20));
   --tm-on-fill-action-exact-active: light-dark(var(--tm-action-20), var(--tm-action-80));
+  --tm-gloss-action-exact-rim: light-dark(var(--tm-action-70), var(--tm-action-10));
+  --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-20));
+  --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-60));
+  --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-50));
+  --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-0));
+  --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-10));
+  --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-100), var(--tm-action-50));
+  --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-0));
+  --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-gloss-action: linear-gradient(180deg in oklch, color-mix(in oklch, var(--tm-gloss-action-rim) 26.4%, transparent) 0%, color-mix(in oklch, var(--tm-gloss-action-top) 26.4%, transparent) 3%, transparent 50%, color-mix(in oklch, var(--tm-gloss-action-shadow) 33%, transparent) 80%, color-mix(in oklch, var(--tm-gloss-action-bottom) 16.5%, transparent) 100%);
   --tm-highlight-action: light-dark(color-mix(in oklch, var(--tm-gloss-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-rim) 16.5%, transparent));
+  --tm-highlight-action-exact: light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-exact-rim) 16.5%, transparent));
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
   --tm-glow-action: color-mix(in oklch, var(--tm-gloss-action-rim) 6.6%, transparent);
+  --tm-glow-action-exact: color-mix(in oklch, var(--tm-gloss-action-exact-rim) 6.6%, transparent);
   --tm-glow-tint-action: color-mix(in oklch, var(--tm-gloss-tint-action-rim) 6.6%, transparent);
 }
 
@@ -1160,6 +1499,10 @@
   :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-gap-text: 65;
     --tm-gap-large: 50;
+    --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-50));
+    --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-55));
+    --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-75));
+    --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-70));
   }
   :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-fg-base-muted: light-dark(var(--tm-base-80), var(--tm-base-20));
@@ -1171,10 +1514,22 @@
     --tm-gloss-base-top: light-dark(var(--tm-base-60), var(--tm-base-5));
     --tm-gloss-base-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
     --tm-gloss-base-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
+    --tm-gloss-base-hover-rim: light-dark(var(--tm-base-60), var(--tm-base-5));
+    --tm-gloss-base-hover-top: light-dark(var(--tm-base-70), var(--tm-base-5));
+    --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-95), var(--tm-base-30));
+    --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-95), var(--tm-base-20));
+    --tm-gloss-base-active-rim: light-dark(var(--tm-base-65), var(--tm-base-5));
+    --tm-gloss-base-active-top: light-dark(var(--tm-base-75), var(--tm-base-5));
+    --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-25));
+    --tm-gloss-base-active-bottom: light-dark(var(--tm-base-95), var(--tm-base-15));
     --tm-tint-base-active: light-dark(var(--tm-base-30), var(--tm-base-65));
     --tm-fill-quiet-active: light-dark(var(--tm-base-30), var(--tm-base-65));
+    --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-35));
+    --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-45));
+    --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-85));
+    --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-75));
   }
-  :root, .theme-default, .theme-success, .theme-danger, .theme-promo, .theme-sale {
+  :root, .theme-default, .theme-danger, .theme-sale {
     --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-fill-action-hover: light-dark(var(--tm-action-90), var(--tm-action-10));
     --tm-fill-action-active: light-dark(var(--tm-action-95), var(--tm-action-5));
@@ -1183,6 +1538,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-60), var(--tm-action-5));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
@@ -1193,6 +1556,57 @@
     --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-90));
     --tm-fill-action-exact-active: light-dark(var(--tm-action-95), var(--tm-action-5));
     --tm-on-fill-action-exact-active: light-dark(var(--tm-action-15), var(--tm-action-85));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
+  }
+  .theme-success, .theme-promo {
+    --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-hover: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fill-action-active: light-dark(var(--tm-action-95), var(--tm-action-5));
+    --tm-on-fill-action-active: light-dark(var(--tm-action-15), var(--tm-action-85));
+    --tm-gloss-action-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
+    --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
+    --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fg-action: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-exact: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-on-fill-action-exact: light-dark(var(--tm-action-0), var(--tm-action-100));
+    --tm-fill-action-exact-hover: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-90));
+    --tm-fill-action-exact-active: light-dark(var(--tm-action-95), var(--tm-action-5));
+    --tm-on-fill-action-exact-active: light-dark(var(--tm-action-15), var(--tm-action-85));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
   }
   .theme-warning {
     --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1203,6 +1617,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-60), var(--tm-action-5));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
@@ -1214,6 +1636,10 @@
   :scope:is(:root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-gap-text: 65;
     --tm-gap-large: 50;
+    --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-50));
+    --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-55));
+    --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-75));
+    --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-70));
   }
   :scope:is(:root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-fg-base-muted: light-dark(var(--tm-base-80), var(--tm-base-20));
@@ -1225,10 +1651,22 @@
     --tm-gloss-base-top: light-dark(var(--tm-base-60), var(--tm-base-5));
     --tm-gloss-base-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
     --tm-gloss-base-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
+    --tm-gloss-base-hover-rim: light-dark(var(--tm-base-60), var(--tm-base-5));
+    --tm-gloss-base-hover-top: light-dark(var(--tm-base-70), var(--tm-base-5));
+    --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-95), var(--tm-base-30));
+    --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-95), var(--tm-base-20));
+    --tm-gloss-base-active-rim: light-dark(var(--tm-base-65), var(--tm-base-5));
+    --tm-gloss-base-active-top: light-dark(var(--tm-base-75), var(--tm-base-5));
+    --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-25));
+    --tm-gloss-base-active-bottom: light-dark(var(--tm-base-95), var(--tm-base-15));
     --tm-tint-base-active: light-dark(var(--tm-base-30), var(--tm-base-65));
     --tm-fill-quiet-active: light-dark(var(--tm-base-30), var(--tm-base-65));
+    --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-35));
+    --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-45));
+    --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-85));
+    --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-75));
   }
-  :scope:is(:root, .theme-default, .theme-success, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-danger, .theme-promo, .theme-sale {
+  :scope:is(:root, .theme-default, .theme-danger, .theme-sale), :root, .theme-default, .theme-danger, .theme-sale {
     --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-fill-action-hover: light-dark(var(--tm-action-90), var(--tm-action-10));
     --tm-fill-action-active: light-dark(var(--tm-action-95), var(--tm-action-5));
@@ -1237,6 +1675,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-60), var(--tm-action-5));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
@@ -1247,6 +1693,57 @@
     --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-90));
     --tm-fill-action-exact-active: light-dark(var(--tm-action-95), var(--tm-action-5));
     --tm-on-fill-action-exact-active: light-dark(var(--tm-action-15), var(--tm-action-85));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
+  }
+  :scope:is(.theme-success, .theme-promo), .theme-success, .theme-promo {
+    --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-hover: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fill-action-active: light-dark(var(--tm-action-95), var(--tm-action-5));
+    --tm-on-fill-action-active: light-dark(var(--tm-action-15), var(--tm-action-85));
+    --tm-gloss-action-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
+    --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
+    --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fg-action: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-exact: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-on-fill-action-exact: light-dark(var(--tm-action-0), var(--tm-action-100));
+    --tm-fill-action-exact-hover: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-90));
+    --tm-fill-action-exact-active: light-dark(var(--tm-action-95), var(--tm-action-5));
+    --tm-on-fill-action-exact-active: light-dark(var(--tm-action-15), var(--tm-action-85));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
   }
   :scope:is(.theme-warning), .theme-warning {
     --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1257,6 +1754,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-60), var(--tm-action-5));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-70), var(--tm-action-5));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-95), var(--tm-action-30));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-95), var(--tm-action-20));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-75), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-25));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-95), var(--tm-action-15));
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
@@ -1268,6 +1773,10 @@
   :scope:is(:root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-gap-text: 50;
     --tm-gap-large: 40;
+    --tm-gloss-tint-base-active-rim: light-dark(var(--tm-base-15), var(--tm-base-45));
+    --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-20), var(--tm-base-50));
+    --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-40), var(--tm-base-70));
+    --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-35), var(--tm-base-65));
   }
   :scope:is(:root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
@@ -1279,8 +1788,20 @@
     --tm-gloss-base-top: light-dark(var(--tm-base-40), var(--tm-base-20));
     --tm-gloss-base-shadow: light-dark(var(--tm-base-80), var(--tm-base-60));
     --tm-gloss-base-bottom: light-dark(var(--tm-base-70), var(--tm-base-50));
+    --tm-gloss-base-hover-rim: light-dark(var(--tm-base-40), var(--tm-base-5));
+    --tm-gloss-base-hover-top: light-dark(var(--tm-base-50), var(--tm-base-10));
+    --tm-gloss-base-hover-shadow: light-dark(var(--tm-base-90), var(--tm-base-50));
+    --tm-gloss-base-hover-bottom: light-dark(var(--tm-base-80), var(--tm-base-40));
+    --tm-gloss-base-active-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
+    --tm-gloss-base-active-top: light-dark(var(--tm-base-60), var(--tm-base-5));
+    --tm-gloss-base-active-shadow: light-dark(var(--tm-base-95), var(--tm-base-40));
+    --tm-gloss-base-active-bottom: light-dark(var(--tm-base-90), var(--tm-base-30));
     --tm-tint-base-active: light-dark(var(--tm-base-30), var(--tm-base-60));
     --tm-fill-quiet-active: light-dark(var(--tm-base-30), var(--tm-base-60));
+    --tm-gloss-quiet-active-rim: light-dark(var(--tm-base-5), var(--tm-base-30));
+    --tm-gloss-quiet-active-top: light-dark(var(--tm-base-10), var(--tm-base-40));
+    --tm-gloss-quiet-active-shadow: light-dark(var(--tm-base-50), var(--tm-base-80));
+    --tm-gloss-quiet-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-70));
   }
   :scope:is(:root, .theme-default), :root, .theme-default {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1291,6 +1812,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1301,6 +1830,18 @@
     --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-70));
     --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-fill-action-exact-active: light-dark(var(--tm-action-20), var(--tm-action-80));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-30), var(--tm-action-0));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-40), var(--tm-action-0));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-70), var(--tm-action-10));
+    --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-0));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-50), var(--tm-action-0));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-0));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   }
   :scope:is(.theme-success, .theme-promo), .theme-success, .theme-promo {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1311,6 +1852,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1321,6 +1870,17 @@
     --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-35), var(--tm-action-90));
     --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-25));
     --tm-on-fill-action-exact-active: light-dark(var(--tm-action-25), var(--tm-action-80));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-70), var(--tm-action-20));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-30));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-70));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-60));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-15));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-100), var(--tm-action-55));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-100), var(--tm-action-45));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-45));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-35));
   }
   :scope:is(.theme-warning), .theme-warning {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1331,6 +1891,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-10));
@@ -1345,6 +1913,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1355,6 +1931,18 @@
     --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-10), var(--tm-action-65));
     --tm-fill-action-exact-active: light-dark(var(--tm-action-75), var(--tm-action-20));
     --tm-on-fill-action-exact-active: light-dark(var(--tm-action-20), var(--tm-action-75));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-20), var(--tm-action-0));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-30), var(--tm-action-0));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-70), var(--tm-action-20));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-60), var(--tm-action-10));
+    --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-35), var(--tm-action-0));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-45), var(--tm-action-0));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-85), var(--tm-action-30));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-75), var(--tm-action-20));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-45), var(--tm-action-0));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-55), var(--tm-action-0));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-85), var(--tm-action-30));
   }
   :scope:is(.theme-sale), .theme-sale {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1365,6 +1953,14 @@
     --tm-gloss-action-top: light-dark(var(--tm-action-40), var(--tm-action-20));
     --tm-gloss-action-shadow: light-dark(var(--tm-action-80), var(--tm-action-60));
     --tm-gloss-action-bottom: light-dark(var(--tm-action-70), var(--tm-action-50));
+    --tm-gloss-action-hover-rim: light-dark(var(--tm-action-40), var(--tm-action-5));
+    --tm-gloss-action-hover-top: light-dark(var(--tm-action-50), var(--tm-action-10));
+    --tm-gloss-action-hover-shadow: light-dark(var(--tm-action-90), var(--tm-action-50));
+    --tm-gloss-action-hover-bottom: light-dark(var(--tm-action-80), var(--tm-action-40));
+    --tm-gloss-action-active-rim: light-dark(var(--tm-action-50), var(--tm-action-5));
+    --tm-gloss-action-active-top: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-gloss-action-active-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-gloss-action-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1375,5 +1971,17 @@
     --tm-on-fill-action-exact-hover: light-dark(var(--tm-action-30), var(--tm-action-90));
     --tm-fill-action-exact-active: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-fill-action-exact-active: light-dark(var(--tm-action-20), var(--tm-action-80));
+    --tm-gloss-action-exact-rim: light-dark(var(--tm-action-70), var(--tm-action-10));
+    --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-60));
+    --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-50));
+    --tm-gloss-action-exact-hover-rim: light-dark(var(--tm-action-60), var(--tm-action-0));
+    --tm-gloss-action-exact-hover-top: light-dark(var(--tm-action-70), var(--tm-action-10));
+    --tm-gloss-action-exact-hover-shadow: light-dark(var(--tm-action-100), var(--tm-action-50));
+    --tm-gloss-action-exact-hover-bottom: light-dark(var(--tm-action-100), var(--tm-action-40));
+    --tm-gloss-action-exact-active-rim: light-dark(var(--tm-action-50), var(--tm-action-0));
+    --tm-gloss-action-exact-active-top: light-dark(var(--tm-action-60), var(--tm-action-0));
+    --tm-gloss-action-exact-active-shadow: light-dark(var(--tm-action-100), var(--tm-action-40));
+    --tm-gloss-action-exact-active-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
   }
 }

@@ -206,12 +206,14 @@ details.feels[open] > summary { margin-bottom: 12px; }
   radial-gradient(circle at 92% 40% in oklab, color-mix(in oklab, light-dark(var(--tm-action-30), var(--tm-action-70)) 45%, transparent) 0, transparent 30%),
   radial-gradient(circle at 30% 95% in oklab, color-mix(in oklab, light-dark(var(--tm-base-40), var(--tm-base-60)) 30%, transparent) 0, transparent 30%);
   opacity: min(1, calc((1 - var(--solidity, 1)) * 1.5)); }
-/* Busy backdrop: stripes and dots behind the samples, at full strength, so you can see what shows
-   through see-through parts. The theme's own colors, so it works in both modes. */
-.busy-backdrop .stage::before { opacity: 1; background:
-  radial-gradient(circle, var(--tm-fg-base) 2px, transparent 2.5px) 0 0 / 18px 18px,
-  repeating-linear-gradient(45deg, color-mix(in oklab, var(--tm-fill-action) 55%, transparent) 0 10px, transparent 10px 24px),
-  repeating-linear-gradient(-45deg, color-mix(in oklab, var(--tm-fg-base) 25%, transparent) 0 6px, transparent 6px 30px); }
+/* Photo backdrop: a photo behind the samples, colored with each theme's ramps by demo.js, and
+   blurred. The canvas reaches past the stage by twice the blur, so the edges stay sharp. */
+.stage-photo { display: none; }
+.photo-backdrop .stage::before { opacity: 0; }
+.photo-backdrop .stage-photo { display: block; position: absolute; z-index: -1; top: calc(-2 * var(--photo-blur, 0px)); left: calc(-2 * var(--photo-blur, 0px)); width: calc(100% + 4 * var(--photo-blur, 0px)); height: calc(100% + 4 * var(--photo-blur, 0px)); object-fit: cover; filter: blur(var(--photo-blur, 0px)); pointer-events: none; }
+.photo-slider { display: inline-flex; gap: 6px; align-items: center; }
+.photo-slider input { width: 90px; }
+.photo-slider output { min-width: 6ch; font: 11px var(--mono); }
 .stage-label { position: absolute; top: 8px; right: 12px; font: 11px var(--mono); color: var(--tm-fg-base-muted); }
 .sample { display: flex; flex-direction: column; gap: var(--tm-space-2xl); max-width: round(down, 680px, var(--tm-rhythm)); }
 .spec { display: flex; flex-direction: column; gap: var(--tm-space-md); }
@@ -242,7 +244,6 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .sw { position: relative; height: 48px; min-width: 0; border: 0; border-radius: 6px; padding: 4px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; font: 11px/1.2 var(--mono); cursor: pointer; text-align: left; }
 .sw:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .sw b { font-size: 12px; font-weight: 500; }
-.sw .uses { font-size: 10px; opacity: 0.85; }
 .sw.key::after { content: ""; position: absolute; bottom: 6px; right: 5px; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .sw.pick-a { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--ink); }
 .sw.pick-b { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--muted); }

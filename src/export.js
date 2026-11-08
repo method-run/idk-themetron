@@ -29,6 +29,8 @@ export function primitiveEntries(p) {
   // The roundness, from 0 to 1, for parts that round as a share of their own size:
   // calc(var(--tm-roundness) * height / 2) is a pill at full roundness.
   out.push(['roundness', String(p.roundness)]);
+  // The shininess, from 0 to 1: the shared shine (see shineRules) scales its opacity by it.
+  out.push(['shininess', String(p.shininess)]);
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
   for (const [k, v] of Object.entries(p.motion.easing)) out.push([`ease-${k}`, bezier(v)]);
@@ -70,9 +72,10 @@ export function semanticEntries(theme, prefix = 'tm') {
     out.push([`elevation-${level}-normal`, bothModes(light.computed[name], dark.computed[name])]);
     out.push([`elevation-${level}-flipped`, bothModes(dark.computed[name], light.computed[name])]);
   }
-  // Solid fills of each role, and the quiet button, have the ramp shine.
-  const shined = [...ROLES, 'quiet'];
-  for (const part of shined) out.push([`gloss-${part}`, glossGradient(theme.settings.feel.shininess, prefix, part)]);
+  // A finished gradient of the resting shine, for parts that do not use the shared shine yet.
+  // Buttons use the shared shine instead: see shineRules.
+  for (const role of ROLES) out.push([`gloss-${role}`, glossGradient(theme.settings.feel.shininess, prefix, role)]);
+  const shined = [...ROLES, 'quiet', 'action-exact'];
   // The top edge of a filled part catches the light: a 1 px line of a lighter grade of the
   // part's own color, with the shininess as its opacity. One for fills, and one for tints.
   // The components draw it with box-shadow: inset 0 1px 0 <color>.
@@ -105,19 +108,31 @@ function refCss(t, prefix) {
 // The shape is the same at every shininess, and each color's opacity grows with it, so 0 has
 // no shine. At 1, the highlight is at 80% opacity and the shadow at 100%: the shape from
 // docs/shine-notes.md, with the highlight tuned down to share the shine with the glow.
+// The shape: [part, share of the shininess, position]. The highlight at the top is 80% of the
+// shininess.
+const SHINE_SHAPE = [['rim', 0.8, 0], ['top', 0.8, 3], [null, 0, 50], ['shadow', 1, 80], ['bottom', 0.5, 100]];
+
+// The gradient, from a color for each part and an opacity for each share.
+function shineGradient(color, opacity) {
+  const stops = SHINE_SHAPE.map(([part, share, at]) => `${part ? `color-mix(in oklch, ${color(part)} ${opacity(share)}, transparent)` : 'transparent'} ${at}%`);
+  return `linear-gradient(180deg in oklch, ${stops.join(', ')})`;
+}
+
 function glossGradient(shine, prefix, role) {
   if (!shine) return 'none';
-  const v = (part) => `var(--${prefix}-gloss-${role}-${part})`;
-  const at = (color, share) => `color-mix(in oklch, ${color} ${round1(shine * share * 100)}%, transparent)`;
-  // The highlight at the top: 80% of the shininess.
-  const stops = [
-    [at(v('rim'), 0.8), 0],
-    [at(v('top'), 0.8), 3],
-    ['transparent', 50],
-    [at(v('shadow'), 1), 80],
-    [at(v('bottom'), 0.5), 100],
-  ];
-  return `linear-gradient(180deg in oklch, ${stops.map(([c, p]) => `${c} ${p}%`).join(', ')})`;
+  return shineGradient((part) => `var(--${prefix}-gloss-${role}-${part})`, (share) => `${round1(shine * share * 100)}%`);
+}
+
+// The shared shine, for any part. A part sets four colors, --tm-shine-rim, -top, -shadow and
+// -bottom (usually its state's gloss grades), and paints var(--tm-shine-image). The rule is on
+// every element, so each element builds the gradient from its own colors, and the gradient
+// follows a part's state. The colors are registered, so a change of state animates. The
+// opacity is the theme's shininess, times --tm-shine-strength (1 by default; tints use less).
+function shineRules(prefix) {
+  const v = (name) => `--${prefix}-shine-${name}`;
+  const props = ['rim', 'top', 'shadow', 'bottom'].map((part) => `@property ${v(part)} { syntax: '<color>'; inherits: true; initial-value: transparent; }`);
+  const image = shineGradient((part) => `var(${v(part)})`, (share) => `calc(var(--${prefix}-shininess, 0) * var(${v('strength')}, 1) * ${round1(share * 100)}%)`);
+  return `${props.join('\n')}\n:where(*) { ${v('image')}: ${image}; }\n`;
 }
 
 // Join the light and dark forms of a value. Shadows differ only in their colors,
@@ -190,6 +205,7 @@ export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = tru
     root ? ':root { color-scheme: light dark; }' : '',
     '[data-tm-mode="light"] { color-scheme: light; }',
     '[data-tm-mode="dark"] { color-scheme: dark; }\n',
+    shineRules(prefix),
     invertRules(prefix),
     ...rules,
     // After the theme rules, so that an element with a theme class and tm-invert still flips.

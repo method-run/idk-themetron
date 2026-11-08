@@ -771,6 +771,12 @@
       "modes": false,
       "stability": "experimental"
     },
+    "shininess": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
     "border-width": {
       "tier": "primitive",
       "type": "dimension",
@@ -1047,6 +1053,62 @@
       "role": "base",
       "stability": "experimental"
     },
+    "gloss-base-hover-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-hover-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-hover-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-hover-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-active-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-active-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-active-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-active-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "tint-base": {
       "tier": "semantic",
       "type": "color",
@@ -1096,6 +1158,83 @@
       "meaning": "Text and icons on tint-base-active: the label moved as far as the tint, so the contrast stays the same."
     },
     "gloss-tint-base-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-hover-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-hover-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-hover-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-hover-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-active-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-active-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-active-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-tint-base-active-bottom": {
       "tier": "semantic",
       "type": "color",
       "modes": true,
@@ -1178,6 +1317,62 @@
       "role": "action",
       "stability": "experimental"
     },
+    "gloss-action-hover-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-hover-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-hover-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-hover-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-active-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-active-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-active-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-active-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
     "tint-action": {
       "tier": "semantic",
       "type": "color",
@@ -1227,6 +1422,83 @@
       "meaning": "Text and icons on tint-action-active: the label moved as far as the tint, so the contrast stays the same."
     },
     "gloss-tint-action-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-hover-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-hover-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-hover-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-hover-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-active-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-active-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-active-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-tint-action-active-bottom": {
       "tier": "semantic",
       "type": "color",
       "modes": true,
@@ -1309,6 +1581,62 @@
       "role": "base",
       "stability": "experimental"
     },
+    "gloss-quiet-hover-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-hover-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-hover-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-hover-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-active-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-active-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-active-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-quiet-active-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "fg-action": {
       "tier": "semantic",
       "type": "color",
@@ -1380,6 +1708,90 @@
       "role": "action",
       "stability": "experimental",
       "meaning": "The label of the exact button while it is pressed: moved as far as the fill."
+    },
+    "gloss-action-exact-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-hover-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-hover-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-hover-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-hover-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-active-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-active-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-active-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "gloss-action-exact-active-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
     },
     "border-action-exact": {
       "tier": "semantic",
@@ -1484,13 +1896,6 @@
       "role": "action",
       "stability": "experimental"
     },
-    "gloss-quiet": {
-      "tier": "semantic",
-      "type": "gradient",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
     "highlight-base": {
       "tier": "semantic",
       "type": "fontFamily",
@@ -1510,6 +1915,13 @@
       "type": "fontFamily",
       "modes": true,
       "role": "base",
+      "stability": "experimental"
+    },
+    "highlight-action-exact": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "action",
       "stability": "experimental"
     },
     "highlight-tint-base": {
@@ -1547,6 +1959,13 @@
       "role": "base",
       "stability": "experimental"
     },
+    "glow-action-exact": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
     "glow-tint-base": {
       "tier": "semantic",
       "type": "fontFamily",
@@ -1560,6 +1979,14 @@
       "modes": true,
       "role": "action",
       "stability": "experimental"
+    },
+    "shine-image": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": false,
+      "global": true,
+      "stability": "experimental",
+      "meaning": "The shine gradient, built on each element from the four colors it sets: --tm-shine-rim, --tm-shine-top, --tm-shine-shadow, and --tm-shine-bottom, usually the gloss grades of its state. Its opacity is --tm-shininess times --tm-shine-strength (1 by default). The colors are registered with @property, so a change of state animates."
     }
   }
 }
