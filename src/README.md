@@ -51,7 +51,7 @@ flowchart LR
   - `palettes`: `base` and `action`. Each has the key, the key grade, the OKLCH hue and chroma, and a hex value for each grade.
   - `gaps`: the [grade gaps](../spec/grades.md "grades") for this theme.
   - `primitives`: see [Tokens](../spec/tokens.md "tokens").
-  - `modes.light` and `modes.dark`: `tokens` (each has `ref`, such as `action.60`, and `value`), `computed` (panel color and shadows), and `audit`.
+  - `modes.light` and `modes.dark`: `tokens` (each has `ref`, such as `action.60` or `action.key`, `grade`, its grade as a number, such as 60 or 38.6 for a key color, and `value`), `computed` (panel color and shadows), and `audit`.
 
 It throws `InputError` when the inputs have problems.
 

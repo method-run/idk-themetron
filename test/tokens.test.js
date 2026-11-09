@@ -166,6 +166,16 @@ test('the shadcn/ui export has its variables, for the root and each child theme'
   assert.match(css, /^\.theme-danger \{/m);
 });
 
+test('every token has a color, even for key colors at the very ends of the scale', () => {
+  for (const color of ['#ffffff', '#ffff00', '#fefefe', '#000000', '#0000ee', '#ff00ee']) {
+    const { modes } = buildThemes({ themes: { default: { color } } }).themes.default;
+    for (const m of ['light', 'dark']) for (const [name, t] of Object.entries(modes[m].tokens)) {
+      assert.match(String(t.value), /^#[0-9a-f]{6}$/i, `${color} ${m} ${name}: ${t.ref}`);
+      assert.ok(Number.isFinite(t.grade) && t.grade >= 0 && t.grade <= 100, `${color} ${m} ${name}: grade ${t.grade}`);
+    }
+  }
+});
+
 test('every action fill has light labels in light mode and dark labels in dark mode, whatever the key color', () => {
   const colors = { blue: '#2456e8', yellow: '#ffd43b', pure: '#ffff00', magenta: '#ff00ff', mint: '#3ddc97', pale: '#f1f3f5', ink: '#111111' };
   const themes = { default: { color: '#2456e8' } };
@@ -174,7 +184,7 @@ test('every action fill has light labels in light mode and dark labels in dark m
   for (const n of built.order) for (const m of ['light', 'dark']) {
     const { tokens } = built.themes[n].modes[m];
     for (const role of ['action']) {
-      const grade = Number(tokens[`on-fill.${role}`].ref.split('.')[1]);
+      const { grade } = tokens[`on-fill.${role}`];
       assert.ok(m === 'light' ? grade <= 5 : grade >= 95, `${n} ${role} ${m}: label grade ${grade}`);
     }
     // The exact button too: in light mode the label is the lighter color of the pair.

@@ -169,8 +169,10 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const tokens = {};
   const audit = [];
   const base = palettes.base;
+  // Each token names its grade (ref, for the CSS and DTCG), and keeps it as a number (grade),
+  // so the engine never reads a number out of a name.
   const set = (name, palette, grade) => {
-    tokens[name] = { ref: `${paletteName(palettes, palette)}.${grade}`, value: palette.steps[grade] };
+    tokens[name] = { ref: `${paletteName(palettes, palette)}.${grade}`, grade, value: palette.steps[grade] };
     return palette.steps[grade];
   };
   // The label of a background that moved from `from` to `to`. It moves by the same distance,
@@ -197,14 +199,15 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // fill.action-hover, within [lo, hi].
   const shine = (glossName, bgName, palette, offsets, lo, hi) => {
     for (const state of STATES) {
-      const g = Number(tokens[`${bgName}${state}`].ref.split('.')[1]);
+      const g = tokens[`${bgName}${state}`].grade;
       for (const [part, by] of Object.entries(offsets)) set(`${glossName}${state}-${part}`, palette, Math.min(hi, Math.max(lo, g + by)));
     }
   };
-  // The label can come from another palette than the background.
-  const states = (bgName, labelName, palette, bg, label, dir, labelPalette = palette) => {
+  // The label can come from another palette than the background. `moves` gives the hover and
+  // press moves in grade numbers, when they are not STATE_GRADES and twice that toward dir.
+  const states = (bgName, labelName, palette, bg, label, dir, labelPalette = palette, moves = [STATE_GRADES * dir, 2 * STATE_GRADES * dir]) => {
     for (const [i, state] of STATES.entries()) {
-      const to = reach(palette, bg, i * STATE_GRADES * dir);
+      const to = i ? reach(palette, bg, moves[i - 1]) : bg;
       set(`${bgName}${state}`, palette, i ? to : bg);
       set(`${labelName}${state}`, labelPalette, i ? labelAfter(labelPalette, label, bg, to, palette) : label);
     }
@@ -278,10 +281,10 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const contrasty = dark ? -1 : 1;
     const fill = step(minContrast, contrasty);
     const onFill = labelFor(fill) ?? (fill > 50 ? 0 : 100);
-    // Hover and active move away from the label color, and the label follows by the same
-    // distance, so the contrast stays the same.
-    const away = onFill < 50 ? 1 : -1;
-    states(`fill.${role}`, `on-fill.${role}`, palette, fill, onFill, away);
+    // Hover is 5 grade numbers lighter, and press 5 darker, in both modes. Lighter is a lower
+    // number. The fill is a full step beyond the min-contrast grade, so a fill 5 lighter still
+    // passes with its label. The label follows, so the contrast stays the same.
+    states(`fill.${role}`, `on-fill.${role}`, palette, fill, onFill, 0, palette, [-5, 5]);
     // Shine comes from the ramp itself, not from white, with light from above in both modes:
     // a rim and a top lighter than the fill, and a shadow and a bottom darker (see SHINE).
     // Lighter means a lower grade number in both modes. The shine sits above and below the
@@ -330,7 +333,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // Small solid parts in the base color, such as a switch's knob, are the muted text color.
   // Their shine is counted from it, like a fill's.
   {
-    const g = Number(tokens['fg.base-muted'].ref.split('.')[1]);
+    const g = tokens['fg.base-muted'].grade;
     for (const [part, by] of Object.entries(SHINE)) set(`gloss.base-muted-${part}`, palettes.base, Math.min(95, Math.max(5, g + by)));
   }
 
@@ -341,18 +344,18 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // The quiet button: a solid button with the polarity flipped, all in the base color. In light
   // mode, a light fill with a dark label; dark mode mirrors it. The label is the text color
   // when it passes, so the button stays neutral next to the main action.
-  // The fill is the base tint grade, so it shows on the canvas and on surfaces. Hover and
-  // press move toward the label, and the label follows. The shine has the same shape as on
-  // solid fills, from the base ramp.
+  // The fill is the base tint grade, so it shows on the canvas and on surfaces. Like a solid
+  // fill, hover is 5 grade numbers lighter and press 5 darker, in both modes, and the label
+  // follows. The shine has the same shape as on solid fills, from the base ramp.
   {
-    const fill = Number(tokens['tint.base'].ref.split('.')[1]);
+    const fill = tokens['tint.base'].grade;
     const toward = dark ? -1 : 1;
-    const hover = reach(base, fill, STATE_GRADES * toward);
+    const hover = reach(base, fill, -5);
     const candidates = [fgGrade, ...nearest(base.keyGrade)];
     const passesOn = (n, g) => test(base.steps[n], base.steps[g], 'text');
     const label = candidates.find((n) => passesOn(n, fill) && passesOn(labelAfter(base, n, fill, hover), hover))
       ?? pick(base, candidates, (hex) => test(hex, base.steps[fill], 'text'), [base.steps[fill]]);
-    states('fill.quiet', 'on-fill.quiet', base, fill, label, toward);
+    states('fill.quiet', 'on-fill.quiet', base, fill, label, toward, base, [-5, 5]);
     shine('gloss.quiet', 'fill.quiet', base, SHINE, 5, 95);
     for (const state of STATES) {
       check(`on-fill.quiet${state}`, `fill.quiet${state}`, 'text', state !== '-active');
@@ -375,11 +378,12 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // fails the contrast setting, the audit warns; the more-contrast variant uses the normal
   // button's colors instead.
   {
-    const key = { ref: 'action.key', value: action.key };
+    // The key color sits between grades: its grade is where it sits on the ramp.
+    const key = { ref: 'action.key', grade: action.keyGrade, value: action.key };
     const partnerGrade = measure(action.key, action.steps[0]).wcag >= measure(action.key, action.steps[100]).wcag ? 0 : 100;
     // White and black are the same in every ramp. The partner names the action ramp, so its
     // hover and press stay in the action color too.
-    const partner = { ref: `action.${partnerGrade}`, value: action.steps[partnerGrade] };
+    const partner = { ref: `action.${partnerGrade}`, grade: partnerGrade, value: action.steps[partnerGrade] };
     const passes = test(partner.value, action.key, 'text');
     const [lighter, darker] = partnerGrade === 0 ? [partner, key] : [key, partner];
     if (variant && !passes) {
@@ -394,27 +398,33 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
       const fill = dark ? lighter : darker;
       tokens['fill.action-exact'] = fill;
       tokens['on-fill.action-exact'] = dark ? darker : lighter;
-      // Hover and press: only the resting button is exact. Like other fills, they move away
-      // from the label, darker in light mode and lighter in dark mode, to the nearest grade at
-      // least STATE_GRADES (hover) or twice that (press) from the key color's own grade. When
-      // the fill is white or black, it cannot move further out, so it moves in by as much. The
-      // label follows by the same distance.
-      const away = dark ? -1 : 1;
+      // Hover and press: only the resting button is exact. Like other fills, hover is lighter
+      // and press darker, in both modes, by at least 5 grade numbers, and the label follows.
+      // On the key color, the fill moves to the nearest grade at least 5 lighter or darker than
+      // the key's own grade. White cannot get lighter, so on hover a white button keeps its
+      // fill and only its label gets lighter. Black cannot get darker, so when pressed a black
+      // button keeps its fill and only its label gets darker.
       const label = dark ? darker : lighter;
-      const [from, dir] = fill === key ? [action.keyGrade, away] : [partnerGrade, -away];
+      const from = fill === key ? action.keyGrade : partnerGrade;
       const labelGrade = label === key ? action.keyGrade : partnerGrade;
-      for (const [i, state] of STATES.entries()) {
-        if (!i) continue;
-        const to = shift(from, i * STATE_GRADES * dir);
-        set(`fill.action-exact${state}`, action, to);
-        if (to === from) tokens[`on-fill.action-exact${state}`] = { ...label };
-        else set(`on-fill.action-exact${state}`, action, labelAfter(action, labelGrade, from, to));
-      }
+      const setState = (state, by) => {
+        const to = shift(from, by);
+        const stuck = by < 0 ? to >= from : to <= from;
+        if (stuck) {
+          tokens[`fill.action-exact${state}`] = { ...fill };
+          set(`on-fill.action-exact${state}`, action, shift(labelGrade, by));
+        } else {
+          set(`fill.action-exact${state}`, action, to);
+          set(`on-fill.action-exact${state}`, action, labelAfter(action, labelGrade, from, to));
+        }
+      };
+      setState('-hover', -5);
+      setState('-active', 5);
       // The same shine as solid fills, counted from where each state's fill sits: the key
       // color's own grade at rest, rounded to the nearest grade. It can reach white and black,
       // so a black fill has no shadow below it, and a white fill no highlight above it.
       for (const [i, state] of STATES.entries()) {
-        const g = i ? Number(tokens[`fill.action-exact${state}`].ref.split('.')[1]) : from;
+        const g = tokens[`fill.action-exact${state}`].grade;
         for (const [part, by] of Object.entries(SHINE)) set(`gloss.action-exact${state}-${part}`, action, Math.min(100, Math.max(0, Math.round((g + by) / 5) * 5)));
       }
     }

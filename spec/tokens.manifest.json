@@ -1106,7 +1106,7 @@
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "An action fill on hover."
+      "meaning": "An action fill on hover: 5 grade numbers lighter, in both modes."
     },
     "on-fill-action-hover": {
       "tier": "semantic",
@@ -1122,7 +1122,7 @@
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "An action fill while it is pressed."
+      "meaning": "An action fill while it is pressed: 5 grade numbers darker, in both modes."
     },
     "on-fill-action-active": {
       "tier": "semantic",
@@ -1398,7 +1398,7 @@
       "modes": true,
       "role": "base",
       "stability": "experimental",
-      "meaning": "The quiet button on hover: 10 grade numbers from its fill, toward the label."
+      "meaning": "The quiet button on hover: 5 grade numbers lighter, in both modes."
     },
     "on-fill-quiet-hover": {
       "tier": "semantic",
@@ -1414,7 +1414,7 @@
       "modes": true,
       "role": "base",
       "stability": "experimental",
-      "meaning": "The quiet button while it is pressed: 20 grade numbers from its fill, toward the label. Also its edge."
+      "meaning": "The quiet button while it is pressed: 5 grade numbers darker, in both modes. Also its edge."
     },
     "on-fill-quiet-active": {
       "tier": "semantic",
@@ -1554,7 +1554,7 @@
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "The exact button on hover: the nearest grade at least 10 grade numbers from its resting fill, away from the label. When the fill is white or black, toward the label."
+      "meaning": "The exact button on hover: the nearest grade at least 5 grade numbers lighter than its resting fill. A white fill, which cannot get lighter, stays white, and only its label gets lighter."
     },
     "on-fill-action-exact-hover": {
       "tier": "semantic",
@@ -1570,7 +1570,7 @@
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "The exact button while it is pressed: the nearest grade at least 20 grade numbers from its resting fill, away from the label. When the fill is white or black, toward the label."
+      "meaning": "The exact button while it is pressed: the nearest grade at least 5 grade numbers darker than its resting fill. A black fill, which cannot get darker, stays black, and only its label gets darker."
     },
     "on-fill-action-exact-active": {
       "tier": "semantic",
