@@ -119,6 +119,8 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
+  --tm-text-shadow-quiet: none;
+  --tm-text-shadow-tint-base: none;
   --tm-glow-tint-base: transparent;
 }
 
@@ -225,6 +227,8 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
+  --tm-text-shadow-quiet: none;
+  --tm-text-shadow-tint-base: none;
   --tm-glow-tint-base: transparent;
 }
 
@@ -331,6 +335,8 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
+  --tm-text-shadow-quiet: none;
+  --tm-text-shadow-tint-base: none;
   --tm-glow-tint-base: transparent;
 }
 
@@ -437,6 +443,8 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
+  --tm-text-shadow-quiet: none;
+  --tm-text-shadow-tint-base: none;
   --tm-glow-tint-base: transparent;
 }
 
@@ -543,6 +551,8 @@
   --tm-highlight-tint-base: light-dark(color-mix(in oklch, var(--tm-gloss-tint-base-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-base-rim) 16.5%, transparent));
   --tm-glow-base-muted: color-mix(in oklch, var(--tm-gloss-base-muted-rim) 6.6%, transparent);
   --tm-glow-quiet: color-mix(in oklch, var(--tm-gloss-quiet-rim) 6.6%, transparent);
+  --tm-text-shadow-quiet: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-quiet-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-quiet-rim) 9.9%, transparent), transparent);
+  --tm-text-shadow-tint-base: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-tint-base-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-tint-base-rim) 9.9%, transparent), transparent);
   --tm-glow-tint-base: color-mix(in oklch, var(--tm-gloss-tint-base-rim) 6.6%, transparent);
 }
 
@@ -892,6 +902,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
+  --tm-text-shadow-action: none;
+  --tm-text-shadow-action-exact: none;
+  --tm-text-shadow-tint-action: none;
   --tm-glow-tint-action: transparent;
 }
 
@@ -981,6 +994,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
+  --tm-text-shadow-action: none;
+  --tm-text-shadow-action-exact: none;
+  --tm-text-shadow-tint-action: none;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1070,6 +1086,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
+  --tm-text-shadow-action: none;
+  --tm-text-shadow-action-exact: none;
+  --tm-text-shadow-tint-action: none;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1159,6 +1178,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
+  --tm-text-shadow-action: none;
+  --tm-text-shadow-action-exact: none;
+  --tm-text-shadow-tint-action: none;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1248,6 +1270,9 @@
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
   --tm-glow-action: color-mix(in oklch, var(--tm-gloss-action-rim) 6.6%, transparent);
   --tm-glow-action-exact: color-mix(in oklch, var(--tm-gloss-action-exact-rim) 6.6%, transparent);
+  --tm-text-shadow-action: -1px -1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-action-shadow) 16.5%, transparent), transparent), 1px 1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-action-rim) 9.9%, transparent));
+  --tm-text-shadow-action-exact: -1px -1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-shadow) 16.5%, transparent), transparent), 1px 1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-action-exact-rim) 9.9%, transparent));
+  --tm-text-shadow-tint-action: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-tint-action-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 9.9%, transparent), transparent);
   --tm-glow-tint-action: color-mix(in oklch, var(--tm-gloss-tint-action-rim) 6.6%, transparent);
 }
 
@@ -1337,6 +1362,9 @@
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
   --tm-glow-action: color-mix(in oklch, var(--tm-gloss-action-rim) 6.6%, transparent);
   --tm-glow-action-exact: color-mix(in oklch, var(--tm-gloss-action-exact-rim) 6.6%, transparent);
+  --tm-text-shadow-action: -1px -1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-action-shadow) 16.5%, transparent), transparent), 1px 1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-action-rim) 9.9%, transparent));
+  --tm-text-shadow-action-exact: -1px -1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-shadow) 16.5%, transparent), transparent), 1px 1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-action-exact-rim) 9.9%, transparent));
+  --tm-text-shadow-tint-action: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-tint-action-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 9.9%, transparent), transparent);
   --tm-glow-tint-action: color-mix(in oklch, var(--tm-gloss-tint-action-rim) 6.6%, transparent);
 }
 

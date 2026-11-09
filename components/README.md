@@ -54,7 +54,7 @@ A part takes its color from the nearest theme class, such as `theme-danger`. `tm
 |---|---|
 | Spaciousness | Padding, gaps, line heights, control height |
 | Roundness | Every radius. At full roundness, buttons and badges are pills, and cards round a lot. |
-| Shininess | The shine on buttons, checks, radios, switches, badges, avatars, progress bars, and the segmented control: a gradient, an edge band, and a glow |
+| Shininess | The shine on buttons, checks, radios, switches, badges, avatars, progress bars, and the segmented control: a gradient, an edge band, and a glow. Labels on buttons, badges, avatars, and pressed segments get a 1 px line that sets them into the surface (`text-shadow-*`). |
 
 The other feels are removed for now. Until they come back, borders are 1 px, parts have no shadows and do not lift on hover, everything is opaque, and motion does not overshoot. The components still read the same tokens, so the effects come back without changes here.
 

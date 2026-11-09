@@ -90,6 +90,24 @@ export function semanticEntries(theme, prefix = 'tm') {
   const glow = shine * 0.2;
   const glowing = (ref) => (glow ? `color-mix(in oklch, var(--${prefix}-${ref}) ${round1(glow * 100)}%, transparent)` : 'transparent');
   for (const part of shined) out.push([`glow-${part}`, glowing(`gloss-${part}-rim`)]);
+  // Text set into the surface: a 1 px line of the part's own ramp, on the far side of the light.
+  // Light text on a darker surface gets a dark line above and to the left, in the part's shadow
+  // grade. Dark text on a lighter surface gets a light line below and to the right, in its rim
+  // grade, fainter, since a light line stands out more. Fills have light text in light mode and
+  // dark text in dark mode, and tints the other way round, so each token holds both lines, and
+  // light-dark() makes the wrong one clear. The opacity grows with the shininess: none at 0.
+  const ink = (ref, share) => `color-mix(in oklch, var(--${prefix}-${ref}) ${round1(shine * share * 100)}%, transparent)`;
+  const setIn = (part, lightTextInLightMode) => {
+    if (!shine) return 'none';
+    const dark = ink(`gloss-${part}-shadow`, 0.5);
+    const light = ink(`gloss-${part}-rim`, 0.3);
+    const [darkLine, lightLine] = lightTextInLightMode
+      ? [`light-dark(${dark}, transparent)`, `light-dark(transparent, ${light})`]
+      : [`light-dark(transparent, ${dark})`, `light-dark(${light}, transparent)`];
+    return `-1px -1px 0 ${darkLine}, 1px 1px 0 ${lightLine}`;
+  };
+  for (const part of ['action', 'action-exact']) out.push([`text-shadow-${part}`, setIn(part, true)]);
+  for (const part of ['quiet', 'tint-action', 'tint-base']) out.push([`text-shadow-${part}`, setIn(part, false)]);
   for (const role of ROLES) out.push([`glow-tint-${role}`, glowing(`gloss-tint-${role}-rim`)]);
   return out;
 }

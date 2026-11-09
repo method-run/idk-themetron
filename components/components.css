@@ -86,6 +86,9 @@
   --_shine-height: var(--tm-control-height);
   --_shine-color: var(--btn-highlight);
   --_glow-color: var(--btn-glow);
+  /* The label is set into the surface, with a line of the part's own ramp. Each variant sets
+     its own. */
+  text-shadow: var(--tm-text-shadow-action);
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -124,10 +127,10 @@
 .tm-button::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background-image: var(--btn-shine); opacity: var(--tm-fill-alpha); pointer-events: none; }
 
 /* A tint shines more faintly: half the distances (in its gloss grades) and half the opacity. */
-.tm-button--soft { --tm-shine-strength: 0.5; --tm-shine-rim: var(--tm-gloss-tint-action-rim); --tm-shine-top: var(--tm-gloss-tint-action-top); --tm-shine-shadow: var(--tm-gloss-tint-action-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-bottom); --btn-highlight: var(--tm-highlight-tint-action); --btn-glow: var(--tm-glow-tint-action); background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action); border-color: transparent; }
+.tm-button--soft { text-shadow: var(--tm-text-shadow-tint-action); --tm-shine-strength: 0.5; --tm-shine-rim: var(--tm-gloss-tint-action-rim); --tm-shine-top: var(--tm-gloss-tint-action-top); --tm-shine-shadow: var(--tm-gloss-tint-action-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-bottom); --btn-highlight: var(--tm-highlight-tint-action); --btn-glow: var(--tm-glow-tint-action); background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action); border-color: transparent; }
 .tm-button--soft:hover { --tm-shine-rim: var(--tm-gloss-tint-action-hover-rim); --tm-shine-top: var(--tm-gloss-tint-action-hover-top); --tm-shine-shadow: var(--tm-gloss-tint-action-hover-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-hover-bottom); background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-hover); }
 .tm-button--soft:active { --tm-shine-rim: var(--tm-gloss-tint-action-active-rim); --tm-shine-top: var(--tm-gloss-tint-action-active-top); --tm-shine-shadow: var(--tm-gloss-tint-action-active-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-active-bottom); background-color: color-mix(in oklab, var(--tm-tint-action-active) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-active); }
-.tm-button--quiet { --tm-shine-rim: var(--tm-gloss-quiet-rim); --tm-shine-top: var(--tm-gloss-quiet-top); --tm-shine-shadow: var(--tm-gloss-quiet-shadow); --tm-shine-bottom: var(--tm-gloss-quiet-bottom); --btn-highlight: var(--tm-highlight-quiet); --btn-glow: var(--tm-glow-quiet); background-color: color-mix(in oklab, var(--tm-fill-quiet) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet); border-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-fill-alpha) * 100%), transparent); }
+.tm-button--quiet { text-shadow: var(--tm-text-shadow-quiet); --tm-shine-rim: var(--tm-gloss-quiet-rim); --tm-shine-top: var(--tm-gloss-quiet-top); --tm-shine-shadow: var(--tm-gloss-quiet-shadow); --tm-shine-bottom: var(--tm-gloss-quiet-bottom); --btn-highlight: var(--tm-highlight-quiet); --btn-glow: var(--tm-glow-quiet); background-color: color-mix(in oklab, var(--tm-fill-quiet) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet); border-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-fill-alpha) * 100%), transparent); }
 .tm-button--quiet:hover { --tm-shine-rim: var(--tm-gloss-quiet-hover-rim); --tm-shine-top: var(--tm-gloss-quiet-hover-top); --tm-shine-shadow: var(--tm-gloss-quiet-hover-shadow); --tm-shine-bottom: var(--tm-gloss-quiet-hover-bottom); background-color: color-mix(in oklab, var(--tm-fill-quiet-hover) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet-hover); }
 .tm-button--quiet:active { --tm-shine-rim: var(--tm-gloss-quiet-active-rim); --tm-shine-top: var(--tm-gloss-quiet-active-top); --tm-shine-shadow: var(--tm-gloss-quiet-active-shadow); --tm-shine-bottom: var(--tm-gloss-quiet-active-bottom); background-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet-active); }
 
@@ -136,12 +139,12 @@
 /* The exact button is the brand color, exactly, at rest. Hover and press move to ramp grades
    10 and 20 grade numbers from it, like other fills. Its shine is counted from where the key
    color sits on the ramp. */
-.tm-button--exact { --tm-shine-rim: var(--tm-gloss-action-exact-rim); --tm-shine-top: var(--tm-gloss-action-exact-top); --tm-shine-shadow: var(--tm-gloss-action-exact-shadow); --tm-shine-bottom: var(--tm-gloss-action-exact-bottom); --btn-highlight: var(--tm-highlight-action-exact); --btn-glow: var(--tm-glow-action-exact); background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
+.tm-button--exact { text-shadow: var(--tm-text-shadow-action-exact); --tm-shine-rim: var(--tm-gloss-action-exact-rim); --tm-shine-top: var(--tm-gloss-action-exact-top); --tm-shine-shadow: var(--tm-gloss-action-exact-shadow); --tm-shine-bottom: var(--tm-gloss-action-exact-bottom); --btn-highlight: var(--tm-highlight-action-exact); --btn-glow: var(--tm-glow-action-exact); background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
 .tm-button--exact:hover { --tm-shine-rim: var(--tm-gloss-action-exact-hover-rim); --tm-shine-top: var(--tm-gloss-action-exact-hover-top); --tm-shine-shadow: var(--tm-gloss-action-exact-hover-shadow); --tm-shine-bottom: var(--tm-gloss-action-exact-hover-bottom); background-color: var(--tm-fill-action-exact-hover); color: var(--tm-on-fill-action-exact-hover); }
 .tm-button--exact:active { --tm-shine-rim: var(--tm-gloss-action-exact-active-rim); --tm-shine-top: var(--tm-gloss-action-exact-active-top); --tm-shine-shadow: var(--tm-gloss-action-exact-active-shadow); --tm-shine-bottom: var(--tm-gloss-action-exact-active-bottom); background-color: var(--tm-fill-action-exact-active); color: var(--tm-on-fill-action-exact-active); }
 
 /* No fill, so no frost: their labels read like any text on the page. */
-.tm-button--outline, .tm-button--ghost { --btn-shine: none; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
+.tm-button--outline, .tm-button--ghost { --btn-shine: none; text-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
 /* The outline fades with the fill's opacity. The label identifies the button, so its edge can
    be fainter than 3:1 at low solidity. Hover and press tints fade like soft buttons. */
 .tm-button--outline { border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent); }
@@ -317,6 +320,7 @@
   background: var(--tm-tint-action);
   /* A tint shines faintly, as on a soft button. */
   background-image: var(--tm-shine-image);
+  text-shadow: var(--tm-text-shadow-tint-action);
   --tm-shine-strength: 0.5;
   --tm-shine-rim: var(--tm-gloss-tint-action-rim); --tm-shine-top: var(--tm-gloss-tint-action-top); --tm-shine-shadow: var(--tm-gloss-tint-action-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-bottom);
   --_shine-height: calc(var(--tm-leading-md) - 2 * var(--_badge-margin));
@@ -340,7 +344,7 @@
 }
 /* In a stack, a badge keeps its own width (flex-start). In a row, it sits in the middle. */
 .tm-row > .tm-badge { align-self: center; }
-.tm-badge--solid { background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-strength: 1; --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); }
+.tm-badge--solid { text-shadow: var(--tm-text-shadow-action); background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-strength: 1; --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); color: var(--tm-on-fill-action); border-color: var(--tm-fill-action-active); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); }
 
 .tm-alert {
   display: flex;
@@ -368,6 +372,7 @@
   background: var(--tm-fill-action);
   background-image: var(--tm-shine-image);
   --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom);
+  text-shadow: var(--tm-text-shadow-action);
   --_shine-height: var(--tm-control-height);
   --_shine-color: var(--tm-highlight-action);
   --_glow-color: var(--tm-glow-action);
@@ -459,7 +464,7 @@
 .tm-segmented button:last-child { border-start-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); border-end-end-radius: max(0px, calc(var(--seg-radius) - var(--seg-bw))); }
 .tm-segmented button + button { box-shadow: inset var(--seg-bw) 0 var(--tm-border-base); }
 .tm-segmented button:hover { background-color: var(--tm-tint-action); color: var(--tm-on-tint-action); }
-.tm-segmented button[aria-pressed="true"] { background-color: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); color: var(--tm-on-fill-action); --_shine-height: var(--seg-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
+.tm-segmented button[aria-pressed="true"] { text-shadow: var(--tm-text-shadow-action); background-color: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); color: var(--tm-on-fill-action); --_shine-height: var(--seg-height); --_shine-color: var(--tm-highlight-action); --_glow-color: var(--tm-glow-action); box-shadow: var(--_shine); }
 .tm-segmented button[aria-pressed="true"] + button { box-shadow: none; }
 .tm-segmented button:focus-visible { position: relative; z-index: 1; outline: var(--tm-focus-width) solid var(--tm-border-focus); outline-offset: 2px; }
 .tm-segmented[hidden] { display: none; }

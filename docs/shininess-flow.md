@@ -47,13 +47,14 @@ flowchart TD
   end
 ```
 
-## The three parts of the shine
+## The four parts of the shine
 
 | Part | Made from | CSS | What you see |
 |---|---|---|---|
 | Gradient | The gloss grades of the part's state, and `SHINE_SHAPE` | `--tm-shine-image`, painted by each part | A lighter rim and top, a clear middle, and a darker shadow and bottom |
 | Edge band | The resting rim grade, at the shininess as its opacity (half in dark mode) | `--tm-highlight-…`, drawn by `--_shine` | A thin line along the top edge, and half as wide along the left |
 | Glow | The resting rim grade, at a fifth of the shininess | `--tm-glow-…`, drawn by `--_shine` | A soft light inside the top of the part |
+| Text line | The resting shadow grade (a dark line above and to the left of light text) or rim grade (a light line below and to the right of dark text) | `--tm-text-shadow-…`, as `text-shadow` | The label looks set into the surface |
 
 ## How a state change animates
 

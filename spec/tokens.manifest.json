@@ -1823,6 +1823,41 @@
       "role": "action",
       "stability": "experimental"
     },
+    "text-shadow-action": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "text-shadow-action-exact": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "text-shadow-quiet": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "text-shadow-tint-action": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "text-shadow-tint-base": {
+      "tier": "semantic",
+      "type": "gradient",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "glow-tint-base": {
       "tier": "semantic",
       "type": "fontFamily",
