@@ -37,9 +37,9 @@ function buildLevel(settings, palettes, variant = false) {
 
 // ---- Primitives: values that do not change with the mode.
 
-// Fixed values for the parts that the removed feels (thickness, depth, softness, solidity,
-// bounciness, snappiness) used to set. The tokens stay, so components still work: hairline
-// borders, no shadows and no lift, opaque parts with no blur, and calm motion with no overshoot.
+// Fixed values for the parts that the removed feels (thickness, softness, solidity, bounciness,
+// snappiness) used to set. The tokens stay, so components still work: hairline borders, opaque
+// parts with no blur, and calm motion with no overshoot.
 const BORDER_WIDTH = 1;
 // The grid square, in px, and the body text size, until typography settings set it.
 const GRID = 4;
@@ -63,7 +63,7 @@ const STOPS = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
 const FLAT = { panelAlpha: 1, panelAlphaInverted: 1, fillAlpha: 1, fillAlphaInverted: 1, tintAlpha: 1, tintAlphaInverted: 1, blur: 0, lift: 0 };
 
 export function buildPrimitives(settings, palettes, gaps) {
-  const { spaciousness: s, roundness: r, shininess: sh } = settings.feel;
+  const { spaciousness: s, roundness: r, depth: d, shininess: sh } = settings.feel;
   const v = settings.typeVariance;
 
   // The grid: an invisible grid of GRID px squares, down and across. Its size never changes.
@@ -155,6 +155,8 @@ export function buildPrimitives(settings, palettes, gaps) {
     motion: MOTION,
     effect: {
       ...FLAT,
+      // Buttons rise on hover: up to 1 px, with depth. More is distracting.
+      lift: round(d * 1, 1),
     },
     panelBorderWidth: borderWidth,
   };
@@ -424,26 +426,57 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     }
   }
 
-  return { tokens, audit, computed: computed(dark, tokens) };
+  return { tokens, audit, computed: computed(dark, tokens, settings.feel.depth, palettes.base) };
 }
 
 // An empty shadow that can still join a list of shadows, which "none" cannot.
 const NO_SHADOW = '0 0 #0000';
 
-// Values for one mode that are not one palette color: panels and shadows. With no depth and
-// no see-through parts, panels are the surface, and the shadows are empty. A panel names the
-// token it copies, so the CSS can point at it.
-function computed(dark, tokens) {
+// Values for one mode that are not one palette color: panels and shadows. With no see-through
+// parts, panels are the surface. A panel names the token it copies, so the CSS can point at it.
+function computed(dark, tokens, depth, base) {
   const panel = { alias: 'bg.surface', value: tokens['bg.surface'].value };
   return {
     'bg.panel': panel,
     'bg.panel-normal': panel,
     'bg.panel-inverted': panel,
-    'elevation.1': NO_SHADOW,
-    'elevation.2': NO_SHADOW,
-    'elevation.3': NO_SHADOW,
-    'elevation.inset': NO_SHADOW,
+    'elevation.1': elevation(1, depth, dark, base),
+    'elevation.2': elevation(2, depth, dark, base),
+    'elevation.3': elevation(3, depth, dark, base),
+    'elevation.inset': insetShadow(depth, dark, base),
   };
+}
+
+// How far each elevation floats at full depth, in px: a resting part, a raised part (hover,
+// cards), and an overlay (dialogs, menus).
+const ELEVATION = [2, 6, 16];
+
+// A floating shadow in two layers, as usual: a key shadow, cast down and to the right (the light
+// is above and to the left, as for the shine), and a wide, faint ambient shadow all round. Depth
+// sets how far the part floats: the offset, and a little of the blur. The color is the base
+// ramp's darkest grade that still shows on the mode's backgrounds, so a warm base makes warm
+// shadows. Dark backgrounds hide shadows, so dark mode makes them 1.8 times as strong.
+function elevation(level, d, dark, base) {
+  if (!d) return NO_SHADOW;
+  const y = round(d * ELEVATION[level - 1], 1);
+  const x = round(y / 2, 1);
+  const strength = dark ? 1.8 : 1;
+  const color = (alpha) => withAlpha(base.steps[dark ? 100 : 90], Math.min(1, alpha * strength));
+  const key = `${x}px ${y}px ${round(1 + y * 0.6, 1)}px ${color(0.16)}`;
+  const ambient = `0 ${round(y / 4, 1)}px ${round(2 + y * 1.5, 1)}px ${color(0.08)}`;
+  return `${key}, ${ambient}`;
+}
+
+// A pressed or sunken part: a faint shadow inside its top edge. It stays faint, as text sits
+// over it and is checked against the flat color.
+function insetShadow(d, dark, base) {
+  if (!d) return NO_SHADOW;
+  return `inset 0 ${round(Math.max(1, d * 2), 1)}px ${round(1 + d * 3, 1)}px ${withAlpha(base.steps[dark ? 100 : 90], dark ? 0.3 : 0.12)}`;
+}
+
+// A hex color with an opacity, as #rrggbbaa.
+function withAlpha(hex, alpha) {
+  return `${hex}${Math.round(alpha * 255).toString(16).padStart(2, '0')}`;
 }
 
 // ---- Helpers

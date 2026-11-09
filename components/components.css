@@ -115,16 +115,21 @@
     background-color var(--tm-duration-fast) var(--tm-ease-standard),
     color var(--tm-duration-fast) var(--tm-ease-standard),
     var(--_shine-transition),
-    box-shadow var(--tm-duration-base) var(--tm-ease-standard),
     transform var(--tm-duration-base) var(--tm-ease-enter);
 }
-.tm-button:hover { --tm-shine-rim: var(--tm-gloss-action-hover-rim); --tm-shine-top: var(--tm-gloss-action-hover-top); --tm-shine-shadow: var(--tm-gloss-action-hover-shadow); --tm-shine-bottom: var(--tm-gloss-action-hover-bottom); background-color: color-mix(in oklab, var(--tm-fill-action-hover) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--_shine), var(--tm-elevation-2); }
-.tm-button:active { --tm-shine-rim: var(--tm-gloss-action-active-rim); --tm-shine-top: var(--tm-gloss-action-active-top); --tm-shine-shadow: var(--tm-gloss-action-active-shadow); --tm-shine-bottom: var(--tm-gloss-action-active-bottom); background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
+.tm-button:hover { --tm-shine-rim: var(--tm-gloss-action-hover-rim); --tm-shine-top: var(--tm-gloss-action-hover-top); --tm-shine-shadow: var(--tm-gloss-action-hover-shadow); --tm-shine-bottom: var(--tm-gloss-action-hover-bottom); background-color: color-mix(in oklab, var(--tm-fill-action-hover) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); }
+.tm-button:active { --tm-shine-rim: var(--tm-gloss-action-active-rim); --tm-shine-top: var(--tm-gloss-action-active-top); --tm-shine-shadow: var(--tm-gloss-action-active-shadow); --tm-shine-bottom: var(--tm-gloss-action-active-bottom); background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--_shine), var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
 .tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.tm-button:disabled::after { opacity: 0; }
 
 /* The shine sits in a layer behind the label, at the fill's opacity, so it cannot make a
    see-through button solid. */
 .tm-button::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background-image: var(--btn-shine); opacity: var(--tm-fill-alpha); pointer-events: none; }
+/* The raised shadow on hover sits on its own layer, and fades in with its opacity. Animating
+   box-shadow would repaint the blur on every frame; opacity does not. */
+.tm-button::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; box-shadow: var(--tm-elevation-2); opacity: 0; pointer-events: none; transition: opacity var(--tm-duration-base) var(--tm-ease-standard); }
+.tm-button:hover::after { opacity: 1; }
+.tm-button:active::after { opacity: 0; transition-duration: var(--tm-duration-fast); }
 
 /* A tint shines more faintly: half the distances (in its gloss grades) and half the opacity. */
 .tm-button--soft { text-shadow: var(--tm-text-shadow-tint-action); --tm-shine-strength: 0.5; --tm-shine-rim: var(--tm-gloss-tint-action-rim); --tm-shine-top: var(--tm-gloss-tint-action-top); --tm-shine-shadow: var(--tm-gloss-tint-action-shadow); --tm-shine-bottom: var(--tm-gloss-tint-action-bottom); --btn-highlight: var(--tm-highlight-tint-action); --btn-glow: var(--tm-glow-tint-action); background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action); border-color: transparent; }
@@ -149,6 +154,10 @@
    be fainter than 3:1 at low solidity. Hover and press tints fade like soft buttons. */
 .tm-button--outline { border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent); }
 .tm-button--ghost { border-color: transparent; }
+.tm-button--outline::after, .tm-button--ghost::after { content: none; }
+/* Buttons with a fill or a tint float. Outline and ghost buttons sit on the page: no resting
+   shadow, no hover shadow, and no lift. */
+.tm-button--outline:hover, .tm-button--ghost:hover { transform: none; }
 .tm-button--outline:hover, .tm-button--ghost:hover { background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-hover); box-shadow: none; }
 .tm-button--outline:active, .tm-button--ghost:active { background-color: color-mix(in oklab, var(--tm-tint-action-active) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-active); }
 

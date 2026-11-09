@@ -114,6 +114,7 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 |---|---|---|---|---|
 | `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | How many grid squares padding, gaps, and line heights take. The grid itself is always 4 px. |
 | `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
+| `depth` | Flat | flat, low, raised, floating | Floating | How far parts float above the page: soft shadows, and how far buttons rise on hover |
 | `shininess` | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts: a gradient, an edge band, and a glow, from the part's own ramp |
 
 The other feels (`thickness`, `depth`, `softness`, `solidity`, `bounciness`, and `snappiness`) are removed for now. They will come back one at a time. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, the tokens that they set have fixed values: 1 px borders, no shadows and no lift on hover, opaque parts with no blur, and motion with no overshoot.
@@ -145,6 +146,7 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 - Line heights: for each text size, the whole number of squares nearest to the size × `1.4 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
 - Controls: a tight line, plus padding and border that add up to whole squares. The padding is 0.45 of a space unit down, and 0.95 across, rounded to whole squares. These factors differ from the space steps' factors, so the padding and the space steps grow at different points along the slider. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.
 - Radius: a share of the most that each part can round. Controls: `r × height ÷ 2`, for each control size, so `r = 1` makes every size a pill. Cards: `r ×` their padding (`space.lg`). Alerts and text areas: `r × space.md`. Small parts: `r × space.xs`. So a corner never cuts into the content. Badges, switches, and progress bars round by `r ×` their own height `÷ 2`, from the `roundness` token, so they too are pills only at `r = 1`.
+- Shadows: elevation 1, 2, and 3 float `d × 2`, `d × 6`, and `d × 16` px below the part, and half that to the right, as if lit from the upper left. The key shadow's blur is `1 + 0.6 ×` that offset, and a wider ambient shadow blurs `2 + 1.5 ×` it. Buttons rise `d` px on hover, at most 1 px. The inset shadow of pressed and sunken parts is `max(1, 2 d)` px down.
 - Shine: from the fill's own ramp, not white. A gradient (a lighter rim and top, a darker shadow and bottom), a thin edge band, and a soft glow at the top. The shininess is their opacity, from none at 0. Each state of a button has its own shine grades, so the shine follows hover and press.
 
 </details>
@@ -172,7 +174,7 @@ Every line height is still a whole number of grid squares, so the grid holds at 
 
 ## Presets
 
-A preset is a set of feels with a familiar name. With only three feels for now, most presets set only roundness and shininess, and some look the same. Their names stay, so inputs that use them still load.
+A preset is a set of feels with a familiar name. With only four feels for now, most presets set only roundness and shininess, and some look the same. Their names stay, so inputs that use them still load.
 
 | Preset | Spaciousness | Roundness | Shininess |
 |---|---|---|---|

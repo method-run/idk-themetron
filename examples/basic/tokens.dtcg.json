@@ -1193,7 +1193,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1202,7 +1202,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1211,7 +1211,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1220,7 +1220,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #20242c1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1695,7 +1695,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1704,7 +1704,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1713,7 +1713,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1722,7 +1722,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -2224,7 +2224,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2233,7 +2233,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2242,7 +2242,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2251,7 +2251,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #20242c1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2726,7 +2726,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2735,7 +2735,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2744,7 +2744,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2753,7 +2753,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3913,7 +3913,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #002b0b29, 0 0.2px 2.9px #002b0b14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -3922,7 +3922,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #002b0b29, 0 0.5px 4.7px #002b0b14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -3931,7 +3931,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #002b0b29, 0 1.2px 9.2px #002b0b14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -3940,7 +3940,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #002b0b1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4415,7 +4415,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4424,7 +4424,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4433,7 +4433,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4442,7 +4442,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4944,7 +4944,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #002b0b29, 0 0.2px 2.9px #002b0b14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4953,7 +4953,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #002b0b29, 0 0.5px 4.7px #002b0b14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4962,7 +4962,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #002b0b29, 0 1.2px 9.2px #002b0b14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4971,7 +4971,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #002b0b1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -5446,7 +5446,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -5455,7 +5455,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -5464,7 +5464,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -5473,7 +5473,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6633,7 +6633,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #391d0029, 0 0.2px 2.9px #391d0014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -6642,7 +6642,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #391d0029, 0 0.5px 4.7px #391d0014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -6651,7 +6651,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #391d0029, 0 1.2px 9.2px #391d0014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -6660,7 +6660,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #391d001f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7135,7 +7135,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7144,7 +7144,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7153,7 +7153,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7162,7 +7162,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -7664,7 +7664,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #391d0029, 0 0.2px 2.9px #391d0014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7673,7 +7673,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #391d0029, 0 0.5px 4.7px #391d0014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7682,7 +7682,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #391d0029, 0 1.2px 9.2px #391d0014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7691,7 +7691,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #391d001f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -8166,7 +8166,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -8175,7 +8175,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -8184,7 +8184,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -8193,7 +8193,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9353,7 +9353,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #4f002029, 0 0.2px 2.9px #4f002014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9362,7 +9362,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #4f002029, 0 0.5px 4.7px #4f002014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9371,7 +9371,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #4f002029, 0 1.2px 9.2px #4f002014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9380,7 +9380,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #4f00201f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9855,7 +9855,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9864,7 +9864,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9873,7 +9873,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -9882,7 +9882,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -10384,7 +10384,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #4f002029, 0 0.2px 2.9px #4f002014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10393,7 +10393,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #4f002029, 0 0.5px 4.7px #4f002014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10402,7 +10402,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #4f002029, 0 1.2px 9.2px #4f002014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10411,7 +10411,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #4f00201f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10886,7 +10886,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10895,7 +10895,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10904,7 +10904,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10913,7 +10913,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -12073,7 +12073,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12082,7 +12082,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12091,7 +12091,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12100,7 +12100,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #20242c1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12575,7 +12575,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12584,7 +12584,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12593,7 +12593,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -12602,7 +12602,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -13104,7 +13104,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13113,7 +13113,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13122,7 +13122,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13131,7 +13131,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #20242c1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13606,7 +13606,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13615,7 +13615,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13624,7 +13624,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -13633,7 +13633,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -14793,7 +14793,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -14802,7 +14802,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -14811,7 +14811,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -14820,7 +14820,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #20242c1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -15295,7 +15295,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -15304,7 +15304,7 @@
             },
             "2": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -15313,7 +15313,7 @@
             },
             "3": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -15322,7 +15322,7 @@
             },
             "inset": {
               "$type": "shadow",
-              "$value": "0 0 #0000",
+              "$value": "inset 0 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -15824,7 +15824,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -15833,7 +15833,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -15842,7 +15842,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -15851,7 +15851,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #20242c1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -16326,7 +16326,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -16335,7 +16335,7 @@
               },
               "2": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "0.9px 1.8px 2.1px #00000049, 0 0.5px 4.7px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -16344,7 +16344,7 @@
               },
               "3": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "2.4px 4.8px 3.9px #00000049, 0 1.2px 9.2px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -16353,7 +16353,7 @@
               },
               "inset": {
                 "$type": "shadow",
-                "$value": "0 0 #0000",
+                "$value": "inset 0 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true

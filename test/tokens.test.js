@@ -147,7 +147,13 @@ test('feels change the primitives', () => {
   }
   assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 15, lg: 18, xl: 22, '2xl': 26, '3xl': 31 });
   // Removed feels still load, and change nothing.
-  assert.deepEqual(p({ thickness: 0, depth: 1, softness: 0, solidity: 0, bounciness: 1, snappiness: 1 }), p({}));
+  assert.deepEqual(p({ thickness: 0, softness: 0, solidity: 0, bounciness: 1, snappiness: 1 }), p({}));
+  // Depth: flat at 0, and every elevation floats further as depth grows.
+  const shadows = (depth) => buildThemes({ themes: { default: { feel: { depth } } } }).themes.default.modes.light.computed;
+  assert.equal(shadows(0)['elevation.2'], '0 0 #0000');
+  assert.equal(p({ depth: 0 }).effect.lift, 0);
+  const offset = (depth, level) => parseFloat(shadows(depth)[`elevation.${level}`].split(' ')[1]);
+  for (const level of [1, 2, 3]) assert.ok(offset(1, level) > offset(0.3, level), `elevation ${level}`);
 });
 
 test('the shadcn/ui export has its variables, for the root and each child theme', () => {

@@ -33,6 +33,7 @@
       "feel": {
         "spaciousness": 0.5,
         "roundness": 0.35,
+        "depth": 0.3,
         "shininess": 0
       },
       "contrast": {
@@ -65,6 +66,7 @@
       "feel": {
         "spaciousness": 0.5,
         "roundness": 0.35,
+        "depth": 0.3,
         "shininess": 0
       },
       "contrast": {
@@ -97,6 +99,7 @@
       "feel": {
         "spaciousness": 0.5,
         "roundness": 0.35,
+        "depth": 0.3,
         "shininess": 0
       },
       "contrast": {
@@ -129,6 +132,7 @@
       "feel": {
         "spaciousness": 0.5,
         "roundness": 0.35,
+        "depth": 0.3,
         "shininess": 0
       },
       "contrast": {
@@ -161,6 +165,7 @@
       "feel": {
         "spaciousness": 0.5,
         "roundness": 1,
+        "depth": 0.3,
         "shininess": 0.33
       },
       "contrast": {
@@ -193,6 +198,7 @@
       "feel": {
         "spaciousness": 0.5,
         "roundness": 1,
+        "depth": 0.3,
         "shininess": 0.33
       },
       "contrast": {

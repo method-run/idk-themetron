@@ -18,6 +18,7 @@ const el = (tag, attrs = {}, ...children) => {
 const FEEL_HINTS = {
   spaciousness: 'Padding, gaps, text size, and line height.',
   roundness: 'Corners, as a share of the most a part can round.',
+  depth: 'Soft shadows, and how far buttons rise on hover.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
 };
 
