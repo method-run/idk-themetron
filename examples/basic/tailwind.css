@@ -49,8 +49,6 @@
   --color-fg-base-subtle: var(--tm-fg-base-subtle);
   --color-border-base: var(--tm-border-base);
   --color-border-base-strong: var(--tm-border-base-strong);
-  --color-fill-base: var(--tm-fill-base);
-  --color-on-fill-base: var(--tm-on-fill-base);
   --color-tint-base: var(--tm-tint-base);
   --color-on-tint-base: var(--tm-on-tint-base);
   --color-fill-action: var(--tm-fill-action);

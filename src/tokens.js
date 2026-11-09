@@ -246,14 +246,17 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   check('fg.base-subtle', 'bg.canvas', 'ui');
   check('border.base-strong', 'bg.surface', 'ui');
 
-  // The grade beyond the canvas and the surface, toward the text: base tints sit there, so a
-  // quiet button shows on both.
-  const beyond = step(dark ? Math.min(layout.canvas, layout.surface) : Math.max(layout.canvas, layout.surface), dark ? -1 : 1);
+  // Base tints and quiet buttons sit 10 grade numbers beyond the canvas and the surface,
+  // toward the text, so they show on both, and differ from the sunken background too: 15 in
+  // light mode (canvas 5, surface 0, sunken 10), and 80 in dark mode.
+  const beyond = dark ? Math.min(layout.canvas, layout.surface) - 10 : Math.max(layout.canvas, layout.surface) + 10;
 
-  // Fills and tints, for each role.
+  // Fills and tints. Only the action role has solid fills: the quiet button is the base role's
+  // button (see below).
   for (const role of ROLES) {
     const palette = palettes[role];
     const near = nearest(palette.keyGrade);
+    if (role === 'action') {
     // Every fill has the same label polarity, whatever the key color: a pure white label on a
     // darker fill in light mode, and pure black on a lighter fill in dark mode. To flip a part,
     // use tm-invert.
@@ -284,16 +287,26 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     // require them. Each state has its own shine, counted from its own fill, so the shine
     // follows the fill.
     shine(`gloss.${role}`, `fill.${role}`, palette, SHINE, 5, 95);
+    // Rest and hover must pass. Press lasts a moment: where the label has no room left to
+    // follow (it is already white or black), the audit warns instead.
+    for (const state of STATES) {
+      check(`on-fill.${role}${state}`, `fill.${role}${state}`, 'text', state !== '-active');
+      if (state === '-active') audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
+    }
+    check(`on-fill.${role}`, `gloss.${role}-top`, 'text', false);
+    check(`on-fill.${role}`, `gloss.${role}-bottom`, 'text', false);
+    check(`fill.${role}`, 'bg.canvas', 'ui');
+    }
 
-    // Action tints are the faintest wash of the color. Base tints are one grade beyond the
-    // surfaces, as the base color is already on them. Hover and active move toward the text,
-    // and the label follows. The base label is the text color when it passes. On a mid-tone
-    // canvas at the enhanced level, no label may pass one grade beyond the surfaces: then the
-    // base tint steps back toward the canvas until one does.
+    // Action tints are the faintest wash of the color. Base tints are 10 grade numbers beyond
+    // the surfaces, as the base color is already on them. Hover and active move toward the
+    // text, and the label follows. The base label is the text color when it passes. On a
+    // mid-tone canvas at the enhanced level, no label may pass there: then the base tint steps
+    // back toward the canvas, 5 at a time, until one does.
     const labelOn = (grades) => (hex) => grades.every((g) => test(hex, palette.steps[g], 'text'));
     const labelGrades = role === 'base' ? [fgGrade, ...near] : near;
     const back = [];
-    for (let g = beyond; back.length < 4; g = step(g, dark ? 1 : -1)) { back.push(g); if (g === step(g, dark ? 1 : -1)) break; }
+    for (let g = beyond; back.length < 4 && g >= 0 && g <= 100; g += dark ? 5 : -5) back.push(g);
     const tint = role === 'base' ? back.find((g) => labelGrades.some((n) => labelOn([g])(palette.steps[n]))) ?? beyond : dark ? 95 : 5;
     // The tint label passes at rest, and still passes after it follows the tint to its hover.
     const toward = dark ? -1 : 1;
@@ -306,17 +319,17 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     // grade 0 or 100.
     shine(`gloss.tint-${role}`, `tint.${role}`, palette, TINT_SHINE, 0, 100);
 
-    // Rest and hover must pass. Press lasts a moment: where the label has no room left to
-    // follow (it is already white or black), the audit warns instead.
     for (const state of STATES) {
-      for (const [fg, bg] of [[`on-fill.${role}${state}`, `fill.${role}${state}`], [`on-tint.${role}${state}`, `tint.${role}${state}`]]) {
-        check(fg, bg, 'text', state !== '-active');
-        if (state === '-active') audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
-      }
+      check(`on-tint.${role}${state}`, `tint.${role}${state}`, 'text', state !== '-active');
+      if (state === '-active') audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
     }
-    check(`on-fill.${role}`, `gloss.${role}-top`, 'text', false);
-    check(`on-fill.${role}`, `gloss.${role}-bottom`, 'text', false);
-    check(`fill.${role}`, 'bg.canvas', 'ui');
+  }
+
+  // Small solid parts in the base color, such as a switch's knob, are the muted text color.
+  // Their shine is counted from it, like a fill's.
+  {
+    const g = Number(tokens['fg.base-muted'].ref.split('.')[1]);
+    for (const [part, by] of Object.entries(SHINE)) set(`gloss.base-muted-${part}`, palettes.base, Math.min(95, Math.max(5, g + by)));
   }
 
   // Action text and edges, on the base backgrounds.

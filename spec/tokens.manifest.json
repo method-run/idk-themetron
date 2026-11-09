@@ -1,5 +1,5 @@
 {
-  "contract": "0.4.0",
+  "contract": "0.5.0",
   "prefix": "tm",
   "note": "Made by `npm run spec` from src/manifest.js. Do not edit. See spec/consumers.md.",
   "selectors": {
@@ -39,7 +39,6 @@
     },
     {
       "fg": [
-        "fill-base",
         "fill-action"
       ],
       "bg": [
@@ -67,10 +66,19 @@
     },
     {
       "fg": [
-        "on-fill-base"
+        "on-fill-action"
       ],
       "bg": [
-        "fill-base"
+        "fill-action"
+      ],
+      "purpose": "text"
+    },
+    {
+      "fg": [
+        "on-fill-action-hover"
+      ],
+      "bg": [
+        "fill-action-hover"
       ],
       "purpose": "text"
     },
@@ -85,15 +93,6 @@
     },
     {
       "fg": [
-        "on-fill-base-hover"
-      ],
-      "bg": [
-        "fill-base-hover"
-      ],
-      "purpose": "text"
-    },
-    {
-      "fg": [
         "on-tint-base-hover"
       ],
       "bg": [
@@ -103,28 +102,10 @@
     },
     {
       "fg": [
-        "on-fill-action"
-      ],
-      "bg": [
-        "fill-action"
-      ],
-      "purpose": "text"
-    },
-    {
-      "fg": [
         "on-tint-action"
       ],
       "bg": [
         "tint-action"
-      ],
-      "purpose": "text"
-    },
-    {
-      "fg": [
-        "on-fill-action-hover"
-      ],
-      "bg": [
-        "fill-action-hover"
       ],
       "purpose": "text"
     },
@@ -971,138 +952,6 @@
       "stability": "stable",
       "meaning": "The edges of fields and controls. Passes the control contrast."
     },
-    "fill-base": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "Quiet solid fills, such as a solid button that is not the main action."
-    },
-    "on-fill-base": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "Text and icons on fill-base."
-    },
-    "fill-base-hover": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "A quiet solid fill on hover."
-    },
-    "on-fill-base-hover": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "Text and icons on fill-base-hover: the label moved as far as the fill, so the contrast stays the same."
-    },
-    "fill-base-active": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "A quiet solid fill while it is pressed."
-    },
-    "on-fill-base-active": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental",
-      "meaning": "Text and icons on fill-base-active: the label moved as far as the fill, so the contrast stays the same."
-    },
-    "gloss-base-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-hover-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-hover-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-hover-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-hover-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-active-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-active-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-active-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-base-active-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
     "tint-base": {
       "tier": "semantic",
       "type": "color",
@@ -1499,6 +1348,34 @@
       "role": "action",
       "stability": "experimental"
     },
+    "gloss-base-muted-rim": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-muted-top": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-muted-shadow": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "gloss-base-muted-bottom": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "fill-quiet": {
       "tier": "semantic",
       "type": "color",
@@ -1876,18 +1753,18 @@
       "modes": true,
       "stability": "stable"
     },
-    "highlight-base": {
-      "tier": "semantic",
-      "type": "fontFamily",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
     "highlight-action": {
       "tier": "semantic",
       "type": "fontFamily",
       "modes": true,
       "role": "action",
+      "stability": "experimental"
+    },
+    "highlight-base-muted": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
       "stability": "experimental"
     },
     "highlight-quiet": {
@@ -1918,18 +1795,18 @@
       "role": "action",
       "stability": "experimental"
     },
-    "glow-base": {
-      "tier": "semantic",
-      "type": "fontFamily",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
     "glow-action": {
       "tier": "semantic",
       "type": "fontFamily",
       "modes": true,
       "role": "action",
+      "stability": "experimental"
+    },
+    "glow-base-muted": {
+      "tier": "semantic",
+      "type": "fontFamily",
+      "modes": true,
+      "role": "base",
       "stability": "experimental"
     },
     "glow-quiet": {

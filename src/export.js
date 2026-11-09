@@ -72,7 +72,9 @@ export function semanticEntries(theme, prefix = 'tm') {
     out.push([`elevation-${level}-normal`, bothModes(light.computed[name], dark.computed[name])]);
     out.push([`elevation-${level}-flipped`, bothModes(dark.computed[name], light.computed[name])]);
   }
-  const shined = [...ROLES, 'quiet', 'action-exact'];
+  // Parts with a solid fill: action fills, small base parts (a switch's knob), quiet buttons,
+  // and exact buttons.
+  const shined = ['action', 'base-muted', 'quiet', 'action-exact'];
   // The top edge of a filled part catches the light: a 1 px line of a lighter grade of the
   // part's own color, with the shininess as its opacity. One for fills, and one for tints.
   // The components draw it with box-shadow: inset 0 1px 0 <color>.

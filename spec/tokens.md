@@ -63,7 +63,7 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 
 ## Semantic tokens
 
-Each mode has these tokens. The engine picks each grade so that the pairs in the Checks column pass the contrast setting. The two roles have the same fills and tints: `fill.base` and `fill.action`, `tint.base` and `tint.action`, and so on. Base fills and tints are for quiet controls, such as a secondary button. Text and borders for the action role are `fg.action` and `border.action`.
+Each mode has these tokens. The engine picks each grade so that the pairs in the Checks column pass the contrast setting. Both roles have tints: `tint.base` and `tint.action`. Only the action role has solid fills (`fill.action`); the base role's button is the quiet button (`fill.quiet`). Text and borders for the action role are `fg.action` and `border.action`.
 
 | Token | Meaning | Checks |
 |---|---|---|
@@ -78,14 +78,14 @@ Each mode has these tokens. The engine picks each grade so that the pairs in the
 | `border.base` | Dividers and card edges | None. It is decoration. |
 | `border.base-strong` | The edges of fields and controls | ui, on surface |
 | `border.focus` | Focus rings | ui, on surface |
-| `fill.<role>` | The background of a solid part, such as a button | ui, on canvas |
-| `on-fill.<role>` | Text and icons on the fill: pure white in light mode, pure black in dark mode | text, on fill |
-| `fill.<role>-hover`, `fill.<role>-active` | The fill when you point at it, and when you press it: 10 and 20 grade numbers away from the label | |
-| `on-fill.<role>-hover`, `on-fill.<role>-active` | The label of each state. It moves as far as its fill, so the contrast stays the same. | text, on its fill (press: a warning only) |
+| `fill.action` | The background of a solid part, such as a button | ui, on canvas |
+| `on-fill.action` | Text and icons on the fill: pure white in light mode, pure black in dark mode | text, on fill |
+| `fill.action-hover`, `fill.action-active` | The fill when you point at it, and when you press it: 10 and 20 grade numbers away from the label | |
+| `on-fill.action-hover`, `on-fill.action-active` | The label of each state. It moves as far as its fill, so the contrast stays the same. | text, on its fill (press: a warning only) |
 | `tint.action`, `tint.action-hover`, `tint.action-active` | A light wash of the action color, for soft buttons, badges, and selected rows. Hover and press are 10 and 20 grade numbers toward the text. | |
-| `tint.base`, `tint.base-hover`, `tint.base-active` | One grade beyond the canvas and the surface. No component uses them now. | |
+| `tint.base`, `tint.base-hover`, `tint.base-active` | 10 grade numbers beyond the canvas and the surface, toward the text: 15 in light mode, 80 in dark mode. For neutral hover and selected backgrounds, such as menu items and list rows. | |
 | `on-tint.<role>`, `on-tint.<role>-hover`, `on-tint.<role>-active` | Text on each state of the tint, moved as far as the tint. For base, the body text color when it passes. | text, on its tint (press: a warning only) |
-| `fill.quiet` and its states, `on-fill.quiet` and its states | The quiet button: a solid button with the polarity flipped, all in the base color. Its fill is the base tint's grade. Its label is the body text color where it passes. | text, on its fill (press: a warning only) |
+| `fill.quiet` and its states, `on-fill.quiet` and its states | The quiet button, the base role's button: a solid button with the polarity flipped, all in the base color. Its fill is the base tint's grade. Its label is the body text color where it passes. | text, on its fill (press: a warning only) |
 | `fg.action` | Colored text on the canvas, such as links | text, on canvas and surface |
 | `border.action` | Colored borders | ui, on surface |
 | `fill.action-exact`, `on-fill.action-exact` | The exact button: the key color, with white or black from the action ramp, whichever has more contrast. Like every fill, light mode puts the lighter color on the darker one, and dark mode mirrors it. | text, as a warning only. The more-contrast variant uses the normal button's colors where it fails. |
@@ -94,8 +94,8 @@ Each mode has these tokens. The engine picks each grade so that the pairs in the
 | `gloss.<part>-rim`, `-top`, `-shadow`, `-bottom`, for each state | The shine's grades for each fill, tint, quiet, and exact part, and for each state, such as `gloss.action-hover-rim`. Counted from that state's own fill: 30 and 20 grade numbers lighter (rim and top), 20 and 10 darker (shadow and bottom). Tints use half the distances. | text, on-fill on the resting top and bottom, as a warning only |
 | `shine-image` | The shine gradient, defined once on every element and pseudo-element, from four colors that each part sets from its gloss grades. CSS only. See [consumers](consumers.md#shine). | |
 | `elevation.1`, `.2`, `.3`, `elevation.inset` | Box shadows. Empty for now: depth and softness are removed. | Computed |
-| `highlight.<role>`, `highlight.tint-<role>` | The top edge of a filled part, which catches the light: a lighter grade of the part's own color (its resting rim grade), with the shininess as its opacity in light mode, and half that in dark mode. Components draw it as a band at the top edge, about a twenty-first of the part's height and at least 1 px, and half as wide along the left edge, as if lit from the upper left: `box-shadow: inset <band ÷ 2> <band> 0 <color>`. Transparent at shininess 0. | Computed |
-| `glow.<role>`, `glow.tint-<role>` | A soft glow at the top of a filled part, in the same color as the highlight. It grows with the shininess: transparent at 0, and 20% opacity at 1. Components draw it as an inset shadow, offset by about a third of the part's height and blurred by a fifth, so it follows the part's rounded outline. | Computed |
+| `highlight.<part>`, `highlight.tint-<role>`, for `action`, `quiet`, `action-exact`, and `base-muted` (small base parts, such as a switch's knob) | The top edge of a filled part, which catches the light: a lighter grade of the part's own color (its resting rim grade), with the shininess as its opacity in light mode, and half that in dark mode. Components draw it as a band at the top edge, about a twenty-first of the part's height and at least 1 px, and half as wide along the left edge, as if lit from the upper left: `box-shadow: inset <band ÷ 2> <band> 0 <color>`. Transparent at shininess 0. | Computed |
+| `glow.<part>`, `glow.tint-<role>` | A soft glow at the top of a filled part, in the same color as the highlight. It grows with the shininess: transparent at 0, and 20% opacity at 1. Components draw it as an inset shadow, offset by about a third of the part's height and blurred by a fifth, so it follows the part's rounded outline. | Computed |
 
 Each theme has an audit: a list of the checked pairs, with the WCAG ratio, the APCA Lc value, and pass or fail. The playground shows it.
 
@@ -106,7 +106,7 @@ Each theme has an audit: a list of the checked pairs, with the WCAG ratio, the A
 - **Text.** `fg.base` is grade 90 (light) or 5 (dark) if that passes. `fg.base-muted` and `fg.base-subtle` are the first grades out from the canvas that pass.
 - **Fills.** Every fill has a pure white label in light mode, and pure black in dark mode, whatever the key color. The engine finds the min-contrast grade: the lightest grade (the darkest in dark mode) where that label passes, and that stands out from the canvas (3:1). The fill is one grade beyond it, so the shine's lighter top stays close to passing above the label. So a yellow key color makes a deep golden fill with a white label. To show a part the other way, put `tm-invert` on it. Hover and press move the fill 10 and 20 grade numbers away from the label, and the label follows.
 - **Shine.** For each state of each fill and tint: a rim and a top lighter than the fill, and a shadow and a bottom darker, by fixed grade distances (half as far for tints). The components draw them with the shared gradient, `shine-image`, whose opacity is the shininess. Light comes from above in both modes. A switch track that is on turns it upside down, so it looks inset.
-- **Tints.** Action tints are grade 5 (light) or 95 (dark). Base tints are one grade beyond the canvas and the surface, toward the text, because those grades already hold the base color. Hover and press are 10 and 20 grade numbers further, toward the text. The label follows by the same distance, as far as it still passes. With APCA in light mode, body text passes only on the lightest grades, so a tint moves only as far as some label can pass.
+- **Tints.** Action tints are grade 5 (light) or 95 (dark). Base tints are 10 grade numbers beyond the canvas and the surface, toward the text (15 in light mode, 80 in dark mode), so they differ from the sunken background too, because those grades already hold the base color. Hover and press are 10 and 20 grade numbers further, toward the text. The label follows by the same distance, as far as it still passes. With APCA in light mode, body text passes only on the lightest grades, so a tint moves only as far as some label can pass.
 - **Action text and borders.** The grade nearest the key grade that passes on all backgrounds.
 - **If nothing passes.** The engine takes the grade with the most contrast, and the audit marks the pair as failed.
 

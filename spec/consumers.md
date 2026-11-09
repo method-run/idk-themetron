@@ -77,11 +77,12 @@ These pairs pass the theme's contrast setting, in both modes and in every theme.
 |---|---|---|
 | `fg-base`, `fg-base-muted`, `fg-action` | `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-field` | text |
 | `fg-base-subtle`, `border-base-strong`, `border-action` | `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-field` | UI |
-| `fill-base`, `fill-action` | `bg-canvas` | UI: a solid button's shape shows on the page |
-| `on-fill-base`, `on-fill-action` | `fill-base`, `fill-base-hover`; `fill-action`, `fill-action-hover` (each label on its own role) | text |
-| `on-tint-base`, `on-tint-action` | `tint-base`, `tint-base-hover`; `tint-action`, `tint-action-hover` (each label on its own role) | text |
+| `fill-action` | `bg-canvas` | UI: a solid button's shape shows on the page |
+| `on-fill-action`, `on-fill-action-hover` | `fill-action`, `fill-action-hover` (each label on its own state) | text |
+| `on-fill-quiet`, `on-fill-quiet-hover` | `fill-quiet`, `fill-quiet-hover` | text |
+| `on-tint-base`, `on-tint-action`, and their `-hover` forms | `tint-base`, `tint-action`, and their `-hover` forms (each label on its own role and state) | text |
 
-Other pairs can pass, but the contract does not promise it. `border-base` is decoration: it can be too faint for a control's edge. The exact button's pair (`on-fill-action-exact` on `fill-action-exact`) is the one checked pair without a promise: it uses the key color exactly, and a mid-tone key color has no partner that passes every setting. The audit marks it "warn" where it misses. The `*-active` fills show for a moment while you press, so they are not checked.
+Other pairs can pass, but the contract does not promise it. `border-base` is decoration: it can be too faint for a control's edge. The exact button's pair (`on-fill-action-exact` on `fill-action-exact`) is the one checked pair without a promise: it uses the key color exactly, and a mid-tone key color has no partner that passes every setting. The audit marks it "warn" where it misses. The `*-active` fills show for a moment while you press, so their pairs are not promised: the audit warns where a label has no room left to follow its fill.
 
 The pairs are in the manifest as `pairs`, so a tool can check its own pairs.
 
@@ -91,7 +92,7 @@ Each theme has a color for each of two roles. A component chooses the role, and 
 
 | Role | For | Tokens |
 |---|---|---|
-| **Base** | Backgrounds, body text, borders, and quiet controls, such as a secondary button or a tag | `bg-*`, `fg-base*`, `border-base*`, `fill-base*`, `tint-base*` |
+| **Base** | Backgrounds, body text, borders, and quiet controls, such as a secondary button or a tag | `bg-*`, `fg-base*`, `border-base*`, `fill-quiet*`, `tint-base*` |
 | **Action** | Parts that you act on, or that show their state: links, primary buttons, checks, switches, selected tabs, focus rings | `fg-action`, `border-action`, `border-focus`, `fill-action*`, `tint-action*` |
 
 In a gray theme with a blue action color, links and primary buttons are blue, and everything else is gray. In a theme that sets one color for both roles, such as a danger theme, everything is that color: a pink box, dark red text, a red link, and a red button.
@@ -219,6 +220,10 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 
 ## Changelog
 
+- **0.5.0:**
+  - Removed: `fill-base` and its states and labels, since the quiet button (`fill-quiet`) is the base role's button now. Removed the finished shine gradients `gloss`, `gloss-base`, and `gloss-action`, and `highlight`: parts now paint the shared `shine-image`.
+  - New: grades 15, 25, … 85 in every ramp, so ramps have 21 grades, 5 apart. A label for each state of each fill and tint (`on-fill-action-hover`, `on-tint-base-active`, …). `tint-*-active`. The quiet button (`fill-quiet`, `on-fill-quiet`, and their states) and the exact button's states. Gloss grades for each part and state (`gloss-action-hover-rim`, …), `highlight-*` and `glow-*` for each part, `shine-image`, `shininess`, and `roundness`. `radius-control-sm` and `-lg`. `backdrop` and `backdrop-control`.
+  - Changed: `tint-base` is 10 grade numbers beyond the canvas and the surface, so 15 in light mode, not 10, and no longer the same as `bg-sunken`.
 - **0.4.0:** new guaranteed pair: `fill-base` and `fill-action` on `bg-canvas` pass the UI contrast (3:1 in WCAG 2), so a solid button's shape shows. In dark neumorphic and glass themes, a fill can move a grade or two to make this pass.
 - **0.3.0:** color tokens end with their role, `base` or `action`. `fg-default`, `fg-muted`, and `fg-subtle` are now `fg-base`, `fg-base-muted`, and `fg-base-subtle`. `border-default` and `border-strong` are now `border-base` and `border-base-strong`. The ramps are now `base-*` and `action-*`. The accent set is now the action set: `accent-fill` is `fill-action`, `accent-on-fill` is `on-fill-action`, `accent-text` is `fg-action`, and so on. New: `fill-base`, `tint-base`, and their labels and hover forms, for quiet controls. Each theme class now sets every token, so the manifest has `role` in place of `colorTheme`.
 - **0.2.0:** the ramp grades and `gap-*` are stable. The accent set (`accent-fill` … `accent-border`) and motion (`duration-*`, `ease-*`) are experimental.

@@ -9,7 +9,7 @@ import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CON
 // Major: a stable token is removed or renamed, or its type or meaning changes.
 // Minor: a token is added, or an experimental token becomes stable.
 // Patch: values change, but names, types, and meanings stay the same.
-export const CONTRACT_VERSION = '0.4.0';
+export const CONTRACT_VERSION = '0.5.0';
 
 // Stable tokens keep their name, type, and meaning within a major version of the contract.
 // Every other token is experimental: it can change or go away in any version.
@@ -36,12 +36,6 @@ const MEANING = {
   'border-base': 'Dividers and the edges of surfaces. Decoration only.',
   'border-base-strong': 'The edges of fields and controls. Passes the control contrast.',
   'border-focus': 'Focus rings. The same as border-action.',
-  'fill-base': 'Quiet solid fills, such as a solid button that is not the main action.',
-  'fill-base-hover': 'A quiet solid fill on hover.',
-  'fill-base-active': 'A quiet solid fill while it is pressed.',
-  'on-fill-base': 'Text and icons on fill-base.',
-  'on-fill-base-hover': 'Text and icons on fill-base-hover: the label moved as far as the fill, so the contrast stays the same.',
-  'on-fill-base-active': 'Text and icons on fill-base-active: the label moved as far as the fill, so the contrast stays the same.',
   'tint-base': 'Quiet soft fills, such as secondary buttons and tags. They show on the canvas and on surfaces.',
   'tint-base-hover': 'A quiet soft fill on hover: 10 grade numbers from the tint, toward the text.',
   'tint-base-active': 'A quiet soft fill while it is pressed: 20 grade numbers from the tint, toward the text.',
@@ -85,17 +79,13 @@ export const PAIRS = [
   { fg: ['fg-base', 'fg-base-muted', 'fg-action'], bg: BGS, purpose: 'text' },
   { fg: ['fg-base-subtle', 'border-base-strong', 'border-action'], bg: BGS, purpose: 'ui' },
   // A solid fill stands out from the canvas, so a button's shape shows.
-  { fg: ['fill-base', 'fill-action'], bg: ['bg-canvas'], purpose: 'ui' },
-  ...ROLES.flatMap((role) => [
-  ]),
+  { fg: ['fill-action'], bg: ['bg-canvas'], purpose: 'ui' },
   // Press is not listed: it lasts a moment, and where the label is already white or black it
   // cannot follow the background, so the audit only warns.
   { fg: ['on-fill-quiet'], bg: ['fill-quiet'], purpose: 'text' },
   { fg: ['on-fill-quiet-hover'], bg: ['fill-quiet-hover'], purpose: 'text' },
-  ...ROLES.flatMap((role) => ['', '-hover'].flatMap((state) => [
-    { fg: [`on-fill-${role}${state}`], bg: [`fill-${role}${state}`], purpose: 'text' },
-    { fg: [`on-tint-${role}${state}`], bg: [`tint-${role}${state}`], purpose: 'text' },
-  ])),
+  ...['', '-hover'].map((state) => ({ fg: [`on-fill-action${state}`], bg: [`fill-action${state}`], purpose: 'text' })),
+  ...ROLES.flatMap((role) => ['', '-hover'].map((state) => ({ fg: [`on-tint-${role}${state}`], bg: [`tint-${role}${state}`], purpose: 'text' }))),
 ];
 
 // The role of a token, from its name: "base", "action", or none.

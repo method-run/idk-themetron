@@ -167,6 +167,9 @@
   background-color: var(--tm-bg-field);
   color: var(--tm-fg-base);
   font: inherit;
+  /* At least 16 px: iOS Safari zooms the page in when you tap a field with smaller text. A
+     16 px line still fits the tight line, so fields keep their height. */
+  font-size: max(16px, var(--tm-font-size-md));
   line-height: var(--tm-leading-tight-md);
   box-shadow: var(--tm-elevation-inset);
   transition: border-color var(--tm-duration-fast) var(--tm-ease-standard);
@@ -270,12 +273,12 @@
   border-radius: calc(var(--tm-roundness) * var(--_thumb-size) / 2);
   /* Off, the knob is a base-colored fill with the base shine, like a quiet part. */
   background: var(--tm-fg-base-muted);
-  --tm-shine-rim: var(--tm-gloss-base-rim); --tm-shine-top: var(--tm-gloss-base-top); --tm-shine-shadow: var(--tm-gloss-base-shadow); --tm-shine-bottom: var(--tm-gloss-base-bottom);
+  --tm-shine-rim: var(--tm-gloss-base-muted-rim); --tm-shine-top: var(--tm-gloss-base-muted-top); --tm-shine-shadow: var(--tm-gloss-base-muted-shadow); --tm-shine-bottom: var(--tm-gloss-base-muted-bottom);
   --tm-shine-direction: 180deg;
   background-image: var(--tm-shine-image);
   --_shine-height: var(--_thumb-size);
-  --_shine-color: var(--tm-highlight-base);
-  --_glow-color: var(--tm-glow-base);
+  --_shine-color: var(--tm-highlight-base-muted);
+  --_glow-color: var(--tm-glow-base-muted);
   box-shadow: var(--_shine), var(--tm-elevation-1);
   transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard), var(--_shine-transition);
 }

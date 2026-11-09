@@ -160,14 +160,14 @@ test('the shadcn/ui export has its variables, for the root and each child theme'
   assert.match(css, /^\.theme-danger \{/m);
 });
 
-test('every fill has light labels in light mode and dark labels in dark mode, whatever the key color', () => {
+test('every action fill has light labels in light mode and dark labels in dark mode, whatever the key color', () => {
   const colors = { blue: '#2456e8', yellow: '#ffd43b', pure: '#ffff00', magenta: '#ff00ff', mint: '#3ddc97', pale: '#f1f3f5', ink: '#111111' };
   const themes = { default: { color: '#2456e8' } };
   for (const [name, color] of Object.entries(colors)) themes[name] = { parent: 'default', color };
   const built = buildThemes({ themes });
   for (const n of built.order) for (const m of ['light', 'dark']) {
     const { tokens } = built.themes[n].modes[m];
-    for (const role of ['base', 'action']) {
+    for (const role of ['action']) {
       const grade = Number(tokens[`on-fill.${role}`].ref.split('.')[1]);
       assert.ok(m === 'light' ? grade <= 5 : grade >= 95, `${n} ${role} ${m}: label grade ${grade}`);
     }
