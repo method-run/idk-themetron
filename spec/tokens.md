@@ -72,9 +72,9 @@ Each mode has these tokens. The engine picks each grade so that the pairs in the
 | `bg.sunken` | Wells, code, and tracks | |
 | `bg.field` | Inside text fields. Sunken when there are no borders. | |
 | `bg.panel` | `bg.surface`, see-through as solidity drops: down to 10% opaque at solidity 0, or 95% for an inverted card (`bg.panel-inverted`). Opaque at solidity 1. | Computed |
-| `fg.base` | Body text. As solidity drops, it moves toward the page: one notch past the min-contrast grade at solidity 0. | text, on canvas, surface, and sunken |
+| `fg.base` | Body text | text, on canvas, surface, and sunken |
 | `fg.base-muted` | Secondary text | text, on canvas, surface, and sunken |
-| `fg.base-heading-lg`, `-2xl`, `-3xl` | Headings (h3, h2, h1). The body text color when solid; as solidity drops, they fade to the min-contrast grade for their size. Large text is 24 px or more, at any weight. | large or text, by size, on canvas, surface, and sunken |
+| `fg.base-heading-lg`, `-2xl`, `-3xl` | Headings (h3, h2, h1). The body text color for now. The engine can fade them to the min-contrast grade for their size (large text is 24 px or more, at any weight), but no feel turns that on yet. | large or text, by size, on canvas, surface, and sunken |
 | `fg.base-subtle` | Placeholders and icons | ui, on canvas |
 | `border.base` | Dividers and card edges | None. It is decoration. |
 | `border.base-strong` | The edges of fields and controls | ui, on surface |
@@ -91,7 +91,7 @@ Each mode has these tokens. The engine picks each grade so that the pairs in the
 | `border.action` | Colored borders | ui, on surface |
 | `fill.action-exact`, `on-fill.action-exact` | The exact button: the key color, with white or black from the action ramp, whichever has more contrast. Like every fill, light mode puts the lighter color on the darker one, and dark mode mirrors it. | text, as a warning only. The more-contrast variant uses the normal button's colors where it fails. |
 | `fill.action-exact-hover`, `-active`, and their labels | The exact button's states: 10 and 20 grade numbers from the key color's grade, away from the label, or toward it when the fill is white or black. The label follows. | text, as a warning only |
-| `border.action-exact` | The exact button's edge: the key color, or `border.base` when the key color is below 3:1 on the canvas | |
+| `border.action-exact` | The exact button's edge: the key color | |
 | `gloss.<part>-rim`, `-top`, `-shadow`, `-bottom`, for each state | The shine's grades for each fill, tint, quiet, and exact part, and for each state, such as `gloss.action-hover-rim`. Counted from that state's own fill: 30 and 20 grade numbers lighter (rim and top), 20 and 10 darker (shadow and bottom). Tints use half the distances. | text, on-fill on the resting top and bottom, as a warning only |
 | `shine-image` | The shine gradient, defined once on every element and pseudo-element, from four colors that each part sets from its gloss grades. CSS only. See [consumers](consumers.md#shine). | |
 | `elevation.1`, `.2`, `.3`, `elevation.inset` | Box shadows, from the depth feel: a resting part, a raised part (hover, cards), and an overlay (dialogs, menus), and a faint shadow inside a pressed or sunken part. Each floating shadow has a key layer, cast down and to the right, and a wide, faint ambient layer. The color is the base ramp's grade 90 in light mode and 100 in dark mode, 1.8 times as strong in dark mode. Empty at depth 0. | Computed |

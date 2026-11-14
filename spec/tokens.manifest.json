@@ -1,5 +1,5 @@
 {
-  "contract": "0.5.0",
+  "contract": "0.6.0",
   "prefix": "tm",
   "note": "Made by `npm run spec` from src/manifest.js. Do not edit. See spec/consumers.md.",
   "selectors": {
@@ -856,6 +856,48 @@
       "modes": false,
       "stability": "experimental"
     },
+    "fill-alpha-clearest": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "tint-alpha-inverted-clearest": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "shine-backdrop-top": {
+      "tier": "primitive",
+      "type": "gradient",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "shine-backdrop-bottom": {
+      "tier": "primitive",
+      "type": "gradient",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "shine-filter-top": {
+      "tier": "primitive",
+      "type": "gradient",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "shine-filter-bottom": {
+      "tier": "primitive",
+      "type": "gradient",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "shine-paint": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
     "fill-alpha-normal": {
       "tier": "primitive",
       "type": "number",
@@ -934,7 +976,7 @@
       "modes": true,
       "role": "base",
       "stability": "experimental",
-      "meaning": "Headings in the lg size (h3). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size."
+      "meaning": "Headings in the lg size (h3). The body text color for now; it can fade to the min-contrast grade for its size."
     },
     "fg-base-heading-2xl": {
       "tier": "semantic",
@@ -942,7 +984,7 @@
       "modes": true,
       "role": "base",
       "stability": "experimental",
-      "meaning": "Headings in the 2xl size (h2). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up."
+      "meaning": "Headings in the 2xl size (h2). The body text color for now; it can fade to the min-contrast grade for its size: the large-text level at 24 px and up."
     },
     "fg-base-heading-3xl": {
       "tier": "semantic",
@@ -950,7 +992,7 @@
       "modes": true,
       "role": "base",
       "stability": "experimental",
-      "meaning": "Headings in the 3xl size (h1). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up."
+      "meaning": "Headings in the 3xl size (h1). The body text color for now; it can fade to the min-contrast grade for its size: the large-text level at 24 px and up."
     },
     "fg-base-subtle": {
       "tier": "semantic",
@@ -1185,62 +1227,6 @@
       "stability": "experimental"
     },
     "gloss-action-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-hover-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-hover-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-hover-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-hover-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-active-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-active-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-active-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-active-bottom": {
       "tier": "semantic",
       "type": "color",
       "modes": true,
@@ -1483,62 +1469,6 @@
       "role": "base",
       "stability": "experimental"
     },
-    "gloss-quiet-hover-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-hover-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-hover-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-hover-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-active-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-active-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-active-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "gloss-quiet-active-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
     "fg-action": {
       "tier": "semantic",
       "type": "color",
@@ -1639,69 +1569,13 @@
       "role": "action",
       "stability": "experimental"
     },
-    "gloss-action-exact-hover-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-hover-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-hover-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-hover-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-active-rim": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-active-top": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-active-shadow": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "gloss-action-exact-active-bottom": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
     "border-action-exact": {
       "tier": "semantic",
       "type": "color",
       "modes": true,
       "role": "action",
       "stability": "experimental",
-      "meaning": "The edge of the exact button: the key color, or border-base when the key color does not stand out from the canvas."
+      "meaning": "The edge of the exact button: the key color."
     },
     "bg-panel": {
       "tier": "semantic",
@@ -1798,20 +1672,6 @@
       "role": "base",
       "stability": "experimental"
     },
-    "highlight-quiet": {
-      "tier": "semantic",
-      "type": "fontFamily",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "highlight-action-exact": {
-      "tier": "semantic",
-      "type": "fontFamily",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
     "highlight-tint-base": {
       "tier": "semantic",
       "type": "fontFamily",
@@ -1838,20 +1698,6 @@
       "type": "fontFamily",
       "modes": true,
       "role": "base",
-      "stability": "experimental"
-    },
-    "glow-quiet": {
-      "tier": "semantic",
-      "type": "fontFamily",
-      "modes": true,
-      "role": "base",
-      "stability": "experimental"
-    },
-    "glow-action-exact": {
-      "tier": "semantic",
-      "type": "fontFamily",
-      "modes": true,
-      "role": "action",
       "stability": "experimental"
     },
     "text-shadow-action": {

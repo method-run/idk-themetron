@@ -723,6 +723,16 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "fillAlphaClearest": {
+          "$type": "number",
+          "$value": 0.5,
+          "$description": "The opacity of a solid fill at solidity 0."
+        },
+        "tintAlphaInvertedClearest": {
+          "$type": "number",
+          "$value": 0.95,
+          "$description": "The opacity of an inverted tint at solidity 0."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -938,38 +948,6 @@
               "$type": "color",
               "$value": "{themes.default.action.70}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.25}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.35}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.75}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.65}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.35}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.45}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.85}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.75}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.default.action.0}"
@@ -1050,38 +1028,6 @@
               "$type": "color",
               "$value": "{themes.default.base.25}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.default.base.5}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.default.base.5}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.base.30}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.base.20}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.default.base.5}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.default.base.5}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.base.40}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.base.30}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.default.action.30}"
@@ -1097,38 +1043,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.default.action.70}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.20}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.30}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.70}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.60}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.35}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.45}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.85}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.75}"
             }
           },
           "fill": {
@@ -1452,38 +1366,6 @@
               "$type": "color",
               "$value": "{themes.default.action.50}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.5}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.15}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.55}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.45}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.15}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.25}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.65}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.55}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.default.action.80}"
@@ -1564,38 +1446,6 @@
               "$type": "color",
               "$value": "{themes.default.base.90}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.default.base.45}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.default.base.55}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.base.95}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.base.85}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.default.base.55}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.default.base.65}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.base.95}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.base.95}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.default.action.0}"
@@ -1611,38 +1461,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.default.action.10}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.0}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.0}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.20}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.10}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.default.action.0}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.default.action.0}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.default.action.25}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.default.action.15}"
             }
           },
           "fill": {
@@ -1993,38 +1811,6 @@
                 "$type": "color",
                 "$value": "{themes.default.action.90}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.45}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.55}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.95}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.85}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.55}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.65}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.95}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.95}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.default.action.0}"
@@ -2105,38 +1891,6 @@
                 "$type": "color",
                 "$value": "{themes.default.base.25}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.default.base.5}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.default.base.5}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.base.30}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.base.20}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.default.base.5}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.default.base.5}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.base.40}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.base.30}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.default.action.50}"
@@ -2152,38 +1906,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.default.action.90}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.45}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.55}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.95}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.85}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.55}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.65}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.95}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.95}"
               }
             },
             "fill": {
@@ -2507,38 +2229,6 @@
                 "$type": "color",
                 "$value": "{themes.default.action.30}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.35}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.25}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.45}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.35}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.default.action.80}"
@@ -2619,38 +2309,6 @@
                 "$type": "color",
                 "$value": "{themes.default.base.90}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.default.base.45}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.default.base.55}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.base.95}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.base.85}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.default.base.55}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.default.base.65}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.base.95}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.base.95}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.default.action.5}"
@@ -2666,38 +2324,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.default.action.30}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.35}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.25}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.default.action.5}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.default.action.45}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.default.action.35}"
               }
             },
             "fill": {
@@ -3496,6 +3122,16 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "fillAlphaClearest": {
+          "$type": "number",
+          "$value": 0.5,
+          "$description": "The opacity of a solid fill at solidity 0."
+        },
+        "tintAlphaInvertedClearest": {
+          "$type": "number",
+          "$value": 0.95,
+          "$description": "The opacity of an inverted tint at solidity 0."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -3711,38 +3347,6 @@
               "$type": "color",
               "$value": "{themes.success.action.70}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.25}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.35}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.75}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.65}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.35}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.45}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.85}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.75}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.success.action.0}"
@@ -3823,38 +3427,6 @@
               "$type": "color",
               "$value": "{themes.success.base.25}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.success.base.5}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.success.base.5}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.base.30}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.base.20}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.success.base.5}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.success.base.5}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.base.40}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.base.30}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.success.action.70}"
@@ -3868,38 +3440,6 @@
               "$value": "{themes.success.action.100}"
             },
             "action-exact-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.100}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.65}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.75}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.100}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.100}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.70}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.80}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.100}"
-            },
-            "action-exact-active-bottom": {
               "$type": "color",
               "$value": "{themes.success.action.100}"
             }
@@ -4225,38 +3765,6 @@
               "$type": "color",
               "$value": "{themes.success.action.50}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.5}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.15}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.55}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.45}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.15}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.25}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.65}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.55}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.success.action.80}"
@@ -4337,38 +3845,6 @@
               "$type": "color",
               "$value": "{themes.success.base.90}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.success.base.45}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.success.base.55}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.base.95}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.base.85}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.success.base.55}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.success.base.65}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.base.95}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.base.95}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.success.action.20}"
@@ -4384,38 +3860,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.success.action.60}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.10}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.20}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.60}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.50}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.success.action.25}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.success.action.35}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.success.action.75}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.success.action.65}"
             }
           },
           "fill": {
@@ -4766,38 +4210,6 @@
                 "$type": "color",
                 "$value": "{themes.success.action.90}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.45}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.55}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.95}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.85}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.55}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.65}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.95}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.95}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.success.action.0}"
@@ -4878,38 +4290,6 @@
                 "$type": "color",
                 "$value": "{themes.success.base.25}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.success.base.5}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.success.base.5}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.base.30}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.base.20}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.success.base.5}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.success.base.5}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.base.40}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.base.30}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.success.action.50}"
@@ -4925,38 +4305,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.success.action.90}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.45}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.55}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.95}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.85}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.55}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.65}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.95}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.95}"
               }
             },
             "fill": {
@@ -5280,38 +4628,6 @@
                 "$type": "color",
                 "$value": "{themes.success.action.30}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.35}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.25}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.45}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.35}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.success.action.80}"
@@ -5392,38 +4708,6 @@
                 "$type": "color",
                 "$value": "{themes.success.base.90}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.success.base.45}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.success.base.55}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.base.95}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.base.85}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.success.base.55}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.success.base.65}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.base.95}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.base.95}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.success.action.5}"
@@ -5439,38 +4723,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.success.action.30}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.35}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.25}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.success.action.5}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.success.action.45}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.success.action.35}"
               }
             },
             "fill": {
@@ -6269,6 +5521,16 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "fillAlphaClearest": {
+          "$type": "number",
+          "$value": 0.5,
+          "$description": "The opacity of a solid fill at solidity 0."
+        },
+        "tintAlphaInvertedClearest": {
+          "$type": "number",
+          "$value": 0.95,
+          "$description": "The opacity of an inverted tint at solidity 0."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -6358,7 +5620,7 @@
             },
             "action-exact": {
               "$type": "color",
-              "$value": "{themes.warning.base.20}"
+              "$value": "{themes.warning.action.key}"
             }
           },
           "panel": {
@@ -6484,38 +5746,6 @@
               "$type": "color",
               "$value": "{themes.warning.action.70}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.25}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.35}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.75}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.65}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.35}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.45}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.85}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.75}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.warning.action.0}"
@@ -6596,38 +5826,6 @@
               "$type": "color",
               "$value": "{themes.warning.base.25}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.base.5}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.warning.base.5}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.base.30}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.base.20}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.base.5}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.warning.base.5}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.base.40}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.base.30}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.warning.action.70}"
@@ -6641,38 +5839,6 @@
               "$value": "{themes.warning.action.100}"
             },
             "action-exact-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.100}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.65}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.75}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.100}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.100}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.70}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.80}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.100}"
-            },
-            "action-exact-active-bottom": {
               "$type": "color",
               "$value": "{themes.warning.action.100}"
             }
@@ -6998,38 +6164,6 @@
               "$type": "color",
               "$value": "{themes.warning.action.50}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.5}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.15}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.55}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.45}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.15}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.25}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.65}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.55}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.warning.action.80}"
@@ -7110,38 +6244,6 @@
               "$type": "color",
               "$value": "{themes.warning.base.90}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.base.45}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.warning.base.55}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.base.95}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.base.85}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.base.55}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.warning.base.65}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.base.95}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.base.95}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.warning.action.0}"
@@ -7157,38 +6259,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.warning.action.40}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.0}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.5}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.45}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.35}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.warning.action.10}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.warning.action.20}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.warning.action.60}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.warning.action.50}"
             }
           },
           "fill": {
@@ -7413,7 +6483,7 @@
               },
               "action-exact": {
                 "$type": "color",
-                "$value": "{themes.warning.base.20}"
+                "$value": "{themes.warning.action.key}"
               }
             },
             "panel": {
@@ -7539,38 +6609,6 @@
                 "$type": "color",
                 "$value": "{themes.warning.action.90}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.45}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.55}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.95}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.85}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.55}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.65}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.95}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.95}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.warning.action.0}"
@@ -7651,38 +6689,6 @@
                 "$type": "color",
                 "$value": "{themes.warning.base.25}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.base.5}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.warning.base.5}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.base.30}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.base.20}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.base.5}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.warning.base.5}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.base.40}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.base.30}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.warning.action.70}"
@@ -7696,38 +6702,6 @@
                 "$value": "{themes.warning.action.100}"
               },
               "action-exact-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.100}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.65}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.75}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.100}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.100}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.70}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.80}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.100}"
-              },
-              "action-exact-active-bottom": {
                 "$type": "color",
                 "$value": "{themes.warning.action.100}"
               }
@@ -8053,38 +7027,6 @@
                 "$type": "color",
                 "$value": "{themes.warning.action.30}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.5}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.5}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.35}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.25}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.5}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.5}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.45}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.35}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.warning.action.80}"
@@ -8165,38 +7107,6 @@
                 "$type": "color",
                 "$value": "{themes.warning.base.90}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.base.45}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.warning.base.55}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.base.95}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.base.85}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.base.55}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.warning.base.65}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.base.95}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.base.95}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.warning.action.0}"
@@ -8212,38 +7122,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.warning.action.40}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.0}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.5}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.45}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.35}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.warning.action.10}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.warning.action.20}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.warning.action.60}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.warning.action.50}"
               }
             },
             "fill": {
@@ -9042,6 +7920,16 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "fillAlphaClearest": {
+          "$type": "number",
+          "$value": 0.5,
+          "$description": "The opacity of a solid fill at solidity 0."
+        },
+        "tintAlphaInvertedClearest": {
+          "$type": "number",
+          "$value": 0.95,
+          "$description": "The opacity of an inverted tint at solidity 0."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -9257,38 +8145,6 @@
               "$type": "color",
               "$value": "{themes.danger.action.70}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.25}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.35}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.75}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.65}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.35}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.45}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.85}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.75}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.danger.action.0}"
@@ -9369,38 +8225,6 @@
               "$type": "color",
               "$value": "{themes.danger.base.25}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.base.5}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.danger.base.5}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.base.30}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.base.20}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.base.5}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.danger.base.5}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.base.40}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.base.30}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.danger.action.20}"
@@ -9416,38 +8240,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.danger.action.60}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.15}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.25}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.65}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.55}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.30}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.40}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.80}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.70}"
             }
           },
           "fill": {
@@ -9771,38 +8563,6 @@
               "$type": "color",
               "$value": "{themes.danger.action.50}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.5}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.15}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.55}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.45}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.15}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.25}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.65}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.55}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.danger.action.80}"
@@ -9883,38 +8643,6 @@
               "$type": "color",
               "$value": "{themes.danger.base.90}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.base.45}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.danger.base.55}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.base.95}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.base.85}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.base.55}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.danger.base.65}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.base.95}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.base.95}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.danger.action.0}"
@@ -9930,38 +8658,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.danger.action.10}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.0}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.0}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.20}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.10}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.danger.action.0}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.danger.action.0}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.danger.action.25}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.danger.action.15}"
             }
           },
           "fill": {
@@ -10312,38 +9008,6 @@
                 "$type": "color",
                 "$value": "{themes.danger.action.90}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.45}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.55}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.95}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.85}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.55}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.65}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.95}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.95}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.danger.action.0}"
@@ -10424,38 +9088,6 @@
                 "$type": "color",
                 "$value": "{themes.danger.base.25}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.base.5}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.danger.base.5}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.base.30}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.base.20}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.base.5}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.danger.base.5}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.base.40}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.base.30}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.danger.action.50}"
@@ -10471,38 +9103,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.danger.action.90}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.45}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.55}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.95}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.85}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.55}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.65}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.95}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.95}"
               }
             },
             "fill": {
@@ -10826,38 +9426,6 @@
                 "$type": "color",
                 "$value": "{themes.danger.action.30}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.35}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.25}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.45}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.35}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.danger.action.80}"
@@ -10938,38 +9506,6 @@
                 "$type": "color",
                 "$value": "{themes.danger.base.90}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.base.45}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.danger.base.55}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.base.95}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.base.85}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.base.55}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.danger.base.65}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.base.95}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.base.95}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.danger.action.5}"
@@ -10985,38 +9521,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.danger.action.30}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.35}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.25}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.danger.action.5}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.danger.action.45}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.danger.action.35}"
               }
             },
             "fill": {
@@ -11815,6 +10319,16 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "fillAlphaClearest": {
+          "$type": "number",
+          "$value": 0.5,
+          "$description": "The opacity of a solid fill at solidity 0."
+        },
+        "tintAlphaInvertedClearest": {
+          "$type": "number",
+          "$value": 0.95,
+          "$description": "The opacity of an inverted tint at solidity 0."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -12030,38 +10544,6 @@
               "$type": "color",
               "$value": "{themes.promo.action.70}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.25}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.35}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.75}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.65}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.35}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.45}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.85}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.75}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.promo.action.0}"
@@ -12142,38 +10624,6 @@
               "$type": "color",
               "$value": "{themes.promo.base.25}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.base.5}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.promo.base.5}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.base.30}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.base.20}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.base.5}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.promo.base.5}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.base.40}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.base.30}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.promo.action.70}"
@@ -12187,38 +10637,6 @@
               "$value": "{themes.promo.action.100}"
             },
             "action-exact-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.100}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.65}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.75}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.100}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.100}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.70}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.80}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.100}"
-            },
-            "action-exact-active-bottom": {
               "$type": "color",
               "$value": "{themes.promo.action.100}"
             }
@@ -12544,38 +10962,6 @@
               "$type": "color",
               "$value": "{themes.promo.action.50}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.5}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.15}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.55}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.45}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.15}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.25}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.65}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.55}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.promo.action.80}"
@@ -12656,38 +11042,6 @@
               "$type": "color",
               "$value": "{themes.promo.base.90}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.base.45}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.promo.base.55}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.base.95}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.base.85}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.base.55}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.promo.base.65}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.base.95}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.base.95}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.promo.action.20}"
@@ -12703,38 +11057,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.promo.action.60}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.10}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.20}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.60}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.50}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.promo.action.25}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.promo.action.35}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.promo.action.75}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.promo.action.65}"
             }
           },
           "fill": {
@@ -13085,38 +11407,6 @@
                 "$type": "color",
                 "$value": "{themes.promo.action.90}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.45}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.55}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.95}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.85}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.55}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.65}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.95}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.95}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.promo.action.0}"
@@ -13197,38 +11487,6 @@
                 "$type": "color",
                 "$value": "{themes.promo.base.25}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.base.5}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.promo.base.5}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.base.30}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.base.20}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.base.5}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.promo.base.5}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.base.40}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.base.30}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.promo.action.50}"
@@ -13244,38 +11502,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.promo.action.90}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.45}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.55}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.95}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.85}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.55}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.65}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.95}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.95}"
               }
             },
             "fill": {
@@ -13599,38 +11825,6 @@
                 "$type": "color",
                 "$value": "{themes.promo.action.30}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.35}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.25}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.45}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.35}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.promo.action.80}"
@@ -13711,38 +11905,6 @@
                 "$type": "color",
                 "$value": "{themes.promo.base.90}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.base.45}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.promo.base.55}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.base.95}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.base.85}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.base.55}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.promo.base.65}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.base.95}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.base.95}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.promo.action.5}"
@@ -13758,38 +11920,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.promo.action.30}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.35}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.25}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.promo.action.5}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.promo.action.45}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.promo.action.35}"
               }
             },
             "fill": {
@@ -14588,6 +12718,16 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "fillAlphaClearest": {
+          "$type": "number",
+          "$value": 0.5,
+          "$description": "The opacity of a solid fill at solidity 0."
+        },
+        "tintAlphaInvertedClearest": {
+          "$type": "number",
+          "$value": 0.95,
+          "$description": "The opacity of an inverted tint at solidity 0."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -14803,38 +12943,6 @@
               "$type": "color",
               "$value": "{themes.sale.action.70}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.25}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.35}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.75}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.65}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.35}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.45}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.85}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.75}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.sale.action.0}"
@@ -14915,38 +13023,6 @@
               "$type": "color",
               "$value": "{themes.sale.base.25}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.base.5}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.sale.base.5}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.base.30}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.base.20}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.base.5}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.sale.base.5}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.base.40}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.base.30}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.sale.action.70}"
@@ -14960,38 +13036,6 @@
               "$value": "{themes.sale.action.100}"
             },
             "action-exact-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.100}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.65}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.75}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.100}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.100}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.70}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.80}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.100}"
-            },
-            "action-exact-active-bottom": {
               "$type": "color",
               "$value": "{themes.sale.action.100}"
             }
@@ -15317,38 +13361,6 @@
               "$type": "color",
               "$value": "{themes.sale.action.50}"
             },
-            "action-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.5}"
-            },
-            "action-hover-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.15}"
-            },
-            "action-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.55}"
-            },
-            "action-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.45}"
-            },
-            "action-active-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.15}"
-            },
-            "action-active-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.25}"
-            },
-            "action-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.65}"
-            },
-            "action-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.55}"
-            },
             "tint-action-rim": {
               "$type": "color",
               "$value": "{themes.sale.action.80}"
@@ -15429,38 +13441,6 @@
               "$type": "color",
               "$value": "{themes.sale.base.90}"
             },
-            "quiet-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.base.45}"
-            },
-            "quiet-hover-top": {
-              "$type": "color",
-              "$value": "{themes.sale.base.55}"
-            },
-            "quiet-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.base.95}"
-            },
-            "quiet-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.base.85}"
-            },
-            "quiet-active-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.base.55}"
-            },
-            "quiet-active-top": {
-              "$type": "color",
-              "$value": "{themes.sale.base.65}"
-            },
-            "quiet-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.base.95}"
-            },
-            "quiet-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.base.95}"
-            },
             "action-exact-rim": {
               "$type": "color",
               "$value": "{themes.sale.action.10}"
@@ -15476,38 +13456,6 @@
             "action-exact-bottom": {
               "$type": "color",
               "$value": "{themes.sale.action.50}"
-            },
-            "action-exact-hover-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.5}"
-            },
-            "action-exact-hover-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.15}"
-            },
-            "action-exact-hover-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.55}"
-            },
-            "action-exact-hover-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.45}"
-            },
-            "action-exact-active-rim": {
-              "$type": "color",
-              "$value": "{themes.sale.action.20}"
-            },
-            "action-exact-active-top": {
-              "$type": "color",
-              "$value": "{themes.sale.action.30}"
-            },
-            "action-exact-active-shadow": {
-              "$type": "color",
-              "$value": "{themes.sale.action.70}"
-            },
-            "action-exact-active-bottom": {
-              "$type": "color",
-              "$value": "{themes.sale.action.60}"
             }
           },
           "fill": {
@@ -15858,38 +13806,6 @@
                 "$type": "color",
                 "$value": "{themes.sale.action.90}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.45}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.55}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.95}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.85}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.55}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.65}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.95}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.95}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.sale.action.0}"
@@ -15970,38 +13886,6 @@
                 "$type": "color",
                 "$value": "{themes.sale.base.25}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.base.5}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.sale.base.5}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.base.30}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.base.20}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.base.5}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.sale.base.5}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.base.40}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.base.30}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.sale.action.50}"
@@ -16017,38 +13901,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.sale.action.90}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.45}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.55}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.95}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.85}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.55}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.65}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.95}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.95}"
               }
             },
             "fill": {
@@ -16372,38 +14224,6 @@
                 "$type": "color",
                 "$value": "{themes.sale.action.30}"
               },
-              "action-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-hover-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.35}"
-              },
-              "action-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.25}"
-              },
-              "action-active-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-active-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.45}"
-              },
-              "action-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.35}"
-              },
               "tint-action-rim": {
                 "$type": "color",
                 "$value": "{themes.sale.action.80}"
@@ -16484,38 +14304,6 @@
                 "$type": "color",
                 "$value": "{themes.sale.base.90}"
               },
-              "quiet-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.base.45}"
-              },
-              "quiet-hover-top": {
-                "$type": "color",
-                "$value": "{themes.sale.base.55}"
-              },
-              "quiet-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.base.95}"
-              },
-              "quiet-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.base.85}"
-              },
-              "quiet-active-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.base.55}"
-              },
-              "quiet-active-top": {
-                "$type": "color",
-                "$value": "{themes.sale.base.65}"
-              },
-              "quiet-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.base.95}"
-              },
-              "quiet-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.base.95}"
-              },
               "action-exact-rim": {
                 "$type": "color",
                 "$value": "{themes.sale.action.5}"
@@ -16531,38 +14319,6 @@
               "action-exact-bottom": {
                 "$type": "color",
                 "$value": "{themes.sale.action.30}"
-              },
-              "action-exact-hover-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-exact-hover-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-exact-hover-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.35}"
-              },
-              "action-exact-hover-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.25}"
-              },
-              "action-exact-active-rim": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-exact-active-top": {
-                "$type": "color",
-                "$value": "{themes.sale.action.5}"
-              },
-              "action-exact-active-shadow": {
-                "$type": "color",
-                "$value": "{themes.sale.action.45}"
-              },
-              "action-exact-active-bottom": {
-                "$type": "color",
-                "$value": "{themes.sale.action.35}"
               }
             },
             "fill": {

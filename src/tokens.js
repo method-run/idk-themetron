@@ -50,6 +50,9 @@ const MOTION = {
 // How far hover moves a fill or a tint, in grade numbers. Press moves twice as far. The label
 // moves with it, so the pair keeps its contrast.
 const STATE_GRADES = 10;
+// How far text fades toward its min-contrast grades, from 0 to 1: off for now. See the text
+// colors in buildMode.
+const TEXT_FADE = 0;
 const STATES = ['', '-hover', '-active'];
 // The shine's grades, in grade numbers from the fill: a rim and a top lighter than it, and a
 // shadow and a bottom darker. Lighter is a lower number in both modes. Tints get half the
@@ -174,6 +177,8 @@ export function buildPrimitives(settings, palettes, gaps) {
       tintAlpha: solid(CLEAREST.tint),
       tintAlphaInverted: solid(CLEAREST.tintInverted),
       fieldAlpha: solid(CLEAREST.field),
+      // The limits themselves, so components can tell how far a part has faded.
+      clearest: { ...CLEAREST },
     },
     panelBorderWidth: borderWidth,
   };
@@ -214,8 +219,12 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // background STATE_GRADES in direction dir, and press twice as far; the label follows.
   // The shine grades of each state of a background, such as gloss.action-hover-rim for
   // fill.action-hover, within [lo, hi].
-  const shine = (glossName, bgName, palette, offsets, lo, hi) => {
-    for (const state of STATES) {
+  // Only the states that something reads: buttons shade through their backdrop, so action fills,
+  // quiet, and exact buttons need resting grades only (for the edge line of their labels, and for
+  // checks, switches, and other parts). Tints keep every state: a soft button's colored shadow
+  // follows its state.
+  const shine = (glossName, bgName, palette, offsets, lo, hi, states = STATES) => {
+    for (const state of states) {
       const g = tokens[`${bgName}${state}`].grade;
       for (const [part, by] of Object.entries(offsets)) set(`${glossName}${state}-${part}`, palette, Math.min(hi, Math.max(lo, g + by)));
     }
@@ -259,10 +268,12 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   if (dark) outward.reverse();
   const fgGrade = pick(base, [dark ? 5 : 90, dark ? 0 : 100, ...outward.slice().reverse()], passesAll('text'), bgs);
   const mutedGrade = pick(base, outward, passesAll('text'), bgs);
-  // As solidity drops, text moves toward the page, so the page reads as one soft layer: body text
-  // goes to one notch (10 grade numbers) past the min-contrast grade, and muted text stays at it.
-  // Linear with solidity, rounded to a grade. fgGrade stays the full text color, for labels.
-  const clearness = 1 - settings.feel.solidity;
+  // Text fading: text can move toward the page, so the page reads as one soft layer. Body text
+  // goes to one notch (10 grade numbers) past the min-contrast grade, muted text stays at it, and
+  // headings go to the min-contrast grade for their size. Off for now (TEXT_FADE is 0); softness
+  // may drive it later. Linear with the fade, rounded to a grade. fgGrade stays the full text
+  // color, for labels.
+  const clearness = TEXT_FADE;
   const fade = (from, to) => Math.round((from + (to - from) * clearness) / 5) * 5;
   const bodyClear = dark ? Math.max(fgGrade, mutedGrade - 10) : Math.min(fgGrade, mutedGrade + 10);
   set('fg.base', base, fade(fgGrade, bodyClear));
@@ -325,7 +336,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     // text, so these grades need not pass with the label: the audit shows them, but does not
     // require them. Each state has its own shine, counted from its own fill, so the shine
     // follows the fill.
-    shine(`gloss.${role}`, `fill.${role}`, palette, SHINE, 5, 95);
+    shine(`gloss.${role}`, `fill.${role}`, palette, SHINE, 5, 95, ['']);
     // Rest and hover must pass. Press lasts a moment: where the label has no room left to
     // follow (it is already white or black), the audit warns instead.
     for (const state of STATES) {
@@ -390,7 +401,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const label = candidates.find((n) => passesOn(n, fill) && passesOn(labelAfter(base, n, fill, hover), hover))
       ?? pick(base, candidates, (hex) => test(hex, base.steps[fill], 'text'), [base.steps[fill]]);
     states('fill.quiet', 'on-fill.quiet', base, fill, label, toward, base, [-5, 5]);
-    shine('gloss.quiet', 'fill.quiet', base, SHINE, 5, 95);
+    shine('gloss.quiet', 'fill.quiet', base, SHINE, 5, 95, ['']);
     for (const state of STATES) {
       check(`on-fill.quiet${state}`, `fill.quiet${state}`, 'text', state !== '-active');
       if (state === '-active') audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
@@ -407,8 +418,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // has more contrast with it. It has the same label polarity as every other fill: in light
   // mode, the darker color of the pair is the fill and the lighter one is the label. So a navy
   // key is a navy fill with a white label, and a yellow key is a yellow label on a black fill.
-  // Its edge is the key color, or the base border when the key color does not stand out from
-  // the canvas. With pure white and black, the pair is always at least 4.58:1. Where it still
+  // Its edge is the key color. With pure white and black, the pair is always at least 4.58:1. Where it still
   // fails the contrast setting, the audit warns; the more-contrast variant uses the normal
   // button's colors instead.
   {
@@ -427,7 +437,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
         tokens[`fill.action-exact${state}`] = { ...tokens[`fill.action${state}`] };
         tokens[`on-fill.action-exact${state}`] = { ...tokens[`on-fill.action${state}`] };
       }
-      for (const state of STATES) for (const part of Object.keys(SHINE)) tokens[`gloss.action-exact${state}-${part}`] = { ...tokens[`gloss.action${state}-${part}`] };
+      for (const part of Object.keys(SHINE)) tokens[`gloss.action-exact-${part}`] = { ...tokens[`gloss.action-${part}`] };
     } else {
       const fill = dark ? lighter : darker;
       tokens['fill.action-exact'] = fill;
@@ -454,15 +464,15 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
       };
       setState('-hover', -5);
       setState('-active', 5);
-      // The same shine as solid fills, counted from where each state's fill sits: the key
-      // color's own grade at rest, rounded to the nearest grade. It can reach white and black,
-      // so a black fill has no shadow below it, and a white fill no highlight above it.
-      for (const [i, state] of STATES.entries()) {
-        const g = tokens[`fill.action-exact${state}`].grade;
-        for (const [part, by] of Object.entries(SHINE)) set(`gloss.action-exact${state}-${part}`, action, Math.min(100, Math.max(0, Math.round((g + by) / 5) * 5)));
-      }
+      // Shine grades at rest, counted from the key color's own grade, rounded to the nearest
+      // grade, for the edge line of the label. They can reach white and black.
+      const g = tokens['fill.action-exact'].grade;
+      for (const [part, by] of Object.entries(SHINE)) set(`gloss.action-exact-${part}`, action, Math.min(100, Math.max(0, Math.round((g + by) / 5) * 5)));
     }
-    tokens['border.action-exact'] = test(action.key, tokens['bg.canvas'].value, 'ui') ? key : { ...tokens['border.base'] };
+    // The edge is the key color. When the key is the fill, it is paired with the base color
+    // farther from it, so it always stands out from the canvas; when the key is the label, the
+    // edge matches it.
+    tokens['border.action-exact'] = { ...key };
     // Not required, but a failure is worth a warning: the audit shows it.
     for (const state of STATES) {
       check(`on-fill.action-exact${state}`, `fill.action-exact${state}`, 'text', false);

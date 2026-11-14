@@ -35,10 +35,10 @@
   --_halo-color: var(--_halo-fill, transparent);
   --_halo-alpha: calc(var(--_halo-strength, 0) * 100%);
   --_fill-halo: 0 0 2px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent), 0 0 5px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent);
-  /* How far a contrasting part has faded: 0 when opaque, 1 at the clearest solid fill (50%). Zero
-     in an inverted part. A page-like part uses --_tint-faded the same way, inverted only. */
-  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / 0.5, 1));
-  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / 0.05, 1));
+  /* How far a contrasting part has faded: 0 when opaque, 1 at the clearest solid fill. Zero in an
+     inverted part. A page-like part uses --_tint-faded the same way, inverted only. */
+  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / (1 - var(--tm-fill-alpha-clearest)), 1));
+  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / (1 - var(--tm-tint-alpha-inverted-clearest)), 1));
   --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
 }
 /* Which kind of part has its label on the page's side: solid fills normally, and tints and quiet
@@ -137,29 +137,35 @@
 .tm-button:active { --_halo-fill: var(--tm-fill-action-active); background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
 .tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-/* The shine: two layers that brighten and darken the backdrop (the fill, and the page through a
-   see-through fill), as much as the shininess allows, and add no color of their own. ::before
-   brightens the top: most along the top edge (the band, and half as wide along the left edge),
-   then fading out by the middle. ::after darkens the bottom. As the fill turns see-through, the
-   layers keep a share of their strength (--_shine-keep), so a nearly clear button still shows
-   its highlight and shadow, like glass. Inside an element with a backdrop filter of its own (a
-   button in tm-over-media), the backdrop is only the button's fill.
-   Each layer is a backdrop filter, so it costs a layer and a read of what is behind it. */
+/* The shine: two layers that brighten the top and darken the bottom of the button, as much as the
+   shininess allows, and add no color of their own. ::before brightens the top: most along the
+   top edge (the band, and half as wide along the left edge), then fading out by the middle.
+   ::after darkens the bottom. When parts are see-through, the layers filter the backdrop (the
+   fill, and the page through it), so a nearly clear button still shows its highlight and shadow,
+   like glass; they keep a share of their strength (--_shine-keep) as the fill fades. A backdrop
+   filter costs a layer and a read of what is behind it, so when parts are opaque, the layers are
+   painted in the fill's own color (--_halo-fill, set for each state) with a plain filter
+   instead, which looks the same. The theme's tokens pick the way: --tm-shine-backdrop-*,
+   --tm-shine-filter-*, and --tm-shine-paint. Inside an element with a backdrop filter of its own
+   (a button in tm-over-media), the backdrop is only the button's fill. */
 .tm-button::before, .tm-button::after {
   content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
   --_shine-keep: 0.6; --_fill-alpha: var(--tm-fill-alpha);
   opacity: calc(var(--_fill-alpha) + (1 - var(--_fill-alpha)) * var(--_shine-keep));
+  background-color: color-mix(in oklab, var(--_halo-fill, transparent) calc(var(--tm-shine-paint) * 100%), transparent);
 }
 .tm-button::before {
-  -webkit-backdrop-filter: brightness(calc(1 + 0.8 * var(--tm-shininess, 0)));
-  backdrop-filter: brightness(calc(1 + 0.8 * var(--tm-shininess, 0)));
+  -webkit-backdrop-filter: var(--tm-shine-backdrop-top);
+  backdrop-filter: var(--tm-shine-backdrop-top);
+  filter: var(--tm-shine-filter-top);
   --_band-mask: linear-gradient(to bottom, #000 0, #000 var(--_shine-band), rgb(0 0 0 / 0.6) var(--_shine-band), transparent 50%), linear-gradient(to right, #000 0, #000 calc(var(--_shine-band) / 2), transparent calc(var(--_shine-band) / 2));
   -webkit-mask-image: var(--_band-mask);
   mask-image: var(--_band-mask);
 }
 .tm-button::after {
-  -webkit-backdrop-filter: brightness(calc(1 - 0.35 * var(--tm-shininess, 0)));
-  backdrop-filter: brightness(calc(1 - 0.35 * var(--tm-shininess, 0)));
+  -webkit-backdrop-filter: var(--tm-shine-backdrop-bottom);
+  backdrop-filter: var(--tm-shine-backdrop-bottom);
+  filter: var(--tm-shine-filter-bottom);
   -webkit-mask-image: linear-gradient(to bottom, transparent 50%, #000 80%, rgb(0 0 0 / 0.5) 100%);
   mask-image: linear-gradient(to bottom, transparent 50%, #000 80%, rgb(0 0 0 / 0.5) 100%);
 }
@@ -178,7 +184,7 @@
    tint's own shadow grades instead: a light, saturated tint of the action color, at the tint
    shine's strength, following the button's state. */
 .tm-button--soft::after {
-  -webkit-backdrop-filter: none; backdrop-filter: none; -webkit-mask-image: none; mask-image: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none; filter: none; -webkit-mask-image: none; mask-image: none;
   --_shade: calc(var(--tm-shininess, 0) * 50%);
   background: linear-gradient(180deg in oklch, transparent 50%, color-mix(in oklch, var(--_shade-color) var(--_shade), transparent) 80%, color-mix(in oklch, var(--_shade-bottom) calc(var(--_shade) * 0.5), transparent) 100%);
 }
@@ -186,9 +192,9 @@
 /* The exact button is the brand color, exactly, at rest. Hover and press move to ramp grades
    10 and 20 grade numbers from it, like other fills. Its shine is counted from where the key
    color sits on the ramp. */
-.tm-button--exact { --_halo-strength: 0; text-shadow: var(--tm-text-shadow-action-exact); background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
-.tm-button--exact:hover { background-color: var(--tm-fill-action-exact-hover); color: var(--tm-on-fill-action-exact-hover); }
-.tm-button--exact:active { background-color: var(--tm-fill-action-exact-active); color: var(--tm-on-fill-action-exact-active); }
+.tm-button--exact { --_halo-fill: var(--tm-fill-action-exact); --_halo-strength: 0; text-shadow: var(--tm-text-shadow-action-exact); background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
+.tm-button--exact:hover { --_halo-fill: var(--tm-fill-action-exact-hover); background-color: var(--tm-fill-action-exact-hover); color: var(--tm-on-fill-action-exact-hover); }
+.tm-button--exact:active { --_halo-fill: var(--tm-fill-action-exact-active); background-color: var(--tm-fill-action-exact-active); color: var(--tm-on-fill-action-exact-active); }
 
 /* No fill, so no frost: their labels read like any text on the page. */
 .tm-button--outline, .tm-button--ghost { text-shadow: inherit; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }

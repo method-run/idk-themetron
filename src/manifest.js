@@ -9,7 +9,7 @@ import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CON
 // Major: a stable token is removed or renamed, or its type or meaning changes.
 // Minor: a token is added, or an experimental token becomes stable.
 // Patch: values change, but names, types, and meanings stay the same.
-export const CONTRACT_VERSION = '0.5.0';
+export const CONTRACT_VERSION = '0.6.0';
 
 // Stable tokens keep their name, type, and meaning within a major version of the contract.
 // Every other token is experimental: it can change or go away in any version.
@@ -32,9 +32,9 @@ const MEANING = {
   'bg-field': 'The inside of text fields and other inputs.',
   'fg-base': 'Body text and headings. Passes the text contrast on every background.',
   'fg-base-muted': 'Secondary text. Passes the text contrast on every background.',
-  'fg-base-heading-lg': 'Headings in the lg size (h3). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size.',
-  'fg-base-heading-2xl': 'Headings in the 2xl size (h2). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up.',
-  'fg-base-heading-3xl': 'Headings in the 3xl size (h1). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up.',
+  'fg-base-heading-lg': 'Headings in the lg size (h3). The body text color for now; it can fade to the min-contrast grade for its size.',
+  'fg-base-heading-2xl': 'Headings in the 2xl size (h2). The body text color for now; it can fade to the min-contrast grade for its size: the large-text level at 24 px and up.',
+  'fg-base-heading-3xl': 'Headings in the 3xl size (h1). The body text color for now; it can fade to the min-contrast grade for its size: the large-text level at 24 px and up.',
   'fg-base-subtle': 'Placeholders and other hints. Passes the control contrast only.',
   'border-base': 'Dividers and the edges of surfaces. Decoration only.',
   'border-base-strong': 'The edges of fields and controls. Passes the control contrast.',
@@ -71,7 +71,7 @@ const MEANING = {
   'on-fill-action-exact-active': 'The label of the exact button while it is pressed: moved as far as the fill.',
   'fill-action-exact-hover': 'The exact button on hover: the nearest grade at least 5 grade numbers lighter than its resting fill. A white fill, which cannot get lighter, stays white, and only its label gets lighter.',
   'fill-action-exact-active': 'The exact button while it is pressed: the nearest grade at least 5 grade numbers darker than its resting fill. A black fill, which cannot get darker, stays black, and only its label gets darker.',
-  'border-action-exact': 'The edge of the exact button: the key color, or border-base when the key color does not stand out from the canvas.',
+  'border-action-exact': 'The edge of the exact button: the key color.',
 };
 
 // The color pairs that pass the theme's contrast setting, in both modes. "text" pairs pass

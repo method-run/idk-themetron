@@ -45,6 +45,21 @@ export function primitiveEntries(p) {
   out.push(['tint-alpha', String(p.effect.tintAlpha)]);
   // The opacity of fields: inputs, selects, and text areas.
   out.push(['field-alpha', String(p.effect.fieldAlpha)]);
+  // The opacity of a solid fill, and of an inverted tint, at solidity 0. A component divides by
+  // these to tell how far a part has faded: (1 - alpha) / (1 - clearest).
+  out.push(['fill-alpha-clearest', String(p.effect.clearest.fill)], ['tint-alpha-inverted-clearest', String(p.effect.clearest.tintInverted)]);
+  // A button's shine brightens its top and darkens its bottom. When parts are see-through
+  // (solidity under 1), it filters the backdrop, so the page through the fill is shaded too. When
+  // they are opaque, the backdrop is only the fill, so a layer painted in the fill's color with a
+  // plain filter looks the same and does not read what is behind it. At shininess 0, neither.
+  const sh = p.shininess;
+  const seeThrough = p.effect.fillAlpha < 1 || p.effect.tintAlpha < 1;
+  const top = `brightness(${round1((1 + 0.8 * sh) * 100) / 100})`;
+  const bottom = `brightness(${round1((1 - 0.35 * sh) * 100) / 100})`;
+  const pick = (on, value) => (sh && on ? value : 'none');
+  out.push(['shine-backdrop-top', pick(seeThrough, top)], ['shine-backdrop-bottom', pick(seeThrough, bottom)]);
+  out.push(['shine-filter-top', pick(!seeThrough, top)], ['shine-filter-bottom', pick(!seeThrough, bottom)]);
+  out.push(['shine-paint', sh && !seeThrough ? '1' : '0']);
   // Twins for tm-invert: an inverted part has its own opacities. See invertRulesAfter.
   out.push(['fill-alpha-normal', String(p.effect.fillAlpha)], ['fill-alpha-inverted', String(p.effect.fillAlphaInverted)]);
   out.push(['tint-alpha-normal', String(p.effect.tintAlpha)], ['tint-alpha-inverted', String(p.effect.tintAlphaInverted)]);
@@ -75,9 +90,10 @@ export function semanticEntries(theme, prefix = 'tm') {
     out.push([`elevation-${level}-normal`, bothModes(light.computed[name], dark.computed[name])]);
     out.push([`elevation-${level}-flipped`, bothModes(dark.computed[name], light.computed[name])]);
   }
-  // Parts with a solid fill: action fills, small base parts (a switch's knob), quiet buttons,
-  // and exact buttons.
-  const shined = ['action', 'base-muted', 'quiet', 'action-exact'];
+  // The edge band and glow, for parts that draw them: action fills (checks, switches, badges, and
+  // other parts) and small base parts (a switch's knob). Buttons shade through their backdrop
+  // instead, so quiet and exact buttons have none.
+  const shined = ['action', 'base-muted'];
   // The top edge of a filled part catches the light: a 1 px line of a lighter grade of the
   // part's own color, with the shininess as its opacity. One for fills, and one for tints.
   // The components draw it with box-shadow: inset 0 1px 0 <color>.
@@ -342,6 +358,8 @@ export function toDtcg(built) {
       tintAlpha: tok('number', p.effect.tintAlpha, { $description: 'The tint opacity of soft and quiet buttons.' }),
       tintAlphaInverted: tok('number', p.effect.tintAlphaInverted, { $description: 'The tint opacity of a part with tm-invert.' }),
       fieldAlpha: tok('number', p.effect.fieldAlpha, { $description: 'The opacity of fields.' }),
+      fillAlphaClearest: tok('number', p.effect.clearest.fill, { $description: 'The opacity of a solid fill at solidity 0.' }),
+      tintAlphaInvertedClearest: tok('number', p.effect.clearest.tintInverted, { $description: 'The opacity of an inverted tint at solidity 0.' }),
       panelBorderWidth: tok('dimension', { value: p.panelBorderWidth, unit: 'px' }),
     };
     const modesOf = (level) => {

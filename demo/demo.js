@@ -679,7 +679,7 @@ function renderPreview() {
 // Each pixel's lightness picks the grade with the same luminance, from the base ramp, the
 // action ramp, or a mix of the two. Contrast and brightness change the lightness first.
 // Each stage draws it on its own canvas. Blur is a CSS filter, so it needs no new image.
-const PHOTO = { hue: 0, blur: 8, contrast: 1, brightness: 0 };
+const PHOTO = { hue: 0, blur: 8, contrast: 1, target: 0.5 };
 let photoPixels = null; // the photo's lightness, 0 to 1 (the cube root of its luminance)
 const photoImages = new Map(); // ramps and settings → the colored photo, as ImageData
 
@@ -696,20 +696,24 @@ async function loadPhoto() {
   const light = new Float32Array(w * h);
   const lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
   for (let i = 0; i < light.length; i++) light[i] = Math.cbrt(0.2126 * lin(data[4 * i]) + 0.7152 * lin(data[4 * i + 1]) + 0.0722 * lin(data[4 * i + 2]));
-  photoPixels = { w, h, light };
+  // The average lightness, so a target can move the photo's middle where it should be.
+  photoPixels = { w, h, light, mean: light.reduce((sum, v) => sum + v, 0) / light.length };
   return photoPixels;
 }
 
 // 1024 colors, one for each lightness: the grade with that luminance, between ramp steps, in
 // linear RGB. Grades of the same number have the same luminance in both ramps, so a linear mix
 // of the two keeps it.
-function photoLut(base, action) {
+// The target is the photo's average lightness: 0 is black, 1 is white. Light mode uses it, and
+// dark mode its mirror (1 − target), so one slider sets how far each photo sits from its mode's
+// text. Contrast spreads the photo around that average.
+function photoLut(base, action, mean, target) {
   const lin = (hex) => [1, 3, 5].map((i) => { const c = parseInt(hex.slice(i, i + 2), 16) / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; });
   const enc = (c) => Math.round(255 * (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055));
   const ramps = [base, action].map((steps) => GRADES.map((g) => lin(steps[g])));
   const lut = new Uint8ClampedArray(1024 * 3);
   for (let i = 0; i < 1024; i++) {
-    const l = Math.min(1, Math.max(0, ((i / 1023 - 0.5) * PHOTO.contrast) + 0.5 + PHOTO.brightness));
+    const l = Math.min(1, Math.max(0, ((i / 1023 - mean) * PHOTO.contrast) + target));
     const y = l ** 3;
     const grade = Math.min(100, Math.max(0, (-100 * Math.log((y + 0.05) / 1.05)) / Math.log(21)));
     const k = Math.min(GRADES.length - 2, Math.floor(grade / 5));
@@ -720,12 +724,13 @@ function photoLut(base, action) {
   return lut;
 }
 
-async function photoImage(name) {
+async function photoImage(name, mode) {
+  const target = mode === 'dark' ? 1 - PHOTO.target : PHOTO.target;
   const { base, action } = built.themes[name].palettes;
-  const key = JSON.stringify([base.steps, action.steps, PHOTO.hue, PHOTO.contrast, PHOTO.brightness]);
+  const key = JSON.stringify([base.steps, action.steps, PHOTO.hue, PHOTO.contrast, target]);
   if (photoImages.has(key)) return photoImages.get(key);
-  const { w, h, light } = await loadPhoto();
-  const lut = photoLut(base.steps, action.steps);
+  const { w, h, light, mean } = await loadPhoto();
+  const lut = photoLut(base.steps, action.steps, mean, target);
   const out = new ImageData(w, h);
   for (let i = 0; i < light.length; i++) {
     const j = 3 * Math.round(light[i] * 1023);
@@ -745,7 +750,7 @@ async function paintPhotos() {
   for (const stage of document.querySelectorAll('#previews .stage[data-stage-theme]')) {
     const name = stage.dataset.stageTheme;
     if (!built.themes[name]) continue;
-    const image = await photoImage(name);
+    const image = await photoImage(name, stage.dataset.tmMode);
     if (run !== photoRun) return; // newer settings started painting
     let canvas = stage.querySelector(':scope > canvas.stage-photo');
     if (!canvas) { canvas = el('canvas', { class: 'stage-photo', 'aria-hidden': 'true' }); stage.prepend(canvas); }
@@ -774,7 +779,7 @@ function photoSliders() {
     slider('Hue', 'hue', 0, 1, 0.05, (v) => (v === 0 ? 'base' : v === 1 ? 'action' : `${Math.round(v * 100)}% action`)),
     slider('Blur', 'blur', 0, 40, 1, (v) => `${v}px`),
     slider('Contrast', 'contrast', 0.2, 2, 0.05, (v) => `${Math.round(v * 100)}%`),
-    slider('Brightness', 'brightness', -0.5, 0.5, 0.02, (v) => `${v > 0 ? '+' : ''}${Math.round(v * 100)}`),
+    slider('Brightness', 'target', 0, 1, 0.01, (v) => `${Math.round(v * 100)}%`),
   ];
 }
 
@@ -1154,7 +1159,9 @@ document.addEventListener('keydown', (e) => {
 
 const PANE_KEY = 'themetron-playground-pane';
 const pane = { width: 340, collapsed: false, grid: false, photo: false, closedSections: [], ...load(PANE_KEY) };
-Object.assign(PHOTO, pane.photoSettings);
+// Brightness used to be a shift; it is a target now, so an old saved shift is left out.
+const { brightness: _oldShift, ...savedPhoto } = pane.photoSettings ?? {};
+Object.assign(PHOTO, savedPhoto);
 const MIN_W = 260;
 const MAX_W = 640;
 function applyPane() {

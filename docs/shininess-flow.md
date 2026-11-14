@@ -81,7 +81,4 @@ A browser without `@property` still follows each state, but changes the gradient
 
 Buttons do not paint `shine-image`. Two masked layers with backdrop filters brighten what is behind the button at the top, most along the top edge, and darken it at the bottom, by an amount set by `--tm-shininess`. So a button's shine adds no color: it shades the fill, and the page through a see-through fill. A soft button's shadow uses its tint's shadow grade, as darkening a faint wash makes gray. The colored edge band and glow are off on buttons; the brightest part of the top layer takes their place. See the button rules in [components/components.css](../components/components.css).
 
-## Still to do
-
-- Remove or retire the gloss, highlight, and glow tokens that no button reads any more: the quiet and exact gloss grades, the hover and press gloss grades of action fills, and `highlight-quiet`, `glow-quiet`, `highlight-action-exact`, `glow-action-exact`.
-- Apply the backdrop layers only to see-through buttons, or in `tm-over-media`, to save their cost on opaque buttons.
+When parts are opaque (solidity 1), the backdrop behind the shine layers is only the fill, so the layers are painted in the fill's own color with a plain `filter: brightness()` instead, which looks the same and reads nothing behind the button. The theme picks the way with `--tm-shine-backdrop-*`, `--tm-shine-filter-*`, and `--tm-shine-paint`; at shininess 0 there are no filters at all. Buttons need resting gloss grades only, for the edge line of their labels, so the engine builds no hover or press gloss grades for action fills, quiet, or exact buttons.
