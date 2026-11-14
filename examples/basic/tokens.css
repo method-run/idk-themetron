@@ -88,6 +88,7 @@
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
+  --tm-field-alpha: 1;
   --tm-fill-alpha-normal: 1;
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
@@ -119,8 +120,9 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
-  --tm-text-shadow-quiet: none;
-  --tm-text-shadow-tint-base: none;
+  --tm-text-shadow-quiet: 0 0 #0000;
+  --tm-text-shadow-tint-base: 0 0 #0000;
+  --tm-text-halo: 0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent), 0 0 6px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent);
   --tm-glow-tint-base: transparent;
 }
 
@@ -196,6 +198,7 @@
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
+  --tm-field-alpha: 1;
   --tm-fill-alpha-normal: 1;
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
@@ -227,8 +230,9 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
-  --tm-text-shadow-quiet: none;
-  --tm-text-shadow-tint-base: none;
+  --tm-text-shadow-quiet: 0 0 #0000;
+  --tm-text-shadow-tint-base: 0 0 #0000;
+  --tm-text-halo: 0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent), 0 0 6px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent);
   --tm-glow-tint-base: transparent;
 }
 
@@ -304,6 +308,7 @@
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
+  --tm-field-alpha: 1;
   --tm-fill-alpha-normal: 1;
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
@@ -335,8 +340,9 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
-  --tm-text-shadow-quiet: none;
-  --tm-text-shadow-tint-base: none;
+  --tm-text-shadow-quiet: 0 0 #0000;
+  --tm-text-shadow-tint-base: 0 0 #0000;
+  --tm-text-halo: 0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent), 0 0 6px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent);
   --tm-glow-tint-base: transparent;
 }
 
@@ -412,6 +418,7 @@
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
+  --tm-field-alpha: 1;
   --tm-fill-alpha-normal: 1;
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
@@ -443,8 +450,9 @@
   --tm-highlight-tint-base: transparent;
   --tm-glow-base-muted: transparent;
   --tm-glow-quiet: transparent;
-  --tm-text-shadow-quiet: none;
-  --tm-text-shadow-tint-base: none;
+  --tm-text-shadow-quiet: 0 0 #0000;
+  --tm-text-shadow-tint-base: 0 0 #0000;
+  --tm-text-halo: 0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent), 0 0 6px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent);
   --tm-glow-tint-base: transparent;
 }
 
@@ -520,6 +528,7 @@
   --tm-fill-alpha: 1;
   --tm-panel-border-width: 1px;
   --tm-tint-alpha: 1;
+  --tm-field-alpha: 1;
   --tm-fill-alpha-normal: 1;
   --tm-fill-alpha-inverted: 1;
   --tm-tint-alpha-normal: 1;
@@ -553,6 +562,7 @@
   --tm-glow-quiet: color-mix(in oklch, var(--tm-gloss-quiet-rim) 6.6%, transparent);
   --tm-text-shadow-quiet: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-quiet-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-quiet-rim) 9.9%, transparent), transparent);
   --tm-text-shadow-tint-base: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-tint-base-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-tint-base-rim) 9.9%, transparent), transparent);
+  --tm-text-halo: 0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent), 0 0 6px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent);
   --tm-glow-tint-base: color-mix(in oklch, var(--tm-gloss-tint-base-rim) 6.6%, transparent);
 }
 
@@ -584,6 +594,9 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
@@ -649,6 +662,9 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
@@ -714,6 +730,9 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
@@ -779,6 +798,9 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
@@ -902,9 +924,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
-  --tm-text-shadow-action: none;
-  --tm-text-shadow-action-exact: none;
-  --tm-text-shadow-tint-action: none;
+  --tm-text-shadow-action: 0 0 #0000;
+  --tm-text-shadow-action-exact: 0 0 #0000;
+  --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
 }
 
@@ -994,9 +1016,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
-  --tm-text-shadow-action: none;
-  --tm-text-shadow-action-exact: none;
-  --tm-text-shadow-tint-action: none;
+  --tm-text-shadow-action: 0 0 #0000;
+  --tm-text-shadow-action-exact: 0 0 #0000;
+  --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1086,9 +1108,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
-  --tm-text-shadow-action: none;
-  --tm-text-shadow-action-exact: none;
-  --tm-text-shadow-tint-action: none;
+  --tm-text-shadow-action: 0 0 #0000;
+  --tm-text-shadow-action-exact: 0 0 #0000;
+  --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1178,9 +1200,9 @@
   --tm-highlight-tint-action: transparent;
   --tm-glow-action: transparent;
   --tm-glow-action-exact: transparent;
-  --tm-text-shadow-action: none;
-  --tm-text-shadow-action-exact: none;
-  --tm-text-shadow-tint-action: none;
+  --tm-text-shadow-action: 0 0 #0000;
+  --tm-text-shadow-action-exact: 0 0 #0000;
+  --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
 }
 
@@ -1370,6 +1392,9 @@
 
 .tm-invert { --tm-elevation-1: var(--tm-elevation-1-flipped); --tm-elevation-2: var(--tm-elevation-2-flipped); --tm-elevation-3: var(--tm-elevation-3-flipped); --tm-fill-alpha: var(--tm-fill-alpha-inverted); --tm-tint-alpha: var(--tm-tint-alpha-inverted); --tm-bg-panel: var(--tm-bg-panel-inverted); }
 .tm-invert * { --tm-elevation-1: var(--tm-elevation-1-normal); --tm-elevation-2: var(--tm-elevation-2-normal); --tm-elevation-3: var(--tm-elevation-3-normal); --tm-fill-alpha: var(--tm-fill-alpha-normal); --tm-tint-alpha: var(--tm-tint-alpha-normal); --tm-bg-panel: var(--tm-bg-panel-normal); }
+
+.tm-over-media { --tm-backdrop: blur(4px); --tm-backdrop-control: blur(2px); }
+:where(.tm-over-media, .tm-over-media *) { text-shadow: var(--tm-text-halo); }
 
 /* More contrast: the enhanced level, for readers who ask for it. */
 @media (prefers-contrast: more) {

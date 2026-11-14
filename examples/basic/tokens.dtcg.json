@@ -718,6 +718,11 @@
           "$value": 1,
           "$description": "The tint opacity of a part with tm-invert."
         },
+        "fieldAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of fields."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -766,6 +771,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.default.base.60}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.default.base.90}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.default.base.90}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.default.base.90}"
             },
             "base-subtle": {
               "$type": "color",
@@ -1268,6 +1285,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.default.base.40}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.default.base.5}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.default.base.5}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.default.base.5}"
             },
             "base-subtle": {
               "$type": "color",
@@ -1798,6 +1827,18 @@
                 "$type": "color",
                 "$value": "{themes.default.base.80}"
               },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.default.base.90}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.default.base.90}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.default.base.90}"
+              },
               "base-subtle": {
                 "$type": "color",
                 "$value": "{themes.default.base.50}"
@@ -2299,6 +2340,18 @@
               "base-muted": {
                 "$type": "color",
                 "$value": "{themes.default.base.20}"
+              },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.default.base.5}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.default.base.5}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.default.base.5}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -3438,6 +3491,11 @@
           "$value": 1,
           "$description": "The tint opacity of a part with tm-invert."
         },
+        "fieldAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of fields."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -3486,6 +3544,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.success.base.60}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.success.base.90}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.success.base.90}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.success.base.90}"
             },
             "base-subtle": {
               "$type": "color",
@@ -3988,6 +4058,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.success.base.40}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.success.base.5}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.success.base.5}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.success.base.5}"
             },
             "base-subtle": {
               "$type": "color",
@@ -4518,6 +4600,18 @@
                 "$type": "color",
                 "$value": "{themes.success.base.80}"
               },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.success.base.90}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.success.base.90}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.success.base.90}"
+              },
               "base-subtle": {
                 "$type": "color",
                 "$value": "{themes.success.base.50}"
@@ -5019,6 +5113,18 @@
               "base-muted": {
                 "$type": "color",
                 "$value": "{themes.success.base.20}"
+              },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.success.base.5}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.success.base.5}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.success.base.5}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -6158,6 +6264,11 @@
           "$value": 1,
           "$description": "The tint opacity of a part with tm-invert."
         },
+        "fieldAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of fields."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -6206,6 +6317,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.warning.base.60}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.warning.base.90}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.warning.base.90}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.warning.base.90}"
             },
             "base-subtle": {
               "$type": "color",
@@ -6708,6 +6831,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.warning.base.40}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.warning.base.5}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.warning.base.5}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.warning.base.5}"
             },
             "base-subtle": {
               "$type": "color",
@@ -7238,6 +7373,18 @@
                 "$type": "color",
                 "$value": "{themes.warning.base.80}"
               },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.warning.base.90}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.warning.base.90}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.warning.base.90}"
+              },
               "base-subtle": {
                 "$type": "color",
                 "$value": "{themes.warning.base.50}"
@@ -7739,6 +7886,18 @@
               "base-muted": {
                 "$type": "color",
                 "$value": "{themes.warning.base.20}"
+              },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.warning.base.5}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.warning.base.5}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.warning.base.5}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -8878,6 +9037,11 @@
           "$value": 1,
           "$description": "The tint opacity of a part with tm-invert."
         },
+        "fieldAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of fields."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -8926,6 +9090,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.danger.base.60}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.danger.base.90}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.danger.base.90}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.danger.base.90}"
             },
             "base-subtle": {
               "$type": "color",
@@ -9428,6 +9604,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.danger.base.40}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.danger.base.5}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.danger.base.5}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.danger.base.5}"
             },
             "base-subtle": {
               "$type": "color",
@@ -9958,6 +10146,18 @@
                 "$type": "color",
                 "$value": "{themes.danger.base.80}"
               },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.danger.base.90}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.danger.base.90}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.danger.base.90}"
+              },
               "base-subtle": {
                 "$type": "color",
                 "$value": "{themes.danger.base.50}"
@@ -10459,6 +10659,18 @@
               "base-muted": {
                 "$type": "color",
                 "$value": "{themes.danger.base.20}"
+              },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.danger.base.5}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.danger.base.5}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.danger.base.5}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -11598,6 +11810,11 @@
           "$value": 1,
           "$description": "The tint opacity of a part with tm-invert."
         },
+        "fieldAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of fields."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -11646,6 +11863,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.promo.base.60}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.promo.base.90}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.promo.base.90}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.promo.base.90}"
             },
             "base-subtle": {
               "$type": "color",
@@ -12148,6 +12377,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.promo.base.40}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.promo.base.5}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.promo.base.5}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.promo.base.5}"
             },
             "base-subtle": {
               "$type": "color",
@@ -12678,6 +12919,18 @@
                 "$type": "color",
                 "$value": "{themes.promo.base.80}"
               },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.promo.base.90}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.promo.base.90}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.promo.base.90}"
+              },
               "base-subtle": {
                 "$type": "color",
                 "$value": "{themes.promo.base.50}"
@@ -13179,6 +13432,18 @@
               "base-muted": {
                 "$type": "color",
                 "$value": "{themes.promo.base.20}"
+              },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.promo.base.5}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.promo.base.5}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.promo.base.5}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -14318,6 +14583,11 @@
           "$value": 1,
           "$description": "The tint opacity of a part with tm-invert."
         },
+        "fieldAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of fields."
+        },
         "panelBorderWidth": {
           "$type": "dimension",
           "$value": {
@@ -14366,6 +14636,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.sale.base.60}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.sale.base.90}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.sale.base.90}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.sale.base.90}"
             },
             "base-subtle": {
               "$type": "color",
@@ -14868,6 +15150,18 @@
             "base-muted": {
               "$type": "color",
               "$value": "{themes.sale.base.40}"
+            },
+            "base-heading-lg": {
+              "$type": "color",
+              "$value": "{themes.sale.base.5}"
+            },
+            "base-heading-2xl": {
+              "$type": "color",
+              "$value": "{themes.sale.base.5}"
+            },
+            "base-heading-3xl": {
+              "$type": "color",
+              "$value": "{themes.sale.base.5}"
             },
             "base-subtle": {
               "$type": "color",
@@ -15398,6 +15692,18 @@
                 "$type": "color",
                 "$value": "{themes.sale.base.80}"
               },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.sale.base.90}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.sale.base.90}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.sale.base.90}"
+              },
               "base-subtle": {
                 "$type": "color",
                 "$value": "{themes.sale.base.50}"
@@ -15899,6 +16205,18 @@
               "base-muted": {
                 "$type": "color",
                 "$value": "{themes.sale.base.20}"
+              },
+              "base-heading-lg": {
+                "$type": "color",
+                "$value": "{themes.sale.base.5}"
+              },
+              "base-heading-2xl": {
+                "$type": "color",
+                "$value": "{themes.sale.base.5}"
+              },
+              "base-heading-3xl": {
+                "$type": "color",
+                "$value": "{themes.sale.base.5}"
               },
               "base-subtle": {
                 "$type": "color",

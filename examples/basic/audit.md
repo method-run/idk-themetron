@@ -4,30 +4,30 @@ Made by `npm run examples`. Each row counts the required pairs that pass the the
 
 | Theme | Kind | Level | Mode | Pass | Fail |
 |---|---|---|---|---|---|
-| default | full | base: wcag standard | light | 20 | 0 |
-| default | full | base: wcag standard | dark | 20 | 0 |
-| default | full | more: wcag enhanced | light | 20 | 0 |
-| default | full | more: wcag enhanced | dark | 20 | 0 |
-| success | color | base: wcag standard | light | 20 | 0 |
-| success | color | base: wcag standard | dark | 20 | 0 |
-| success | color | more: wcag enhanced | light | 20 | 0 |
-| success | color | more: wcag enhanced | dark | 20 | 0 |
-| warning | color | base: wcag standard | light | 20 | 0 |
-| warning | color | base: wcag standard | dark | 20 | 0 |
-| warning | color | more: wcag enhanced | light | 20 | 0 |
-| warning | color | more: wcag enhanced | dark | 20 | 0 |
-| danger | color | base: wcag standard | light | 20 | 0 |
-| danger | color | base: wcag standard | dark | 20 | 0 |
-| danger | color | more: wcag enhanced | light | 20 | 0 |
-| danger | color | more: wcag enhanced | dark | 20 | 0 |
-| promo | full | base: wcag standard | light | 20 | 0 |
-| promo | full | base: wcag standard | dark | 20 | 0 |
-| promo | full | more: wcag enhanced | light | 20 | 0 |
-| promo | full | more: wcag enhanced | dark | 20 | 0 |
-| sale | color | base: wcag standard | light | 20 | 0 |
-| sale | color | base: wcag standard | dark | 20 | 0 |
-| sale | color | more: wcag enhanced | light | 20 | 0 |
-| sale | color | more: wcag enhanced | dark | 20 | 0 |
+| default | full | base: wcag standard | light | 29 | 0 |
+| default | full | base: wcag standard | dark | 29 | 0 |
+| default | full | more: wcag enhanced | light | 29 | 0 |
+| default | full | more: wcag enhanced | dark | 29 | 0 |
+| success | color | base: wcag standard | light | 29 | 0 |
+| success | color | base: wcag standard | dark | 29 | 0 |
+| success | color | more: wcag enhanced | light | 29 | 0 |
+| success | color | more: wcag enhanced | dark | 29 | 0 |
+| warning | color | base: wcag standard | light | 29 | 0 |
+| warning | color | base: wcag standard | dark | 29 | 0 |
+| warning | color | more: wcag enhanced | light | 29 | 0 |
+| warning | color | more: wcag enhanced | dark | 29 | 0 |
+| danger | color | base: wcag standard | light | 29 | 0 |
+| danger | color | base: wcag standard | dark | 29 | 0 |
+| danger | color | more: wcag enhanced | light | 29 | 0 |
+| danger | color | more: wcag enhanced | dark | 29 | 0 |
+| promo | full | base: wcag standard | light | 29 | 0 |
+| promo | full | base: wcag standard | dark | 29 | 0 |
+| promo | full | more: wcag enhanced | light | 29 | 0 |
+| promo | full | more: wcag enhanced | dark | 29 | 0 |
+| sale | color | base: wcag standard | light | 29 | 0 |
+| sale | color | base: wcag standard | dark | 29 | 0 |
+| sale | color | more: wcag enhanced | light | 29 | 0 |
+| sale | color | more: wcag enhanced | dark | 29 | 0 |
 
 No required pair fails.
 

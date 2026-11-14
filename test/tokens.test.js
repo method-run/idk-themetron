@@ -147,7 +147,11 @@ test('feels change the primitives', () => {
   }
   assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 15, lg: 18, xl: 22, '2xl': 26, '3xl': 31 });
   // Removed feels still load, and change nothing.
-  assert.deepEqual(p({ thickness: 0, softness: 0, solidity: 0, bounciness: 1, snappiness: 1 }), p({}));
+  assert.deepEqual(p({ thickness: 0, softness: 0, bounciness: 1, snappiness: 1 }), p({}));
+  // Solidity: opaque at 1, and each kind of part at its clearest at 0.
+  const clear = p({ solidity: 0 }).effect;
+  for (const k of ['panelAlpha', 'panelAlphaInverted', 'fillAlpha', 'fillAlphaInverted', 'tintAlpha', 'tintAlphaInverted', 'fieldAlpha']) assert.equal(p({ solidity: 1 }).effect[k], 1, k);
+  assert.deepEqual([clear.panelAlpha, clear.fillAlpha, clear.fillAlphaInverted, clear.tintAlpha, clear.fieldAlpha], [0.1, 0.5, 0.3, 0.1, 0.3]);
   // Depth: flat at 0, and every elevation floats further as depth grows.
   const shadows = (depth) => buildThemes({ themes: { default: { feel: { depth } } } }).themes.default.modes.light.computed;
   assert.equal(shadows(0)['elevation.2'], '0 0 #0000');

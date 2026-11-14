@@ -19,6 +19,7 @@ const FEEL_HINTS = {
   spaciousness: 'Padding, gaps, text size, and line height.',
   roundness: 'Corners, as a share of the most a part can round.',
   depth: 'Soft shadows, and how far buttons rise on hover.',
+  solidity: 'How see-through cards, tints, fields, and fills are.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
 };
 
@@ -595,6 +596,12 @@ for (const tab of document.querySelectorAll('[role="tab"][data-view]')) {
   });
 }
 
+// Stages show tm-over-media when the photo backdrop is on: see-through parts blur the photo, and
+// text gets a halo, as on a page that opts in.
+function applyMedia() {
+  for (const stage of document.querySelectorAll('#previews .stage')) stage.classList.toggle('tm-over-media', pane.photo);
+}
+
 // The view menu opens under its button, at its right edge. The popover closes on Escape and on
 // a click outside it.
 $('#view-menu').addEventListener('toggle', (e) => {
@@ -637,7 +644,7 @@ function renderPreviewBar() {
     chip('All', !preview.follow && shown.length === built.order.length, () => setShown([...built.order])),
     el('span', { class: 'break' }),
     el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.grid), title: 'Show the rhythm grid. Shortcut: the period key.', onclick: toggleGrid }, 'Grid ·'),
-    el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.photo), title: 'Show a photo behind the samples, colored with each theme\'s ramps.', onclick: () => { pane.photo = !pane.photo; applyPane(); renderPreviewBar(); paintPhotos(); } }, 'Photo backdrop'),
+    el('button', { class: 'chip', type: 'button', 'aria-pressed': String(pane.photo), title: 'Show a photo behind the samples, colored with each theme\'s ramps.', onclick: () => { pane.photo = !pane.photo; applyPane(); renderPreviewBar(); paintPhotos(); applyMedia(); } }, 'Photo backdrop'),
     ...(pane.photo ? [el('span', { class: 'break' }), ...photoSliders()] : []),
   );
 }
@@ -665,6 +672,7 @@ function renderPreview() {
     }));
   }
   paintPhotos();
+  applyMedia();
 }
 
 // ---- Photo backdrop: a photo behind each stage, as a gradient map of that theme's ramps.
@@ -872,11 +880,14 @@ function renderPalettes() {
   const view = $('#view-palettes');
   const theme = atLevel(selected());
   const { method, level } = theme.settings.contrast;
-  // The selected theme's base, and the action color of every theme.
-  const rows = [
-    { id: 'base', label: `base of ${labelOf(state.selected)}`, palette: theme.palettes.base, theme: theme, ramp: 'base' },
-    ...built.order.map((n) => ({ id: n, label: labelOf(n), palette: built.themes[n].palettes.action, note: `${built.themes[n].kind} theme`, theme: atLevel(built.themes[n]), ramp: 'action' })),
-  ];
+  // Every theme in tree order: its base ramp, when it has its own base color (the root always
+  // does), then its action ramp. A theme that takes its parent's base shows its action ramp only.
+  const ownBase = (n) => n === ROOT || built.themes[n].palettes.base.key !== built.themes[built.themes[n].parent]?.palettes.base.key;
+  const rows = built.order.flatMap((n) => {
+    const t = built.themes[n];
+    const action = { id: n, label: `${labelOf(n)} action`, palette: t.palettes.action, note: `${t.kind} theme`, theme: atLevel(t), ramp: 'action' };
+    return ownBase(n) ? [{ id: `${n}-base`, label: `${labelOf(n)} base`, palette: t.palettes.base, theme: atLevel(t), ramp: 'base' }, action] : [action];
+  });
   // The tokens that use each grade of a row, in one mode.
   const usage = (row, mode) => {
     const used = {};
@@ -1107,9 +1118,11 @@ function renderAudit() {
       return el('div', { class: 'tablewrap' }, el('table', {},
         el('thead', {}, el('tr', {}, ...[`${mode} mode`, 'Text or part', 'On', 'Purpose', 'WCAG', 'APCA', 'Result'].map((h) => el('th', {}, h)))),
         el('tbody', {}, ...audit.map((a) => el('tr', {},
-          el('td', {}, el('span', { class: 'aa', style: `color:${tokens[a.fg].value};background:${tokens[a.bg].value}` }, a.purpose === 'ui' ? '■ ▲' : 'Aa')),
-          el('td', {}, el('code', {}, a.fg), el('span', { class: 'fader-hint' }, ` ${tokens[a.fg].ref}`)),
-          el('td', {}, el('code', {}, a.bg), el('span', { class: 'fader-hint' }, ` ${tokens[a.bg].ref}`)),
+          // Each row carries the colors it measured: a see-through part's row has its color as seen,
+          // which no token holds.
+          el('td', {}, el('span', { class: 'aa', style: `color:${a.fgValue};background:${a.bgValue}` }, a.purpose === 'ui' ? '■ ▲' : 'Aa')),
+          el('td', {}, el('code', {}, a.fg), el('span', { class: 'fader-hint' }, ` ${tokens[a.fg]?.ref ?? a.fgValue}`)),
+          el('td', {}, el('code', {}, a.bg), el('span', { class: 'fader-hint' }, ` ${tokens[a.bg]?.ref ?? a.bgValue}`)),
           el('td', {}, a.purpose),
           el('td', { class: 'num' }, `${a.wcag.toFixed(2)}:1`),
           el('td', { class: 'num' }, `Lc ${a.apca.toFixed(1)}`),

@@ -7,13 +7,14 @@ export const FEELS = {
   spaciousness: { label: 'Spaciousness', default: 0.5, stops: { compact: 0, cozy: 0.25, comfortable: 0.5, relaxed: 0.75, spacious: 1 } },
   roundness: { label: 'Roundness', default: 0.35, stops: { square: 0, slight: 0.25, rounded: 0.5, round: 0.75, pill: 1 } },
   depth: { label: 'Depth', default: 0.3, stops: { flat: 0, low: 0.33, raised: 0.67, floating: 1 } },
+  solidity: { label: 'Solidity', default: 1, stops: { clear: 0, frosted: 0.33, tinted: 0.67, solid: 1 } },
   shininess: { label: 'Shininess', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
 };
 // Typography: how fast text grows above body size, from 0 to 1. Not a feel: it sits with the
 // fonts, and presets do not set it. A word from `stops` can stand for its number.
 export const TYPE_VARIANCE = { label: 'Type variance', default: 0.5, stops: { flat: 0, gentle: 0.25, classic: 0.5, bold: 0.75, dramatic: 1 } };
 // Feels that are gone for now. Old inputs that set them still load: the engine skips them.
-export const REMOVED_FEELS = ['thickness', 'softness', 'solidity', 'bounciness', 'snappiness', 'tone'];
+export const REMOVED_FEELS = ['thickness', 'softness', 'bounciness', 'snappiness', 'tone'];
 
 // A preset is a set of feels with a familiar name. A theme's own feels override it.
 export const PRESETS = {
@@ -22,7 +23,7 @@ export const PRESETS = {
   material: { label: 'Material', feel: { roundness: 0.25, depth: 0.5, shininess: 0 } },
   brutalist: { label: 'Brutalist', feel: { spaciousness: 0.4, roundness: 0, depth: 0, shininess: 0 } },
   neumorphic: { label: 'Neumorphic', feel: { roundness: 0.6, depth: 0.7, shininess: 0 } },
-  glass: { label: 'Glass', feel: { roundness: 0.6, depth: 0.5, shininess: 0.3 } },
+  glass: { label: 'Glass', feel: { roundness: 0.6, depth: 0.5, shininess: 0.3, solidity: 0.35 } },
   glossy: { label: 'Glossy', feel: { roundness: 1, depth: 0.5, shininess: 1 } },
   playful: { label: 'Playful', feel: { spaciousness: 0.65, roundness: 0.9, depth: 0.45 } },
   dense: { label: 'Dense', feel: { spaciousness: 0, roundness: 0.15, depth: 0.15 } },

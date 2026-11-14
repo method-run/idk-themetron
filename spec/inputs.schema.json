@@ -206,6 +206,25 @@
                 }
               ]
             },
+            "solidity": {
+              "description": "Solidity: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "clear",
+                    "frosted",
+                    "tinted",
+                    "solid",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
             "shininess": {
               "description": "Shininess: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
               "anyOf": [
@@ -230,10 +249,6 @@
               "description": "Ignored. This feel is removed for now."
             },
             "softness": {
-              "deprecated": true,
-              "description": "Ignored. This feel is removed for now."
-            },
-            "solidity": {
               "deprecated": true,
               "description": "Ignored. This feel is removed for now."
             },

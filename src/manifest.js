@@ -32,6 +32,9 @@ const MEANING = {
   'bg-field': 'The inside of text fields and other inputs.',
   'fg-base': 'Body text and headings. Passes the text contrast on every background.',
   'fg-base-muted': 'Secondary text. Passes the text contrast on every background.',
+  'fg-base-heading-lg': 'Headings in the lg size (h3). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size.',
+  'fg-base-heading-2xl': 'Headings in the 2xl size (h2). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up.',
+  'fg-base-heading-3xl': 'Headings in the 3xl size (h1). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up.',
   'fg-base-subtle': 'Placeholders and other hints. Passes the control contrast only.',
   'border-base': 'Dividers and the edges of surfaces. Decoration only.',
   'border-base-strong': 'The edges of fields and controls. Passes the control contrast.',
@@ -138,6 +141,7 @@ export function tokenManifest() {
     selectors: {
       'theme-<name>': 'A class for each theme. It sets every token of that theme, from its place in the theme tree, on the element and everything in it. Use one theme class on an element. The root theme, "default", is also on :root.',
       'tm-invert': 'A class that shows an element, and everything in it, in the other mode.',
+      'tm-over-media': 'A class for an area over photos or other rich backgrounds. See-through parts in it blur what is behind them, and text gets a halo of the page\'s color (text-halo). Use it only where it helps: blur costs a layer for each part.',
       'data-tm-mode': 'An attribute, "light" or "dark", that forces one mode on an element and everything in it.',
       'data-tm-contrast': 'An attribute, "more" or "base", on <html> or on an element with a theme class. "more" turns on the more-contrast variant for it and everything in it, and "base" turns it off. Without it, the reader\'s prefers-contrast: more setting decides.',
     },

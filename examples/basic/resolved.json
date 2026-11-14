@@ -34,6 +34,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "solidity": 1,
         "shininess": 0
       },
       "contrast": {
@@ -67,6 +68,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "solidity": 1,
         "shininess": 0
       },
       "contrast": {
@@ -100,6 +102,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "solidity": 1,
         "shininess": 0
       },
       "contrast": {
@@ -133,6 +136,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "solidity": 1,
         "shininess": 0
       },
       "contrast": {
@@ -166,6 +170,7 @@
         "spaciousness": 0.5,
         "roundness": 1,
         "depth": 0.3,
+        "solidity": 1,
         "shininess": 0.33
       },
       "contrast": {
@@ -199,6 +204,7 @@
         "spaciousness": 0.5,
         "roundness": 1,
         "depth": 0.3,
+        "solidity": 1,
         "shininess": 0.33
       },
       "contrast": {

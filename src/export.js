@@ -43,6 +43,8 @@ export function primitiveEntries(p) {
   out.push(['fill-alpha', String(p.effect.fillAlpha)], ['panel-border-width', px(p.panelBorderWidth)]);
   // The opacity of soft and quiet buttons' tints.
   out.push(['tint-alpha', String(p.effect.tintAlpha)]);
+  // The opacity of fields: inputs, selects, and text areas.
+  out.push(['field-alpha', String(p.effect.fieldAlpha)]);
   // Twins for tm-invert: an inverted part has its own opacities. See invertRulesAfter.
   out.push(['fill-alpha-normal', String(p.effect.fillAlpha)], ['fill-alpha-inverted', String(p.effect.fillAlphaInverted)]);
   out.push(['tint-alpha-normal', String(p.effect.tintAlpha)], ['tint-alpha-inverted', String(p.effect.tintAlphaInverted)]);
@@ -61,7 +63,8 @@ export function semanticEntries(theme, prefix = 'tm') {
   }
   for (const [name, value] of Object.entries(light.computed)) {
     const d = dark.computed[name];
-    const css = value.alias ? (value.alias === d.alias ? `var(--${prefix}-${cssName(value.alias)})` : bothModes(value.value, d.value)) : bothModes(value, d);
+    const aliased = (v) => (v.alpha < 1 ? `color-mix(in oklab, var(--${prefix}-${cssName(v.alias)}) ${round1(v.alpha * 100)}%, transparent)` : `var(--${prefix}-${cssName(v.alias)})`);
+    const css = value.alias ? (aliased(value) === aliased(d) ? aliased(value) : bothModes(value.value, d.value)) : bothModes(value, d);
     out.push([cssName(name), css]);
   }
   // Outer shadows fall on the page around a part, so an inverted part draws them in the page's
@@ -98,7 +101,8 @@ export function semanticEntries(theme, prefix = 'tm') {
   // light-dark() makes the wrong one clear. The opacity grows with the shininess: none at 0.
   const ink = (ref, share) => `color-mix(in oklch, var(--${prefix}-${ref}) ${round1(shine * share * 100)}%, transparent)`;
   const setIn = (part, lightTextInLightMode) => {
-    if (!shine) return 'none';
+    // An empty shadow, not none, so that a component can add its own shadows to the list.
+    if (!shine) return '0 0 #0000';
     const dark = ink(`gloss-${part}-shadow`, 0.5);
     const light = ink(`gloss-${part}-rim`, 0.3);
     const [darkLine, lightLine] = lightTextInLightMode
@@ -108,6 +112,11 @@ export function semanticEntries(theme, prefix = 'tm') {
   };
   for (const part of ['action', 'action-exact']) out.push([`text-shadow-${part}`, setIn(part, true)]);
   for (const part of ['quiet', 'tint-action', 'tint-base']) out.push([`text-shadow-${part}`, setIn(part, false)]);
+  // A soft halo of the page's own color behind text, for text over photos and other rich
+  // backgrounds: it pushes the background away from the letters. tm-over-media turns it on.
+  // light-dark() resolves where the text is, so text in an inverted part gets that part's page.
+  const halo = (share) => `color-mix(in oklch, var(--${prefix}-bg-canvas) ${share}%, transparent)`;
+  out.push(['text-halo', `0 0 1px ${halo(70)}, 0 0 6px ${halo(60)}`]);
   for (const role of ROLES) out.push([`glow-tint-${role}`, glowing(`gloss-tint-${role}-rim`)]);
   return out;
 }
@@ -224,6 +233,7 @@ export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = tru
     ...rules,
     // After the theme rules, so that an element with a theme class and tm-invert still flips.
     invertRulesAfter(prefix),
+    overMediaRules(prefix),
     ...(moreRules.length ? [
       '/* More contrast: the enhanced level, for readers who ask for it. */',
       block('@media (prefers-contrast: more)', moreRules, false),
@@ -257,6 +267,18 @@ function invertRules(prefix) {
 //   have their own opacities: an inverted fill can be far more see-through, and an inverted
 //   card must be more solid, so its text passes.
 // Parts inside the inverted part sit on its surface, so they get the normal values back.
+// tm-over-media: an opt-in area for parts over photos and other rich backgrounds. The engine can
+// only check contrast against the theme's own backgrounds, so this area protects text instead:
+// see-through parts blur what is behind them, and text gets a halo of the page's color. Outside
+// it, nothing blurs, as blur costs a layer for each part. It comes after the theme rules, so it
+// also works on an element with a theme class.
+function overMediaRules(prefix) {
+  // The halo is set on each element, not inherited: a color in text-shadow is fixed where it is
+  // set, so text in an inverted part would get the page's halo. :where() keeps it weaker than
+  // any part's own text shadow.
+  return `.${prefix}-over-media { --${prefix}-backdrop: blur(4px); --${prefix}-backdrop-control: blur(2px); }\n:where(.${prefix}-over-media, .${prefix}-over-media *) { text-shadow: var(--${prefix}-text-halo); }\n`;
+}
+
 function invertRulesAfter(prefix) {
   const set = (shadow, alpha) => [
     ...[1, 2, 3].map((n) => `--${prefix}-elevation-${n}: var(--${prefix}-elevation-${n}-${shadow});`),
@@ -319,6 +341,7 @@ export function toDtcg(built) {
       fillAlphaInverted: tok('number', p.effect.fillAlphaInverted, { $description: 'The fill opacity of a part with tm-invert.' }),
       tintAlpha: tok('number', p.effect.tintAlpha, { $description: 'The tint opacity of soft and quiet buttons.' }),
       tintAlphaInverted: tok('number', p.effect.tintAlphaInverted, { $description: 'The tint opacity of a part with tm-invert.' }),
+      fieldAlpha: tok('number', p.effect.fieldAlpha, { $description: 'The opacity of fields.' }),
       panelBorderWidth: tok('dimension', { value: p.panelBorderWidth, unit: 'px' }),
     };
     const modesOf = (level) => {
@@ -328,7 +351,8 @@ export function toDtcg(built) {
         // A mixed token has no single grade to point at, so DTCG gets its value.
         for (const [token, t] of Object.entries(mode.tokens)) setPath(m, token, tok('color', t.mix ? t.value : `{themes.${name}.${t.ref}}`));
         for (const [token, value] of Object.entries(mode.computed)) {
-          if (value.alias) setPath(m, token, tok('color', `{themes.${name}.${mode.tokens[value.alias].ref}}`));
+          if (value.alias && !(value.alpha < 1)) setPath(m, token, tok('color', `{themes.${name}.${mode.tokens[value.alias].ref}}`));
+          else if (value.alias) setPath(m, token, tok('color', value.value, { $extensions: { themetron: { css: true } } }));
           else setPath(m, token, tok(token.startsWith('bg') ? 'color' : 'shadow', value, { $extensions: { themetron: { css: true } } }));
         }
         out[modeName] = m;

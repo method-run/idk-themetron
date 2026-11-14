@@ -5,6 +5,7 @@
   "selectors": {
     "theme-<name>": "A class for each theme. It sets every token of that theme, from its place in the theme tree, on the element and everything in it. Use one theme class on an element. The root theme, \"default\", is also on :root.",
     "tm-invert": "A class that shows an element, and everything in it, in the other mode.",
+    "tm-over-media": "A class for an area over photos or other rich backgrounds. See-through parts in it blur what is behind them, and text gets a halo of the page's color (text-halo). Use it only where it helps: blur costs a layer for each part.",
     "data-tm-mode": "An attribute, \"light\" or \"dark\", that forces one mode on an element and everything in it.",
     "data-tm-contrast": "An attribute, \"more\" or \"base\", on <html> or on an element with a theme class. \"more\" turns on the more-contrast variant for it and everything in it, and \"base\" turns it off. Without it, the reader's prefers-contrast: more setting decides."
   },
@@ -849,6 +850,12 @@
       "modes": false,
       "stability": "experimental"
     },
+    "field-alpha": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
     "fill-alpha-normal": {
       "tier": "primitive",
       "type": "number",
@@ -920,6 +927,30 @@
       "role": "base",
       "stability": "stable",
       "meaning": "Secondary text. Passes the text contrast on every background."
+    },
+    "fg-base-heading-lg": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Headings in the lg size (h3). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size."
+    },
+    "fg-base-heading-2xl": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Headings in the 2xl size (h2). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up."
+    },
+    "fg-base-heading-3xl": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental",
+      "meaning": "Headings in the 3xl size (h1). The body text color when solid; as solidity drops, it fades to the min-contrast grade for its size: the large-text level at 24 px and up."
     },
     "fg-base-subtle": {
       "tier": "semantic",
@@ -1825,37 +1856,43 @@
     },
     "text-shadow-action": {
       "tier": "semantic",
-      "type": "gradient",
+      "type": "shadow",
       "modes": true,
       "role": "action",
       "stability": "experimental"
     },
     "text-shadow-action-exact": {
       "tier": "semantic",
-      "type": "gradient",
+      "type": "shadow",
       "modes": true,
       "role": "action",
       "stability": "experimental"
     },
     "text-shadow-quiet": {
       "tier": "semantic",
-      "type": "gradient",
+      "type": "shadow",
       "modes": true,
       "role": "base",
       "stability": "experimental"
     },
     "text-shadow-tint-action": {
       "tier": "semantic",
-      "type": "gradient",
+      "type": "shadow",
       "modes": true,
       "role": "action",
       "stability": "experimental"
     },
     "text-shadow-tint-base": {
       "tier": "semantic",
-      "type": "gradient",
+      "type": "shadow",
       "modes": true,
       "role": "base",
+      "stability": "experimental"
+    },
+    "text-halo": {
+      "tier": "semantic",
+      "type": "shadow",
+      "modes": true,
       "stability": "experimental"
     },
     "glow-tint-base": {

@@ -46,6 +46,9 @@
   --color-bg-field: var(--tm-bg-field);
   --color-fg-base: var(--tm-fg-base);
   --color-fg-base-muted: var(--tm-fg-base-muted);
+  --color-fg-base-heading-lg: var(--tm-fg-base-heading-lg);
+  --color-fg-base-heading-2xl: var(--tm-fg-base-heading-2xl);
+  --color-fg-base-heading-3xl: var(--tm-fg-base-heading-3xl);
   --color-fg-base-subtle: var(--tm-fg-base-subtle);
   --color-border-base: var(--tm-border-base);
   --color-border-base-strong: var(--tm-border-base-strong);

@@ -60,10 +60,18 @@ const TINT_SHINE = { rim: -15, top: -10, shadow: 10, bottom: 5 };
 // and black. States use every grade in GRADES, 5 apart, so a tint at 5 has neighbors at 15
 // and 25.
 const STOPS = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
-const FLAT = { panelAlpha: 1, panelAlphaInverted: 1, fillAlpha: 1, fillAlphaInverted: 1, tintAlpha: 1, tintAlphaInverted: 1, blur: 0, lift: 0 };
+const FLAT = { blur: 0, lift: 0 };
+// The opacity of each kind of part at solidity 0. Solidity 1 makes every part opaque, and the
+// opacity grows evenly between. Page-like parts (cards, fields, tints, quiet buttons) have
+// their label on the far side of the page, so the page showing through keeps their contrast:
+// they can be very see-through. Solid fills have their label on the page's side, so they stop at
+// half, and their labels get a halo of the fill's color as they fade (see components.css). An inverted part (tm-invert) has the other mode's page behind it, so the two
+// kinds swap: inverted fills can be see-through, and inverted cards and tints stay nearly opaque.
+const CLEAREST = { panel: 0.1, panelInverted: 0.95, fill: 0.5, fillInverted: 0.3, tint: 0.1, tintInverted: 0.95, field: 0.3 };
 
 export function buildPrimitives(settings, palettes, gaps) {
-  const { spaciousness: s, roundness: r, depth: d, shininess: sh } = settings.feel;
+  const { spaciousness: s, roundness: r, depth: d, shininess: sh, solidity: so } = settings.feel;
+  const solid = (min) => round(min + (1 - min) * so);
   const v = settings.typeVariance;
 
   // The grid: an invisible grid of GRID px squares, down and across. Its size never changes.
@@ -157,6 +165,15 @@ export function buildPrimitives(settings, palettes, gaps) {
       ...FLAT,
       // Buttons rise on hover: up to 1 px, with depth. More is distracting.
       lift: round(d * 1, 1),
+      // How see-through each kind of part is: from its CLEAREST opacity at solidity 0, to
+      // opaque at 1.
+      panelAlpha: solid(CLEAREST.panel),
+      panelAlphaInverted: solid(CLEAREST.panelInverted),
+      fillAlpha: solid(CLEAREST.fill),
+      fillAlphaInverted: solid(CLEAREST.fillInverted),
+      tintAlpha: solid(CLEAREST.tint),
+      tintAlphaInverted: solid(CLEAREST.tintInverted),
+      fieldAlpha: solid(CLEAREST.field),
     },
     panelBorderWidth: borderWidth,
   };
@@ -215,7 +232,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const check = (fgName, bgName, purpose, required = true) => {
     const fg = tokens[fgName].value;
     const bg = tokens[bgName].value;
-    audit.push({ fg: fgName, bg: bgName, purpose, required, ...measure(fg, bg), pass: test(fg, bg, purpose) });
+    audit.push({ fg: fgName, bg: bgName, fgValue: fg, bgValue: bg, purpose, required, ...measure(fg, bg), pass: test(fg, bg, purpose) });
   };
 
   // The canvas is grade 5 in light mode and 95 in dark mode. Raised surfaces are one grade
@@ -241,8 +258,25 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const outward = STOPS.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
   if (dark) outward.reverse();
   const fgGrade = pick(base, [dark ? 5 : 90, dark ? 0 : 100, ...outward.slice().reverse()], passesAll('text'), bgs);
-  set('fg.base', base, fgGrade);
-  set('fg.base-muted', base, pick(base, outward, passesAll('text'), bgs));
+  const mutedGrade = pick(base, outward, passesAll('text'), bgs);
+  // As solidity drops, text moves toward the page, so the page reads as one soft layer: body text
+  // goes to one notch (10 grade numbers) past the min-contrast grade, and muted text stays at it.
+  // Linear with solidity, rounded to a grade. fgGrade stays the full text color, for labels.
+  const clearness = 1 - settings.feel.solidity;
+  const fade = (from, to) => Math.round((from + (to - from) * clearness) / 5) * 5;
+  const bodyClear = dark ? Math.max(fgGrade, mutedGrade - 10) : Math.min(fgGrade, mutedGrade + 10);
+  set('fg.base', base, fade(fgGrade, bodyClear));
+  set('fg.base-muted', base, mutedGrade);
+  // Headings fade further: to the min-contrast grade for their size, at solidity 0. Text of 24 px
+  // or more is large (WCAG's rule for regular weight), so headings need not be bold.
+  const fine = GRADES.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
+  if (dark) fine.reverse();
+  for (const size of ['lg', '2xl', '3xl']) {
+    const purpose = primitives.font.size[size] >= 24 ? 'large' : 'text';
+    const clear = pick(base, fine, passesAll(purpose), bgs);
+    set(`fg.base-heading-${size}`, base, fade(fgGrade, dark ? Math.max(fgGrade, clear) : Math.min(fgGrade, clear)));
+    for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(`fg.base-heading-${size}`, bg, purpose);
+  }
   set('fg.base-subtle', base, pick(base, outward, passesAll('ui'), bgs));
   set('border.base', base, outward[1]);
   set('panel.border', base, outward[1]);
@@ -436,20 +470,40 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     }
   }
 
-  return { tokens, audit, computed: computed(dark, tokens, settings.feel.depth, palettes.base) };
+  // See-through parts: a label is checked on its part as seen over the canvas and the surface.
+  // Not required: the opacities come straight from solidity, and the audit warns where a label
+  // falls short. Inverted parts are over the other mode's page, which this mode does not see.
+  const e = primitives.effect;
+  const seen = (fgName, bgName, alpha) => {
+    if (alpha >= 1) return;
+    for (const page of ['bg.canvas', 'bg.surface']) {
+      const fg = tokens[fgName].value;
+      const bg = over(tokens[bgName].value, tokens[page].value, alpha);
+      audit.push({ fg: fgName, bg: `${bgName} at ${Math.round(alpha * 100)}% over ${page}`, fgValue: fg, bgValue: bg, purpose: 'text', required: false, ...measure(fg, bg), pass: test(fg, bg, 'text') });
+      audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
+    }
+  };
+  for (const state of ['', '-hover']) {
+    seen(`on-fill.action${state}`, `fill.action${state}`, e.fillAlpha);
+    seen(`on-fill.quiet${state}`, `fill.quiet${state}`, e.tintAlpha);
+    for (const role of ROLES) seen(`on-tint.${role}${state}`, `tint.${role}${state}`, e.tintAlpha);
+  }
+
+  return { tokens, audit, computed: computed(dark, tokens, settings.feel.depth, palettes.base, e) };
 }
 
 // An empty shadow that can still join a list of shadows, which "none" cannot.
 const NO_SHADOW = '0 0 #0000';
 
-// Values for one mode that are not one palette color: panels and shadows. With no see-through
-// parts, panels are the surface. A panel names the token it copies, so the CSS can point at it.
-function computed(dark, tokens, depth, base) {
-  const panel = { alias: 'bg.surface', value: tokens['bg.surface'].value };
+// Values for one mode that are not one palette color: panels and shadows. A panel is the
+// surface, see-through as solidity allows. It names the token it copies, so the CSS can point
+// at it, with its opacity.
+function computed(dark, tokens, depth, base, effect) {
+  const panel = (alpha) => ({ alias: 'bg.surface', alpha, value: alpha < 1 ? withAlpha(tokens['bg.surface'].value, alpha) : tokens['bg.surface'].value });
   return {
-    'bg.panel': panel,
-    'bg.panel-normal': panel,
-    'bg.panel-inverted': panel,
+    'bg.panel': panel(effect.panelAlpha),
+    'bg.panel-normal': panel(effect.panelAlpha),
+    'bg.panel-inverted': panel(effect.panelAlphaInverted),
     'elevation.1': elevation(1, depth, dark, base),
     'elevation.2': elevation(2, depth, dark, base),
     'elevation.3': elevation(3, depth, dark, base),
@@ -482,6 +536,12 @@ function elevation(level, d, dark, base) {
 function insetShadow(d, dark, base) {
   if (!d) return NO_SHADOW;
   return `inset 0 ${round(Math.max(1, d * 2), 1)}px ${round(1 + d * 3, 1)}px ${withAlpha(base.steps[dark ? 100 : 90], dark ? 0.3 : 0.12)}`;
+}
+
+// A color with an opacity, as seen over a background: the browser blends them in sRGB.
+function over(fg, bg, alpha) {
+  const [a, b] = [fg, bg].map((h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)));
+  return `#${a.map((v, i) => Math.round(alpha * v + (1 - alpha) * b[i]).toString(16).padStart(2, '0')).join('')}`;
 }
 
 // A hex color with an opacity, as #rrggbbaa.
