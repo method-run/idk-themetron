@@ -16,7 +16,7 @@ const el = (tag, attrs = {}, ...children) => {
 };
 
 const FEEL_HINTS = {
-  spaciousness: 'Padding, gaps, text size, and line height.',
+  spaciousness: 'Padding, gaps, and line height.',
   roundness: 'Corners, as a share of the most a part can round.',
   depth: 'Soft shadows, and how far buttons rise on hover.',
   solidity: 'How see-through cards, tints, fields, and fills are.',
@@ -943,7 +943,7 @@ function renderPalettes() {
     el('div', { class: 'gaps' },
       el('strong', {}, 'Grade gaps'), gap('text', 'text'), gap('large', 'large text'), gap('ui', 'controls'),
       el('p', {}, `Any two grades at least this far apart pass ${method === 'apca' ? 'APCA, with the WCAG 2 floor,' : 'WCAG 2'} (${level}, the setting of ${labelOf(state.selected)}), in every palette below, in both directions. Grades with the same number have the same luminance.`)),
-    // One panel for each mode, on that mode's canvas. ×n on a swatch counts the tokens that use it in that mode.
+    // One panel for each mode, on that mode's canvas.
     ...MODES().map((mode) => {
       const tokens = theme.modes[mode].tokens;
       return el('div', { class: 'pal-mode', style: `background:${tokens['bg.canvas'].value};color:${tokens['fg.base'].value}` },

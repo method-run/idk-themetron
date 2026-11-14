@@ -15,7 +15,7 @@ aliases: [Using themetron in a site or library]
 ◐ 50% (3/6)
 <!-- idk-plans:progress:end -->
 
-> **Status:** contract 0.4.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
+> **Status:** contract 0.6.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
 
 A **consumer** is a site, a doc generator, or a component library that reads a themetron stylesheet. This page says what a consumer can depend on, and what it must do. If a consumer follows it, every themetron theme set works with it, and you can change themes without changing the consumer.
 
@@ -60,12 +60,12 @@ The manifest marks each token `stable` or `experimental`. These groups are stabl
 
 Each name has the prefix `--tm-` in CSS. The font size, leading, and space scales are `xs`, `sm`, `md`, `lg`, `xl`, `2xl`, and `3xl`. The manifest has the full list, and what each color is for.
 
-Experimental tokens include the action set (`fg-action`, `border-action`, the `fill`, `tint`, `on-fill`, and `on-tint` tokens of both roles, the exact button's tokens, and `base-key` and `action-key`), motion (`duration-*`, `ease-*`), `line-height-*`, the gloss tokens, the panel tokens, `highlight`, `lift`, and `fill-alpha`. The reference components use some of them, because they ship with themetron and change with it.
+Experimental tokens include the action set (`fg-action`, `border-action`, the `fill`, `tint`, `on-fill`, and `on-tint` tokens of both roles, the exact button's tokens, and `base-key` and `action-key`), the heading colors (`fg-base-heading-*`), motion (`duration-*`, `ease-*`), `line-height-*`, the gloss, `highlight-*`, `glow-*`, `text-shadow-*`, and `shine-*` tokens, `text-halo`, the panel tokens, `lift`, and the opacity tokens (`fill-alpha`, `tint-alpha`, `field-alpha`, and their twins). The reference components use some of them, because they ship with themetron and change with it.
 
 <details>
 <summary>Why the fills and tints are experimental</summary>
 
-The names and the jobs of the fill and tint tokens can change when the `exact` button and colors for each part of a control come. See the [plan](../docs/plan.md "plan"). Until then, read them with a fallback, such as `var(--tm-fg-action, LinkText)`. The pairs below still pass, and the test suite still checks them.
+The names and the jobs of the fill and tint tokens can change when colors for each part of a control come. See the [plan](../docs/plan.md "plan"). Until then, read them with a fallback, such as `var(--tm-fg-action, LinkText)`. The pairs below still pass, and the test suite still checks them.
 
 </details>
 
@@ -140,7 +140,7 @@ Every color token holds both modes, with `light-dark()`. The browser picks one f
 
 - `:root` gets `color-scheme: light dark`, so a page follows the system setting.
 - `data-tm-mode="light"` or `"dark"` on an element forces that mode on it and everything in it. Put it on `<html>` for a mode switch.
-- `class="tm-invert"` shows an element, and everything in it, in the other mode. Use it for chrome, such as a dark sidebar beside light content. An invert inside an invert is not supported.
+- `class="tm-invert"` shows an element, and everything in it, in the other mode. Use it for chrome, such as a dark sidebar beside light content. An invert inside an invert is not supported. One exception in the reference components: a button with `tm-invert` stays in the page's mode and exchanges its fill and label, so it reads as the same button turned inside out (a white button with an action-colored label in light mode). For the exact button that is the same as the other mode's button. Quiet and soft buttons are not meant to be inverted.
 
 A consumer must not set `color-scheme` on a theme class, or on an element that holds theme classes, except through these selectors.
 
@@ -158,10 +158,11 @@ The stylesheet defines one shine gradient, `--tm-shine-image`, on every element.
 }
 ```
 
-- Use the gloss grades of the part's fill and state: `gloss-<role>-hover-rim` on hover, `gloss-tint-<role>-rim` on a tint, and so on.
+- Use the gloss grades of the part's fill: `gloss-action-rim` on an action fill, `gloss-tint-<role>-rim` on a tint, and so on. Tints have grades for each state, such as `gloss-tint-action-hover-rim`. Action fills, quiet buttons, and exact buttons have resting grades only.
 - The four colors are registered with `@property`, so add them to the part's `transition` and the shine fades with the fill.
 - The opacity is `--tm-shininess`, times `--tm-shine-strength` (1 unless you set it; tints look right at 0.5). At shininess 0 the gradient is clear.
 - An element that sets no colors has a clear gradient. Children inherit the colors, so a nested part sets its own.
+- The reference buttons do not paint `shine-image`. They shade their top and bottom with filters that the `shine-backdrop-*`, `shine-filter-*`, and `shine-paint` tokens pick. See [Components](../components/README.md "components").
 
 ## Fonts
 

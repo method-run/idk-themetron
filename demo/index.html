@@ -296,6 +296,8 @@ td code { font-family: var(--mono); font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
+
+
 </style>
 <style id="theme-css"></style>
 </head>
@@ -399,8 +401,6 @@ td code { font-family: var(--mono); font-size: 12px; }
         <summary class="tm-small tm-muted">Inverted: class="tm-invert" shows a part in the other mode</summary>
         <div class="tm-row">
           <button class="tm-button tm-invert" type="button">Inverted</button>
-          <button class="tm-button tm-button--quiet tm-invert" type="button">Inverted quiet</button>
-          <button class="tm-button tm-button--soft tm-invert" type="button">Inverted soft</button>
           <button class="tm-button tm-button--exact tm-invert" type="button">Inverted exact</button>
         </div>
       </details>
@@ -463,7 +463,7 @@ td code { font-family: var(--mono); font-size: 12px; }
 
     <section class="spec" aria-label="Motion">
       <h2 class="spec-label">Motion</h2>
-      <p class="tm-text tm-muted">Bounciness sets the overshoot when parts arrive. Snappiness sets how fast they move.</p>
+      <p class="tm-text tm-muted">Motion is fixed for now: parts arrive with the enter curve and leave with the exit curve.</p>
       <div class="tm-row">
         <button class="tm-button" type="button" data-open="dialog-NAME">Open a dialog</button>
         <button class="tm-button tm-button--soft" type="button" data-open="drawer-NAME">Open a sidebar</button>

@@ -37,9 +37,9 @@ function buildLevel(settings, palettes, variant = false) {
 
 // ---- Primitives: values that do not change with the mode.
 
-// Fixed values for the parts that the removed feels (thickness, softness, solidity, bounciness,
-// snappiness) used to set. The tokens stay, so components still work: hairline borders, opaque
-// parts with no blur, and calm motion with no overshoot.
+// Fixed values for the parts that the removed feels (thickness, softness, bounciness, snappiness)
+// used to set. The tokens stay, so components still work: hairline borders, no blur outside
+// tm-over-media, and calm motion with no overshoot.
 const BORDER_WIDTH = 1;
 // The grid square, in px, and the body text size, until typography settings set it.
 const GRID = 4;
@@ -217,8 +217,8 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   };
   // A background and its label at rest, on hover, and while pressed. Hover moves the
   // background STATE_GRADES in direction dir, and press twice as far; the label follows.
-  // The shine grades of each state of a background, such as gloss.action-hover-rim for
-  // fill.action-hover, within [lo, hi].
+  // The shine grades of each state of a background, such as gloss.tint-action-hover-rim for
+  // tint.action-hover, within [lo, hi].
   // Only the states that something reads: buttons shade through their backdrop, so action fills,
   // quiet, and exact buttons need resting grades only (for the edge line of their labels, and for
   // checks, switches, and other parts). Tints keep every state: a soft button's colored shadow
@@ -496,6 +496,8 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   for (const state of ['', '-hover']) {
     seen(`on-fill.action${state}`, `fill.action${state}`, e.fillAlpha);
     seen(`on-fill.quiet${state}`, `fill.quiet${state}`, e.tintAlpha);
+    // The exact button fades half as far as solid fills (see components.css).
+    seen(`on-fill.action-exact${state}`, `fill.action-exact${state}`, 1 - (1 - e.fillAlpha) / 2);
     for (const role of ROLES) seen(`on-tint.${role}${state}`, `tint.${role}${state}`, e.tintAlpha);
   }
 

@@ -27,8 +27,8 @@ flowchart TD
 
   subgraph build["Build layer: src/tokens.js"]
     settings --> prims["buildPrimitives()<br/>primitives.shininess"]
-    mode["buildMode(), for each mode"] --> fills["The fill and tint of each state<br/>fill.action-hover, tint.action-active, …"]
-    fills --> gloss["shine(): gloss grades for each state<br/>gloss.action-hover-rim, -top, -shadow, -bottom<br/>SHINE and TINT_SHINE distances"]
+    mode["buildMode(), for each mode"] --> fills["Each fill and tint<br/>fill.action, tint.action-hover, …"]
+    fills --> gloss["shine(): gloss grades<br/>gloss.action-rim, gloss.tint-action-hover-rim, …<br/>SHINE and TINT_SHINE distances"]
   end
 
   subgraph export["Export layer: src/export.js"]
@@ -58,7 +58,7 @@ flowchart TD
 
 ## How a state change animates
 
-1. On hover, a component sets the four colors to that state's gloss grades, such as `var(--tm-gloss-action-hover-rim)`.
+1. On hover, a component sets the four colors to that state's gloss grades, such as `var(--tm-gloss-tint-action-hover-rim)`.
 2. The four colors are registered with `@property` as `<color>`, and each part lists them in its `transition` (`--_shine-transition`). So the browser animates them.
 3. `--tm-shine-image` is defined on every element, so it is built again from the current colors on every frame. The gradient fades along with the fill.
 
@@ -81,4 +81,4 @@ A browser without `@property` still follows each state, but changes the gradient
 
 Buttons do not paint `shine-image`. Two masked layers with backdrop filters brighten what is behind the button at the top, most along the top edge, and darken it at the bottom, by an amount set by `--tm-shininess`. So a button's shine adds no color: it shades the fill, and the page through a see-through fill. A soft button's shadow uses its tint's shadow grade, as darkening a faint wash makes gray. The colored edge band and glow are off on buttons; the brightest part of the top layer takes their place. See the button rules in [components/components.css](../components/components.css).
 
-When parts are opaque (solidity 1), the backdrop behind the shine layers is only the fill, so the layers are painted in the fill's own color with a plain `filter: brightness()` instead, which looks the same and reads nothing behind the button. The theme picks the way with `--tm-shine-backdrop-*`, `--tm-shine-filter-*`, and `--tm-shine-paint`; at shininess 0 there are no filters at all. Buttons need resting gloss grades only, for the edge line of their labels, so the engine builds no hover or press gloss grades for action fills, quiet, or exact buttons.
+When parts are opaque (solidity 1), the backdrop behind the shine layers is only the fill, so the layers are painted in the fill's own color with a plain `filter: brightness()` instead, which looks the same and reads nothing behind the button. Darkening multiplies, so it shades a near-white fill much harder than a mid-tone one: the shadow layer's mask takes its strength from the fill's own lightness (full at or below 50% OKLCH lightness, 40% on white), on both paths. The theme picks the way with `--tm-shine-backdrop-*`, `--tm-shine-filter-*`, and `--tm-shine-paint`; at shininess 0 there are no filters at all. Buttons need resting gloss grades only, for the edge line of their labels, so the engine builds no hover or press gloss grades for action fills, quiet, or exact buttons.

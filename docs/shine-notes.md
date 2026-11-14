@@ -11,6 +11,8 @@ aliases: [Shine notes]
 ---
 # Shine notes
 
+> **Note (2026-11-14):** these notes are from before the shine was rebuilt. Most parts now paint the shared `shine-image` gradient from their ramp's gloss grades, and buttons paint no gradient: they brighten their top and darken their bottom with filters. See [How shininess becomes styles](./shininess-flow.md "shininess-flow").
+
 Hand-tuned shine gradients for a solid button at maximum shine, and a shared version for both modes. These are notes for the shininess redo. They are not in the code yet.
 
 In both modes, the button has these colors:

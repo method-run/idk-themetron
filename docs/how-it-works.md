@@ -32,7 +32,7 @@ The engine checks every field of every theme, and lists all problems at once. Th
 
 ## 2. Make the ramps
 
-Each theme has two ramps: one from its base color and one from its action color. A ramp has 13 [grades](../spec/grades.md "grades"), from 0 (white) to 100 (black). Each grade has a fixed luminance, so two grades a set distance apart always pass contrast, in any ramp.
+Each theme has two ramps: one from its base color and one from its action color. A ramp has 21 [grades](../spec/grades.md "grades"), 5 apart, from 0 (white) to 100 (black). Each grade has a fixed luminance, so two grades a set distance apart always pass contrast, in any ramp.
 
 <details>
 <summary>How a grade gets its color</summary>
@@ -43,7 +43,7 @@ The engine keeps the key color's hue and chroma, in the theme's color model, and
 
 ## 3. Make the primitives
 
-The feels become sizes, radii, borders, shadows, and motion. For example, spaciousness sets how many grid squares the space unit takes, and roundness sets each radius as a share of the most that part can round. See the table of formulas in [Inputs](../spec/inputs.md "inputs"). To follow one feel through every layer, see [How shininess becomes styles](./shininess-flow.md "shininess-flow").
+The feels and the type variance become sizes, radii, shadows, opacities, and shine. For example, spaciousness sets how many grid squares the space unit takes, and roundness sets each radius as a share of the most that part can round. Borders and motion are fixed for now. See the table of formulas in [Inputs](../spec/inputs.md "inputs"). To follow one feel through every layer, see [How shininess becomes styles](./shininess-flow.md "shininess-flow").
 
 ## 4. Pick the tokens for each mode
 

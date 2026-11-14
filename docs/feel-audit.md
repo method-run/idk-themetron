@@ -11,6 +11,8 @@ aliases: ["Feel audit: steps, cross-effects, and mode asymmetries"]
 ---
 # Feel audit
 
+> **Note (2026-11-14):** this is a snapshot from 2026-11-07, when there were nine feels. Since then, thickness, softness, bounciness, snappiness, and tone are removed, the grid is fixed at 4 px, text sizes come from the type variance, and the white gloss is gone. Many findings and all line numbers no longer match the code. For the current feels, see [Inputs](../spec/inputs.md "inputs").
+
 This audit lists what each feel still does that is not a smooth change in its own domain. The goal: each feel scales its own domain smoothly, with no breakpoints, and pokes no one-off properties. Effects come back later, one by one, as continuous effects.
 
 ## How we measured

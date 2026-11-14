@@ -92,17 +92,32 @@
    white or black: the darker of the two is the fill, as for every button. */
 
 .tm-button {
+  /* Each variant, and each state, sets only these: the fill (--_bg), the label (--_fg), the edge
+     (--_edge), the fill's opacity (--_alpha), and the label's edge line (--_line). The rules
+     below paint them. tm-invert exchanges the fill and the label (see below), so every button
+     inverts the same way, and hover and press follow. */
+  --_bg: var(--tm-fill-action);
+  --_fg: var(--tm-on-fill-action);
+  --_edge: var(--tm-fill-action-active);
+  --_alpha: var(--tm-fill-alpha);
+  --_line: var(--tm-text-shadow-action);
+  --_halo-strength: var(--_fill-faded);
+  /* How far the button fades with solidity: 1 is all the way to its opacity (--_alpha), 0.5 half
+     as far. The painted opacity, of the fill, the shine layers, and the edge: */
+  --_fade: 1;
+  --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
+  /* What is painted: the variant's colors, or exchanged when inverted. */
+  --_paint-bg: var(--_bg);
+  --_paint-fg: var(--_fg);
+  --_paint-edge: var(--_edge);
+  --_paint-line: var(--_line);
+  --_halo-fill: var(--_paint-bg);
   /* The shine adds no color: it brightens and darkens what is behind the button (see
      ::before and ::after below), and the top edge is the brightest part of it. So the colored
      edge band and glow of other parts are off here. */
   --_shine-height: var(--tm-control-height);
   --_shine-color: transparent;
   --_glow-color: transparent;
-  /* The label is set into the surface, with a line of the part's own ramp. Each variant sets
-     its own. */
-  text-shadow: var(--tm-text-shadow-action), var(--_fill-halo);
-  --_halo-fill: var(--tm-fill-action);
-  --_halo-strength: var(--_fill-faded);
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -111,15 +126,18 @@
   gap: var(--tm-space-sm);
   min-height: var(--tm-control-height);
   padding: var(--tm-control-padding-y) var(--tm-control-padding-x);
-  border: var(--tm-border-width) solid color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent);
+  border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * 100%), transparent);
   border-radius: var(--tm-radius-control);
-  /* Fills and tints turn see-through at low solidity, as far as the label still passes:
-     --tm-fill-alpha for solid fills and edges, and --tm-tint-alpha for tints. */
-  background-color: color-mix(in oklab, var(--tm-fill-action) calc(var(--tm-fill-alpha) * 100%), transparent);
+  /* Fills and tints turn see-through at low solidity: --tm-fill-alpha for solid fills, and
+     --tm-tint-alpha for tints. */
+  background-color: color-mix(in oklab, var(--_paint-bg) calc(var(--_opacity) * 100%), transparent);
   /* A light frost: a quarter of the cards' blur, so see-through buttons stay see-through. */
   -webkit-backdrop-filter: var(--tm-backdrop-control);
   backdrop-filter: var(--tm-backdrop-control);
-  color: var(--tm-on-fill-action);
+  color: var(--_paint-fg);
+  /* The label is set into the surface with a line of the part's own ramp, and on a fading fill it
+     gets a halo of the fill's color. */
+  text-shadow: var(--_paint-line), var(--_fill-halo);
   font: inherit;
   font-weight: var(--tm-font-weight-medium);
   line-height: var(--tm-leading-tight-md);
@@ -133,8 +151,8 @@
     box-shadow var(--tm-duration-base) var(--tm-ease-standard),
     transform var(--tm-duration-base) var(--tm-ease-enter);
 }
-.tm-button:hover { --_halo-fill: var(--tm-fill-action-hover); background-color: color-mix(in oklab, var(--tm-fill-action-hover) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-elevation-1), var(--tm-elevation-2); }
-.tm-button:active { --_halo-fill: var(--tm-fill-action-active); background-color: color-mix(in oklab, var(--tm-fill-action-active) calc(var(--tm-fill-alpha) * 100%), transparent); color: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
+.tm-button:hover { --_bg: var(--tm-fill-action-hover); --_fg: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-elevation-1), var(--tm-elevation-2); }
+.tm-button:active { --_bg: var(--tm-fill-action-active); --_fg: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
 .tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* The shine: two layers that brighten the top and darken the bottom of the button, as much as the
@@ -144,15 +162,15 @@
    fill, and the page through it), so a nearly clear button still shows its highlight and shadow,
    like glass; they keep a share of their strength (--_shine-keep) as the fill fades. A backdrop
    filter costs a layer and a read of what is behind it, so when parts are opaque, the layers are
-   painted in the fill's own color (--_halo-fill, set for each state) with a plain filter
+   painted in the fill's own color (--_paint-bg) with a plain filter
    instead, which looks the same. The theme's tokens pick the way: --tm-shine-backdrop-*,
    --tm-shine-filter-*, and --tm-shine-paint. Inside an element with a backdrop filter of its own
    (a button in tm-over-media), the backdrop is only the button's fill. */
 .tm-button::before, .tm-button::after {
   content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
-  --_shine-keep: 0.6; --_fill-alpha: var(--tm-fill-alpha);
-  opacity: calc(var(--_fill-alpha) + (1 - var(--_fill-alpha)) * var(--_shine-keep));
-  background-color: color-mix(in oklab, var(--_halo-fill, transparent) calc(var(--tm-shine-paint) * 100%), transparent);
+  --_shine-keep: 0.6;
+  opacity: calc(var(--_opacity) + (1 - var(--_opacity)) * var(--_shine-keep));
+  background-color: color-mix(in oklab, var(--_paint-bg) calc(var(--tm-shine-paint) * 100%), transparent);
 }
 .tm-button::before {
   -webkit-backdrop-filter: var(--tm-shine-backdrop-top);
@@ -166,20 +184,24 @@
   -webkit-backdrop-filter: var(--tm-shine-backdrop-bottom);
   backdrop-filter: var(--tm-shine-backdrop-bottom);
   filter: var(--tm-shine-filter-bottom);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 50%, #000 80%, rgb(0 0 0 / 0.5) 100%);
-  mask-image: linear-gradient(to bottom, transparent 50%, #000 80%, rgb(0 0 0 / 0.5) 100%);
+  /* Darkening multiplies, so it shades a near-white fill much harder than a mid-tone one. So the
+     shadow's strength comes from the fill's own lightness: full on fills at or below 50% OKLCH
+     lightness, and less on lighter ones, down to 40% on white. It is in the mask, so it works
+     the same whether the layer filters the backdrop or is painted. */
+  --_shade-mask: oklch(from var(--_paint-bg) 0 0 0 / calc(1 - 1.2 * max(0, l - 0.5)));
+  --_shade-mask-half: oklch(from var(--_paint-bg) 0 0 0 / calc((1 - 1.2 * max(0, l - 0.5)) / 2));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+  mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
 }
-
-.tm-button--soft { --_halo-fill: var(--tm-tint-action); --_halo-strength: var(--_tint-faded); text-shadow: var(--tm-text-shadow-tint-action), var(--_fill-halo); --_shade-color: var(--tm-gloss-tint-action-shadow); --_shade-bottom: var(--tm-gloss-tint-action-bottom); background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action); border-color: transparent; }
-.tm-button--soft:hover { --_halo-fill: var(--tm-tint-action-hover); --_shade-color: var(--tm-gloss-tint-action-hover-shadow); --_shade-bottom: var(--tm-gloss-tint-action-hover-bottom); background-color: color-mix(in oklab, var(--tm-tint-action-hover) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-hover); }
-.tm-button--soft:active { --_halo-fill: var(--tm-tint-action-active); --_shade-color: var(--tm-gloss-tint-action-active-shadow); --_shade-bottom: var(--tm-gloss-tint-action-active-bottom); background-color: color-mix(in oklab, var(--tm-tint-action-active) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-tint-action-active); }
-.tm-button--quiet { --_halo-fill: var(--tm-fill-quiet); --_halo-strength: var(--_tint-faded); text-shadow: var(--tm-text-shadow-quiet), var(--_fill-halo); background-color: color-mix(in oklab, var(--tm-fill-quiet) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet); border-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-tint-alpha) * 100%), transparent); }
-.tm-button--quiet:hover { --_halo-fill: var(--tm-fill-quiet-hover); background-color: color-mix(in oklab, var(--tm-fill-quiet-hover) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet-hover); }
-.tm-button--quiet:active { --_halo-fill: var(--tm-fill-quiet-active); background-color: color-mix(in oklab, var(--tm-fill-quiet-active) calc(var(--tm-tint-alpha) * 100%), transparent); color: var(--tm-on-fill-quiet-active); }
 
 /* Soft and quiet buttons are page-like surfaces: their label is on the far side of the page, as
    on a card. So they fade with the tints, not with the solid fills. */
-.tm-button--soft::before, .tm-button--soft::after, .tm-button--quiet::before, .tm-button--quiet::after { --_fill-alpha: var(--tm-tint-alpha); }
+.tm-button--soft { --_bg: var(--tm-tint-action); --_fg: var(--tm-on-tint-action); --_edge: transparent; --_alpha: var(--tm-tint-alpha); --_line: var(--tm-text-shadow-tint-action); --_halo-strength: var(--_tint-faded); --_shade-color: var(--tm-gloss-tint-action-shadow); --_shade-bottom: var(--tm-gloss-tint-action-bottom); }
+.tm-button--soft:hover { --_bg: var(--tm-tint-action-hover); --_fg: var(--tm-on-tint-action-hover); --_shade-color: var(--tm-gloss-tint-action-hover-shadow); --_shade-bottom: var(--tm-gloss-tint-action-hover-bottom); }
+.tm-button--soft:active { --_bg: var(--tm-tint-action-active); --_fg: var(--tm-on-tint-action-active); --_shade-color: var(--tm-gloss-tint-action-active-shadow); --_shade-bottom: var(--tm-gloss-tint-action-active-bottom); }
+.tm-button--quiet { --_bg: var(--tm-fill-quiet); --_fg: var(--tm-on-fill-quiet); --_edge: var(--tm-fill-quiet-active); --_alpha: var(--tm-tint-alpha); --_line: var(--tm-text-shadow-quiet); --_halo-strength: var(--_tint-faded); }
+.tm-button--quiet:hover { --_bg: var(--tm-fill-quiet-hover); --_fg: var(--tm-on-fill-quiet-hover); }
+.tm-button--quiet:active { --_bg: var(--tm-fill-quiet-active); --_fg: var(--tm-on-fill-quiet-active); }
 /* A soft button is a faint wash, so darkening what is behind it makes gray. Its shadow is the
    tint's own shadow grades instead: a light, saturated tint of the action color, at the tint
    shine's strength, following the button's state. */
@@ -189,12 +211,37 @@
   background: linear-gradient(180deg in oklch, transparent 50%, color-mix(in oklch, var(--_shade-color) var(--_shade), transparent) 80%, color-mix(in oklch, var(--_shade-bottom) calc(var(--_shade) * 0.5), transparent) 100%);
 }
 
-/* The exact button is the brand color, exactly, at rest. Hover and press move to ramp grades
-   10 and 20 grade numbers from it, like other fills. Its shine is counted from where the key
-   color sits on the ramp. */
-.tm-button--exact { --_halo-fill: var(--tm-fill-action-exact); --_halo-strength: 0; text-shadow: var(--tm-text-shadow-action-exact); background-color: var(--tm-fill-action-exact); background-image: none; color: var(--tm-on-fill-action-exact); border-color: var(--tm-border-action-exact); }
-.tm-button--exact:hover { --_halo-fill: var(--tm-fill-action-exact-hover); background-color: var(--tm-fill-action-exact-hover); color: var(--tm-on-fill-action-exact-hover); }
-.tm-button--exact:active { --_halo-fill: var(--tm-fill-action-exact-active); background-color: var(--tm-fill-action-exact-active); color: var(--tm-on-fill-action-exact-active); }
+/* The exact button is the brand color, exactly, at rest. Hover is the nearest grade at least 5
+   grade numbers lighter, and press at least 5 darker; a white fill keeps its color on hover and a
+   black one when pressed, and only the label moves. Its label is on the page's side, as on a
+   solid fill, so it fades and gets its halo like one, but only half as far: it is the brand
+   color, so it stays closer to it. Its edge is always the key color, inverted too, at the
+   button's opacity. */
+.tm-button--exact { --_bg: var(--tm-fill-action-exact); --_fg: var(--tm-on-fill-action-exact); --_edge: var(--tm-border-action-exact); --_line: var(--tm-text-shadow-action-exact); --_fade: 0.5; --_halo-strength: calc(var(--_fill-faded) * 0.5); --_edge-inverted: var(--tm-border-action-exact); --_edge-alpha-inverted: var(--_opacity); }
+.tm-button--exact:hover { --_bg: var(--tm-fill-action-exact-hover); --_fg: var(--tm-on-fill-action-exact-hover); }
+.tm-button--exact:active { --_bg: var(--tm-fill-action-exact-active); --_fg: var(--tm-on-fill-action-exact-active); }
+
+/* An inverted button is the same button turned inside out: its label color becomes the fill and
+   its fill color the label, in the page's own mode. (The other mode's default button reads as a
+   different button; for the exact button the two are the same, as both modes use the same pair.)
+   So it stays in the page's mode, with the page's shadows and opacities, and its new fill fades
+   like a tint. The edge is the old fill color, or what a variant sets in --_edge-inverted: the
+   exact button's edge is the key color. Quiet and soft buttons are not meant to be inverted: they
+   are built to sit close to their own page. */
+.tm-button.tm-invert {
+  color-scheme: inherit;
+  --tm-elevation-1: var(--tm-elevation-1-normal); --tm-elevation-2: var(--tm-elevation-2-normal); --tm-elevation-3: var(--tm-elevation-3-normal);
+  --tm-fill-alpha: var(--tm-fill-alpha-normal); --tm-tint-alpha: var(--tm-tint-alpha-normal);
+  --_paint-bg: var(--_fg);
+  --_paint-fg: var(--_bg);
+  --_paint-edge: var(--_edge-inverted, var(--_bg));
+  --_paint-line: var(--tm-text-shadow-tint-action);
+  --_alpha: var(--tm-tint-alpha);
+  /* The edge stays solid: a faded fill on its own page needs its edge to show its shape. A
+     variant can set --_edge-alpha-inverted instead. */
+  --_edge-alpha: var(--_edge-alpha-inverted, 1);
+  --_halo-strength: 0;
+}
 
 /* No fill, so no frost: their labels read like any text on the page. */
 .tm-button--outline, .tm-button--ghost { text-shadow: inherit; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
@@ -547,7 +594,7 @@
   font-family: var(--tm-font-body);
   box-shadow: var(--tm-elevation-3);
   opacity: 0;
-  /* Leaving uses the exit curve; arriving (below) uses the enter curve, which can overshoot. */
+  /* Leaving uses the exit curve; arriving (below) uses the enter curve. */
   transition: opacity var(--tm-duration-base) var(--tm-ease-exit), transform var(--tm-duration-base) var(--tm-ease-exit);
 }
 .tm-dialog::backdrop, .tm-drawer::backdrop { background: rgb(0 0 0 / 0); transition: background var(--tm-duration-base) var(--tm-ease-standard); }

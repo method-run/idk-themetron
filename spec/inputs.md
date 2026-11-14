@@ -115,10 +115,10 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 | `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | How many grid squares padding, gaps, and line heights take. The grid itself is always 4 px. |
 | `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
 | `depth` | Flat | flat, low, raised, floating | Floating | How far parts float above the page: soft shadows, and how far buttons rise on hover |
-| `solidity` | Clear | clear, frosted, tinted, solid | Solid | How see-through parts are. At 0, cards, tints, and quiet buttons are 10% opaque, fields 30%, and solid fills 95%; inverted fills 30%, and inverted cards and tints 95%. At 1, everything is opaque. |
-| `shininess` | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts: a gradient, an edge band, and a glow, from the part's own ramp |
+| `solidity` | Clear | clear, frosted, tinted, solid | Solid | How see-through parts are. At 0, cards, tints, and quiet buttons are 10% opaque, fields 30%, and solid fills 50%; inverted fills 30%, and inverted cards, tints, and quiet buttons 95%. At 1, everything is opaque. |
+| `shininess` | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts, from the part's own ramp. Buttons get a brighter top and a darker bottom. Other parts get a gradient, an edge band, and a glow. Labels get a 1 px line that sets them into the surface. |
 
-The other feels (`thickness`, `depth`, `softness`, `solidity`, `bounciness`, and `snappiness`) are removed for now. They will come back one at a time. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, the tokens that they set have fixed values: 1 px borders, no shadows and no lift on hover, opaque parts with no blur, and motion with no overshoot.
+The other feels (`thickness`, `softness`, `bounciness`, `snappiness`, and `tone`) are removed for now. They can come back one at a time: softness is the likely next one. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, the tokens that they set have fixed values: 1 px borders, and the same motion in every theme, with no overshoot.
 
 Each feel of a theme comes from the first of these that has it:
 
@@ -148,13 +148,13 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 - Controls: a tight line, plus padding and border that add up to whole squares. The padding is 0.45 of a space unit down, and 0.95 across, rounded to whole squares. These factors differ from the space steps' factors, so the padding and the space steps grow at different points along the slider. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.
 - Radius: a share of the most that each part can round. Controls: `r × height ÷ 2`, for each control size, so `r = 1` makes every size a pill. Cards: `r ×` their padding (`space.lg`). Alerts and text areas: `r × space.md`. Small parts: `r × space.xs`. So a corner never cuts into the content. Badges, switches, and progress bars round by `r ×` their own height `÷ 2`, from the `roundness` token, so they too are pills only at `r = 1`.
 - Shadows: elevation 1, 2, and 3 float `d × 2`, `d × 6`, and `d × 16` px below the part, and half that to the right, as if lit from the upper left. The key shadow's blur is `1 + 0.6 ×` that offset, and a wider ambient shadow blurs `2 + 1.5 ×` it. Buttons rise `d` px on hover, at most 1 px. The inset shadow of pressed and sunken parts is `max(1, 2 d)` px down.
-- Opacity: each kind of part goes from its clearest opacity at solidity 0 to opaque at 1, evenly. Page-like parts (cards, fields, tints, quiet buttons) have their label on the far side of the page, so they can be very see-through; solid fills have their label on the page's side, so they stay at 95% or more. Inverted parts swap the two. The audit checks each label on its part as seen over the canvas and the surface, as a warning. Blur is not part of solidity: see `tm-over-media`.
+- Opacity: each kind of part goes from its clearest opacity at solidity 0 to opaque at 1, evenly. Page-like parts (cards, fields, tints, quiet buttons) have their label on the far side of the page, so they can be very see-through; solid fills have their label on the page's side, so they stay at 50% or more, and their labels get a halo of the fill's color as they fade. Inverted parts swap the two. The audit checks each label on its part as seen over the canvas and the surface, as a warning. Blur is not part of solidity: see `tm-over-media`.
 - Text fading (off for now): the engine can move body text toward the page, to one notch (10 grade numbers) past the min-contrast text grade, and headings (`fg.base-heading-lg`, `-2xl`, `-3xl`) to the min-contrast grade for their size, where 24 px or more counts as large at any weight. No feel drives it yet; softness may. Until then the heading colors are the body text color.
-- Shine: from the fill's own ramp, not white. A gradient (a lighter rim and top, a darker shadow and bottom), a thin edge band, and a soft glow at the top. The shininess is their opacity, from none at 0. Each state of a button has its own shine grades, so the shine follows hover and press.
+- Shine: from the part's own ramp, not white. The shininess sets its strength, from none at 0. Most parts paint a gradient (a lighter rim and top, a darker shadow and bottom), a thin edge band, and a soft glow at the top. Buttons paint no gradient: two masked layers brighten their top and darken their bottom. Labels get a 1 px line of their part's ramp. See [How shininess becomes styles](../docs/shininess-flow.md "shininess-flow").
 
 </details>
 
-More about the feels: the [Feel audit](../docs/feel-audit.md "feel-audit") lists where each feel's output jumps and what it changes outside its own domain, and the [Shine notes](../docs/shine-notes.md "shine-notes") have the hand-tuned gradients that the shine started from.
+More about the feels: the [Feel audit](../docs/feel-audit.md "feel-audit"), a snapshot from when there were nine feels, lists where each feel's output jumps and what it changes outside its own domain, and the [Shine notes](../docs/shine-notes.md "shine-notes") have the hand-tuned gradients that the shine started from.
 
 <details>
 <summary>Why feels are numbers from 0 to 1</summary>
@@ -173,23 +173,24 @@ The type variance `v` sets every text size. Small text is `round(13 − 2v)` px:
 | 0.5, classic | 12 | 15 | 1.2 | 31 |
 | 1, dramatic | 11 | 16 | 1.5 | 81 |
 
-Every line height is still a whole number of grid squares, so the grid holds at every size. Small text stays at 11 px or more, and body text at 15 px or more: smaller text is not safe to read.
+Every line height is still a whole number of grid squares, so the grid holds at every size. Small text stays at 11 px or more, and body text at 15 px or more: smaller text is not safe to read. Fields use text of at least 16 px, because iOS zooms the page in when you tap a field with smaller text.
 
 ## Presets
 
-A preset is a set of feels with a familiar name. With only five feels for now, most presets set only roundness and shininess, and some look the same. Their names stay, so inputs that use them still load.
+A preset is a set of feels with a familiar name. A feel that a preset does not set takes its default. No preset sets the type variance. With only five feels for now, some presets look alike. Their names stay, so inputs that use them still load.
 
-| Preset | Spaciousness | Roundness | Shininess |
-|---|---|---|---|
-| `balanced` | default | default | default |
-| `flat` | default | 0.2 | 0 |
-| `material` | default | 0.25 | 0 |
-| `brutalist` | 0.4 | 0 | 0 |
-| `neumorphic` | default | 0.6 | 0 |
-| `glass` | default | 0.6 | 0.3 |
-| `glossy` | default | 1 | 1 |
-| `playful` | 0.65 | 0.9 | default |
-| `dense` | 0 | 0.15 | default |
+| Preset | Spaciousness | Roundness | Depth | Solidity | Shininess |
+|---|---|---|---|---|---|
+| Default | 0.5 | 0.35 | 0.3 | 1 | 0 |
+| `balanced` | default | default | default | default | default |
+| `flat` | default | 0.2 | 0 | default | 0 |
+| `material` | default | 0.25 | 0.5 | default | 0 |
+| `brutalist` | 0.4 | 0 | 0 | default | 0 |
+| `neumorphic` | default | 0.6 | 0.7 | default | 0 |
+| `glass` | default | 0.6 | 0.5 | 0.35 | 0.3 |
+| `glossy` | default | 1 | 0.5 | default | 1 |
+| `playful` | 0.65 | 0.9 | 0.45 | default | default |
+| `dense` | 0 | 0.15 | 0.15 | default | default |
 
 ## Contrast
 

@@ -43,7 +43,7 @@ Two older projects each solved half of the problem. The first themetron had frie
 - **Add choices for contrast.** WCAG 2 or APCA. Every theme ships the standard level, and the enhanced level as its more-contrast variant.
 - **Add presets.** A preset is a set of feels with a familiar name, such as flat, brutalist, or glass.
 - **Add roles.** Components ask for "primary" or "danger", not for a color name.
-- **Grow the depth model.** themetron-3 split depth into elevation, shine, fullness, and emboss. Now these are separate feels: depth, shininess, softness, solidity. Emboss is a later task.
+- **Grow the depth model.** themetron-3 split depth into elevation, shine, fullness, and emboss. Now these are separate feels: depth, shininess, and solidity. Softness is the likely next one. Emboss is partly here: at higher shininess, labels get a 1 px line that sets them into the surface.
 
 ## Steps
 
@@ -88,7 +88,7 @@ One color for each theme was too few. A gray page with blue buttons is the most 
 | `neutral` and `color` | `base` and `action`. `color` sets both. |
 | `accent-fill`, `accent-text`, … | `fill-action`, `fg-action`, … : the role is the last part of the name |
 | `fg-default`, `border-default`, … | `fg-base`, `border-base`, … |
-| No quiet buttons | `fill-base`, `tint-base`, and their labels |
+| No quiet buttons | The quiet button (`fill-quiet`), `tint-base`, and their labels. Only the action role has solid fills. |
 | A color theme set only its color tokens, and took the rest from the page | Each theme class sets every token, from the tree |
 
 - [x] Inputs: `base`, `action`, and `color` for both. Version 2, and version 1 files still load.
@@ -112,7 +112,7 @@ One color for each theme was too few. A gray page with blue buttons is the most 
 
 These ideas come after the 0.1 standard ships. None of them changes the stable tokens, so they can come in a minor version of the contract.
 
-- [ ] **Icon sets.** A selector for an icon set, such as Lucide, Phosphor, or Material Symbols, in each theme. A child takes its parent's set. The stroke width and corner style could follow the thickness and roundness feels.
+- [ ] **Icon sets.** A selector for an icon set, such as Lucide, Phosphor, or Material Symbols, in each theme. A child takes its parent's set. The corner style could follow the roundness feel.
 - [ ] **A role from another theme.** A theme could take a role from another theme by name, such as `"action": "brand"`, in place of a color. Today a role that a theme does not set comes from its parent, which covers most cases.
 - [ ] **Colors for each part.** An advanced section for a part, such as buttons or fields, where you pick an ancestor theme for each piece of the part: the fill, the label, the border, and the focus ring. So a button can have the fill of `brand` and the label of `default`. This is finer than the roles. It belongs in the components, so the token contract does not change. The engine checks each pair that this makes, with the audit.
 - [x] **Enhanced contrast as a variant of every theme.** Done ahead of the first release: the enhanced level ships with every theme, like light and dark mode. `prefers-contrast: more` and `data-tm-contrast` switch it. See [More contrast](../spec/tokens.md "tokens").
@@ -146,14 +146,15 @@ The pair has the same polarity as every fill: the darker color is the fill in li
 |---|---|---|
 | Background | The darker of the pair | The lighter of the pair |
 | Label | The lighter of the pair | The darker of the pair |
-| Border | The key color, or `border-base` when the key color is below 3:1 on the canvas | The same rule |
+| Border | The key color | The key color |
 
 - Navy: navy with white text, then white with navy text. Magenta and pale yellow: black with magenta or yellow text, then magenta or yellow with black text.
 - **Why the label polarity (decided).** An earlier draft always put the key color in the light-mode fill. Then light keys had dark labels and dark keys had light labels, so the buttons of one theme set flipped with the color. All buttons in a theme now match. A light key color shows as the label in light mode, and as the fill in dark mode or with `tm-invert`.
 - **No label setting (decided).** `fillLabel` let a theme flip all its fills to dark labels in light mode. It was easy to miss, and it made one theme's buttons the opposite of the others. It is removed: light mode is always light on dark, dark mode is always dark on light, and `tm-invert` flips one part.
 - **The one pair without a promise (decided).** Every other checked pair is guaranteed, including each fill on the canvas (contract 0.4.0). The exact pair cannot be: moving off the key color would defeat the button. So the audit warns, and does not fail.
 - **Contrast.** With pure white and pure black, the better partner always gives at least √21, about 4.58:1, so WCAG 2 AA always passes. The enhanced level, APCA, and clamped limits can fail. Then the audit warns. In the enhanced contrast variant, a failing pair uses the normal button's colors.
-- **A pale fill on a pale canvas has almost no edge.** When the key color is below 3:1 on the canvas, the border is `border-base`. In dark mode the same rule gives a navy key a gray edge on its white fill.
+- **The edge is always the key color.** When the key color is the fill, the edge matches it. When the key color is the label, the edge frames the white or black fill in the key color.
+- **Hover and press.** Only the resting button is exact. Hover moves the fill to the nearest grade at least 5 grade numbers lighter, and press at least 5 darker, and the label follows. A white fill cannot get lighter, so on hover only its label gets lighter. A black fill cannot get darker, so when pressed only its label gets darker.
 - **Tokens (built):** `fill-action-exact`, `on-fill-action-exact`, and `border-action-exact`, all experimental. They point at a new primitive for each role, `action-key` and `base-key`: the key color exactly as given.
 - **How often it warns.** Over 120 sample key colors: never at WCAG standard, 34 at WCAG enhanced, 43 at APCA standard, and 88 at APCA enhanced. The audit marks these rows "warn".
 

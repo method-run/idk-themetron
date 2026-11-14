@@ -39,7 +39,7 @@ const MEANING = {
   'border-base': 'Dividers and the edges of surfaces. Decoration only.',
   'border-base-strong': 'The edges of fields and controls. Passes the control contrast.',
   'border-focus': 'Focus rings. The same as border-action.',
-  'tint-base': 'Quiet soft fills, such as secondary buttons and tags. They show on the canvas and on surfaces.',
+  'tint-base': 'Neutral soft fills, such as hover and selected backgrounds for menu items and list rows, and neutral tags. They show on the canvas and on surfaces.',
   'tint-base-hover': 'A quiet soft fill on hover: 10 grade numbers from the tint, toward the text.',
   'tint-base-active': 'A quiet soft fill while it is pressed: 20 grade numbers from the tint, toward the text.',
   'on-tint-base': 'Text and icons on tint-base.',
@@ -140,7 +140,7 @@ export function tokenManifest() {
     note: 'Made by `npm run spec` from src/manifest.js. Do not edit. See spec/consumers.md.',
     selectors: {
       'theme-<name>': 'A class for each theme. It sets every token of that theme, from its place in the theme tree, on the element and everything in it. Use one theme class on an element. The root theme, "default", is also on :root.',
-      'tm-invert': 'A class that shows an element, and everything in it, in the other mode.',
+      'tm-invert': 'A class that shows an element, and everything in it, in the other mode. One exception: a button with tm-invert stays in the page\'s mode and exchanges its fill and label colors.',
       'tm-over-media': 'A class for an area over photos or other rich backgrounds. See-through parts in it blur what is behind them, and text gets a halo of the page\'s color (text-halo). Use it only where it helps: blur costs a layer for each part.',
       'data-tm-mode': 'An attribute, "light" or "dark", that forces one mode on an element and everything in it.',
       'data-tm-contrast': 'An attribute, "more" or "base", on <html> or on an element with a theme class. "more" turns on the more-contrast variant for it and everything in it, and "base" turns it off. Without it, the reader\'s prefers-contrast: more setting decides.',
