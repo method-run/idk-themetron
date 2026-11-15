@@ -84,7 +84,7 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 <details>
 <summary>Why it works this way</summary>
 
-- **Fixed luminance, not contrast against one background.** themetron-3 made each palette against its own background, so two palettes did not line up. With fixed luminance, one rule works for all palettes, and designers can mix colors freely.
+- **Fixed luminance, not contrast against one background.** themetron-3 made each palette against its own background, so two palettes did not line up. With fixed luminance, one rule works for all palettes, and designers can mix colors freely. IBM Carbon and the US Web Design System use the same idea.
 - **An exponential scale.** With equal steps in luminance, the contrast between neighbors would be large at the dark end and small at the light end. The exponential scale gives each step of 10 the same contrast ratio, 1.36:1.
 - **OKLCH, not HSL.** A change of HSL lightness also changes the hue and the felt saturation, so blues turned purple. OKLCH keeps the hue.
 - **Every 5 grades.** Most rules choose from the grades 10 apart, plus 5 and 95 near white and black. Hover and press states use all of them, so a tint at 5 has neighbors at 15 and 25, the same distance apart as in the middle of the scale.

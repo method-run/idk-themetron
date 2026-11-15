@@ -14,7 +14,7 @@ tags: [system/tokens]
 ◐ 38% (5/13) · 2 deferred
 <!-- idk-plans:progress:end -->
 
-> **Status:** 0.1 draft. The engine makes these tokens, with one gap: the dark mode does not use mirror grades yet. The [plan](../docs/plan.md "plan") lists them.
+> **Status:** 0.1 draft. The engine makes these tokens.
 
 Each theme has two layers of tokens:
 
@@ -116,6 +116,7 @@ Each theme has an audit: a list of the checked pairs, with the WCAG ratio, the A
 - **Shine.** For each fill and tint: a rim and a top lighter than the fill, and a shadow and a bottom darker, by fixed grade distances (half as far for tints). Tints have them for each state. Most parts draw them with the shared gradient, `shine-image`, whose opacity is the shininess. Light comes from above in both modes. A switch track that is on turns it upside down, so it looks inset. Buttons do not paint the gradient: they brighten their top and darken their bottom, and use the grades only for the edge line of their labels.
 - **Tints.** Action tints are grade 5 (light) or 95 (dark). Base tints are 10 grade numbers beyond the canvas and the surface, toward the text (15 in light mode, 80 in dark mode), so they differ from the sunken background too, because those grades already hold the base color. Hover and press are 10 and 20 grade numbers further, toward the text. The label follows by the same distance, as far as it still passes. With APCA in light mode, body text passes only on the lightest grades, so a tint moves only as far as some label can pass.
 - **Action text and borders.** The grade nearest the key grade that passes on all backgrounds.
+- **The exact button.** The partner of the key color is the action ramp's white or black, whichever has more contrast with it. The partner is the same in both modes. With pure white and pure black, the better partner always gives at least √21, about 4.58:1, so WCAG 2 at the standard level always passes. The enhanced level and APCA can fail, and then the audit warns. Over 120 sample key colors, it warns for none at WCAG standard, 34 at WCAG enhanced, 43 at APCA standard, and 88 at APCA enhanced.
 - **If nothing passes.** The engine takes the grade with the most contrast, and the audit marks the pair as failed.
 
 </details>
@@ -148,11 +149,18 @@ A class is what most people and tools already use to style an element: plain HTM
 
 ## Light and dark mode
 
-The light mode comes first. The dark mode uses the mirror grade of each light token: if `fg.base` is `base.90` in light mode, it is `base.10` in dark mode.
+The engine runs the same rules once for each mode. In dark mode, it starts from the dark end of each ramp, and it checks every pair in dark mode. Dark mode does not copy the light grades. So a dark grade is often near `100 − g`, but not always:
 
-- **WCAG 2.** The contrast of two grades depends only on their difference, and the mirror keeps every difference. So each pair that passes in light mode passes in dark mode too.
-- **APCA.** APCA scores light text on a dark background lower than dark text on a light background. So with `apca`, the engine checks the dark mode again, and moves a token one grade further from its background where it must. The audit shows these changes.
-- **Raised surfaces are not mirrored.** In dark mode, raised surfaces are one grade lighter than the canvas, not darker.
+| Token | Light | Dark | Why |
+|---|---|---|---|
+| `bg.canvas` | 5 | 95 | The same distance from each end |
+| `bg.surface` | 0 | 90 | A raised surface is lighter than the canvas in both modes |
+| `fg.base` | 90 | 5 | The rule tries 90 first in light mode, and 5 first in dark mode |
+| `border.base-strong`, with APCA | 50 | 30 | APCA scores light-on-dark pairs lower, so the dark grade must be further from the canvas |
+
+- **WCAG 2.** The contrast of two grades depends only on their difference. So most dark pairs have the same distance as their light pairs.
+- **APCA.** APCA scores light text on a dark background lower than dark text on a light background. The engine checks each dark pair with APCA, so a dark token can be further from its background than its light twin. The audit shows each pair in each mode.
+- **Shadows.** Shadows do not change sides. Light comes from above in both modes. Light mode uses the base ramp's grade 90 as the shadow color. Dark mode uses grade 100, the darkest, at 1.8 times the strength, because dark backgrounds hide shadows.
 
 ## CSS
 

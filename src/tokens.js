@@ -254,7 +254,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // The canvas is grade 5 in light mode and 95 in dark mode. Raised surfaces are one grade
   // lighter, and sunken ones one grade darker. If no grade of text can pass on these
   // backgrounds, the canvas moves to white (or black) until one does.
-  // [canvas, raised surface, sunken] for each light canvas grade, and the dark mirror of each.
+  // [canvas, raised surface, sunken] for each light canvas grade, and the dark-mode grades for it.
   const LAYOUTS = {
     5: { light: [5, 0, 10], dark: [95, 90, 100] },
     0: { light: [0, 0, 5], dark: [100, 95, 100] },

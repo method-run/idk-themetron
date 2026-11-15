@@ -11,7 +11,7 @@ tags: [system/components]
 # Components
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 20% (1/5)
+◐ 16% (1/6)
 <!-- idk-plans:progress:end -->
 
 The component library is one CSS file. It has no JavaScript. Each component reads only `--tm-*` tokens, so it follows any themetron theme and both modes.
@@ -86,3 +86,4 @@ The motion feels are removed for now. Until they come back, motion is the same i
 - [ ] Add a component test page with screenshots of each preset, to find visual regressions
 - [ ] Make a neumorphic variant for alerts and badges, which now use a flat tint
 - [ ] Publish the components as a separate package
+- [ ] Let a part pick an ancestor theme for each of its pieces: the fill, the label, the border, and the focus ring. For example, a button with the fill of `brand` and the label of `default`. This is finer than the roles, and it stays in the components, so the token contract does not change. The audit checks each pair that it makes.

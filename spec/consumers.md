@@ -65,7 +65,7 @@ Experimental tokens include the action set (`fg-action`, `border-action`, the `f
 <details>
 <summary>Why the fills and tints are experimental</summary>
 
-The names and the jobs of the fill and tint tokens can change when colors for each part of a control come. See the [plan](../docs/plan.md "plan"). Until then, read them with a fallback, such as `var(--tm-fg-action, LinkText)`. The pairs below still pass, and the test suite still checks them.
+The names and the jobs of the fill and tint tokens can change when colors for each part of a control come. See the [Components](../components/README.md "components") tasks. Until then, read them with a fallback, such as `var(--tm-fg-action, LinkText)`. The pairs below still pass, and the test suite still checks them.
 
 </details>
 
@@ -96,6 +96,15 @@ Each theme has a color for each of two roles. A component chooses the role, and 
 | **Action** | Parts that you act on, or that show their state: links, primary buttons, checks, switches, selected tabs, focus rings | `fg-action`, `border-action`, `border-focus`, `fill-action*`, `tint-action*` |
 
 In a gray theme with a blue action color, links and primary buttons are blue, and everything else is gray. In a theme that sets one color for both roles, such as a danger theme, everything is that color: a pink box, dark red text, a red link, and a red button.
+
+<details>
+<summary>Why roles, and not single tokens or elements</summary>
+
+- **Not single tokens.** If a part takes one token, such as `fill`, from another theme, it breaks that token's pairs: the engine chose the label for a different fill.
+- **Not elements.** Tokens by element, such as `link` or `button`, would put the list of components in the contract.
+- **Roles.** A role is the smallest group that keeps its pairs together. The component chooses the role.
+
+</details>
 
 ## Theme classes and theme names
 

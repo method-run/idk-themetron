@@ -60,3 +60,26 @@ See [Tokens](../spec/tokens.md "tokens").
 ## 6. Use the tokens on a page
 
 [Components](../components/README.md "components") read only the tokens. Put `class="theme-danger"` on a part, or on an element around it, and the part uses that theme. The nearest theme class wins. The [Playground](../demo/README.md "playground") does all of these steps again each time you change an input.
+
+## Background: two older projects
+
+Themetron joins the strong halves of two older projects.
+
+- **themetron (2017)** had friendly inputs: one color, one Google font, and four sliders (roundness, shininess, thickness, depth). It wrote Bootstrap 4 Sass. It had no contrast control: Bootstrap only darkened the one color.
+- **themetron-3 (2020)** had contrast math. A binary search on HSL lightness found colors that pass WCAG against a light and a dark background. But its inputs were technical, and it wrote a theme object for React. Each palette was made against its own background, so two palettes did not match, and HSL lightness shifted the hue.
+
+What we kept, and what we changed:
+
+- **We kept the words** from the first themetron. Now each slider also has words for its stops, such as compact, cozy, and spacious.
+- **We kept contrast by construction** from themetron-3. Now the engine works in OKLCH, which keeps the hue, and each grade has the same luminance in every palette. See [Grades and contrast](../spec/grades.md "grades").
+- **We changed the output to tokens:** CSS custom properties, DTCG JSON, and Tailwind, not Bootstrap Sass or a React object.
+- **We added** a choice of WCAG 2 or APCA, presets, roles, and a tree of themes.
+- **We grew the depth model.** themetron-3 split depth into elevation, shine, fullness, and emboss. Now these are separate feels: depth, softness, shininess, and clarity. Emboss is partly here: at higher shininess, labels get a 1 px line that sets them into the surface.
+
+<details>
+<summary>Where to find these parts in the old code</summary>
+
+- themetron: `src/client/app/themes/reducers.jsx` holds the inputs. `selectors.jsx` writes them as Sass variables, such as `$theme-roundness`. The Bootstrap fork in the `bootstrap` submodule reads them.
+- themetron-3: `workspaces/theme/src/utils/colors.js` has the luminance and contrast math. `theme-utils.mjs` has `getColors` (the light and dark scales) and `getSizes` (the spacing words). `THEMES.md` has the notes on depth, shine, and button surfaces.
+
+</details>

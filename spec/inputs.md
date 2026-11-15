@@ -11,10 +11,10 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 37% (3/8)
+◐ 23% (3/13)
 <!-- idk-plans:progress:end -->
 
-> **Status:** 0.1 draft. The engine and the playground use these inputs. The [plan](../docs/plan.md "plan") lists what is left.
+> **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
 
 You make a theme set from a small set of inputs. A theme set is a tree of themes. The root theme is named `default`. Each other theme has a parent, and it takes every field that it does not set from that parent.
 
@@ -61,7 +61,9 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 - **A tree.** Most sites have one main look and a few changes to it: a danger color, a marketing section with another font. A tree states each change once. A change to the root reaches every theme that does not set that field itself.
 - **Two roles.** A page has quiet parts, such as text, cards, and secondary buttons, and parts that you act on, such as links, primary buttons, and checks. A gray page with blue buttons is the most usual case, so each theme has a color for each role. A component chooses the role, and the theme chooses the color.
 - **`color` for both.** A status theme, such as danger, is often one color everywhere: a red box, red text, and a red button. `color` sets both roles at once.
-- **From the tree, not from the page.** The order of themes in the tree and the order of elements on a page are not always the same. A theme that depends on the page could look different in each place.
+- **Base, not neutral.** A theme's base color can be gray, or not. A danger theme that sets `color` has a red base: a pink box with dark red text. So the field is `base`, not `neutral`.
+- **Action, not accent.** "Accent" sounds minor, but the key color is often the most important part of a theme. "Key" names the color, not its job. "Interactive" is exact, but long. So the role is "action", and "key color" is a theme's color in a role.
+- **From the tree, not from the page.** The order of themes in the tree and the order of elements on a page are not always the same. A theme that depends on the page could look different in each place. Also, the engine could not check the pairs of its action text on that page's base.
 
 </details>
 
@@ -91,7 +93,23 @@ Each role's color is a **key color**. The engine makes a ramp of [grades](./grad
 
 A role that a theme does not set comes from its parent. In the example, `brand` sets only `action`, so its base is the gray of `default`. `danger` sets `color`, so its base and its action are both red.
 
-Every ramp goes from pure white to pure black. Limits for the lightest and darkest colors come after the first release. See the [plan](../docs/plan.md "plan").
+Every ramp goes from pure white to pure black. Limits for the lightest and darkest colors come after the first release. See [Tasks](#tasks).
+
+<details>
+<summary>Plan: lightest and darkest limits</summary>
+
+Two sliders in a theme, Lightest and Darkest, will clamp the ramps. The tokens then use only the grades between the two limits, such as 4 to 97. These points are decided:
+
+- **Clamp, do not renumber.** The contrast of two grades comes only from their difference: 21^(difference/100). So the limits cut the ramp to a range of grades, and the engine picks the tokens inside it. Grade numbers mean the same in every theme, and the `gap-*` tokens do not change. An earlier draft renumbered the grades, so that 0 was the theme's own white. That changed what a gap means in each theme, so we dropped it.
+- **All ramps.** The limits clamp the action ramps too. So "lightest" is the lightest color on the page, labels and tints included.
+- **Ramp tokens outside the range take the limit color,** such as `--tm-base-0` as the paper white. Those grades then do not have the luminance of their number, and the manifest says so.
+- **No impossible themes.** Each slider shows a swatch and the contrast that is left for text, such as "leaves 15.2:1". It stops where text would fail at the enhanced level: body text needs about 65 grades there (7:1), plus room for muted text and surfaces. So there is no range-check error.
+- **Warnings.** The Palettes view marks the grades outside the range, and says how many grades are left. The Audit view lists each pair that the smaller range makes harder. A theme's title bar in the inputs pane shows a mark when its range is clamped. The manifest marks the ramp tokens outside the range.
+- **Dark mode.** Darkest is the dark end of the dark canvas, so a dark mode that is not pure black comes free.
+- **Children.** Each theme class sets every token from the tree, so a child of a clamped theme is clamped too.
+- **Later steps.** A tinted white and black: their luminance sets the limits, and their hue and chroma blend along the base ramp, so a warm white can sit at one end and a cool black at the other. Then gradients, with the same blend.
+
+</details>
 
 To add a color, add a child theme. Themetron adds no colors of its own, such as a red for danger. Apply a theme with the class `theme-<name>`. See [Tokens](./tokens.md "tokens").
 
@@ -206,7 +224,7 @@ Every theme ships both levels: the `standard` level, which readers get by defaul
 
 ## Light and dark
 
-Each theme makes a light mode and a dark mode. You do not set the dark colors. The dark mode uses the mirror grade of each light token: grade `g` becomes grade `100 − g`. See [Grades and contrast](./grades.md "grades").
+Each theme makes a light mode and a dark mode. You do not set the dark colors. The engine runs the same rules for each mode. In dark mode, it starts from the dark end of each ramp, and checks each pair in dark mode. So a dark grade is not always the mirror of its light grade. See [Light and dark mode](./tokens.md#light-and-dark-mode).
 
 ## Schema and version
 
@@ -217,7 +235,7 @@ An inputs file can have two more fields:
 - `version`: the version of the inputs format. Now `2`. A file without it is read as version 2. The engine stops with a message for any other version. The playground's Inputs download and share links include it.
 - Version `1` still loads. In it, `neutral` was the base color, `color` was the action color only, and `fillLabel` flipped the labels on fills. The engine reads a version 1 file with those meanings. Without `"version": 1`, `neutral` is an error that names the new field.
 - `feel.tone` is gone too, and so are the other removed feels. The engine skips them.
-- `fillLabel` is gone in every version: every fill has light labels in light mode and dark labels in dark mode. The engine skips the field, so old files still load, and the schema marks it deprecated. To flip one part, put the class `tm-invert` on it.
+- `fillLabel` is gone in every version: every fill has light labels in light mode and dark labels in dark mode. The engine skips the field, so old files still load, and the schema marks it deprecated. To flip one part, put the class `tm-invert` on it. We removed `fillLabel` because it was easy to miss, and it made one theme's buttons the opposite of the others.
 - `$schema`: a path or URL to the schema, for editors. The engine ignores it.
 
 ## Checks
@@ -238,3 +256,8 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [ ] Add the "embossed" feel from themetron-3: text shadow on raised parts
 - [ ] Add a "vibrance" feel that sets the chroma of tints
 - [ ] Suggest font pairs, and match the x-height of fallback fonts with `size-adjust`
+- [ ] Add Lightest and Darkest sliders that clamp the ramps. See [Plan: lightest and darkest limits](#base-and-action).
+- [ ] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
+- [ ] Add gradient fills and backgrounds, from the same blend as the tinted white and black
+- [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. The corner style could follow the roundness feel.
+- [ ] Let a role take its color from another theme by name, such as `"action": "brand"`. Today a role that a theme does not set comes from its parent, which covers most cases.
