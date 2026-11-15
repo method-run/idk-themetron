@@ -4,6 +4,7 @@
 // SOURCE_URL, if set, is the base URL for links to files in the repository, such as the URL of
 // one commit's files on GitHub. CI sets it, so code links on the site match the commit it shows.
 import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -39,11 +40,12 @@ const play = path.join(OUT, 'play', 'index.html');
 await writeFile(play, (await readFile(play, 'utf8')).replace('<span>playground</span>', '<span>playground · <a href="../">docs</a></span>'));
 
 // The generated contracts go in schema/, at the URLs in SPEC_URL, so $schema links work in editors:
-// the latest files, and each version's files in its own folder. They come from spec/, which a test
-// keeps the same as the code. Old versions are only on disk, because the code makes the current one.
+// the latest files, and each released version's files in its own folder. They come from spec/,
+// where a test keeps the latest files the same as the code.
 const schemaDir = path.join(OUT, new URL(SPEC_URL).pathname.split('/').filter(Boolean).slice(1).join('/'));
 await mkdir(schemaDir, { recursive: true });
 for (const file of ['tokens.manifest.json', 'inputs.schema.json']) await cp(path.join(ROOT, 'spec', file), path.join(schemaDir, file));
-await cp(path.join(ROOT, 'spec', 'versions'), schemaDir, { recursive: true });
+const versions = path.join(ROOT, 'spec', 'versions');
+if (existsSync(versions)) await cp(versions, schemaDir, { recursive: true });
 
 console.log(`Built the site in ${path.relative(ROOT, OUT)}/. Open play/ for the playground.`);

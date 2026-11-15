@@ -32,9 +32,9 @@ From the package: `idk-themetron/spec/tokens.manifest.json` and `idk-themetron/s
 The site also publishes them at fixed URLs:
 
 - **Latest:** <https://method-run.github.io/idk-themetron/schema/tokens.manifest.json> and <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>. These always hold the files from `main`.
-- **One version:** put the contract version in the path, such as <https://method-run.github.io/idk-themetron/schema/0.6.0/inputs.schema.json>. Use this URL to pin a version. The files of the current version can still change until the next version. After that, they do not change.
+- **One released version:** put the contract version in the path, such as `https://method-run.github.io/idk-themetron/schema/0.1.0/inputs.schema.json`. Use this URL to pin a version. These files never change. A version gets its folder when it is released, so no version has one yet.
 
-Each schema's URL is also its `$id`. The manifest has no `$id`, because it is data, not a schema. You get the same file without it. The repository keeps each version's files in `spec/versions/`.
+Each schema's URL is also its `$id`. The repository keeps each released version's files in `spec/versions/`.
 
 ## The rules
 
@@ -238,6 +238,14 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 The package version goes up each time the contract version goes up, by at least as much. A breaking change to the contract is a breaking change to the package. The package can also go up alone, for example for a bug fix or a new export.
 
 Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog.
+
+To release:
+
+1. If the contract changed, raise `CONTRACT_VERSION` in `src/manifest.js`, run `npm run spec`, and move the **Unreleased** notes under the new version.
+2. Run `npm version <patch|minor|major>`. It also runs `npm run spec:release`, which copies the contract files to `spec/versions/<contract version>/`, and adds them to the version commit.
+3. Push, and publish the package.
+
+`npm run spec:release` stops if the files of a released version would change. Then the contract changed since that release, and it needs a new version.
 
 ## Changelog
 

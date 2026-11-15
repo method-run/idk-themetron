@@ -14,9 +14,9 @@ export const CONTRACT_VERSION = '0.1.0';
 // The site publishes the generated files at fixed URLs, so that editors can fetch the schema
 // from a $schema link. scripts/build-site.js copies them.
 // - schema/<file> always holds the latest files from main.
-// - schema/<contract version>/<file> holds the files of that version. `npm run spec` writes them
-//   to spec/versions/<version>/. When CONTRACT_VERSION changes, the old folder stays as it is, so
-//   a link to an old version keeps working.
+// - schema/<contract version>/<file> holds the files of a released version. At each release,
+//   `npm version` runs `npm run spec:release`, which copies them to spec/versions/<version>/.
+//   After that, nothing changes them, so a link to a released version always gets the same files.
 //
 // The manifest has no $id. A consumer gets the same file with or without it: $id is a JSON
 // Schema keyword, and editors read it only in a schema. The manifest is data, which a consumer
@@ -249,17 +249,23 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
   };
 }
 
-// The generated files in spec/, as { path: text }: the latest files, and a copy for the
-// current contract version. The copies of older versions are in spec/versions/ too, but the
-// code no longer makes them.
+const json = (data) => `${JSON.stringify(data, null, 2)}\n`;
+
+// The generated files in spec/, as { path: text }.
 export function specFiles() {
-  const json = (data) => `${JSON.stringify(data, null, 2)}\n`;
-  const pinned = `spec/versions/${CONTRACT_VERSION}`;
   return {
     'spec/tokens.manifest.json': json(tokenManifest()),
     'spec/inputs.schema.json': json(inputsSchema()),
-    [`${pinned}/tokens.manifest.json`]: json(tokenManifest()),
-    [`${pinned}/inputs.schema.json`]: json(inputsSchema({ id: specUrl('inputs.schema.json', CONTRACT_VERSION) })),
+  };
+}
+
+// The copy of the current contract version, for a release, as { path: text }. The schema's $id
+// is the URL of its version.
+export function releaseFiles() {
+  const dir = `spec/versions/${CONTRACT_VERSION}`;
+  return {
+    [`${dir}/tokens.manifest.json`]: json(tokenManifest()),
+    [`${dir}/inputs.schema.json`]: json(inputsSchema({ id: specUrl('inputs.schema.json', CONTRACT_VERSION) })),
   };
 }
 
