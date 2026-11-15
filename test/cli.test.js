@@ -79,8 +79,7 @@ test('build exits 1 for a missing file, bad JSON, or an unknown format', async (
       [[], /build needs one inputs file/],
       [[join(example, 'inputs.json'), '--nope'], /--nope: unknown flag/],
       [[join(example, 'inputs.json'), '--out'], /--out needs a value/],
-      [[join(example, 'inputs.json'), '--format', 'dtcg', '--prefix', 'x'], /--prefix: does nothing with --format dtcg/],
-      [[join(example, 'inputs.json'), '--unknown-flags', 'maybe'], /--unknown-flags: use error or warn/],
+      [[join(example, 'inputs.json'), '--unknown-flags', 'warn'], /--unknown-flags: unknown flag/],
     ]) {
       const { code, stderr } = await run('build', ...args);
       assert.equal(code, 1, args.join(' '));
@@ -103,18 +102,15 @@ test('build passes the CSS flags to the export', async () => {
   assert.ok(sheet.stdout.startsWith(toCss(built, { more: false })));
 });
 
-test('--unknown-flags warn skips unknown and unused flags with a warning', async () => {
+test('a CSS flag that the format does not use gets a warning, and the build goes on', async () => {
   const inputs = join(example, 'inputs.json');
   const plain = await run('build', inputs, '-f', 'dtcg');
-  const warned = await run('build', inputs, '-f', 'dtcg', '--new-flag=1', '--prefix', 'x', '--unknown-flags', 'warn');
+  const warned = await run('build', inputs, '-f', 'dtcg', '--prefix', 'x', '--no-more');
   assert.equal(warned.code, 0);
   assert.equal(warned.stdout, plain.stdout);
-  assert.match(warned.stderr, /Warning: skipped --new-flag: unknown flag/);
-  assert.match(warned.stderr, /Warning: skipped --prefix: does nothing with --format dtcg/);
-  const checked = await run('check', join(example, 'page.css'), '--nope', '--unknown-flags', 'warn');
-  assert.equal(checked.code, 0);
-  assert.match(checked.stderr, /Warning: skipped --nope/);
-  assert.equal((await run('check', join(example, 'page.css'), '--nope')).code, 1, 'error is the default');
+  assert.match(warned.stderr, /Warning: skipped --prefix: it does nothing with --format dtcg/);
+  assert.match(warned.stderr, /Warning: skipped --no-more: it does nothing with --format dtcg/);
+  assert.equal((await run('check', join(example, 'page.css'), '--nope')).code, 1, 'check stops at an unknown flag too');
 });
 
 test('--help prints the usage of both commands', async () => {

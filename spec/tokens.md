@@ -231,7 +231,7 @@ These flags change the CSS. Each one is an option of the export function, and wo
 
 `stylesheet` takes no `--prefix`, because the components read `--tm-*` tokens.
 
-A flag that the command does not know, or that does nothing with the format, stops the command. Add `--unknown-flags warn` to print a warning and skip the flag. This helps a script that passes flags from a newer version. Then write a value after an unknown flag with `=`, such as `--new-flag=value`. `themetron check` takes `--unknown-flags` too.
+A flag that the command does not know stops the command, with exit code 1. A CSS flag that the format does not use, such as `--prefix` with `dtcg`, prints a warning, and the build goes on without it.
 
 ## More contrast
 
