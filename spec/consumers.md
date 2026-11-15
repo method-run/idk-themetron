@@ -27,7 +27,7 @@ The contract is in three files. The code makes them, and a test fails when they 
 | [`spec/inputs.schema.json`](./inputs.schema.json) | The JSON Schema of the inputs. A draft. See [Inputs](./inputs.md "inputs"). |
 | [`components/components.css`](../components/components.css) | The reference components. They follow this contract. |
 
-From the package: `idk-themetron/spec/tokens.manifest.json` and `idk-themetron/spec/inputs.schema.json`.
+From the package: `@method-run/idk-themetron/spec/tokens.manifest.json`, `@method-run/idk-themetron/spec/inputs.schema.json`, and `@method-run/idk-themetron/components.css`.
 
 The site also publishes them at fixed URLs:
 

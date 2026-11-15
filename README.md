@@ -26,24 +26,18 @@ flowchart LR
 Zoom in: [Inputs](./spec/inputs.md "inputs") · [Engine](./src/README.md "engine") · [Tokens](./spec/tokens.md "tokens") · [Components](./components/README.md "components") · [Playground](./demo/README.md "playground")
 <!-- idk-plans:zoom:end -->
 
-## Try it
+## Install
 
 ```sh
-npm install
-npm run dev         # the playground on the Vite dev server, at http://localhost:4321/
-npm run build       # the docs and the playground as one static site, in _site/
-npm run preview     # serve the built site, at http://localhost:4321/
-npm run plans:preview  # build, then serve: the plans site at /, the playground at /play/
-npm test
-npm run spec        # write spec/tokens.manifest.json and spec/inputs.schema.json from the code
-npx themetron build inputs.json --format css --out tokens.css  # make the tokens from an inputs file
-npx themetron check site.css  # list the themetron tokens that a stylesheet reads
+npm install @method-run/idk-themetron
 ```
+
+The package is not on npm yet. Until it is, install it from GitHub: `npm install github:method-run/idk-themetron`.
 
 Use it from code:
 
 ```js
-import { buildThemes, toCss } from './src/index.js';
+import { buildThemes, toCss } from '@method-run/idk-themetron';
 
 const built = buildThemes({
   themes: {
@@ -55,7 +49,38 @@ const built = buildThemes({
 const css = toCss(built);   // one rule for each theme: :root and .theme-default, .theme-danger, .theme-airy
 ```
 
-Then add `components/components.css`, and put `class="tm-theme"` on the element that holds your page. `class="theme-danger"` on a part, or around it, gives it the danger theme.
+Then add the components stylesheet, and put `class="tm-theme"` on the element that holds your page. `class="theme-danger"` on a part, or around it, gives it the danger theme. With a bundler, import the stylesheet from the package:
+
+```js
+import '@method-run/idk-themetron/components.css';
+```
+
+The package has TypeScript types for the public functions and for the inputs, such as `Inputs` and `ThemeInput`. It also has the contract files: `@method-run/idk-themetron/spec/tokens.manifest.json` and `@method-run/idk-themetron/spec/inputs.schema.json`. The engine has no dependencies. It runs in Node 20 or later, and in browsers.
+
+## Work on themetron
+
+```sh
+npm install
+npm run dev         # the playground on the Vite dev server, at http://localhost:4321/
+npm run build       # the docs and the playground as one static site, in _site/
+npm run preview     # serve the built site, at http://localhost:4321/
+npm run plans:preview  # build, then serve: the plans site at /, the playground at /play/
+npm test
+npm run spec        # write spec/tokens.manifest.json and spec/inputs.schema.json from the code
+npx themetron check site.css  # list the themetron tokens that a stylesheet reads
+```
+
+<details>
+<summary>Publish a new version (for the maintainer)</summary>
+
+1. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
+2. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/`, `components/components.css`, the README, and the license.
+3. If you changed a public function or the inputs, update `src/index.d.ts`. A test fails when `index.js` exports a name that `index.d.ts` does not declare.
+4. Run `npm version patch`, `npm version minor`, or `npm version major`. This changes the version in `package.json`, and makes a commit and a tag. The package version is not the token contract version (`CONTRACT_VERSION`).
+5. Run `npm publish --access public`. npm makes a scoped package private unless you ask, so use `--access public`. (`publishConfig` in `package.json` also sets it.) `prepublishOnly` runs the tests and the docs check first.
+6. Run `git push --follow-tags`.
+
+</details>
 
 ## Parts
 

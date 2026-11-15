@@ -39,6 +39,7 @@ flowchart LR
 | `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, `toBootstrapSass`, `toMui`, `toDaisyui`, `toBootstrapCss`, and the Google Fonts URL |
 | `manifest.js` | The token contract: the manifest, the inputs schema, and `checkCss` |
 | `index.js` | The public functions |
+| `index.d.ts` | The TypeScript types of the public functions and the inputs, written by hand. A test checks that it declares every export of `index.js`. |
 
 <details>
 <summary>The theme object</summary>
@@ -67,4 +68,4 @@ A new palette takes less than a millisecond. For each grade, a formula gives the
 
 ## Tasks
 
-- [ ] Publish as an npm package with types
+- [x] Publish as an npm package with types: `package.json` and `index.d.ts` are ready. The publish itself is a task in the [README](../README.md "idk-themetron").
