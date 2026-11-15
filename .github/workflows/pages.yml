@@ -1,5 +1,6 @@
-# Build the docs and the playground, and publish them on GitHub Pages.
-# Runs on each push to main, and by hand from the Actions tab.
+# Build the docs and the playground (the theme config site, in play/), and publish them on
+# GitHub Pages. Runs on each push to main, and by hand from the Actions tab. Follows idk-plans'
+# "Publish the site" guide: check the docs tree first, and link code files to this commit.
 name: Pages
 
 on:
@@ -21,16 +22,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: '22'
           cache: npm
       - run: npm ci
+      - run: npx idk-plans check --quiet
       - run: npm test
       - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+        env:
+          SOURCE_URL: ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -42,4 +45,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

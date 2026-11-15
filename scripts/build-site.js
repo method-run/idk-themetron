@@ -1,6 +1,8 @@
 // Build the docs and the playground into one static site.
 // The docs come from idk-plans. Vite builds the playground into play/. Then this adds links between the two.
 // Usage: node scripts/build-site.js [out]   (default: _site)
+// SOURCE_URL, if set, is the base URL for links to files in the repository, such as the URL of
+// one commit's files on GitHub. CI sets it, so code links on the site match the commit it shows.
 import { execFileSync } from 'node:child_process';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -10,7 +12,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.resolve(ROOT, process.argv[2] ?? '_site');
 const run = (cmd, args) => execFileSync(cmd, args, { cwd: ROOT, stdio: 'inherit' });
 
-run('npx', ['idk-plans', 'site', '--out', OUT]);
+run('npx', ['idk-plans', 'site', '--out', OUT, ...(process.env.SOURCE_URL ? ['--source-url', process.env.SOURCE_URL] : [])]);
 run('npx', ['vite', 'build', '--outDir', path.join(OUT, 'play')]);
 
 // Each docs page gets a "Playground" link in its top bar. The Playground page also gets a button.
