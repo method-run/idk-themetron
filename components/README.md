@@ -31,8 +31,8 @@ The component library is one CSS file. It has no JavaScript. Each component read
 | Part | Classes | Variants |
 |---|---|---|
 | Button | `tm-button` | `--soft`, `--quiet`, `--outline`, `--ghost`, `--exact`; sizes `--sm`, `--lg` |
-| Field | `tm-field`, `tm-label`, `tm-input`, `tm-select`, `tm-textarea`, `tm-hint`, `tm-error` | `aria-invalid="true"` |
-| Checkbox and radio | `tm-check`, `tm-radio`, inside `tm-choice` | |
+| Field | `tm-field`, `tm-label`, `tm-input`, `tm-select`, `tm-textarea`, `tm-hint`, `tm-error` | `--soft`, `--quiet` (such as `tm-input--soft`); `aria-invalid="true"` |
+| Checkbox and radio | `tm-check`, `tm-radio`, inside `tm-choice` | `--soft`, `--quiet`: the tint shows while it is not checked |
 | Switch | `tm-switch` on a checkbox with `role="switch"` | |
 | Card | `tm-card` | `--flat`, `--raised` |
 | Badge | `tm-badge`: one body line, less the most whole grid squares of margin above and below that still leave room for its text, so it sits in the middle of the line beside it, on the grid | `--solid` |
@@ -54,7 +54,8 @@ A part takes its color from the nearest theme class, such as `theme-danger`. `tm
 |---|---|
 | Spaciousness | Padding, gaps, line heights, control height |
 | Roundness | Every radius. At full roundness, buttons and badges are pills, and cards round a lot. |
-| Depth | Shadows: solid, quiet, soft, and exact buttons rest on `elevation-1`, and fade in `elevation-2` on hover as they rise by `lift`. Outline and ghost buttons stay flat. Cards use `elevation-2`, raised cards and dialogs `elevation-3`, and fields, tracks, and pressed buttons `elevation-inset`. |
+| Depth | Shadows: solid, quiet, soft, and exact buttons rest on `elevation-1`, and change to `elevation-2` on hover as they rise by `lift`. Outline and ghost buttons stay flat. Cards use `elevation-2`, raised cards and dialogs `elevation-3`, text fields, checks, and radios `elevation-field`, and tracks and pressed buttons `elevation-inset`. |
+| Softness | How blurry the shadows are, and how far headings lighten; at the top of the range, a light shadow up and to the left, button and card edges fade out (`edge-alpha`), and text fields look pressed into the page (`elevation-field`, `border-base-field`), for a neumorphic look |
 | Solidity | How see-through cards, fields, tints, quiet buttons, and solid fills are. Labels on fading solid fills get a halo of the fill's color. |
 | Shininess | Buttons get a brighter top and a darker bottom. Checks, radios, switches, badges, avatars, progress bars, and the pressed segment get a gradient, an edge band, and a glow. Labels on buttons, badges, avatars, and pressed segments get a 1 px line that sets them into the surface (`text-shadow-*`). |
 

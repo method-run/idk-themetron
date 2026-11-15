@@ -126,7 +126,8 @@
   gap: var(--tm-space-sm);
   min-height: var(--tm-control-height);
   padding: var(--tm-control-padding-y) var(--tm-control-padding-x);
-  border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * 100%), transparent);
+  /* The edge fades with the button, and over the top of softness (--tm-edge-alpha). */
+  border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
   border-radius: var(--tm-radius-control);
   /* Fills and tints turn see-through at low solidity: --tm-fill-alpha for solid fills, and
      --tm-tint-alpha for tints. */
@@ -151,7 +152,7 @@
     box-shadow var(--tm-duration-base) var(--tm-ease-standard),
     transform var(--tm-duration-base) var(--tm-ease-enter);
 }
-.tm-button:hover { --_bg: var(--tm-fill-action-hover); --_fg: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-elevation-1), var(--tm-elevation-2); }
+.tm-button:hover { --_bg: var(--tm-fill-action-hover); --_fg: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-elevation-2); }
 .tm-button:active { --_bg: var(--tm-fill-action-active); --_fg: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
 .tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
@@ -176,9 +177,19 @@
   -webkit-backdrop-filter: var(--tm-shine-backdrop-top);
   backdrop-filter: var(--tm-shine-backdrop-top);
   filter: var(--tm-shine-filter-top);
-  --_band-mask: linear-gradient(to bottom, #000 0, #000 var(--_shine-band), rgb(0 0 0 / 0.6) var(--_shine-band), transparent 50%), linear-gradient(to right, #000 0, #000 calc(var(--_shine-band) / 2), transparent calc(var(--_shine-band) / 2));
-  -webkit-mask-image: var(--_band-mask);
-  mask-image: var(--_band-mask);
+  /* The mask: a smooth fade from the top (60%, gone by the middle), plus a band along the top
+     edge and half as wide down the left edge that follows the button's curve. The band is the
+     whole shape minus the content box, which the padding moves down and to the right; a
+     content-box mask layer is rounded to the inner radius, so the band curves with the corners. */
+  padding: var(--_shine-band) 0 0 calc(var(--_shine-band) / 2);
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-clip: border-box, content-box, border-box;
+  mask-clip: border-box, content-box, border-box;
+  -webkit-mask-origin: border-box, content-box, border-box;
+  mask-origin: border-box, content-box, border-box;
+  -webkit-mask-composite: source-over, xor;
+  mask-composite: add, exclude;
 }
 .tm-button::after {
   -webkit-backdrop-filter: var(--tm-shine-backdrop-bottom);
@@ -269,7 +280,7 @@
   width: 100%;
   min-height: var(--tm-control-height);
   padding: var(--tm-control-padding-y) var(--tm-control-padding-x);
-  border: var(--tm-border-width) solid var(--tm-border-base-strong);
+  border: var(--tm-border-width) solid var(--tm-border-base-field);
   border-radius: min(var(--tm-radius-control), var(--tm-radius-lg));
   background-color: color-mix(in oklab, var(--tm-bg-field) calc(var(--tm-field-alpha) * 100%), transparent);
   color: var(--tm-fg-base);
@@ -278,7 +289,7 @@
      16 px line still fits the tight line, so fields keep their height. */
   font-size: max(16px, var(--tm-font-size-md));
   line-height: var(--tm-leading-tight-md);
-  box-shadow: var(--tm-elevation-inset);
+  box-shadow: var(--tm-elevation-field);
   transition: border-color var(--tm-duration-fast) var(--tm-ease-standard);
 }
 /* Browsers size a native select by its own rules, so one-line fields get a fixed height.
@@ -313,6 +324,23 @@
 .tm-input::placeholder, .tm-textarea::placeholder { color: var(--tm-fg-base-subtle); }
 .tm-input:hover, .tm-select:hover, .tm-textarea:hover { border-color: var(--tm-fg-base-muted); }
 .tm-input[aria-invalid="true"] { border-color: var(--tm-border-action); }
+/* Tinted fields. Soft fills the field with the action tint and gives it the action edge: with a
+   color theme on the field, such as a red one, it shows a state like an error. Quiet fills it
+   with the base tint, keeping the usual edge: an on-theme field that is not the page's white,
+   so the light inset at the top of softness shows. Each takes the tint's own label color, so
+   the text passes, and the muted text color for placeholders. Checks and radios take the same tint while they are not checked. */
+:is(.tm-input, .tm-select, .tm-textarea, .tm-check, .tm-radio):is(.tm-input--soft, .tm-select--soft, .tm-textarea--soft, .tm-check--soft, .tm-radio--soft):not(:checked) {
+  background-color: color-mix(in oklab, var(--tm-tint-action) calc(var(--tm-field-alpha) * 100%), transparent);
+  border-color: var(--tm-border-action);
+  color: var(--tm-on-tint-action);
+}
+:is(.tm-input, .tm-select, .tm-textarea):is(.tm-input--soft, .tm-select--soft, .tm-textarea--soft):hover { border-color: var(--tm-fg-action); }
+:is(.tm-input, .tm-select, .tm-textarea, .tm-check, .tm-radio):is(.tm-input--quiet, .tm-select--quiet, .tm-textarea--quiet, .tm-check--quiet, .tm-radio--quiet):not(:checked) {
+  background-color: color-mix(in oklab, var(--tm-tint-base) calc(var(--tm-field-alpha) * 100%), transparent);
+  color: var(--tm-on-tint-base);
+}
+/* The subtle text color can be too faint on a tint, so tinted fields use the muted one. */
+:is(.tm-input--soft, .tm-textarea--soft, .tm-input--quiet, .tm-textarea--quiet)::placeholder { color: var(--tm-fg-base-muted); }
 .tm-field .tm-error { font-size: var(--tm-font-size-sm); color: var(--tm-fg-action); }
 
 /* ---- Checkbox, radio, and switch: native inputs with a new look. */
@@ -332,7 +360,7 @@
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-strong);
   border-radius: var(--tm-radius-sm);
   background: var(--tm-bg-field);
-  box-shadow: var(--tm-elevation-inset);
+  box-shadow: var(--tm-elevation-field);
   cursor: pointer;
   transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), border-color var(--tm-duration-fast) var(--tm-ease-standard), var(--_shine-transition);
 }
@@ -401,7 +429,8 @@
   gap: var(--tm-space-md);
   /* The edge is inside the padding, so the card's outer edges stay on the rhythm grid. */
   padding: calc(var(--tm-space-lg) - var(--tm-panel-border-width));
-  border: var(--tm-panel-border-width) solid var(--tm-panel-border);
+  /* The edge fades out over the top of softness (--tm-edge-alpha). */
+  border: var(--tm-panel-border-width) solid color-mix(in oklab, var(--tm-panel-border) calc(var(--tm-edge-alpha, 1) * 100%), transparent);
   border-radius: var(--tm-radius-lg);
   background: var(--tm-bg-panel);
   -webkit-backdrop-filter: var(--tm-backdrop);

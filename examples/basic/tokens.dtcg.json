@@ -723,6 +723,11 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "edgeAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+        },
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
@@ -784,15 +789,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.default.base.90}"
+              "$value": "{themes.default.base.75}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.default.base.90}"
+              "$value": "{themes.default.base.70}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.default.base.90}"
+              "$value": "{themes.default.base.70}"
             },
             "base-subtle": {
               "$type": "color",
@@ -809,6 +814,10 @@
               "$value": "{themes.default.base.20}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.default.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.default.base.50}"
             },
@@ -1124,7 +1133,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
+              "$value": "0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1152,6 +1161,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #20242c1f",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #20242c1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1202,15 +1220,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.default.base.5}"
+              "$value": "{themes.default.base.25}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.default.base.5}"
+              "$value": "{themes.default.base.30}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.default.base.5}"
+              "$value": "{themes.default.base.30}"
             },
             "base-subtle": {
               "$type": "color",
@@ -1227,6 +1245,10 @@
               "$value": "{themes.default.base.80}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.default.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.default.base.50}"
             },
@@ -1542,7 +1564,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+              "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1570,6 +1592,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #0000004d",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -1647,15 +1678,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.default.base.90}"
+                "$value": "{themes.default.base.85}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.default.base.90}"
+                "$value": "{themes.default.base.75}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.default.base.90}"
+                "$value": "{themes.default.base.75}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -1672,6 +1703,10 @@
                 "$value": "{themes.default.base.20}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.default.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.default.base.50}"
               },
@@ -1987,7 +2022,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
+                "$value": "0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2015,6 +2050,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #20242c1f",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #20242c1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2065,15 +2109,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.default.base.5}"
+                "$value": "{themes.default.base.15}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.default.base.5}"
+                "$value": "{themes.default.base.25}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.default.base.5}"
+                "$value": "{themes.default.base.25}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -2090,6 +2134,10 @@
                 "$value": "{themes.default.base.80}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.default.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.default.base.50}"
               },
@@ -2405,7 +2453,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+                "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -2433,6 +2481,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #0000004d",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -3122,6 +3179,11 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "edgeAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+        },
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
@@ -3183,15 +3245,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.success.base.90}"
+              "$value": "{themes.success.base.75}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.success.base.90}"
+              "$value": "{themes.success.base.70}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.success.base.90}"
+              "$value": "{themes.success.base.70}"
             },
             "base-subtle": {
               "$type": "color",
@@ -3208,6 +3270,10 @@
               "$value": "{themes.success.base.20}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.success.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.success.base.50}"
             },
@@ -3523,7 +3589,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #002b0b29, 0 0.2px 2.9px #002b0b14",
+              "$value": "0.6px 1.2px 1.7px #002b0b29, 0 0.3px 3.8px #002b0b14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -3551,6 +3617,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #002b0b1f",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #002b0b1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -3601,15 +3676,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.success.base.5}"
+              "$value": "{themes.success.base.25}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.success.base.5}"
+              "$value": "{themes.success.base.30}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.success.base.5}"
+              "$value": "{themes.success.base.30}"
             },
             "base-subtle": {
               "$type": "color",
@@ -3626,6 +3701,10 @@
               "$value": "{themes.success.base.80}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.success.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.success.base.50}"
             },
@@ -3941,7 +4020,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+              "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -3969,6 +4048,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #0000004d",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -4046,15 +4134,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.success.base.90}"
+                "$value": "{themes.success.base.85}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.success.base.90}"
+                "$value": "{themes.success.base.75}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.success.base.90}"
+                "$value": "{themes.success.base.75}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -4071,6 +4159,10 @@
                 "$value": "{themes.success.base.20}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.success.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.success.base.50}"
               },
@@ -4386,7 +4478,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #002b0b29, 0 0.2px 2.9px #002b0b14",
+                "$value": "0.6px 1.2px 1.7px #002b0b29, 0 0.3px 3.8px #002b0b14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4414,6 +4506,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #002b0b1f",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #002b0b1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4464,15 +4565,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.success.base.5}"
+                "$value": "{themes.success.base.15}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.success.base.5}"
+                "$value": "{themes.success.base.25}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.success.base.5}"
+                "$value": "{themes.success.base.25}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -4489,6 +4590,10 @@
                 "$value": "{themes.success.base.80}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.success.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.success.base.50}"
               },
@@ -4804,7 +4909,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+                "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -4832,6 +4937,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #0000004d",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -5521,6 +5635,11 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "edgeAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+        },
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
@@ -5582,15 +5701,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.warning.base.90}"
+              "$value": "{themes.warning.base.75}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.warning.base.90}"
+              "$value": "{themes.warning.base.70}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.warning.base.90}"
+              "$value": "{themes.warning.base.70}"
             },
             "base-subtle": {
               "$type": "color",
@@ -5607,6 +5726,10 @@
               "$value": "{themes.warning.base.20}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.warning.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.warning.base.50}"
             },
@@ -5922,7 +6045,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #391d0029, 0 0.2px 2.9px #391d0014",
+              "$value": "0.6px 1.2px 1.7px #391d0029, 0 0.3px 3.8px #391d0014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -5950,6 +6073,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #391d001f",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #391d001f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -6000,15 +6132,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.warning.base.5}"
+              "$value": "{themes.warning.base.25}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.warning.base.5}"
+              "$value": "{themes.warning.base.30}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.warning.base.5}"
+              "$value": "{themes.warning.base.30}"
             },
             "base-subtle": {
               "$type": "color",
@@ -6025,6 +6157,10 @@
               "$value": "{themes.warning.base.80}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.warning.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.warning.base.50}"
             },
@@ -6340,7 +6476,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+              "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -6368,6 +6504,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #0000004d",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -6445,15 +6590,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.warning.base.90}"
+                "$value": "{themes.warning.base.85}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.warning.base.90}"
+                "$value": "{themes.warning.base.75}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.warning.base.90}"
+                "$value": "{themes.warning.base.75}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -6470,6 +6615,10 @@
                 "$value": "{themes.warning.base.20}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.warning.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.warning.base.50}"
               },
@@ -6785,7 +6934,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #391d0029, 0 0.2px 2.9px #391d0014",
+                "$value": "0.6px 1.2px 1.7px #391d0029, 0 0.3px 3.8px #391d0014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6813,6 +6962,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #391d001f",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #391d001f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -6863,15 +7021,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.warning.base.5}"
+                "$value": "{themes.warning.base.15}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.warning.base.5}"
+                "$value": "{themes.warning.base.25}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.warning.base.5}"
+                "$value": "{themes.warning.base.25}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -6888,6 +7046,10 @@
                 "$value": "{themes.warning.base.80}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.warning.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.warning.base.50}"
               },
@@ -7203,7 +7365,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+                "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7231,6 +7393,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #0000004d",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -7920,6 +8091,11 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "edgeAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+        },
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
@@ -7981,15 +8157,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.danger.base.90}"
+              "$value": "{themes.danger.base.75}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.danger.base.90}"
+              "$value": "{themes.danger.base.70}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.danger.base.90}"
+              "$value": "{themes.danger.base.70}"
             },
             "base-subtle": {
               "$type": "color",
@@ -8006,6 +8182,10 @@
               "$value": "{themes.danger.base.20}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.danger.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.danger.base.50}"
             },
@@ -8321,7 +8501,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #4f002029, 0 0.2px 2.9px #4f002014",
+              "$value": "0.6px 1.2px 1.7px #4f002029, 0 0.3px 3.8px #4f002014",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8349,6 +8529,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #4f00201f",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #4f00201f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8399,15 +8588,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.danger.base.5}"
+              "$value": "{themes.danger.base.25}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.danger.base.5}"
+              "$value": "{themes.danger.base.30}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.danger.base.5}"
+              "$value": "{themes.danger.base.30}"
             },
             "base-subtle": {
               "$type": "color",
@@ -8424,6 +8613,10 @@
               "$value": "{themes.danger.base.80}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.danger.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.danger.base.50}"
             },
@@ -8739,7 +8932,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+              "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8767,6 +8960,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #0000004d",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -8844,15 +9046,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.danger.base.90}"
+                "$value": "{themes.danger.base.85}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.danger.base.90}"
+                "$value": "{themes.danger.base.75}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.danger.base.90}"
+                "$value": "{themes.danger.base.75}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -8869,6 +9071,10 @@
                 "$value": "{themes.danger.base.20}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.danger.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.danger.base.50}"
               },
@@ -9184,7 +9390,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #4f002029, 0 0.2px 2.9px #4f002014",
+                "$value": "0.6px 1.2px 1.7px #4f002029, 0 0.3px 3.8px #4f002014",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9212,6 +9418,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #4f00201f",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #4f00201f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9262,15 +9477,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.danger.base.5}"
+                "$value": "{themes.danger.base.15}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.danger.base.5}"
+                "$value": "{themes.danger.base.25}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.danger.base.5}"
+                "$value": "{themes.danger.base.25}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -9287,6 +9502,10 @@
                 "$value": "{themes.danger.base.80}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.danger.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.danger.base.50}"
               },
@@ -9602,7 +9821,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+                "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -9630,6 +9849,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #0000004d",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -10319,6 +10547,11 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "edgeAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+        },
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
@@ -10380,15 +10613,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.promo.base.90}"
+              "$value": "{themes.promo.base.75}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.promo.base.90}"
+              "$value": "{themes.promo.base.70}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.promo.base.90}"
+              "$value": "{themes.promo.base.70}"
             },
             "base-subtle": {
               "$type": "color",
@@ -10405,6 +10638,10 @@
               "$value": "{themes.promo.base.20}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.promo.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.promo.base.50}"
             },
@@ -10720,7 +10957,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
+              "$value": "0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -10748,6 +10985,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #20242c1f",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #20242c1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -10798,15 +11044,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.promo.base.5}"
+              "$value": "{themes.promo.base.25}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.promo.base.5}"
+              "$value": "{themes.promo.base.30}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.promo.base.5}"
+              "$value": "{themes.promo.base.30}"
             },
             "base-subtle": {
               "$type": "color",
@@ -10823,6 +11069,10 @@
               "$value": "{themes.promo.base.80}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.promo.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.promo.base.50}"
             },
@@ -11138,7 +11388,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+              "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -11166,6 +11416,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #0000004d",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -11243,15 +11502,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.promo.base.90}"
+                "$value": "{themes.promo.base.85}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.promo.base.90}"
+                "$value": "{themes.promo.base.75}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.promo.base.90}"
+                "$value": "{themes.promo.base.75}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -11268,6 +11527,10 @@
                 "$value": "{themes.promo.base.20}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.promo.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.promo.base.50}"
               },
@@ -11583,7 +11846,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
+                "$value": "0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -11611,6 +11874,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #20242c1f",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #20242c1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -11661,15 +11933,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.promo.base.5}"
+                "$value": "{themes.promo.base.15}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.promo.base.5}"
+                "$value": "{themes.promo.base.25}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.promo.base.5}"
+                "$value": "{themes.promo.base.25}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -11686,6 +11958,10 @@
                 "$value": "{themes.promo.base.80}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.promo.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.promo.base.50}"
               },
@@ -12001,7 +12277,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+                "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -12029,6 +12305,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #0000004d",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -12718,6 +13003,11 @@
           "$value": 1,
           "$description": "The opacity of fields."
         },
+        "edgeAlpha": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+        },
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
@@ -12779,15 +13069,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.sale.base.90}"
+              "$value": "{themes.sale.base.75}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.sale.base.90}"
+              "$value": "{themes.sale.base.70}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.sale.base.90}"
+              "$value": "{themes.sale.base.70}"
             },
             "base-subtle": {
               "$type": "color",
@@ -12804,6 +13094,10 @@
               "$value": "{themes.sale.base.20}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.sale.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.sale.base.50}"
             },
@@ -13119,7 +13413,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
+              "$value": "0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -13147,6 +13441,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #20242c1f",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #20242c1f",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -13197,15 +13500,15 @@
             },
             "base-heading-lg": {
               "$type": "color",
-              "$value": "{themes.sale.base.5}"
+              "$value": "{themes.sale.base.25}"
             },
             "base-heading-2xl": {
               "$type": "color",
-              "$value": "{themes.sale.base.5}"
+              "$value": "{themes.sale.base.30}"
             },
             "base-heading-3xl": {
               "$type": "color",
-              "$value": "{themes.sale.base.5}"
+              "$value": "{themes.sale.base.30}"
             },
             "base-subtle": {
               "$type": "color",
@@ -13222,6 +13525,10 @@
               "$value": "{themes.sale.base.80}"
             },
             "base-strong": {
+              "$type": "color",
+              "$value": "{themes.sale.base.50}"
+            },
+            "base-field": {
               "$type": "color",
               "$value": "{themes.sale.base.50}"
             },
@@ -13537,7 +13844,7 @@
           "elevation": {
             "1": {
               "$type": "shadow",
-              "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+              "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -13565,6 +13872,15 @@
             "inset": {
               "$type": "shadow",
               "$value": "inset 0 1px 1.9px #0000004d",
+              "$extensions": {
+                "themetron": {
+                  "css": true
+                }
+              }
+            },
+            "field": {
+              "$type": "shadow",
+              "$value": "inset 0px 1px 1.9px #0000004d",
               "$extensions": {
                 "themetron": {
                   "css": true
@@ -13642,15 +13958,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.sale.base.90}"
+                "$value": "{themes.sale.base.85}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.sale.base.90}"
+                "$value": "{themes.sale.base.75}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.sale.base.90}"
+                "$value": "{themes.sale.base.75}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -13667,6 +13983,10 @@
                 "$value": "{themes.sale.base.20}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.sale.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.sale.base.50}"
               },
@@ -13982,7 +14302,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #20242c29, 0 0.2px 2.9px #20242c14",
+                "$value": "0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -14010,6 +14330,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #20242c1f",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #20242c1f",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -14060,15 +14389,15 @@
               },
               "base-heading-lg": {
                 "$type": "color",
-                "$value": "{themes.sale.base.5}"
+                "$value": "{themes.sale.base.15}"
               },
               "base-heading-2xl": {
                 "$type": "color",
-                "$value": "{themes.sale.base.5}"
+                "$value": "{themes.sale.base.25}"
               },
               "base-heading-3xl": {
                 "$type": "color",
-                "$value": "{themes.sale.base.5}"
+                "$value": "{themes.sale.base.25}"
               },
               "base-subtle": {
                 "$type": "color",
@@ -14085,6 +14414,10 @@
                 "$value": "{themes.sale.base.80}"
               },
               "base-strong": {
+                "$type": "color",
+                "$value": "{themes.sale.base.50}"
+              },
+              "base-field": {
                 "$type": "color",
                 "$value": "{themes.sale.base.50}"
               },
@@ -14400,7 +14733,7 @@
             "elevation": {
               "1": {
                 "$type": "shadow",
-                "$value": "0.3px 0.6px 1.4px #00000049, 0 0.2px 2.9px #00000025",
+                "$value": "0.6px 1.2px 1.7px #00000049, 0 0.3px 3.8px #00000025",
                 "$extensions": {
                   "themetron": {
                     "css": true
@@ -14428,6 +14761,15 @@
               "inset": {
                 "$type": "shadow",
                 "$value": "inset 0 1px 1.9px #0000004d",
+                "$extensions": {
+                  "themetron": {
+                    "css": true
+                  }
+                }
+              },
+              "field": {
+                "$type": "shadow",
+                "$value": "inset 0px 1px 1.9px #0000004d",
                 "$extensions": {
                   "themetron": {
                     "css": true

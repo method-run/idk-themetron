@@ -43,7 +43,7 @@ Two older projects each solved half of the problem. The first themetron had frie
 - **Add choices for contrast.** WCAG 2 or APCA. Every theme ships the standard level, and the enhanced level as its more-contrast variant.
 - **Add presets.** A preset is a set of feels with a familiar name, such as flat, brutalist, or glass.
 - **Add roles.** Components ask for "primary" or "danger", not for a color name.
-- **Grow the depth model.** themetron-3 split depth into elevation, shine, fullness, and emboss. Now these are separate feels: depth, shininess, and solidity. Softness is the likely next one. Emboss is partly here: at higher shininess, labels get a 1 px line that sets them into the surface.
+- **Grow the depth model.** themetron-3 split depth into elevation, shine, fullness, and emboss. Now these are separate feels: depth, softness, shininess, and solidity. Softness sets how blurry shadows are, and adds a neumorphic light shadow at the top of its range. Emboss is partly here: at higher shininess, labels get a 1 px line that sets them into the surface.
 
 ## Steps
 

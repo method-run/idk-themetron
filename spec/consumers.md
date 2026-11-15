@@ -49,10 +49,10 @@ The manifest marks each token `stable` or `experimental`. These groups are stabl
 |---|---|---|
 | Backgrounds | `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-field` | color, both modes |
 | Text | `fg-base`, `fg-base-muted`, `fg-base-subtle` | color, both modes |
-| Borders | `border-base`, `border-base-strong`, `border-focus` | color, both modes |
+| Borders | `border-base`, `border-base-strong`, `border-base-field`, `border-focus` | color, both modes |
 | Ramp grades | `base-0` … `base-100`, `action-0` … `action-100`: 21 grades each, 5 apart | color, one value |
 | Gaps | `gap-text`, `gap-large`, `gap-ui`: the grade distance that each use needs | number |
-| Shadows | `elevation-1`, `elevation-2`, `elevation-3`, `elevation-inset` | shadow, both modes |
+| Shadows | `elevation-1`, `elevation-2`, `elevation-3`, `elevation-inset`, `elevation-field` | shadow, both modes |
 | Fonts | `font-body`, `font-heading`, `font-mono`, `font-size-*`, `font-weight-*` | font family, dimension, number |
 | Rhythm | `rhythm`, `leading-*`, `leading-tight-*`, `space-*` | dimension |
 | Controls | `control-height`, `control-height-sm`, `control-height-lg`, `control-padding-x`, `control-padding-y` | dimension |
@@ -76,7 +76,7 @@ These pairs pass the theme's contrast setting, in both modes and in every theme.
 | Foreground | On | Passes for |
 |---|---|---|
 | `fg-base`, `fg-base-muted`, `fg-action` | `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-field` | text |
-| `fg-base-subtle`, `border-base-strong`, `border-action` | `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-field` | UI |
+| `fg-base-subtle`, `border-base-strong`, `border-base-field`, `border-action` | `bg-canvas`, `bg-surface`, `bg-sunken`, `bg-field` | UI |
 | `fill-action` | `bg-canvas` | UI: a solid button's shape shows on the page |
 | `on-fill-action`, `on-fill-action-hover` | `fill-action`, `fill-action-hover` (each label on its own state) | text |
 | `on-fill-quiet`, `on-fill-quiet-hover` | `fill-quiet`, `fill-quiet-hover` | text |
@@ -223,7 +223,7 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 
 - **0.6.0:**
   - Removed: the hover and press gloss grades of action fills, quiet buttons, and exact buttons (`gloss-action-hover-*`, `gloss-quiet-active-*`, …), and `highlight-quiet`, `glow-quiet`, `highlight-action-exact`, `glow-action-exact`. Buttons now shade through their backdrop instead of painting gradients, so nothing reads them. The resting gloss grades stay.
-  - New: `fg-base-heading-lg`, `-2xl`, and `-3xl`, for headings. They are the body text color for now. `text-shadow-*` for each part, and `text-halo` for `tm-over-media`. `field-alpha`, and the clearest opacities `fill-alpha-clearest` and `tint-alpha-inverted-clearest`. `shine-backdrop-top`, `-bottom`, `shine-filter-top`, `-bottom`, and `shine-paint`, which pick how buttons shade: through the backdrop when parts are see-through, painted when they are opaque.
+  - New: `fg-base-heading-lg`, `-2xl`, and `-3xl`, for headings, which lighten with softness. `edge-alpha`, which fades button and card edges at the top of softness. `border-base-field` and `elevation-field`, for text fields, checks, and radios: at the top of softness the edge recedes and the field looks pressed into the page. `text-shadow-*` for each part, and `text-halo` for `tm-over-media`. `field-alpha`, and the clearest opacities `fill-alpha-clearest` and `tint-alpha-inverted-clearest`. `shine-backdrop-top`, `-bottom`, `shine-filter-top`, `-bottom`, and `shine-paint`, which pick how buttons shade: through the backdrop when parts are see-through, painted when they are opaque.
 - **0.5.0:**
   - Removed: `fill-base` and its states and labels, since the quiet button (`fill-quiet`) is the base role's button now. Removed the finished shine gradients `gloss`, `gloss-base`, and `gloss-action`, and `highlight`: parts now paint the shared `shine-image`.
   - New: grades 15, 25, … 85 in every ramp, so ramps have 21 grades, 5 apart. A label for each state of each fill and tint (`on-fill-action-hover`, `on-tint-base-active`, …). `tint-*-active`. The quiet button (`fill-quiet`, `on-fill-quiet`, and their states) and the exact button's states. Gloss grades for each part and state (`gloss-action-hover-rim`, …), `highlight-*` and `glow-*` for each part, `shine-image`, `shininess`, and `roundness`. `radius-control-sm` and `-lg`. `backdrop` and `backdrop-control`.

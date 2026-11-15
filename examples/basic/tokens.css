@@ -72,6 +72,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-edge-alpha: 1;
   --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
@@ -112,12 +113,13 @@
   --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-25), var(--tm-base-50));
   --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-45), var(--tm-base-70));
   --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-65));
-  --tm-elevation-1: 0.3px 0.6px 1.4px light-dark(#20242c29, #00000049), 0 0.2px 2.9px light-dark(#20242c14, #00000025);
+  --tm-elevation-1: 0.6px 1.2px 1.7px light-dark(#20242c29, #00000049), 0 0.3px 3.8px light-dark(#20242c14, #00000025);
   --tm-elevation-2: 0.9px 1.8px 2.1px light-dark(#20242c29, #00000049), 0 0.5px 4.7px light-dark(#20242c14, #00000025);
   --tm-elevation-3: 2.4px 4.8px 3.9px light-dark(#20242c29, #00000049), 0 1.2px 9.2px light-dark(#20242c14, #00000025);
   --tm-elevation-inset: inset 0 1px 1.9px light-dark(#20242c1f, #0000004d);
-  --tm-elevation-1-normal: 0.3px 0.6px 1.4px light-dark(#20242c29, #00000049), 0 0.2px 2.9px light-dark(#20242c14, #00000025);
-  --tm-elevation-1-flipped: 0.3px 0.6px 1.4px light-dark(#00000049, #20242c29), 0 0.2px 2.9px light-dark(#00000025, #20242c14);
+  --tm-elevation-field: inset 0px 1px 1.9px light-dark(#20242c1f, #0000004d);
+  --tm-elevation-1-normal: 0.6px 1.2px 1.7px light-dark(#20242c29, #00000049), 0 0.3px 3.8px light-dark(#20242c14, #00000025);
+  --tm-elevation-1-flipped: 0.6px 1.2px 1.7px light-dark(#00000049, #20242c29), 0 0.3px 3.8px light-dark(#00000025, #20242c14);
   --tm-elevation-2-normal: 0.9px 1.8px 2.1px light-dark(#20242c29, #00000049), 0 0.5px 4.7px light-dark(#20242c14, #00000025);
   --tm-elevation-2-flipped: 0.9px 1.8px 2.1px light-dark(#00000049, #20242c29), 0 0.5px 4.7px light-dark(#00000025, #20242c14);
   --tm-elevation-3-normal: 2.4px 4.8px 3.9px light-dark(#20242c29, #00000049), 0 1.2px 9.2px light-dark(#20242c14, #00000025);
@@ -187,6 +189,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-edge-alpha: 1;
   --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
@@ -227,12 +230,13 @@
   --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-25), var(--tm-base-50));
   --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-45), var(--tm-base-70));
   --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-65));
-  --tm-elevation-1: 0.3px 0.6px 1.4px light-dark(#002b0b29, #00000049), 0 0.2px 2.9px light-dark(#002b0b14, #00000025);
+  --tm-elevation-1: 0.6px 1.2px 1.7px light-dark(#002b0b29, #00000049), 0 0.3px 3.8px light-dark(#002b0b14, #00000025);
   --tm-elevation-2: 0.9px 1.8px 2.1px light-dark(#002b0b29, #00000049), 0 0.5px 4.7px light-dark(#002b0b14, #00000025);
   --tm-elevation-3: 2.4px 4.8px 3.9px light-dark(#002b0b29, #00000049), 0 1.2px 9.2px light-dark(#002b0b14, #00000025);
   --tm-elevation-inset: inset 0 1px 1.9px light-dark(#002b0b1f, #0000004d);
-  --tm-elevation-1-normal: 0.3px 0.6px 1.4px light-dark(#002b0b29, #00000049), 0 0.2px 2.9px light-dark(#002b0b14, #00000025);
-  --tm-elevation-1-flipped: 0.3px 0.6px 1.4px light-dark(#00000049, #002b0b29), 0 0.2px 2.9px light-dark(#00000025, #002b0b14);
+  --tm-elevation-field: inset 0px 1px 1.9px light-dark(#002b0b1f, #0000004d);
+  --tm-elevation-1-normal: 0.6px 1.2px 1.7px light-dark(#002b0b29, #00000049), 0 0.3px 3.8px light-dark(#002b0b14, #00000025);
+  --tm-elevation-1-flipped: 0.6px 1.2px 1.7px light-dark(#00000049, #002b0b29), 0 0.3px 3.8px light-dark(#00000025, #002b0b14);
   --tm-elevation-2-normal: 0.9px 1.8px 2.1px light-dark(#002b0b29, #00000049), 0 0.5px 4.7px light-dark(#002b0b14, #00000025);
   --tm-elevation-2-flipped: 0.9px 1.8px 2.1px light-dark(#00000049, #002b0b29), 0 0.5px 4.7px light-dark(#00000025, #002b0b14);
   --tm-elevation-3-normal: 2.4px 4.8px 3.9px light-dark(#002b0b29, #00000049), 0 1.2px 9.2px light-dark(#002b0b14, #00000025);
@@ -302,6 +306,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-edge-alpha: 1;
   --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
@@ -342,12 +347,13 @@
   --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-25), var(--tm-base-50));
   --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-45), var(--tm-base-70));
   --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-65));
-  --tm-elevation-1: 0.3px 0.6px 1.4px light-dark(#391d0029, #00000049), 0 0.2px 2.9px light-dark(#391d0014, #00000025);
+  --tm-elevation-1: 0.6px 1.2px 1.7px light-dark(#391d0029, #00000049), 0 0.3px 3.8px light-dark(#391d0014, #00000025);
   --tm-elevation-2: 0.9px 1.8px 2.1px light-dark(#391d0029, #00000049), 0 0.5px 4.7px light-dark(#391d0014, #00000025);
   --tm-elevation-3: 2.4px 4.8px 3.9px light-dark(#391d0029, #00000049), 0 1.2px 9.2px light-dark(#391d0014, #00000025);
   --tm-elevation-inset: inset 0 1px 1.9px light-dark(#391d001f, #0000004d);
-  --tm-elevation-1-normal: 0.3px 0.6px 1.4px light-dark(#391d0029, #00000049), 0 0.2px 2.9px light-dark(#391d0014, #00000025);
-  --tm-elevation-1-flipped: 0.3px 0.6px 1.4px light-dark(#00000049, #391d0029), 0 0.2px 2.9px light-dark(#00000025, #391d0014);
+  --tm-elevation-field: inset 0px 1px 1.9px light-dark(#391d001f, #0000004d);
+  --tm-elevation-1-normal: 0.6px 1.2px 1.7px light-dark(#391d0029, #00000049), 0 0.3px 3.8px light-dark(#391d0014, #00000025);
+  --tm-elevation-1-flipped: 0.6px 1.2px 1.7px light-dark(#00000049, #391d0029), 0 0.3px 3.8px light-dark(#00000025, #391d0014);
   --tm-elevation-2-normal: 0.9px 1.8px 2.1px light-dark(#391d0029, #00000049), 0 0.5px 4.7px light-dark(#391d0014, #00000025);
   --tm-elevation-2-flipped: 0.9px 1.8px 2.1px light-dark(#00000049, #391d0029), 0 0.5px 4.7px light-dark(#00000025, #391d0014);
   --tm-elevation-3-normal: 2.4px 4.8px 3.9px light-dark(#391d0029, #00000049), 0 1.2px 9.2px light-dark(#391d0014, #00000025);
@@ -417,6 +423,7 @@
   --tm-radius-control-lg: 7.7px;
   --tm-radius-full: 9999px;
   --tm-roundness: 0.35;
+  --tm-edge-alpha: 1;
   --tm-shininess: 0;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
@@ -457,12 +464,13 @@
   --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-25), var(--tm-base-50));
   --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-45), var(--tm-base-70));
   --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-65));
-  --tm-elevation-1: 0.3px 0.6px 1.4px light-dark(#4f002029, #00000049), 0 0.2px 2.9px light-dark(#4f002014, #00000025);
+  --tm-elevation-1: 0.6px 1.2px 1.7px light-dark(#4f002029, #00000049), 0 0.3px 3.8px light-dark(#4f002014, #00000025);
   --tm-elevation-2: 0.9px 1.8px 2.1px light-dark(#4f002029, #00000049), 0 0.5px 4.7px light-dark(#4f002014, #00000025);
   --tm-elevation-3: 2.4px 4.8px 3.9px light-dark(#4f002029, #00000049), 0 1.2px 9.2px light-dark(#4f002014, #00000025);
   --tm-elevation-inset: inset 0 1px 1.9px light-dark(#4f00201f, #0000004d);
-  --tm-elevation-1-normal: 0.3px 0.6px 1.4px light-dark(#4f002029, #00000049), 0 0.2px 2.9px light-dark(#4f002014, #00000025);
-  --tm-elevation-1-flipped: 0.3px 0.6px 1.4px light-dark(#00000049, #4f002029), 0 0.2px 2.9px light-dark(#00000025, #4f002014);
+  --tm-elevation-field: inset 0px 1px 1.9px light-dark(#4f00201f, #0000004d);
+  --tm-elevation-1-normal: 0.6px 1.2px 1.7px light-dark(#4f002029, #00000049), 0 0.3px 3.8px light-dark(#4f002014, #00000025);
+  --tm-elevation-1-flipped: 0.6px 1.2px 1.7px light-dark(#00000049, #4f002029), 0 0.3px 3.8px light-dark(#00000025, #4f002014);
   --tm-elevation-2-normal: 0.9px 1.8px 2.1px light-dark(#4f002029, #00000049), 0 0.5px 4.7px light-dark(#4f002014, #00000025);
   --tm-elevation-2-flipped: 0.9px 1.8px 2.1px light-dark(#00000049, #4f002029), 0 0.5px 4.7px light-dark(#00000025, #4f002014);
   --tm-elevation-3-normal: 2.4px 4.8px 3.9px light-dark(#4f002029, #00000049), 0 1.2px 9.2px light-dark(#4f002014, #00000025);
@@ -532,6 +540,7 @@
   --tm-radius-control-lg: 22px;
   --tm-radius-full: 9999px;
   --tm-roundness: 1;
+  --tm-edge-alpha: 1;
   --tm-shininess: 0.33;
   --tm-border-width: 1px;
   --tm-focus-width: 2px;
@@ -572,12 +581,13 @@
   --tm-gloss-tint-base-active-top: light-dark(var(--tm-base-25), var(--tm-base-50));
   --tm-gloss-tint-base-active-shadow: light-dark(var(--tm-base-45), var(--tm-base-70));
   --tm-gloss-tint-base-active-bottom: light-dark(var(--tm-base-40), var(--tm-base-65));
-  --tm-elevation-1: 0.3px 0.6px 1.4px light-dark(#20242c29, #00000049), 0 0.2px 2.9px light-dark(#20242c14, #00000025);
+  --tm-elevation-1: 0.6px 1.2px 1.7px light-dark(#20242c29, #00000049), 0 0.3px 3.8px light-dark(#20242c14, #00000025);
   --tm-elevation-2: 0.9px 1.8px 2.1px light-dark(#20242c29, #00000049), 0 0.5px 4.7px light-dark(#20242c14, #00000025);
   --tm-elevation-3: 2.4px 4.8px 3.9px light-dark(#20242c29, #00000049), 0 1.2px 9.2px light-dark(#20242c14, #00000025);
   --tm-elevation-inset: inset 0 1px 1.9px light-dark(#20242c1f, #0000004d);
-  --tm-elevation-1-normal: 0.3px 0.6px 1.4px light-dark(#20242c29, #00000049), 0 0.2px 2.9px light-dark(#20242c14, #00000025);
-  --tm-elevation-1-flipped: 0.3px 0.6px 1.4px light-dark(#00000049, #20242c29), 0 0.2px 2.9px light-dark(#00000025, #20242c14);
+  --tm-elevation-field: inset 0px 1px 1.9px light-dark(#20242c1f, #0000004d);
+  --tm-elevation-1-normal: 0.6px 1.2px 1.7px light-dark(#20242c29, #00000049), 0 0.3px 3.8px light-dark(#20242c14, #00000025);
+  --tm-elevation-1-flipped: 0.6px 1.2px 1.7px light-dark(#00000049, #20242c29), 0 0.3px 3.8px light-dark(#00000025, #20242c14);
   --tm-elevation-2-normal: 0.9px 1.8px 2.1px light-dark(#20242c29, #00000049), 0 0.5px 4.7px light-dark(#20242c14, #00000025);
   --tm-elevation-2-flipped: 0.9px 1.8px 2.1px light-dark(#00000049, #20242c29), 0 0.5px 4.7px light-dark(#00000025, #20242c14);
   --tm-elevation-3-normal: 2.4px 4.8px 3.9px light-dark(#20242c29, #00000049), 0 1.2px 9.2px light-dark(#20242c14, #00000025);
@@ -619,13 +629,14 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
-  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-75), var(--tm-base-25));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-70), var(--tm-base-30));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-70), var(--tm-base-30));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
+  --tm-border-base-field: var(--tm-base-50);
   --tm-tint-base: light-dark(var(--tm-base-15), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-25), var(--tm-base-70));
@@ -679,13 +690,14 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
-  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-75), var(--tm-base-25));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-70), var(--tm-base-30));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-70), var(--tm-base-30));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
+  --tm-border-base-field: var(--tm-base-50);
   --tm-tint-base: light-dark(var(--tm-base-15), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-25), var(--tm-base-70));
@@ -739,13 +751,14 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
-  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-75), var(--tm-base-25));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-70), var(--tm-base-30));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-70), var(--tm-base-30));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
+  --tm-border-base-field: var(--tm-base-50);
   --tm-tint-base: light-dark(var(--tm-base-15), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-25), var(--tm-base-70));
@@ -799,13 +812,14 @@
   --tm-bg-field: light-dark(var(--tm-base-0), var(--tm-base-90));
   --tm-fg-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
-  --tm-fg-base-heading-lg: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-90), var(--tm-base-5));
-  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-90), var(--tm-base-5));
+  --tm-fg-base-heading-lg: light-dark(var(--tm-base-75), var(--tm-base-25));
+  --tm-fg-base-heading-2xl: light-dark(var(--tm-base-70), var(--tm-base-30));
+  --tm-fg-base-heading-3xl: light-dark(var(--tm-base-70), var(--tm-base-30));
   --tm-fg-base-subtle: var(--tm-base-50);
   --tm-border-base: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-panel-border: light-dark(var(--tm-base-20), var(--tm-base-80));
   --tm-border-base-strong: var(--tm-base-50);
+  --tm-border-base-field: var(--tm-base-50);
   --tm-tint-base: light-dark(var(--tm-base-15), var(--tm-base-80));
   --tm-on-tint-base: light-dark(var(--tm-base-90), var(--tm-base-5));
   --tm-tint-base-hover: light-dark(var(--tm-base-25), var(--tm-base-70));
@@ -1293,6 +1307,9 @@
   }
   :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-fg-base-muted: light-dark(var(--tm-base-80), var(--tm-base-20));
+    --tm-fg-base-heading-lg: light-dark(var(--tm-base-85), var(--tm-base-15));
+    --tm-fg-base-heading-2xl: light-dark(var(--tm-base-75), var(--tm-base-25));
+    --tm-fg-base-heading-3xl: light-dark(var(--tm-base-75), var(--tm-base-25));
     --tm-tint-base-active: light-dark(var(--tm-base-35), var(--tm-base-65));
     --tm-gloss-base-muted-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
     --tm-gloss-base-muted-top: light-dark(var(--tm-base-60), var(--tm-base-5));
@@ -1348,6 +1365,9 @@
   }
   :scope:is(:root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-fg-base-muted: light-dark(var(--tm-base-80), var(--tm-base-20));
+    --tm-fg-base-heading-lg: light-dark(var(--tm-base-85), var(--tm-base-15));
+    --tm-fg-base-heading-2xl: light-dark(var(--tm-base-75), var(--tm-base-25));
+    --tm-fg-base-heading-3xl: light-dark(var(--tm-base-75), var(--tm-base-25));
     --tm-tint-base-active: light-dark(var(--tm-base-35), var(--tm-base-65));
     --tm-gloss-base-muted-rim: light-dark(var(--tm-base-50), var(--tm-base-5));
     --tm-gloss-base-muted-top: light-dark(var(--tm-base-60), var(--tm-base-5));
@@ -1403,6 +1423,9 @@
   }
   :scope:is(:root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale), :root, .theme-default, .theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
     --tm-fg-base-muted: light-dark(var(--tm-base-60), var(--tm-base-40));
+    --tm-fg-base-heading-lg: light-dark(var(--tm-base-75), var(--tm-base-25));
+    --tm-fg-base-heading-2xl: light-dark(var(--tm-base-70), var(--tm-base-30));
+    --tm-fg-base-heading-3xl: light-dark(var(--tm-base-70), var(--tm-base-30));
     --tm-tint-base-active: light-dark(var(--tm-base-35), var(--tm-base-60));
     --tm-gloss-base-muted-rim: light-dark(var(--tm-base-30), var(--tm-base-10));
     --tm-gloss-base-muted-top: light-dark(var(--tm-base-40), var(--tm-base-20));

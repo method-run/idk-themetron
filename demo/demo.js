@@ -19,6 +19,7 @@ const FEEL_HINTS = {
   spaciousness: 'Padding, gaps, and line height.',
   roundness: 'Corners, as a share of the most a part can round.',
   depth: 'Soft shadows, and how far buttons rise on hover.',
+  softness: 'How blurry shadows are. At the top, a light shadow too, for a neumorphic look.',
   solidity: 'How see-through cards, tints, fields, and fills are.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
 };

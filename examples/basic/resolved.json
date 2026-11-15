@@ -34,6 +34,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "softness": 0.5,
         "solidity": 1,
         "shininess": 0
       },
@@ -68,6 +69,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "softness": 0.5,
         "solidity": 1,
         "shininess": 0
       },
@@ -102,6 +104,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "softness": 0.5,
         "solidity": 1,
         "shininess": 0
       },
@@ -136,6 +139,7 @@
         "spaciousness": 0.5,
         "roundness": 0.35,
         "depth": 0.3,
+        "softness": 0.5,
         "solidity": 1,
         "shininess": 0
       },
@@ -170,6 +174,7 @@
         "spaciousness": 0.5,
         "roundness": 1,
         "depth": 0.3,
+        "softness": 0.5,
         "solidity": 1,
         "shininess": 0.33
       },
@@ -204,6 +209,7 @@
         "spaciousness": 0.5,
         "roundness": 1,
         "depth": 0.3,
+        "softness": 0.5,
         "solidity": 1,
         "shininess": 0.33
       },

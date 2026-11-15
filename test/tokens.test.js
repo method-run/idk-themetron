@@ -147,7 +147,13 @@ test('feels change the primitives', () => {
   }
   assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 15, lg: 18, xl: 22, '2xl': 26, '3xl': 31 });
   // Removed feels still load, and change nothing.
-  assert.deepEqual(p({ thickness: 0, softness: 0, bounciness: 1, snappiness: 1 }), p({}));
+  assert.deepEqual(p({ thickness: 0, bounciness: 1, snappiness: 1 }), p({}));
+  // Softness: the default keeps the shadows as they were; softer is blurrier; the light shadow
+  // (a first layer with a negative offset) only appears at the top of the range.
+  const shadow = (softness) => buildThemes({ themes: { default: { feel: { depth: 0.5, softness } } } }).themes.default.modes.light.computed['elevation.2'];
+  const blur = (css) => parseFloat(css.split(', ').find((l) => !l.startsWith('-')).split(' ')[2]);
+  assert.ok(blur(shadow(1)) > blur(shadow(0.5)) && blur(shadow(0.5)) > blur(shadow(0)));
+  assert.ok(!shadow(0.85).startsWith('-') && shadow(0.95).startsWith('-'));
   // Solidity: opaque at 1, and each kind of part at its clearest at 0.
   const clear = p({ solidity: 0 }).effect;
   for (const k of ['panelAlpha', 'panelAlphaInverted', 'fillAlpha', 'fillAlphaInverted', 'tintAlpha', 'tintAlphaInverted', 'fieldAlpha']) assert.equal(p({ solidity: 1 }).effect[k], 1, k);

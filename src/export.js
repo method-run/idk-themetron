@@ -29,6 +29,8 @@ export function primitiveEntries(p) {
   // The roundness, from 0 to 1, for parts that round as a share of their own size:
   // calc(var(--tm-roundness) * height / 2) is a pill at full roundness.
   out.push(['roundness', String(p.roundness)]);
+  // The opacity of button and card edges: 1, fading to 0 over the top tenth of softness.
+  out.push(['edge-alpha', String(p.effect.edgeAlpha)]);
   // The shininess, from 0 to 1: the shared shine (see shineRules) scales its opacity by it.
   out.push(['shininess', String(p.shininess)]);
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
@@ -358,6 +360,7 @@ export function toDtcg(built) {
       tintAlpha: tok('number', p.effect.tintAlpha, { $description: 'The tint opacity of soft and quiet buttons.' }),
       tintAlphaInverted: tok('number', p.effect.tintAlphaInverted, { $description: 'The tint opacity of a part with tm-invert.' }),
       fieldAlpha: tok('number', p.effect.fieldAlpha, { $description: 'The opacity of fields.' }),
+      edgeAlpha: tok('number', p.effect.edgeAlpha, { $description: 'The opacity of button and card edges: 1, fading to 0 over the top tenth of softness.' }),
       fillAlphaClearest: tok('number', p.effect.clearest.fill, { $description: 'The opacity of a solid fill at solidity 0.' }),
       tintAlphaInvertedClearest: tok('number', p.effect.clearest.tintInverted, { $description: 'The opacity of an inverted tint at solidity 0.' }),
       panelBorderWidth: tok('dimension', { value: p.panelBorderWidth, unit: 'px' }),

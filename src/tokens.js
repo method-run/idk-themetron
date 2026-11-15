@@ -37,7 +37,7 @@ function buildLevel(settings, palettes, variant = false) {
 
 // ---- Primitives: values that do not change with the mode.
 
-// Fixed values for the parts that the removed feels (thickness, softness, bounciness, snappiness)
+// Fixed values for the parts that the removed feels (thickness, bounciness, snappiness)
 // used to set. The tokens stay, so components still work: hairline borders, no blur outside
 // tm-over-media, and calm motion with no overshoot.
 const BORDER_WIDTH = 1;
@@ -168,6 +168,9 @@ export function buildPrimitives(settings, palettes, gaps) {
       ...FLAT,
       // Buttons rise on hover: up to 1 px, with depth. More is distracting.
       lift: round(d * 1, 1),
+      // The edges of buttons and cards fade out over the top tenth of softness (0.9 to 1), for a
+      // neumorphic look, where shadows alone shape the parts.
+      edgeAlpha: round(1 - Math.min(1, Math.max(0, (settings.feel.softness - 0.9) / 0.1))),
       // How see-through each kind of part is: from its CLEAREST opacity at solidity 0, to
       // opaque at 1.
       panelAlpha: solid(CLEAREST.panel),
@@ -270,22 +273,23 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const mutedGrade = pick(base, outward, passesAll('text'), bgs);
   // Text fading: text can move toward the page, so the page reads as one soft layer. Body text
   // goes to one notch (10 grade numbers) past the min-contrast grade, muted text stays at it, and
-  // headings go to the min-contrast grade for their size. Off for now (TEXT_FADE is 0); softness
-  // may drive it later. Linear with the fade, rounded to a grade. fgGrade stays the full text
-  // color, for labels.
-  const clearness = TEXT_FADE;
-  const fade = (from, to) => Math.round((from + (to - from) * clearness) / 5) * 5;
+  // headings go to the min-contrast grade for their size. Body text does not fade for now
+  // (TEXT_FADE is 0). Headings fade with softness, all along its range. Linear, rounded to a
+  // grade. fgGrade stays the full text color, for labels.
+  const fadeBy = (clearness) => (from, to) => Math.round((from + (to - from) * clearness) / 5) * 5;
+  const fade = fadeBy(TEXT_FADE);
   const bodyClear = dark ? Math.max(fgGrade, mutedGrade - 10) : Math.min(fgGrade, mutedGrade + 10);
   set('fg.base', base, fade(fgGrade, bodyClear));
   set('fg.base-muted', base, mutedGrade);
-  // Headings fade further: to the min-contrast grade for their size, at solidity 0. Text of 24 px
-  // or more is large (WCAG's rule for regular weight), so headings need not be bold.
+  // Headings fade further, with softness: to the min-contrast grade for their size at softness 1.
+  // Text of 24 px or more is large (WCAG's rule for regular weight), so headings need not be bold.
+  const fadeHeading = fadeBy(settings.feel.softness);
   const fine = GRADES.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
   if (dark) fine.reverse();
   for (const size of ['lg', '2xl', '3xl']) {
     const purpose = primitives.font.size[size] >= 24 ? 'large' : 'text';
     const clear = pick(base, fine, passesAll(purpose), bgs);
-    set(`fg.base-heading-${size}`, base, fade(fgGrade, dark ? Math.max(fgGrade, clear) : Math.min(fgGrade, clear)));
+    set(`fg.base-heading-${size}`, base, fadeHeading(fgGrade, dark ? Math.max(fgGrade, clear) : Math.min(fgGrade, clear)));
     for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(`fg.base-heading-${size}`, bg, purpose);
   }
   set('fg.base-subtle', base, pick(base, outward, passesAll('ui'), bgs));
@@ -295,6 +299,14 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   for (const fg of ['fg.base', 'fg.base-muted']) for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(fg, bg, 'text');
   check('fg.base-subtle', 'bg.canvas', 'ui');
   check('border.base-strong', 'bg.surface', 'ui');
+  // Field edges recede at the top of softness (0.9 to 1), as the neumorphic hollow takes over
+  // showing the field: to the lightest grade (5 apart) that still passes the control contrast
+  // on every background. Linear, rounded to a grade.
+  const sink = Math.min(1, Math.max(0, (settings.feel.softness - 0.9) / 0.1));
+  const strong = tokens['border.base-strong'].grade;
+  const faint = pick(base, fine, passesAll('ui'), bgs);
+  set('border.base-field', base, fadeBy(sink)(strong, dark ? Math.max(strong, faint) : Math.min(strong, faint)));
+  for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check('border.base-field', bg, 'ui');
 
   // Base tints and quiet buttons sit 10 grade numbers beyond the canvas and the surface,
   // toward the text, so they show on both, and differ from the sunken background too: 15 in
@@ -373,6 +385,10 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
       check(`on-tint.${role}${state}`, `tint.${role}${state}`, 'text', state !== '-active');
       if (state === '-active') audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
     }
+    // Tinted fields (tm-input--soft and --quiet) show their placeholders in the muted text color.
+    // Placeholders need the control contrast only. Shown as a warning: not a guaranteed pair.
+    check('fg.base-muted', `tint.${role}`, 'ui', false);
+    audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
   }
 
   // Small solid parts in the base color, such as a switch's knob, are the muted text color.
@@ -501,7 +517,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     for (const role of ROLES) seen(`on-tint.${role}${state}`, `tint.${role}${state}`, e.tintAlpha);
   }
 
-  return { tokens, audit, computed: computed(dark, tokens, settings.feel.depth, palettes.base, e) };
+  return { tokens, audit, computed: computed(dark, tokens, settings.feel, palettes.base, e) };
 }
 
 // An empty shadow that can still join a list of shadows, which "none" cannot.
@@ -510,44 +526,86 @@ const NO_SHADOW = '0 0 #0000';
 // Values for one mode that are not one palette color: panels and shadows. A panel is the
 // surface, see-through as solidity allows. It names the token it copies, so the CSS can point
 // at it, with its opacity.
-function computed(dark, tokens, depth, base, effect) {
+function computed(dark, tokens, feel, base, effect) {
+  const { depth } = feel;
+  // Harder shadows are darker and sharper: below softness 0.5 the key shadow grows to fully
+  // opaque and its blur shrinks to 0 at softness 0. From softness 0.5 up it is as usual.
+  const soft = { blur: 0.4 * 6.25 ** feel.softness, keyAlpha: 0.16 + 0.84 * Math.max(0, 1 - feel.softness / 0.5), keySharp: Math.min(1, feel.softness / 0.5), ambient: feel.softness > 0, light: Math.min(1, Math.max(0, (feel.softness - 0.9) / 0.1)), lightColor: base.steps[dark ? Math.max(0, tokens['bg.canvas'].grade - 15) : 0] };
   const panel = (alpha) => ({ alias: 'bg.surface', alpha, value: alpha < 1 ? withAlpha(tokens['bg.surface'].value, alpha) : tokens['bg.surface'].value });
   return {
     'bg.panel': panel(effect.panelAlpha),
     'bg.panel-normal': panel(effect.panelAlpha),
     'bg.panel-inverted': panel(effect.panelAlphaInverted),
-    'elevation.1': elevation(1, depth, dark, base),
-    'elevation.2': elevation(2, depth, dark, base),
-    'elevation.3': elevation(3, depth, dark, base),
-    'elevation.inset': insetShadow(depth, dark, base),
+    'elevation.1': elevation(1, depth, dark, base, soft),
+    'elevation.2': elevation(2, depth, dark, base, soft),
+    'elevation.3': elevation(3, depth, dark, base, soft),
+    'elevation.inset': insetShadow(depth, dark, base, soft),
+    'elevation.field': fieldShadow(depth, dark, base, soft),
   };
 }
 
 // How far each elevation floats at full depth, in px: a resting part, a raised part (hover,
 // cards), and an overlay (dialogs, menus).
-const ELEVATION = [2, 6, 16];
+const ELEVATION = [4, 6, 16];
 
 // A floating shadow in two layers, as usual: a key shadow, cast down and to the right (the light
 // is above and to the left, as for the shine), and a wide, faint ambient shadow all round. Depth
-// sets how far the part floats: the offset, and a little of the blur. The color is the base
-// ramp's darkest grade that still shows on the mode's backgrounds, so a warm base makes warm
-// shadows. Dark backgrounds hide shadows, so dark mode makes them 1.8 times as strong.
-function elevation(level, d, dark, base) {
+// sets how far the part floats: the offset, and a little of the blur. Softness sets how blurry
+// the shadows are: soft.blur times the blur, from 0.4 (hard) through 1 (the default) to 2.5
+// (pillowy). The color is the base ramp's darkest grade that still shows on the mode's
+// backgrounds, so a warm base makes warm shadows. Dark backgrounds hide shadows, so dark mode
+// makes them 1.8 times as strong. Harder shadows are darker: below softness 0.5 the key shadow's
+// opacity rises from 16%, to fully opaque at softness 0, and its blur shrinks to 0 (a sharp block). At the top of the softness range (0.9 to 1), a light shadow
+// fades in on the other side, up and to the left, for the neumorphic look: the page's lighter
+// color (white, or a little lighter than the dark canvas), up and to the left, as far as a raised
+// part's shadow at least.
+function elevation(level, d, dark, base, soft) {
   if (!d) return NO_SHADOW;
   const y = round(d * ELEVATION[level - 1], 1);
   const x = round(y / 2, 1);
   const strength = dark ? 1.8 : 1;
   const color = (alpha) => withAlpha(base.steps[dark ? 100 : 90], Math.min(1, alpha * strength));
-  const key = `${x}px ${y}px ${round(1 + y * 0.6, 1)}px ${color(0.16)}`;
-  const ambient = `0 ${round(y / 4, 1)}px ${round(2 + y * 1.5, 1)}px ${color(0.08)}`;
-  return `${key}, ${ambient}`;
+  const keyBlur = round((1 + y * 0.6) * soft.blur * soft.keySharp, 1);
+  const key = `${x}px ${y}px ${keyBlur}px ${color(soft.keyAlpha)}`;
+  // At softness 0 there is no ambient shadow, so the key shadow is one sharp block.
+  if (!soft.ambient) return key;
+  const ambient = `0 ${round(y / 4, 1)}px ${round((2 + y * 1.5) * soft.blur, 1)}px ${color(0.08)}`;
+  if (!soft.light) return `${key}, ${ambient}`;
+  // The light shadow has its own offset: at least as far as a raised part's (elevation 2), at
+  // every level, so it shows as a lit edge on resting buttons too, not a faint glow.
+  const ly = round(Math.max(y, d * ELEVATION[1]), 1);
+  const lx = round(ly / 2, 1);
+  const light = `${-lx}px ${-ly}px ${round((1 + ly * 0.6) * soft.blur, 1)}px ${withAlpha(soft.lightColor, (dark ? 0.35 : 0.9) * soft.light)}`;
+  return `${light}, ${key}, ${ambient}`;
 }
 
 // A pressed or sunken part: a faint shadow inside its top edge. It stays faint, as text sits
 // over it and is checked against the flat color.
-function insetShadow(d, dark, base) {
+function insetShadow(d, dark, base, soft) {
   if (!d) return NO_SHADOW;
-  return `inset 0 ${round(Math.max(1, d * 2), 1)}px ${round(1 + d * 3, 1)}px ${withAlpha(base.steps[dark ? 100 : 90], dark ? 0.3 : 0.12)}`;
+  return `inset 0 ${round(Math.max(1, d * 2), 1)}px ${round((1 + d * 3) * soft.blur, 1)}px ${withAlpha(base.steps[dark ? 100 : 90], dark ? 0.3 : 0.12)}`;
+}
+
+// A field: the inset shadow, and at the top of softness (0.9 to 1) the neumorphic hollow. The
+// dark shadow moves to the top and left edges, and a light one fades in inside the bottom and
+// right edges, the far wall that catches the light. Same light color as the light shadow.
+// Below softness 0.5 the dark shadow grows harder, like the key shadow: fully opaque with no
+// blur at softness 0, a sharp band inside the top edge. From softness 0.9 to 1 both shadows grow
+// to twice as strong, so the hollow reads without a border, and shrink by half their blur (a
+// negative spread), so each stays on its own side and does not ring the whole field.
+function fieldShadow(d, dark, base, soft) {
+  if (!d) return NO_SHADOW;
+  const y = round(Math.max(1, d * 2), 1);
+  const x = round((y / 2) * soft.light, 1);
+  const blur = round((1 + d * 3) * soft.blur, 1);
+  const alpha = (dark ? 0.3 : 0.12) * (1 + soft.light);
+  const spread = soft.light ? ` ${-round((blur / 2) * soft.light, 1)}px` : '';
+  const dim = `inset ${x}px ${y}px ${round(blur * soft.keySharp, 1)}px${spread} ${withAlpha(base.steps[dark ? 100 : 90], alpha + (1 - alpha) * (1 - soft.keySharp))}`;
+  if (!soft.light) return dim;
+  // The light shadow moves further, up to its blur: past the negative spread, so the far wall's
+  // edge sits half a blur inside the field and shows as a clear band.
+  const ly = round(y + (blur - y) * soft.light, 1);
+  return `${dim}, inset ${-round(ly / 2, 1)}px ${-ly}px ${blur}px${spread} ${withAlpha(soft.lightColor, Math.min(1, (dark ? 0.35 : 0.9) * 2 * soft.light))}`;
 }
 
 // A color with an opacity, as seen over a background: the browser blends them in sRGB.

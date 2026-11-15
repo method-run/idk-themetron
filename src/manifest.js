@@ -32,12 +32,13 @@ const MEANING = {
   'bg-field': 'The inside of text fields and other inputs.',
   'fg-base': 'Body text and headings. Passes the text contrast on every background.',
   'fg-base-muted': 'Secondary text. Passes the text contrast on every background.',
-  'fg-base-heading-lg': 'Headings in the lg size (h3). The body text color for now; it can fade to the min-contrast grade for its size.',
-  'fg-base-heading-2xl': 'Headings in the 2xl size (h2). The body text color for now; it can fade to the min-contrast grade for its size: the large-text level at 24 px and up.',
-  'fg-base-heading-3xl': 'Headings in the 3xl size (h1). The body text color for now; it can fade to the min-contrast grade for its size: the large-text level at 24 px and up.',
+  'fg-base-heading-lg': 'Headings in the lg size (h3). Lightens with softness, to the min-contrast grade for its size at softness 1.',
+  'fg-base-heading-2xl': 'Headings in the 2xl size (h2). Lightens with softness, to the min-contrast grade for its size at softness 1: the large-text level at 24 px and up.',
+  'fg-base-heading-3xl': 'Headings in the 3xl size (h1). Lightens with softness, to the min-contrast grade for its size at softness 1: the large-text level at 24 px and up.',
   'fg-base-subtle': 'Placeholders and other hints. Passes the control contrast only.',
   'border-base': 'Dividers and the edges of surfaces. Decoration only.',
   'border-base-strong': 'The edges of fields and controls. Passes the control contrast.',
+  'border-base-field': 'The edges of text fields and selects. border-base-strong, receding at the top of softness to the lightest grade that passes the control contrast.',
   'border-focus': 'Focus rings. The same as border-action.',
   'tint-base': 'Neutral soft fills, such as hover and selected backgrounds for menu items and list rows, and neutral tags. They show on the canvas and on surfaces.',
   'tint-base-hover': 'A quiet soft fill on hover: 10 grade numbers from the tint, toward the text.',
@@ -80,7 +81,7 @@ const MEANING = {
 const BGS = ['bg-canvas', 'bg-surface', 'bg-sunken', 'bg-field'];
 export const PAIRS = [
   { fg: ['fg-base', 'fg-base-muted', 'fg-action'], bg: BGS, purpose: 'text' },
-  { fg: ['fg-base-subtle', 'border-base-strong', 'border-action'], bg: BGS, purpose: 'ui' },
+  { fg: ['fg-base-subtle', 'border-base-strong', 'border-base-field', 'border-action'], bg: BGS, purpose: 'ui' },
   // A solid fill stands out from the canvas, so a button's shape shows.
   { fg: ['fill-action'], bg: ['bg-canvas'], purpose: 'ui' },
   // Press is not listed: it lasts a moment, and where the label is already white or black it
