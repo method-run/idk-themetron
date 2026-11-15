@@ -38,6 +38,7 @@ To see the page, serve the project folder, such as with `npx vite --open example
 | 4. DTCG | [`tokens.dtcg.json`](./basic/tokens.dtcg.json) | [Tokens](../spec/tokens.md "tokens"), and the DTCG format | Follows the contract. |
 | 4. Tailwind | [`tailwind.css`](./basic/tailwind.css) | [Tokens](../spec/tokens.md "tokens") | An adapter. It reads the CSS tokens. |
 | 4. shadcn/ui | [`shadcn.css`](./basic/shadcn.css) | [Tokens](../spec/tokens.md "tokens") | An adapter, for shadcn/ui's own names. |
+| 4. Bootstrap 5 | [`_bootstrap.scss`](./basic/_bootstrap.scss) | [Tokens](../spec/tokens.md "tokens") | An adapter, for Bootstrap's Sass variables. It has fixed values, not the CSS tokens. |
 | 5. Audit | [`audit.md`](./basic/audit.md) | [Grades and contrast](../spec/grades.md "grades") | A report. The pairs that it counts are in the manifest. |
 | 6. Consumer | [`page.html`](./basic/page.html), [`page.css`](./basic/page.css), [`check.txt`](./basic/check.txt) | [Using themetron](../spec/consumers.md "consumers") | A site that follows the contract. `check.txt` shows that `page.css` reads only contract tokens. It reads the experimental action tokens with fallbacks. |
 

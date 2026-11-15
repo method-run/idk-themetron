@@ -1,6 +1,6 @@
 // The files of one example, made from its inputs: { file name: text }. Each file is one level
 // of the pipeline. examples/README.md says what each one is, and which spec covers it.
-import { buildThemes, normalizeInputs, toCss, toDtcg, toTailwind, toShadcn, MODES } from '../src/index.js';
+import { buildThemes, normalizeInputs, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, MODES } from '../src/index.js';
 import { checkCss } from '../src/manifest.js';
 
 const json = (data) => `${JSON.stringify(data, null, 2)}\n`;
@@ -15,6 +15,7 @@ export function exampleFiles(inputs, pageCss) {
     'tokens.dtcg.json': json(toDtcg(built)),
     'tailwind.css': toTailwind(built),
     'shadcn.css': toShadcn(built),
+    '_bootstrap.scss': toBootstrapSass(built),
     'audit.md': audit(built),
     'check.txt': check(pageCss),
   };
