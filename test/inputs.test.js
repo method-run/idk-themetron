@@ -98,7 +98,7 @@ test('a preset starts the feels again, and the heading font follows the nearest 
 test('bad inputs give one message for each problem', () => {
   const bad = {
     themes: {
-      default: { parent: 'x', color: 'blue', feel: { spaciousness: 2, roundness: 'curvy' }, preset: 'retro' },
+      default: { parent: 'x', color: 'bluish', feel: { spaciousness: 2, roundness: 'curvy' }, preset: 'retro' },
       Big: { parent: 'default' },
       orphan: { color: '#fff' },
       lost: { parent: 'nobody' },

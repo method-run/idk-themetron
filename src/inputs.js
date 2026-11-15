@@ -1,6 +1,7 @@
 // The human-friendly inputs: a tree of themes. Check them, fill in defaults, and
 // work out each theme's full settings from its parents.
-import { isHex, parseHex, toHex } from './color.js';
+import { toHex } from './color.js';
+import { COLOR_FORMATS, parseColor } from './css-color.js';
 
 // Each feel is a number from 0 to 1. A word from `stops` can stand for its number.
 // The label is the short name people see. The order is the order that the playground shows.
@@ -158,7 +159,7 @@ export function normalizeInputs(raw = {}) {
       if (typeof t.label === 'string' && t.label.trim()) own.label = t.label.trim();
       else fail(`${at}.label: use text, such as "Big Sale".`);
     }
-    if ('color' in t) own.color = hexField(t.color, `${at}.color`, fail);
+    if ('color' in t) own.color = colorField(t.color, `${at}.color`, fail);
     if ('action' in t) own.action = roleField(t.action, `${at}.action`, fail);
     if ('base' in t) own.base = roleField(t.base, `${at}.base`, fail);
     for (const field of FONT_FIELDS) if (field in t) own[field] = fontField(t[field], `${at}.${field}`, field, fail);
@@ -233,10 +234,14 @@ function resolveTheme(name, own, parent) {
 
 const featureDefaults = () => Object.fromEntries(Object.entries(FEELS).map(([k, spec]) => [k, spec.default]));
 
-function hexField(value, at, fail) {
-  if (isHex(value)) return toHex(parseHex(value));
-  fail(`${at}: "${value}" is not a hex color, such as #1e66f5.`);
-  return undefined;
+// A color in any CSS format that parseColor reads, kept as hex.
+function colorField(value, at, fail) {
+  try {
+    return toHex(parseColor(value));
+  } catch (err) {
+    fail(`${at}: ${err.message}`);
+    return undefined;
+  }
 }
 
 // Version 1 inputs in version 2 terms: `neutral` is base, `color` is action only, and
@@ -251,15 +256,15 @@ function fromVersion1(themes) {
 }
 
 function roleField(value, at, fail) {
-  if (typeof value === 'string') return hexField(value, at, fail);
+  if (typeof value === 'string') return colorField(value, at, fail);
   if (value && typeof value === 'object') {
     for (const key of Object.keys(value)) {
       if (key === 'white' || key === 'black') fail(`${at}.${key}: white and black limits are not ready yet. See the plan.`);
       else if (key !== 'color') fail(`${at}.${key}: unknown field. Use "color".`);
     }
-    return value.color === undefined ? undefined : hexField(value.color, `${at}.color`, fail);
+    return value.color === undefined ? undefined : colorField(value.color, `${at}.color`, fail);
   }
-  fail(`${at}: use a hex color, or { "color": "#808080" }.`);
+  fail(`${at}: use ${COLOR_FORMATS}. Or use { "color": "#808080" }.`);
   return undefined;
 }
 

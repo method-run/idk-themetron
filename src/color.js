@@ -9,10 +9,6 @@ export function parseHex(hex) {
   return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
 }
 
-export function isHex(value) {
-  return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(String(value).trim());
-}
-
 export function toHex(rgb) {
   return '#' + rgb.map((c) => Math.round(clamp01(c) * 255).toString(16).padStart(2, '0')).join('');
 }

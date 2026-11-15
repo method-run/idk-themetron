@@ -11,7 +11,7 @@ tags: [system/engine]
 # Engine
 
 <!-- idk-plans:progress:start (generated) -->
-○ 0% (0/2)
+◐ 50% (1/2)
 <!-- idk-plans:progress:end -->
 
 The engine turns inputs into a theme. It has no dependencies, so the same files run in Node and in a browser. It does not use the network, except that the CSS and Bootstrap exports name Google Fonts for named font families.
@@ -32,6 +32,7 @@ flowchart LR
 | File | Does |
 |---|---|
 | `hsl.js` | The HSL lightness for a target luminance, exact, in one or two Halley steps |
+| `css-color.js` | Read a color in a CSS format: hex, the 148 color names, `rgb()`, `hsl()`, `oklch()`, and `oklab()` |
 | `color.js` | Hex, OKLCH, WCAG 2 luminance and contrast, APCA, and the search for a color with a target luminance |
 | `palette.js` | Grades, palettes, contrast thresholds, and grade gaps |
 | `inputs.js` | The feels, the type variance, their words, presets, the input checks, and the theme tree: each theme's settings from its parents |
@@ -68,4 +69,4 @@ A new palette takes less than a millisecond. For each grade, a formula gives the
 ## Tasks
 
 - [ ] Publish as an npm package with types
-- [ ] Support color inputs in other CSS formats, such as `oklch()` and color names
+- [x] Support color inputs in other CSS formats, such as `oklch()` and color names

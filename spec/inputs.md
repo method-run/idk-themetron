@@ -76,7 +76,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 | `label` | Made from the name | The text that people see. Not inherited. |
 | `base` | `#808080` | The base color: backgrounds, text, borders, and quiet controls. `{ "color": "#808080" }` is the same. |
 | `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. |
-| `color` | None | Sets `base` and `action` to one color. `base` and `action` override it. |
+| `color` | None | Sets `base` and `action` to one color. `base` and `action` override it. Each color can be hex, a CSS color name, `rgb()`, `hsl()`, `oklch()`, or `oklab()`. See [Color formats](#color-formats). |
 | `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback" }`. A string sets only `family`. |
 | `headingFont` | `font` | The font for headings. |
 | `monoFont` | The browser's default `monospace` font | The font for code. |
@@ -113,6 +113,26 @@ Two sliders in a theme, Lightest and Darkest, will clamp the ramps. The tokens t
 </details>
 
 To add a color, add a child theme. Themetron adds no colors of its own, such as a red for danger. Apply a theme with the class `theme-<name>`. See [Tokens](./tokens.md "tokens").
+
+#### Color formats
+
+A color can be in these CSS formats. Case and spaces around the color do not matter. The engine changes each color to hex, so the outputs are the same for every format.
+
+| Format | Examples |
+|---|---|
+| Hex | `#1e66f5`, `#16f`. `#16ff` and `#1e66f5ff` also work: the alpha must be full. |
+| CSS color name | `rebeccapurple`, `slategray`. All 148 names from CSS Color 4. |
+| `rgb()`, `rgba()` | `rgb(30 102 245)`, `rgb(30, 102, 245)`, `rgb(12% 40% 96%)` |
+| `hsl()`, `hsla()` | `hsl(220 91% 54%)`, `hsl(220deg, 91%, 54%)`, `hsl(0.61turn 91 54)` |
+| `oklch()` | `oklch(55% 0.21 263)`, `oklch(0.55 0.21 263deg)` |
+| `oklab()` | `oklab(0.55 -0.05 -0.2)` |
+
+- **Syntax.** The rules are the rules of CSS. Values are separated by spaces. `rgb()` and `hsl()` also take the old comma syntax. Then `rgb()` needs all numbers or all percentages, and `hsl()` needs percentages for saturation and lightness. `none` is 0, and only the space syntax takes it. A hue is in degrees, or has the unit `deg`, `grad`, `rad`, or `turn`. In `oklch()` and `oklab()`, lightness 100% is 1, and chroma, a, and b 100% is 0.4.
+- **Opaque only.** A key color cannot be see-through. Alpha can be 1 or 100%, else the engine reports an error. `transparent` is an error too. `currentColor` is an error, because it depends on the page.
+- **Out of range.** `rgb()` and `hsl()` values out of range are clamped, as in CSS. An `oklch()` or `oklab()` color outside sRGB keeps its lightness and hue and loses chroma until it fits. Lightness above 1 is white, and below 0 is black.
+- **Not supported.** Other CSS color functions, such as `lab()`, `lch()`, `hwb()`, and `color()`, and relative colors, such as `rgb(from red r g b)`.
+
+The [schema](#schema-and-version) checks hex and lowercase color names exactly. It checks only the name of a color function, not the values in it.
 
 ### Fonts
 
@@ -229,7 +249,7 @@ Each theme makes a light mode and a dark mode. You do not set the dark colors. T
 
 ## Schema and version
 
-[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. The site publishes it at <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>, and a copy for each released contract version at `schema/<version>/inputs.schema.json`. See [Using themetron](./consumers.md "consumers"). A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, and that only `default` has no parent. The engine checks those.
+[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. The site publishes it at <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>, and a copy for each released contract version at `schema/<version>/inputs.schema.json`. See [Using themetron](./consumers.md "consumers"). A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, and that only `default` has no parent. The engine checks those. It also does not check the values inside a color function, such as the alpha in `rgb()`.
 
 An inputs file can have two more fields:
 
@@ -244,7 +264,8 @@ An inputs file can have two more fields:
 The engine checks all inputs before it makes a theme set. It reports every problem at once, one line for each, with the theme name, and makes no themes. For example:
 
 - `themes.playful.feel.roundness: unknown word "curvy". Use a number from 0 to 1, "inherit", or one of: square, slight, rounded, round, pill.`
-- `themes.brand.action: "blue" is not a hex color, such as #1e66f5.`
+- `themes.brand.action: "bluish" is not a color. Use a hex color such as #1e66f5, a CSS color name such as rebeccapurple, or rgb(), hsl(), oklch(), or oklab().`
+- `themes.sale.color: "rgb(255 0 0 / 50%)" has transparency. Use an opaque color: themes need solid key colors.`
 - `themes.alerts.parent: no theme is named "alert".`
 
 ## Tasks

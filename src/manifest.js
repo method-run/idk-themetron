@@ -3,6 +3,7 @@
 // `npm run spec` writes them to spec/. A test fails when the files and the code differ.
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
+import { COLOR_NAMES } from './css-color.js';
 import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME } from './inputs.js';
 
 // The version of the token contract. It is not the package version.
@@ -193,8 +194,17 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
       },
     },
     $defs: {
-      hex: { type: 'string', pattern: '^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$' },
-      role: { anyOf: [{ $ref: '#/$defs/hex' }, { type: 'object', additionalProperties: false, properties: { color: { $ref: '#/$defs/hex' } } }] },
+      // The engine also takes any case and spaces around the color. The schema is stricter, so
+      // editors can offer the names. It does not check what is inside the parentheses.
+      color: {
+        description: 'An opaque color: hex, a CSS color name, or rgb(), hsl(), oklch(), or oklab(). The engine keeps it as hex.',
+        anyOf: [
+          { type: 'string', pattern: '^#([0-9a-fA-F]{3}[fF]?|[0-9a-fA-F]{6}([fF]{2})?)$' },
+          { enum: Object.keys(COLOR_NAMES) },
+          { type: 'string', pattern: '^(rgba?|hsla?|oklch|oklab)\\(.+\\)$' },
+        ],
+      },
+      role: { anyOf: [{ $ref: '#/$defs/color' }, { type: 'object', additionalProperties: false, properties: { color: { $ref: '#/$defs/color' } } }] },
       font: {
         anyOf: [
           { type: 'string', description: 'A Google font family. The fallback comes from the role.' },
@@ -216,7 +226,7 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
           label: { type: 'string', pattern: '\\S', description: 'The text that people see, such as "Big Sale". Any case, with spaces. The theme name is still the ID in classes and tokens. Not inherited.' },
           base: { $ref: '#/$defs/role', description: 'The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set.' },
           action: { $ref: '#/$defs/role', description: 'The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set.' },
-          color: { $ref: '#/$defs/hex', description: 'Sets both base and action. base and action override it.' },
+          color: { $ref: '#/$defs/color', description: 'Sets both base and action. base and action override it.' },
           fillLabel: { deprecated: true, description: 'Ignored. Every fill has light labels in light mode and dark labels in dark mode. To flip one part, put the class tm-invert on it.' },
           font: { $ref: '#/$defs/font' },
           headingFont: { $ref: '#/$defs/font' },
