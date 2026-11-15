@@ -193,7 +193,7 @@ npx themetron check site.css            # fails on tokens that the contract does
 npx themetron check site.css --strict   # also fails on experimental tokens
 ```
 
-Add `--prefix <p>` for CSS made with another prefix. From code, `checkCss(css)` in `src/manifest.js` returns the same lists.
+Add `--prefix <p>` for CSS made with another prefix. An unknown flag stops the command. Add `--unknown-flags warn` to skip it with a warning. From code, `checkCss(css)` in `src/manifest.js` returns the same lists.
 
 ## A worked example: idk-plans
 
