@@ -263,12 +263,53 @@ function roleField(value, at, fail) {
   return undefined;
 }
 
+// A font file: a URL with no spaces, quotes, or backslashes, whose path ends in a font extension.
+export const FONT_URL = /^[^\s"'\\?#]+\.(woff2|woff|ttf|otf)([?#][^\s"'\\]*)?$/;
+// One weight, or a range for a variable font, from 1 to 1000.
+export const FONT_WEIGHT = /^(1000|[1-9]\d{0,2})( (1000|[1-9]\d{0,2}))?$/;
+export const FONT_STYLES = ['normal', 'italic'];
+const FONT_KEYS = ['family', 'fallback', 'src'];
+const FILE_KEYS = ['url', 'weight', 'style'];
+
 function fontField(value, at, field, fail) {
   const font = typeof value === 'string' ? { family: value } : value;
-  if (!font || typeof font !== 'object') { fail(`${at}: use a family name, or { "family", "fallback" }.`); return undefined; }
-  for (const key of Object.keys(font)) if (key !== 'family' && key !== 'fallback') fail(`${at}.${key}: unknown field. Use "family" and "fallback".`);
+  if (!font || typeof font !== 'object' || Array.isArray(font)) { fail(`${at}: use a family name, or { "family", "fallback", "src" }.`); return undefined; }
+  for (const key of Object.keys(font)) if (!FONT_KEYS.includes(key)) fail(`${at}.${key}: unknown field. Use "family", "fallback", and "src".`);
   const fallback = font.fallback || (field === 'monoFont' ? ROOT_DEFAULTS.monoFont.fallback : ROOT_DEFAULTS.font.fallback);
-  return { family: font.family ? String(font.family).trim() || null : null, fallback };
+  const out = { family: font.family ? String(font.family).trim() || null : null, fallback };
+  if ('src' in font) {
+    const src = fontFiles(font.src, `${at}.src`, fail);
+    if (!out.family) fail(`${at}.src: font files need a "family", the name that the CSS uses for them.`);
+    else if (src) out.src = src;
+  }
+  return out;
+}
+
+// The theme's own font files. Each file is one @font-face rule.
+function fontFiles(value, at, fail) {
+  if (!Array.isArray(value) || !value.length) { fail(`${at}: use a list of files, such as [{ "url": "/fonts/Inter.woff2", "weight": "100 900" }].`); return undefined; }
+  const out = [];
+  value.forEach((file, i) => {
+    const here = `${at}[${i}]`;
+    if (!file || typeof file !== 'object' || Array.isArray(file)) { fail(`${here}: use { "url", "weight", "style" }.`); return; }
+    for (const key of Object.keys(file)) if (!FILE_KEYS.includes(key)) fail(`${here}.${key}: unknown field. Use "url", "weight", and "style".`);
+    if (typeof file.url !== 'string' || !FONT_URL.test(file.url)) {
+      fail(`${here}.url: use the URL of a .woff2, .woff, .ttf, or .otf file, with no spaces or quotes.`);
+      return;
+    }
+    const one = { url: file.url };
+    if ('weight' in file) {
+      const weight = String(file.weight);
+      if ((typeof file.weight === 'number' || typeof file.weight === 'string') && FONT_WEIGHT.test(weight)) one.weight = weight;
+      else fail(`${here}.weight: use a number from 1 to 1000, such as 400, or a range for a variable font, such as "100 900".`);
+    }
+    if ('style' in file) {
+      if (FONT_STYLES.includes(file.style)) one.style = file.style;
+      else fail(`${here}.style: use one of: ${FONT_STYLES.join(', ')}.`);
+    }
+    out.push(one);
+  });
+  return out;
 }
 
 function feelField(value, at, fail) {

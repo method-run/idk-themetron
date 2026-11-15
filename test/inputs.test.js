@@ -151,3 +151,19 @@ test('thickness still loads, turned over into thinness', () => {
   assert.equal(themes.default.feel.thinness, 0.75, 'the value turns over');
   assert.equal(themes.words.feel.thinness, 0, "thickness's own words still work");
 });
+
+test('a font can name its own files, and each file is checked', () => {
+  const src = [{ url: '/fonts/Inter.woff2', weight: '100 900' }, { url: 'https://x.test/Inter-Italic.ttf?v=2', weight: 400, style: 'italic' }];
+  const { resolved } = normalizeInputs({ themes: { default: { font: { family: 'Inter', src } } } });
+  assert.deepEqual(resolved.default.font, { family: 'Inter', fallback: 'sans-serif', src: [src[0], { ...src[1], weight: '400' }] });
+  assert.deepEqual(resolved.default.headingFont, resolved.default.font, 'the heading font follows the font, with its files');
+  const fails = (font, pattern) => assert.throws(() => normalizeInputs({ themes: { default: { font } } }), pattern);
+  fails({ src: [{ url: '/fonts/Inter.woff2' }] }, /font\.src: font files need a "family"/);
+  fails({ family: 'Inter', src: [] }, /font\.src: use a list of files/);
+  fails({ family: 'Inter', src: [{ url: '/fonts/Inter.css' }] }, /src\[0\]\.url: use the URL of a \.woff2/);
+  fails({ family: 'Inter', src: [{ url: '/fonts/In"ter.woff2' }] }, /src\[0\]\.url/);
+  fails({ family: 'Inter', src: [{ url: '/a.woff2' }, { url: '/b.woff2', weight: '100-900' }] }, /src\[1\]\.weight: use a number from 1 to 1000/);
+  fails({ family: 'Inter', src: [{ url: '/a.woff2', weight: 1001 }] }, /weight/);
+  fails({ family: 'Inter', src: [{ url: '/a.woff2', style: 'oblique' }] }, /style: use one of: normal, italic/);
+  fails({ family: 'Inter', src: [{ url: '/a.woff2', format: 'woff2' }] }, /format: unknown field/);
+});

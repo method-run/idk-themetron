@@ -182,7 +182,7 @@ The stylesheet defines one shine gradient, `--tm-shine-image`, on every element.
 
 ## Fonts
 
-The theme stylesheet starts with an `@import` from Google Fonts when a theme names a web font. Read the fonts with `var(--tm-font-body)`, `var(--tm-font-heading)`, and `var(--tm-font-mono)`. Each one ends with a CSS generic family, so text shows before the font loads, and without it.
+The theme stylesheet starts with an `@import` from Google Fonts when a theme names a web font. A font with its own `src` files gets `@font-face` rules instead. The functions `fontImport()` and `fontFaces()` give the same import URL and rules, if you write your own stylesheet. Read the fonts with `var(--tm-font-body)`, `var(--tm-font-heading)`, and `var(--tm-font-mono)`. Each one ends with a CSS generic family, so text shows before the font loads, and without it.
 
 ## Check a stylesheet
 

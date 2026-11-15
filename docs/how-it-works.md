@@ -10,7 +10,7 @@ tags: [system/how-it-works]
 ---
 # How it works
 
-You give themetron a tree of themes. It gives back design tokens, in CSS and other formats, and every text and background pair in them passes the contrast setting. The same inputs always give the same tokens. The engine uses no network. Only the CSS names Google Fonts, for the fonts that you choose.
+You give themetron a tree of themes. It gives back design tokens, in CSS and other formats, and every text and background pair in them passes the contrast setting. The same inputs always give the same tokens. The engine uses no network. Only the CSS names Google Fonts, for the fonts that you choose, or the font files that you give.
 
 ```mermaid
 flowchart LR
