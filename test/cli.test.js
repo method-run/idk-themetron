@@ -22,7 +22,7 @@ async function run(...args) {
 
 test('build writes each format the same as the committed example files', async () => {
   const inputs = join(example, 'inputs.json');
-  for (const [format, file] of [['css', 'tokens.css'], ['dtcg', 'tokens.dtcg.json'], ['tailwind', 'tailwind.css'], ['shadcn', 'shadcn.css'], ['bootstrap', '_bootstrap.scss']]) {
+  for (const [format, file] of [['css', 'tokens.css'], ['dtcg', 'tokens.dtcg.json'], ['tailwind', 'tailwind.css'], ['shadcn', 'shadcn.css'], ['bootstrap', '_bootstrap.scss'], ['bootstrap-css', 'bootstrap.css'], ['mui', 'mui.json'], ['daisyui', 'daisyui.css']]) {
     const { code, stdout } = await run('build', inputs, '--format', format);
     assert.equal(code, 0, format);
     assert.equal(stdout, await readFile(join(example, file), 'utf8'), format);
@@ -90,19 +90,23 @@ test('build exits 1 for a missing file, bad JSON, or an unknown format', async (
   }
 });
 
-test('build passes the CSS flags to the export', async () => {
+test('build passes its flags to the export', async () => {
   const inputs = join(example, 'inputs.json');
-  const { buildThemes, toCss, toTailwind, toShadcn } = await import('../src/index.js');
+  const { buildThemes, toCss, toTailwind, toShadcn, toDaisyui, toBootstrapCss, toMui } = await import('../src/index.js');
   const built = buildThemes(JSON.parse(await readFile(inputs, 'utf8')));
   const css = await run('build', inputs, '--prefix', 'x', '--class-prefix', 't-', '--no-root', '--no-more');
   assert.equal(css.stdout, toCss(built, { prefix: 'x', classPrefix: 't-', root: false, more: false }));
   assert.equal((await run('build', inputs, '-f', 'tailwind', '--prefix', 'x')).stdout, toTailwind(built, { prefix: 'x' }));
   assert.equal((await run('build', inputs, '-f', 'shadcn', '--class-prefix', 't-')).stdout, toShadcn(built, { classPrefix: 't-' }));
+  assert.equal((await run('build', inputs, '-f', 'daisyui', '--prefix', 'x', '--class-prefix', 't-')).stdout, toDaisyui(built, { prefix: 'x', classPrefix: 't-' }));
+  assert.equal((await run('build', inputs, '-f', 'bootstrap-css', '--class-prefix', 't-')).stdout, toBootstrapCss(built, { classPrefix: 't-' }));
+  assert.equal((await run('build', inputs, '-f', 'bootstrap', '--more')).stdout, await readFile(join(example, '_bootstrap-more.scss'), 'utf8'));
+  assert.deepEqual(JSON.parse((await run('build', inputs, '-f', 'mui', '--more')).stdout), JSON.parse(JSON.stringify(toMui(built, { more: true }))));
   const sheet = await run('build', inputs, '-f', 'stylesheet', '--no-more');
   assert.ok(sheet.stdout.startsWith(toCss(built, { more: false })));
 });
 
-test('a CSS flag that the format does not use gets a warning, and the build goes on', async () => {
+test('a build flag that the format does not use gets a warning, and the build goes on', async () => {
   const inputs = join(example, 'inputs.json');
   const plain = await run('build', inputs, '-f', 'dtcg');
   const warned = await run('build', inputs, '-f', 'dtcg', '--prefix', 'x', '--no-more');
@@ -110,6 +114,7 @@ test('a CSS flag that the format does not use gets a warning, and the build goes
   assert.equal(warned.stdout, plain.stdout);
   assert.match(warned.stderr, /Warning: skipped --prefix: it does nothing with --format dtcg/);
   assert.match(warned.stderr, /Warning: skipped --no-more: it does nothing with --format dtcg/);
+  assert.match((await run('build', inputs, '-f', 'css', '--more')).stderr, /Warning: skipped --more: it does nothing with --format css/);
   assert.equal((await run('check', join(example, 'page.css'), '--nope')).code, 1, 'check stops at an unknown flag too');
 });
 

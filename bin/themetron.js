@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // themetron build <inputs.json>: make the tokens from an inputs file, in one export format, to
 // stdout or to --out <file>. Exits 1 when the inputs have problems, and prints each one. The CSS
-// flags are the options of toCss, toTailwind, and toShadcn.
+// flags are options of the export functions.
 // themetron check <file.css>...: list the themetron tokens that a stylesheet reads. Exits 1
 // when it reads a token that the contract does not have. --strict also fails on experimental
 // tokens. --prefix <p> is for CSS made with another prefix than "tm".
@@ -9,12 +9,12 @@
 // not use gets a warning, and the build goes on without it.
 import { readFile, writeFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, InputError } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, InputError } from '../src/index.js';
 import { checkCss, CONTRACT_VERSION } from '../src/manifest.js';
 
 const USAGE = `Usage:
   themetron build <inputs.json> [--format css] [--out <file>]
-                  [--prefix tm] [--class-prefix theme-] [--no-root] [--no-more]
+                  [--prefix tm] [--class-prefix theme-] [--no-root] [--no-more] [--more]
   themetron check <file.css>... [--strict] [--prefix tm]
 
 A flag that the command does not know stops it. A build flag that the format does not use, such
@@ -27,15 +27,23 @@ build formats:
   tailwind    A Tailwind CSS v4 theme. Add the CSS tokens too.
   shadcn      Variables for shadcn/ui's globals.css.
   bootstrap   Bootstrap 5 Sass variables. Import the file before Bootstrap.
+  bootstrap-css
+              Bootstrap 5.3 CSS variables. Load the file after bootstrap.css.
+  mui         A Material UI theme for the root theme, as JSON, for createTheme() in MUI v6
+              or later.
+  daisyui     Two daisyUI 5 themes, light and dark. Add the CSS tokens too.
 
-build flags for CSS:
-  --prefix p          Token names start with --p-. The default is tm. For css and tailwind.
+build flags:
+  --prefix p          Token names start with --p-. The default is tm. For css, tailwind, and
+                      daisyui.
   --class-prefix c    Theme classes are .c<name>. The default is theme-. For css, stylesheet,
-                      and shadcn.
+                      shadcn, bootstrap-css, and daisyui.
   --no-root           The root theme's rule leaves out :root. For css and stylesheet.
-  --no-more           Leave out the more-contrast rules. For css and stylesheet.`;
+  --no-more           Leave out the more-contrast rules. For css and stylesheet.
+  --more              Make the more-contrast version, which your app or page loads for readers
+                      who ask for more contrast. For mui and bootstrap.`;
 
-// The same formats as the playground's download, except "inputs". `flags` lists the CSS flags
+// The same formats as the playground's download, except "inputs". `flags` lists the build flags
 // that each format uses. The components read --tm-* tokens, so stylesheet takes no --prefix.
 const FORMATS = {
   css: { flags: ['prefix', 'class-prefix', 'no-root', 'no-more'], make: (built, o) => toCss(built, o) },
@@ -43,13 +51,17 @@ const FORMATS = {
   dtcg: { flags: [], make: (built) => `${JSON.stringify(toDtcg(built), null, 2)}\n` },
   tailwind: { flags: ['prefix'], make: (built, o) => toTailwind(built, o) },
   shadcn: { flags: ['class-prefix'], make: (built, o) => toShadcn(built, o) },
-  bootstrap: { flags: [], make: (built) => toBootstrapSass(built) },
+  bootstrap: { flags: ['more'], make: (built, o) => toBootstrapSass(built, { more: o.variant }) },
+  'bootstrap-css': { flags: ['class-prefix'], make: (built, o) => toBootstrapCss(built, o) },
+  mui: { flags: ['more'], make: (built, o) => `${JSON.stringify(toMui(built, { more: o.variant }), null, 2)}\n` },
+  daisyui: { flags: ['prefix', 'class-prefix'], make: (built, o) => toDaisyui(built, o) },
 };
-const CSS_FLAGS = {
+const BUILD_FLAGS = {
   prefix: { type: 'string' },
   'class-prefix': { type: 'string' },
   'no-root': { type: 'boolean' },
   'no-more': { type: 'boolean' },
+  more: { type: 'boolean' },
 };
 
 // A problem that the user can fix: print the message and exit 1, without a stack trace.
@@ -77,12 +89,12 @@ async function build(args) {
   const { values, positionals } = parse(args, {
     format: { type: 'string', short: 'f', default: 'css' },
     out: { type: 'string', short: 'o' },
-    ...CSS_FLAGS,
+    ...BUILD_FLAGS,
   });
   if (positionals.length !== 1) throw new UsageError('build needs one inputs file.');
   const format = FORMATS[values.format];
   if (!format) throw new UsageError(`--format: use one of ${Object.keys(FORMATS).join(', ')}, not "${values.format}".`);
-  for (const flag of Object.keys(CSS_FLAGS)) {
+  for (const flag of Object.keys(BUILD_FLAGS)) {
     if (flag in values && !format.flags.includes(flag)) console.error(`Warning: skipped --${flag}: it does nothing with --format ${values.format}.`);
   }
   const options = {
@@ -90,6 +102,7 @@ async function build(args) {
     classPrefix: format.flags.includes('class-prefix') ? values['class-prefix'] : undefined,
     root: !(format.flags.includes('no-root') && values['no-root']),
     more: !(format.flags.includes('no-more') && values['no-more']),
+    variant: format.flags.includes('more') && Boolean(values.more),
   };
   const [file] = positionals;
   let inputs;

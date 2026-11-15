@@ -11,7 +11,7 @@ tags: [system/tokens]
 # Tokens
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 61% (8/13) · 2 deferred
+◐ 69% (9/13) · 2 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine makes these tokens.
@@ -222,21 +222,25 @@ npx themetron --help
 | `tailwind` | A Tailwind CSS v4 theme. It reads the CSS tokens, so add them too. |
 | `shadcn` | Variables for shadcn/ui's `globals.css`. |
 | `bootstrap` | Bootstrap 5 Sass variables. Import the file before Bootstrap. |
+| `bootstrap-css` | Bootstrap 5.3 CSS variables. Load the file after `bootstrap.css`. |
+| `mui` | A Material UI theme for the root theme, as JSON. Pass it to `createTheme()`. |
+| `daisyui` | Two daisyUI 5 themes, light and dark. They read the CSS tokens, so add them too. |
 
 If the inputs have problems, the command prints one line for each problem and exits with code 1. It writes no tokens. The [Inputs spec](./inputs.md "inputs") describes the inputs file.
 
-These flags change the CSS. Each one is an option of the export function, and works only with the formats in its row.
+These flags change the output. Each one is an option of the export function, and works only with the formats in its row.
 
 | Flag | What it does | Formats |
 |---|---|---|
-| `--prefix <p>` | Token names start with `--<p>-`. The default is `tm`. | `css`, `tailwind` |
-| `--class-prefix <c>` | Theme classes are `.<c><name>`. The default is `theme-`. | `css`, `stylesheet`, `shadcn` |
+| `--prefix <p>` | Token names start with `--<p>-`. The default is `tm`. | `css`, `tailwind`, `daisyui` |
+| `--class-prefix <c>` | Theme classes are `.<c><name>`. The default is `theme-`. | `css`, `stylesheet`, `shadcn`, `bootstrap-css`, `daisyui` |
 | `--no-root` | The root theme's rule leaves out `:root`, so only its class sets it. | `css`, `stylesheet` |
 | `--no-more` | Leave out the more-contrast rules. | `css`, `stylesheet` |
+| `--more` | Make the more-contrast version, which your app or page loads for readers who ask for more contrast. | `mui`, `bootstrap` |
 
 `stylesheet` takes no `--prefix`, because the components read `--tm-*` tokens.
 
-A flag that the command does not know stops the command, with exit code 1. A CSS flag that the format does not use, such as `--prefix` with `dtcg`, prints a warning, and the build goes on without it.
+A flag that the command does not know stops the command, with exit code 1. A flag that the format does not use, such as `--prefix` with `dtcg`, prints a warning, and the build goes on without it.
 
 ## More contrast
 
@@ -263,7 +267,7 @@ Every theme ships a second set of semantic tokens at the enhanced level, for rea
 
 Sass sets its values once, when it compiles, so one stylesheet cannot switch to more contrast. Make a second stylesheet with the more-contrast values, and let the browser load it only for readers who ask for more contrast.
 
-1. Make two variable files from the same inputs: `_themetron.scss` with `toBootstrapSass(built)`, and `_themetron-more.scss` with `toBootstrapSass(built, { more: true })`.
+1. Make two variable files from the same inputs: `_themetron.scss` with `toBootstrapSass(built)`, and `_themetron-more.scss` with `toBootstrapSass(built, { more: true })`. On the command line: `npx themetron build inputs.json -f bootstrap -o _themetron.scss`, then the same with `--more -o _themetron-more.scss`.
 2. Make two entry files. Each one imports its variables, then Bootstrap:
 
    ```scss
