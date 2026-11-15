@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { buildThemes, toCss, toDtcg, normalizeInputs, contrastTest, PRESETS } from '../src/index.js';
-import { specFiles, releaseFiles, tokenManifest, inputsSchema, checkCss, PAIRS, CONTRACT_VERSION, SPEC_URL, specUrl, INPUTS_SCHEMA_URL, MANIFEST_URL, breakingPart, stableBaseline, stableTokenChanges } from '../src/manifest.js';
+import { specFiles, releaseFiles, tokenManifest, inputsSchema, checkCss, PAIRS, CONTRACT_VERSION, SPEC_URL, specUrl, INPUTS_SCHEMA_URL, MANIFEST_URL, breakingPart, stableTokens, stableTokenChanges } from '../src/manifest.js';
+import { releasedVersions, newestReleasedManifest, removedMessage } from '../scripts/releases.js';
 
 test('the files in spec/ match the code. Run npm run spec after a change.', async () => {
   for (const [file, text] of Object.entries(specFiles())) {
@@ -11,16 +11,11 @@ test('the files in spec/ match the code. Run npm run spec after a change.', asyn
   }
 });
 
-const stableFixture = async () => JSON.parse(await readFile(new URL('fixtures/stable-tokens.json', import.meta.url), 'utf8'));
-
-test('no stable token goes away unless the contract version takes a breaking bump', async () => {
-  const baseline = await stableFixture();
-  const { removed, bumped } = stableTokenChanges(baseline);
-  assert.ok(bumped || !removed.length, `These stable tokens went away since contract ${baseline.contract}: ${removed.join(', ')}. That is a breaking change. Bump CONTRACT_VERSION in src/manifest.js past ${breakingPart(CONTRACT_VERSION)}, list the change under Unreleased in spec/consumers.md, and run npm run spec to refresh test/fixtures/stable-tokens.json.`);
-});
-
-test('the stable-token baseline is current. Run npm run spec after a change.', async () => {
-  assert.deepEqual(await stableFixture(), stableBaseline(), 'test/fixtures/stable-tokens.json is out of date. Run npm run spec.');
+test('no stable token goes away since the newest release unless the contract version takes a breaking bump', async () => {
+  const released = await newestReleasedManifest();
+  if (!released) return;
+  const { removed, bumped } = stableTokenChanges(released);
+  assert.ok(bumped || !removed.length, removedMessage(released.contract, removed, breakingPart(CONTRACT_VERSION)));
 });
 
 test('the breaking part of a version is the first part that is not 0', () => {
@@ -28,9 +23,11 @@ test('the breaking part of a version is the first part that is not 0', () => {
   assert.equal(breakingPart('0.6.3'), '0.6');
   assert.equal(breakingPart('1.4.2'), '1');
   assert.equal(breakingPart('0.0.3'), '0.0.3');
-  const removed = (contract) => stableTokenChanges({ contract, tokens: [...stableBaseline().tokens, 'gone'] });
-  assert.deepEqual(removed(CONTRACT_VERSION), { removed: ['gone'], bumped: false });
-  assert.deepEqual(removed('0.0.1'), { removed: ['gone'], bumped: true });
+  const { tokens } = tokenManifest();
+  const released = (contract) => ({ contract, tokens: { ...tokens, gone: { stability: 'stable' } } });
+  assert.deepEqual(stableTokenChanges(released(CONTRACT_VERSION)), { removed: ['gone'], bumped: false });
+  assert.deepEqual(stableTokenChanges(released('0.0.1')), { removed: ['gone'], bumped: true });
+  assert.ok(stableTokens().includes('fg-base'));
 });
 
 test('the manifest lists every token that the CSS defines, and nothing else', () => {
@@ -108,7 +105,7 @@ test('the published URLs name the generated files, and the schema has its URL as
 
 test('each released version in spec/versions has both files, and each schema has its own URL as $id', async () => {
   const dir = new URL('../spec/versions/', import.meta.url);
-  const versions = existsSync(dir) ? await readdir(dir) : [];
+  const versions = await releasedVersions();
   const notNewer = (a, b) => a.localeCompare(b, 'en', { numeric: true }) <= 0;
   for (const version of versions) {
     assert.match(version, /^\d+\.\d+\.\d+$/);

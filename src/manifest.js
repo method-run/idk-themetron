@@ -278,21 +278,18 @@ export function breakingPart(version) {
   return parts.slice(0, lead === -1 ? parts.length : lead + 1).join('.');
 }
 
-// The stable token names at this contract version. test/fixtures/stable-tokens.json keeps a
-// copy, so a test can see when a stable token goes away. `npm run spec` refreshes it.
-export function stableBaseline() {
-  const { contract, tokens } = tokenManifest();
-  return { contract, tokens: Object.keys(tokens).filter((name) => tokens[name].stability === 'stable').sort() };
+// The names of the stable tokens in a token manifest, sorted. Without a manifest, the code's.
+export function stableTokens({ tokens } = tokenManifest()) {
+  return Object.keys(tokens).filter((name) => tokens[name].stability === 'stable').sort();
 }
 
-// Compare a saved baseline with the code. Returns the stable tokens that went away, and
-// whether the breaking part of the contract version changed since the baseline.
-export function stableTokenChanges(baseline) {
-  const current = stableBaseline();
-  const kept = new Set(current.tokens);
+// Compare a released token manifest with the code. Returns the stable tokens that went away,
+// and whether the breaking part of the contract version changed since that release.
+export function stableTokenChanges(released) {
+  const kept = new Set(stableTokens());
   return {
-    removed: baseline.tokens.filter((name) => !kept.has(name)),
-    bumped: breakingPart(baseline.contract) !== breakingPart(current.contract),
+    removed: stableTokens(released).filter((name) => !kept.has(name)),
+    bumped: breakingPart(released.contract) !== breakingPart(CONTRACT_VERSION),
   };
 }
 
