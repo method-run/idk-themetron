@@ -145,6 +145,7 @@ function validate(schema, value, root = schema) {
     const kind = value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
     if (!types.includes(kind)) return false;
   }
+  if (schema.required && !(value && typeof value === 'object' && schema.required.every((k) => k in value))) return false;
   if (typeof value === 'number' && ((schema.minimum ?? -Infinity) > value || (schema.maximum ?? Infinity) < value)) return false;
   if (typeof value === 'string' && schema.pattern && !new RegExp(schema.pattern).test(value)) return false;
   if (value && typeof value === 'object' && !Array.isArray(value)) {
@@ -190,6 +191,12 @@ test('the inputs schema agrees with the engine', () => {
     { themes: { danger: { parent: 'default', label: ' ' } } },
     { themes: { danger: { parent: 'default', label: 3 } } },
     { themes: { 'two--dashes': { parent: 'default' } } },
+    { themes: { brand: { parent: 'default', action: '#8a4fff' }, sale: { parent: 'default', action: { theme: 'brand' }, base: { theme: 'brand', role: 'action' } } } },
+    { themes: { sale: { parent: 'default', action: { theme: 'default', color: '#8a4fff' } } } },
+    { themes: { sale: { parent: 'default', action: { role: 'base' } } } },
+    { themes: { sale: { parent: 'default', action: { theme: 'default', role: 'accent' } } } },
+    { themes: { sale: { parent: 'default', action: { theme: 'Brand' } } } },
+    { themes: { sale: { parent: 'default', action: '@default' } } },
   ];
   for (const raw of cases) assert.equal(validate(schema, raw), accepts(raw), JSON.stringify(raw));
 });

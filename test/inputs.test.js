@@ -27,6 +27,43 @@ test('color sets both roles, base and action override it, and a role comes from 
   assert.equal(resolved.brand.kind, 'color');
 });
 
+test('a role can take its color from another theme, in any part of the tree', () => {
+  const { themes, resolved } = normalizeInputs({ themes: {
+    default: { base: '#6b7280', action: '#2456e8' },
+    // sale comes before brand, and brand is not its parent.
+    sale: { parent: 'default', action: { theme: 'brand' }, base: { theme: 'brand', role: 'action' } },
+    brand: { parent: 'default', action: '#8a4fff' },
+    // A theme can point at its own other role.
+    echo: { parent: 'default', action: '#d6336c', base: { theme: 'echo', role: 'action' } },
+    // A theme that sets nothing takes its parent's role, so a reference follows the chain.
+    'brand-child': { parent: 'brand' },
+    late: { parent: 'default', action: { theme: 'brand-child' } },
+    // A reference wins over color.
+    both: { parent: 'default', color: '#111111', action: { theme: 'brand' } },
+  } });
+  assert.deepEqual(themes.sale.action, { theme: 'brand', role: 'action' });
+  assert.deepEqual([resolved.sale.base, resolved.sale.action], ['#8a4fff', '#8a4fff']);
+  assert.deepEqual([resolved.echo.base, resolved.echo.action], ['#d6336c', '#d6336c']);
+  assert.equal(resolved.late.action, '#8a4fff');
+  assert.deepEqual([resolved.both.base, resolved.both.action], ['#111111', '#8a4fff']);
+  // A theme that only names other themes for its colors is still a color theme.
+  assert.equal(resolved.sale.kind, 'color');
+});
+
+test('a role that names another theme must name one that exists, and make no loop', () => {
+  const problems = (themes) => { try { normalizeInputs({ themes }); return ''; } catch (err) { assert.ok(err instanceof InputError); return err.message; } };
+  assert.match(problems({ sale: { parent: 'default', action: { theme: 'brnd' } } }), /themes\.sale\.action\.theme: no theme is named "brnd"\./);
+  assert.match(problems({ sale: { parent: 'default', action: { theme: 'default', role: 'accent' } } }), /themes\.sale\.action\.role: use one of: base, action\./);
+  assert.match(problems({ sale: { parent: 'default', action: { theme: 'default', color: '#fff' } } }), /not both/);
+  assert.match(problems({ sale: { parent: 'default', action: { role: 'base' } } }), /themes\.sale\.action\.role: name a theme too/);
+  assert.match(problems({ sale: { parent: 'default', action: { theme: 'sale' } } }), /themes\.sale\.action: the colors make a loop: sale\.action → sale\.action\./);
+  // The loop can pass through a parent: b's action comes from a, its parent.
+  const loop = problems({ a: { parent: 'default', action: { theme: 'b' } }, b: { parent: 'a' }, c: { parent: 'default', action: { theme: 'a' } } });
+  assert.match(loop, /themes\.a\.action: the colors make a loop: a\.action → b\.action → a\.action\./);
+  assert.doesNotMatch(loop, /themes\.c\./, 'only the themes in the loop report it');
+  assert.equal(problems({ a: { parent: 'default', base: { theme: 'a', role: 'action' }, action: { theme: 'a', role: 'base' } } }).split('\n').length, 2);
+});
+
 test('version 1 inputs still load: neutral is base, and color is action only', () => {
   const { resolved } = normalizeInputs({ version: 1, themes: { default: { neutral: '#6b7280', color: '#2456e8' }, danger: { parent: 'default', color: '#d6336c' } } });
   assert.deepEqual([resolved.default.base, resolved.default.action], ['#6b7280', '#2456e8']);

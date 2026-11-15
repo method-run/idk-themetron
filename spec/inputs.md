@@ -11,7 +11,7 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 23% (3/13)
+◐ 30% (4/13)
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
@@ -73,8 +73,8 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 |---|---|---|
 | `parent` | None | The name of the parent theme. Required on every theme but `default`. |
 | `label` | Made from the name | The text that people see. Not inherited. |
-| `base` | `#808080` | The base color: backgrounds, text, borders, and quiet controls. `{ "color": "#808080" }` is the same. |
-| `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. |
+| `base` | `#808080` | The base color: backgrounds, text, borders, and quiet controls. `{ "color": "#808080" }` is the same. Or the color of another theme. See [Base and action](#base-and-action). |
+| `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. Or the color of another theme. See [Base and action](#base-and-action). |
 | `color` | None | Sets `base` and `action` to one color. `base` and `action` override it. |
 | `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback" }`. A string sets only `family`. |
 | `headingFont` | `font` | The font for headings. |
@@ -92,6 +92,25 @@ Each role's color is a **key color**. The engine makes a ramp of [grades](./grad
 - **`action`** gives the fills, tints, text, and edges of the parts that you act on. The default is `#0000ee`, the color that browsers use for links.
 
 A role that a theme does not set comes from its parent. In the example, `brand` sets only `action`, so its base is the gray of `default`. `danger` sets `color`, so its base and its action are both red.
+
+A role can also take its color from another theme by name. The other theme can be in any part of the tree. It does not have to be a parent.
+
+```json
+{
+  "sale": { "parent": "default", "action": { "theme": "brand" } },
+  "promo": { "parent": "default", "base": { "theme": "brand", "role": "action" } }
+}
+```
+
+- `{ "theme": "brand" }` takes the color that `brand` has for the same role. Here, `sale` gets the action color of `brand`.
+- `"role"` names a different role. Here, `promo` gets the action color of `brand` as its base color.
+- The color follows the other theme. If you change the action color of `brand`, `sale` changes too.
+- A theme can name itself with a different role, such as `{ "theme": "sale", "role": "action" }` for its base.
+- The named theme must exist, and the colors must not make a loop, such as a theme that takes its action from itself.
+- A role that names a theme overrides `color`, the same as a hex color does.
+- A theme that sets only colors in this way is still a color theme.
+
+We use an object, not a plain name such as `"action": "brand"`, so that a theme name can never look like a CSS color name, such as `red`.
 
 Every ramp goes from pure white to pure black. Limits for the lightest and darkest colors come after the first release. See [Tasks](#tasks).
 
@@ -228,7 +247,7 @@ Each theme makes a light mode and a dark mode. You do not set the dark colors. T
 
 ## Schema and version
 
-[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. The site publishes it at <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>, and a copy for each released contract version at `schema/<version>/inputs.schema.json`. See [Using themetron](./consumers.md "consumers"). A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, and that only `default` has no parent. The engine checks those.
+[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. The site publishes it at <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>, and a copy for each released contract version at `schema/<version>/inputs.schema.json`. See [Using themetron](./consumers.md "consumers"). A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, that only `default` has no parent, and that each theme that a role names exists and makes no loop. The engine checks those.
 
 An inputs file can have two more fields:
 
@@ -245,6 +264,7 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - `themes.playful.feel.roundness: unknown word "curvy". Use a number from 0 to 1, "inherit", or one of: square, slight, rounded, round, pill.`
 - `themes.brand.action: "blue" is not a hex color, such as #1e66f5.`
 - `themes.alerts.parent: no theme is named "alert".`
+- `themes.sale.action: the colors make a loop: sale.action → brand.action → sale.action.`
 
 ## Tasks
 
@@ -260,4 +280,4 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [ ] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
 - [ ] Add gradient fills and backgrounds, from the same blend as the tinted white and black
 - [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. The corner style could follow the roundness feel.
-- [ ] Let a role take its color from another theme by name, such as `"action": "brand"`. Today a role that a theme does not set comes from its parent, which covers most cases.
+- [x] Let a role take its color from another theme by name, such as `"action": "brand"`. Today a role that a theme does not set comes from its parent, which covers most cases.

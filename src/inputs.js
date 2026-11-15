@@ -70,6 +70,8 @@ export const CONTRAST_LEVELS = ['standard', 'enhanced'];
 // A theme has one color for each role. Base: backgrounds, text, borders, and quiet controls.
 // Action: the parts that you act on, or that show their state: links, buttons, checks, focus.
 // `color` sets both roles. A role that a theme does not set comes from its parent.
+// A role can also name another theme, { "theme": "brand" }, and take that theme's color for
+// the same role, or for the role in "role".
 export const ROLES = ['base', 'action'];
 // Fields that change only colors. A theme that sets no other field is a color theme.
 // A label is only for people, so it does not make a theme a full theme either.
@@ -159,8 +161,8 @@ export function normalizeInputs(raw = {}) {
       else fail(`${at}.label: use text, such as "Big Sale".`);
     }
     if ('color' in t) own.color = hexField(t.color, `${at}.color`, fail);
-    if ('action' in t) own.action = roleField(t.action, `${at}.action`, fail);
-    if ('base' in t) own.base = roleField(t.base, `${at}.base`, fail);
+    if ('action' in t) own.action = roleField(t.action, `${at}.action`, 'action', all, fail);
+    if ('base' in t) own.base = roleField(t.base, `${at}.base`, 'base', all, fail);
     for (const field of FONT_FIELDS) if (field in t) own[field] = fontField(t[field], `${at}.${field}`, field, fail);
     if ('preset' in t) {
       if (PRESETS[t.preset]) own.preset = t.preset;
@@ -182,6 +184,17 @@ export function normalizeInputs(raw = {}) {
     if (p && seen.includes(p) && p === name) fail(`themes.${name}.parent: the parents make a loop: ${[...seen, p].join(' → ')}.`);
   }
   if (problems.length) throw new InputError(problems.join('\n'));
+  // Roles that name other themes must not make a loop either.
+  for (const name of Object.keys(themes)) {
+    for (const role of ROLES) {
+      if (!isRef(themes[name][role])) continue;
+      const seen = [`${name}.${role}`];
+      let at = colorSource(themes, name, role);
+      while (at && !seen.includes(at.join('.'))) { seen.push(at.join('.')); at = colorSource(themes, ...at); }
+      if (at && at.join('.') === seen[0]) fail(`themes.${name}.${role}: the colors make a loop: ${[...seen, seen[0]].join(' → ')}.`);
+    }
+  }
+  if (problems.length) throw new InputError(problems.join('\n'));
 
   // Depth first from the root: each theme, then its children. Parents come before
   // children, which the CSS needs, and each family stays together.
@@ -193,13 +206,40 @@ export function normalizeInputs(raw = {}) {
   };
   visit(ROOT);
 
+  // A role that names another theme can point anywhere in the tree, not only up. So the
+  // roles resolve on their own, with a cache, and the rest resolves parents first.
+  const colors = {};
+  const colorOf = (name, role) => {
+    const key = `${name}.${role}`;
+    if (!(key in colors)) {
+      const own = themes[name];
+      const source = colorSource(themes, name, role);
+      colors[key] = source ? colorOf(...source) : own[role] ?? own.color ?? ROOT_DEFAULTS[role];
+    }
+    return colors[key];
+  };
   const resolved = {};
-  for (const name of order) resolved[name] = resolveTheme(name, themes[name], resolved[themes[name].parent]);
+  for (const name of order) {
+    const roles = Object.fromEntries(ROLES.map((role) => [role, colorOf(name, role)]));
+    resolved[name] = resolveTheme(name, themes[name], resolved[themes[name].parent], roles);
+  }
   return { themes, order, resolved };
 }
 
+const isRef = (value) => typeof value === 'object' && value !== null;
+// Where a theme's role takes its color from, as [theme, role]: the theme that it names, or its
+// parent when the theme sets neither the role nor `color`. Null when the theme sets a hex color.
+function colorSource(themes, name, role) {
+  const own = themes[name];
+  if (!own) return null;
+  if (isRef(own[role])) return [own[role].theme, own[role].role];
+  if (own[role] !== undefined || own.color !== undefined || !own.parent) return null;
+  return [own.parent, role];
+}
+
 // A theme's full settings: its own fields over its parent's.
-function resolveTheme(name, own, parent) {
+// `roles` holds its base and action colors, which can come from other themes.
+function resolveTheme(name, own, parent, roles) {
   const from = parent ?? { ...ROOT_DEFAULTS, headingFont: ROOT_DEFAULTS.font, feel: {} };
   const preset = own.preset ?? from.preset;
   // Each feel: the theme's own value, else its preset's value, else the parent's value.
@@ -218,8 +258,7 @@ function resolveTheme(name, own, parent) {
     // Not inherited: each theme has its own label, or one made from its name.
     label: own.label ?? defaultLabel(name),
     kind: parent && onlyColor ? 'color' : 'full',
-    base: own.base ?? own.color ?? from.base,
-    action: own.action ?? own.color ?? from.action,
+    ...roles,
     font: own.font ?? from.font,
     // The heading font follows the nearest theme that sets either font.
     headingFont: own.headingFont ?? own.font ?? from.headingFont,
@@ -250,16 +289,27 @@ function fromVersion1(themes) {
   }));
 }
 
-function roleField(value, at, fail) {
+// A role is a hex color, { "color" }, or { "theme", "role" }: the color of another theme's
+// role. "role" is the same role if not set. Returns a hex color, or { theme, role }.
+function roleField(value, at, role, all, fail) {
   if (typeof value === 'string') return hexField(value, at, fail);
-  if (value && typeof value === 'object') {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
     for (const key of Object.keys(value)) {
       if (key === 'white' || key === 'black') fail(`${at}.${key}: white and black limits are not ready yet. See the plan.`);
-      else if (key !== 'color') fail(`${at}.${key}: unknown field. Use "color".`);
+      else if (!['color', 'theme', 'role'].includes(key)) fail(`${at}.${key}: unknown field. Use "color", or "theme" and "role".`);
+    }
+    if ('theme' in value || 'role' in value) {
+      if ('color' in value) { fail(`${at}: use "color" or "theme", not both.`); return undefined; }
+      if (!('theme' in value)) { fail(`${at}.role: name a theme too, such as { "theme": "${ROOT}", "role": "${value.role}" }.`); return undefined; }
+      const ref = { theme: value.theme, role: value.role ?? role };
+      let ok = true;
+      if (typeof ref.theme !== 'string' || !THEME_NAME.test(ref.theme) || !Object.hasOwn(all, ref.theme)) { fail(`${at}.theme: no theme is named "${value.theme}".`); ok = false; }
+      if (!ROLES.includes(ref.role)) { fail(`${at}.role: use one of: ${ROLES.join(', ')}.`); ok = false; }
+      return ok ? ref : undefined;
     }
     return value.color === undefined ? undefined : hexField(value.color, `${at}.color`, fail);
   }
-  fail(`${at}: use a hex color, or { "color": "#808080" }.`);
+  fail(`${at}: use a hex color, { "color": "#808080" }, or { "theme": "brand" }.`);
   return undefined;
 }
 

@@ -194,7 +194,22 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
     },
     $defs: {
       hex: { type: 'string', pattern: '^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$' },
-      role: { anyOf: [{ $ref: '#/$defs/hex' }, { type: 'object', additionalProperties: false, properties: { color: { $ref: '#/$defs/hex' } } }] },
+      role: {
+        anyOf: [
+          { $ref: '#/$defs/hex' },
+          { type: 'object', additionalProperties: false, properties: { color: { $ref: '#/$defs/hex' } } },
+          {
+            type: 'object',
+            additionalProperties: false,
+            required: ['theme'],
+            description: 'The color of a role in another theme. The theme must exist, and the colors must not make a loop.',
+            properties: {
+              theme: { type: 'string', pattern: THEME_NAME.source, description: 'The name of the theme to take the color from.' },
+              role: { enum: ROLES, description: 'The role to take the color from. The same role if not set.' },
+            },
+          },
+        ],
+      },
       font: {
         anyOf: [
           { type: 'string', description: 'A Google font family. The fallback comes from the role.' },
@@ -214,8 +229,8 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
         properties: {
           parent: { type: 'string', description: `The name of the parent theme. Not allowed on "${ROOT}".` },
           label: { type: 'string', pattern: '\\S', description: 'The text that people see, such as "Big Sale". Any case, with spaces. The theme name is still the ID in classes and tokens. Not inherited.' },
-          base: { $ref: '#/$defs/role', description: 'The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set.' },
-          action: { $ref: '#/$defs/role', description: 'The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set.' },
+          base: { $ref: '#/$defs/role', description: 'The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set. Or { "theme": "brand" } for the base color of another theme.' },
+          action: { $ref: '#/$defs/role', description: 'The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set. Or { "theme": "brand" } for the action color of another theme.' },
           color: { $ref: '#/$defs/hex', description: 'Sets both base and action. base and action override it.' },
           fillLabel: { deprecated: true, description: 'Ignored. Every fill has light labels in light mode and dark labels in dark mode. To flip one part, put the class tm-invert on it.' },
           font: { $ref: '#/$defs/font' },

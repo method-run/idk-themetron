@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, ROLES } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -297,7 +297,11 @@ function rename(from, raw) {
   if (label === defaultLabel(to)) delete t.label; else t.label = label;
   if (to === from) { renderThemes(); update(); return; }
   state.themes = Object.fromEntries(Object.entries(state.themes).map(([k, v]) => [k === from ? to : k, v]));
-  for (const t of Object.values(state.themes)) if (t.parent === from) t.parent = to;
+  for (const t of Object.values(state.themes)) {
+    if (t.parent === from) t.parent = to;
+    // A role can name another theme, such as { "theme": "brand" }, in imported inputs.
+    for (const role of ROLES) if (t[role]?.theme === from) t[role] = { ...t[role], theme: to };
+  }
   if (added[from]) { added[to] = added[from]; delete added[from]; }
   if (state.selected === from) state.selected = to;
   if (openCard === from) openCard = to;
@@ -307,7 +311,15 @@ function rename(from, raw) {
 
 function removeTheme(name) {
   const { parent } = state.themes[name];
-  for (const t of Object.values(state.themes)) if (t.parent === name) t.parent = parent;
+  for (const t of Object.values(state.themes)) {
+    if (t.parent === name) t.parent = parent;
+    // A role that named this theme keeps the color it had.
+    for (const role of ROLES) {
+      if (t[role]?.theme !== name) continue;
+      const color = built?.themes[name]?.settings[t[role].role ?? role];
+      if (color) t[role] = color; else delete t[role];
+    }
+  }
   delete state.themes[name];
   delete added[name];
   if (state.selected === name) state.selected = parent;

@@ -45,6 +45,28 @@
               "$ref": "#/$defs/hex"
             }
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "theme"
+          ],
+          "description": "The color of a role in another theme. The theme must exist, and the colors must not make a loop.",
+          "properties": {
+            "theme": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+              "description": "The name of the theme to take the color from."
+            },
+            "role": {
+              "enum": [
+                "base",
+                "action"
+              ],
+              "description": "The role to take the color from. The same role if not set."
+            }
+          }
         }
       ]
     },
@@ -88,11 +110,11 @@
         },
         "base": {
           "$ref": "#/$defs/role",
-          "description": "The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set."
+          "description": "The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set. Or { \"theme\": \"brand\" } for the base color of another theme."
         },
         "action": {
           "$ref": "#/$defs/role",
-          "description": "The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set."
+          "description": "The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set. Or { \"theme\": \"brand\" } for the action color of another theme."
         },
         "color": {
           "$ref": "#/$defs/hex",
