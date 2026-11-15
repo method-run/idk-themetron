@@ -1,13 +1,60 @@
 {
-  "name": "idk-themetron",
+  "name": "@method-run/idk-themetron",
   "version": "0.1.0",
-  "private": true,
   "description": "Make an accessible design-token theme from a few human-friendly inputs.",
+  "keywords": [
+    "design-tokens",
+    "theme",
+    "theming",
+    "css-variables",
+    "color",
+    "contrast",
+    "accessibility",
+    "wcag",
+    "apca",
+    "oklch",
+    "dtcg",
+    "tailwind",
+    "shadcn"
+  ],
+  "license": "MIT",
+  "author": "Pixelbandito",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/method-run/idk-themetron.git"
+  },
+  "homepage": "https://method-run.github.io/idk-themetron/",
+  "bugs": {
+    "url": "https://github.com/method-run/idk-themetron/issues"
+  },
   "type": "module",
+  "types": "./src/index.d.ts",
   "exports": {
-    ".": "./src/index.js",
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
     "./components.css": "./components/components.css",
-    "./spec/*": "./spec/*"
+    "./spec/*": "./spec/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "bin",
+    "src",
+    "components/components.css",
+    "spec"
+  ],
+  "bin": {
+    "themetron": "./bin/themetron.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "dev": "vite",
@@ -21,17 +68,11 @@
     "version": "npm run spec:release && git add spec/versions",
     "examples": "node scripts/examples.js",
     "docs:check": "idk-plans check",
-    "docs:fix": "idk-plans fix"
-  },
-  "license": "MIT",
-  "engines": {
-    "node": ">=20"
+    "docs:fix": "idk-plans fix",
+    "prepublishOnly": "npm test && npm run docs:check"
   },
   "devDependencies": {
     "@method-run/idk-plans": "^0.2.0",
     "vite": "^8.3.5"
-  },
-  "bin": {
-    "themetron": "./bin/themetron.js"
   }
 }
