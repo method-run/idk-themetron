@@ -1,7 +1,7 @@
 ---
 id: engine
 title: Engine
-summary: The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, or Tailwind. It has no dependencies and runs in Node and in browsers.
+summary: The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers.
 parent: idk-themetron
 kind: module
 order: 5
@@ -36,7 +36,7 @@ flowchart LR
 | `palette.js` | Grades, palettes, contrast thresholds, and grade gaps |
 | `inputs.js` | The feels, the type variance, their words, presets, the input checks, and the theme tree: each theme's settings from its parents |
 | `tokens.js` | `buildThemes`: for each theme, primitives, semantic tokens for each mode, and the audit |
-| `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, `toBootstrapSass`, and the Google Fonts URL |
+| `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, `toBootstrapSass`, `toMui`, `toDaisyui`, `toBootstrapCss`, and the Google Fonts URL |
 | `manifest.js` | The token contract: the manifest, the inputs schema, and `checkCss` |
 | `index.js` | The public functions |
 

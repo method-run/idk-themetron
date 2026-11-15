@@ -66,7 +66,7 @@ Then add `components/components.css`, and put `class="tm-theme"` on the element 
 - [Using themetron in a site or library](./spec/consumers.md "consumers"): The contract between themetron and the sites and libraries that use its stylesheets. Which tokens are stable, which color pairs pass, how theme classes and modes work, and how to check a stylesheet. Written so that a tool such as idk-plans can adopt themetron themes with little work. ◐ 83% (5/6)
 - [Components](./components/README.md "components"): A small CSS component library that reads only themetron tokens. It shows how each feel changes real parts, such as buttons, fields, and cards. ◐ 16% (1/6)
 - [Examples](./examples/README.md "examples"): A small theme tree, and the file that each pipeline level makes from it, up to a page that reads the tokens. Each level names its spec.
-- [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, or Tailwind. It has no dependencies and runs in Node and in browsers. ○ 0% (0/2)
+- [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ○ 0% (0/2)
 - [Playground](./demo/README.md "playground"): A web page where you change the inputs and see the components, palettes, tokens, and contrast audit change at once, in light and dark mode. ◐ 88% (8/9)
 <!-- idk-plans:children:end -->
 

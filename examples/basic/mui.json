@@ -1,0 +1,102 @@
+{
+  "colorSchemes": {
+    "light": {
+      "palette": {
+        "mode": "light",
+        "primary": {
+          "main": "#2152e4",
+          "contrastText": "#ffffff"
+        },
+        "secondary": {
+          "main": "#e6eeff",
+          "contrastText": "#2152e4"
+        },
+        "error": {
+          "main": "#bb1758",
+          "contrastText": "#ffffff"
+        },
+        "warning": {
+          "main": "#8f5200",
+          "contrastText": "#ffffff"
+        },
+        "success": {
+          "main": "#007128",
+          "contrastText": "#ffffff"
+        },
+        "background": {
+          "default": "#eaeef6",
+          "paper": "#ffffff"
+        },
+        "text": {
+          "primary": "#20242c",
+          "secondary": "#5a616e",
+          "disabled": "#6f7684"
+        },
+        "divider": "#b9bfcb"
+      }
+    },
+    "dark": {
+      "palette": {
+        "mode": "dark",
+        "primary": {
+          "main": "#5386ff",
+          "contrastText": "#000000"
+        },
+        "secondary": {
+          "main": "#01005e",
+          "contrastText": "#5386ff"
+        },
+        "error": {
+          "main": "#f05283",
+          "contrastText": "#000000"
+        },
+        "warning": {
+          "main": "#cc7700",
+          "contrastText": "#000000"
+        },
+        "success": {
+          "main": "#3c9e50",
+          "contrastText": "#000000"
+        },
+        "background": {
+          "default": "#13161d",
+          "paper": "#20242c"
+        },
+        "text": {
+          "primary": "#eaeef6",
+          "secondary": "#858c9a",
+          "disabled": "#6f7684"
+        },
+        "divider": "#353a44"
+      }
+    }
+  },
+  "shape": {
+    "borderRadius": 5.6
+  },
+  "typography": {
+    "fontFamily": "Figtree, sans-serif",
+    "fontSize": 15,
+    "fontWeightRegular": 400,
+    "fontWeightMedium": 500,
+    "fontWeightBold": 700,
+    "h1": {
+      "fontFamily": "Figtree, sans-serif"
+    },
+    "h2": {
+      "fontFamily": "Figtree, sans-serif"
+    },
+    "h3": {
+      "fontFamily": "Figtree, sans-serif"
+    },
+    "h4": {
+      "fontFamily": "Figtree, sans-serif"
+    },
+    "h5": {
+      "fontFamily": "Figtree, sans-serif"
+    },
+    "h6": {
+      "fontFamily": "Figtree, sans-serif"
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { PRESETS, buildThemes, toCss, toDtcg, toShadcn, toTailwind, toBootstrapSass, tokenManifest } from '../src/index.js';
+import { PRESETS, buildThemes, toCss, toDtcg, toShadcn, toTailwind, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, tokenManifest } from '../src/index.js';
 
 // A root color and a child color theme. Hard cases: yellow, near white, near black, neon.
 const TRICKY = [
@@ -196,6 +196,58 @@ test('the Bootstrap export sets its Sass variables, with light values and dark t
   assert.equal(value('success'), undefined);
   assert.equal(value('primary-dark'), undefined);
   assert.doesNotMatch(scss, /promo/);
+});
+
+const STATUS_TREE = { themes: { default: { color: '#2456e8' }, danger: { parent: 'default', color: '#d6336c' }, promo: { parent: 'default', action: '#8a4fff' } } };
+
+test('the MUI theme has a palette for each mode, with the status colors of the status themes', () => {
+  const built = buildThemes(STATUS_TREE);
+  const mui = toMui(built);
+  for (const mode of ['light', 'dark']) {
+    const { palette } = mui.colorSchemes[mode];
+    const t = built.themes.default.modes[mode].tokens;
+    assert.equal(palette.mode, mode);
+    assert.deepEqual(palette.primary, { main: t['fill.action'].value, contrastText: t['on-fill.action'].value });
+    assert.equal(palette.background.default, t['bg.canvas'].value);
+    assert.equal(palette.text.primary, t['fg.base'].value);
+    assert.equal(palette.divider, t['border.base'].value);
+    assert.equal(palette.error.main, built.themes.danger.modes[mode].tokens['fill.action'].value);
+    assert.equal(palette.success, undefined, 'no success theme, so MUI keeps its own');
+  }
+  assert.equal(mui.shape.borderRadius, built.themes.default.primitives.radius.md);
+  assert.match(mui.typography.fontFamily, /sans-serif/);
+  assert.equal(toMui(built, { theme: 'promo' }).colorSchemes.light.palette.primary.main, built.themes.promo.modes.light.tokens['fill.action'].value);
+  assert.throws(() => toMui(built, { theme: 'nope' }), /no theme named nope/);
+});
+
+test('the daisyUI export has a light and a dark theme that point at the CSS variables', () => {
+  const css = toDaisyui(buildThemes(STATUS_TREE));
+  assert.equal(css.match(/@plugin "daisyui\/theme" \{/g).length, 2);
+  assert.match(css, /name: "themetron";\n  default: true;\n  prefersdark: false;\n  color-scheme: light;/);
+  assert.match(css, /name: "themetron-dark";\n  default: false;\n  prefersdark: true;\n  color-scheme: dark;/);
+  for (const name of ['base-100', 'base-content', 'primary', 'primary-content', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error-content']) {
+    assert.match(css, new RegExp(`--color-${name}: `), name);
+  }
+  assert.match(css, /--color-primary: var\(--tm-fill-action\);/);
+  assert.match(css, /--color-error: light-dark\(#[0-9a-f]{6}, #[0-9a-f]{6}\);/);
+  assert.match(css, /--radius-field: var\(--tm-radius-control\);/);
+  assert.match(css, /^\.theme-danger, \.theme-promo \{\n  --color-base-100: /m);
+});
+
+test('the Bootstrap CSS export has its variables, with -rgb twins, for each mode and child theme', () => {
+  const built = buildThemes(STATUS_TREE);
+  const css = toBootstrapCss(built);
+  for (const name of ['primary', 'primary-rgb', 'primary-bg-subtle', 'danger', 'body-bg', 'body-color-rgb', 'border-color', 'border-radius', 'link-color', 'focus-ring-color', 'box-shadow']) {
+    assert.match(css, new RegExp(`--bs-${name}: `), name);
+  }
+  const fill = built.themes.default.modes.light.tokens['fill.action'].value;
+  const rgb = [1, 3, 5].map((i) => parseInt(fill.slice(i, i + 2), 16)).join(', ');
+  assert.ok(css.includes(`--bs-primary: ${fill};\n  --bs-primary-rgb: ${rgb};`));
+  assert.match(css, /^:root, \[data-bs-theme=light\] \{/m);
+  assert.match(css, /^\[data-bs-theme=dark\] \{/m);
+  assert.match(css, /^\.theme-promo \{/m);
+  assert.match(css, /^\[data-bs-theme=dark\] \.theme-promo, \.theme-promo\[data-bs-theme=dark\] \{/m);
+  assert.doesNotMatch(css, /--bs-success:/, 'no success theme, so Bootstrap keeps its own');
 });
 
 test('every token has a color, even for key colors at the very ends of the scale', () => {
