@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { luminance, parseHex, wcagContrast } from '../src/color.js';
-import { COLOR_MODELS, GRADES, contrastTest, gradeGaps, gradeLuminance, makePalette } from '../src/palette.js';
+import { COLOR_MODELS, GRADES, apcaMinLc, contrastTest, gradeGaps, gradeLuminance, makePalette, measure, minContrast, purposeName } from '../src/palette.js';
 
 const KEYS = ['#1e66f5', '#ff6b4a', '#2f9e44', '#ffd43b', '#00e5ff', '#7048e8', '#6b6b80', '#f8f9fa', '#111111'];
 
@@ -33,6 +33,44 @@ test('the WCAG grade gaps are 50 for text and 40 for large text and controls', (
     const gaps = gradeGaps(KEYS.map((key) => makePalette(key, model)), contrastTest({ method: 'wcag', level: 'standard' }));
     assert.deepEqual(gaps, { text: 50, large: 40, ui: 40 }, model);
   }
+});
+
+test('the APCA font table gives the minimum Lc for a size and weight', () => {
+  // Rows of fontLookupAPCA in apca-w3 0.1.9.
+  assert.equal(apcaMinLc(18, 700), 55);
+  assert.equal(apcaMinLc(24, 700), 45);
+  assert.equal(apcaMinLc(24, 400), 60);
+  assert.equal(apcaMinLc(16, 400), 90);
+  assert.equal(apcaMinLc(15, 400), 100);
+  // A weight between columns uses the lighter one; a size between rows uses the larger Lc.
+  assert.equal(apcaMinLc(18, 650), apcaMinLc(18, 600));
+  assert.equal(apcaMinLc(31, 700), 45);
+  // Too small or too thin for text at any contrast.
+  assert.equal(apcaMinLc(8, 400), Infinity);
+  assert.equal(apcaMinLc(30, 100), Infinity);
+});
+
+test('text purposes use the font table with APCA, capped at the body-text minimum, and the large-text rule with WCAG 2', () => {
+  assert.equal(minContrast('apca', 'standard', { size: 18, weight: 700 }), 55);
+  assert.equal(minContrast('apca', 'enhanced', { size: 18, weight: 700 }), 70);
+  assert.equal(minContrast('apca', 'standard', { size: 15, weight: 400 }), 75);
+  assert.equal(minContrast('apca', 'enhanced', { size: 15, weight: 400 }), 90);
+  assert.equal(minContrast('apca', 'standard', 'large'), 60);
+  assert.equal(minContrast('wcag', 'standard', { size: 18, weight: 700 }), 4.5);
+  assert.equal(minContrast('wcag', 'standard', { size: 24, weight: 400 }), 3);
+  assert.equal(purposeName({ size: 18, weight: 700 }), 'text 18px/700');
+  assert.equal(purposeName('ui'), 'ui');
+});
+
+test('with APCA, a large heading passes where body text fails, and the WCAG 2 floor still holds', () => {
+  const test = contrastTest({ method: 'apca', level: 'standard' });
+  // Grade 50 on grade 5 is about Lc 62 and 3.9:1: enough for 26 px bold, not for body text.
+  const p = makePalette('#6b6b80');
+  assert.ok(test(p.steps[50], p.steps[5], { size: 26, weight: 700 }));
+  assert.ok(!test(p.steps[50], p.steps[5], 'text'));
+  // Grade 40 on grade 5 is about Lc 51, more than the table asks for 96 px bold, but under 3:1.
+  assert.ok(Math.abs(measure(p.steps[40], p.steps[5]).apca) >= minContrast('apca', 'standard', { size: 96, weight: 700 }));
+  assert.ok(!test(p.steps[40], p.steps[5], { size: 96, weight: 700 }));
 });
 
 test('the key grade places the key color on the scale', () => {

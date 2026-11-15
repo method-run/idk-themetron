@@ -83,7 +83,7 @@ Each mode has these tokens. The engine picks each grade so that the pairs in the
 | `bg.panel` | `bg.surface`, see-through as clarity rises: down to 10% opaque at clarity 1, or 95% for an inverted card (`bg.panel-inverted`). Opaque at clarity 0. | Computed |
 | `fg.base` | Body text | text, on canvas, surface, and sunken |
 | `fg.base-muted` | Secondary text | text, on canvas, surface, and sunken |
-| `fg.base-heading-lg`, `-2xl`, `-3xl` | Headings (h3, h2, h1). They lighten with softness, from the body text color at softness 0 to the min-contrast grade for their size at softness 1. Large text is 24 px or more, at any weight. | large or text, by size, on canvas, surface, and sunken |
+| `fg.base-heading-lg`, `-2xl`, `-3xl` | Headings (h3, h2, h1). They lighten with softness, from the body text color at softness 0 to the min-contrast grade for their size at softness 1. Each is checked at its size, in bold: with WCAG 2, 24 px or more is large; with APCA, the font table gives the minimum. | text at the heading's size and weight, on canvas, surface, and sunken |
 | `fg.base-subtle` | Placeholders and icons | ui, on canvas |
 | `border.base` | Dividers and the edges of surfaces | None. It is decoration. |
 | `panel.border` | Card and dialog edges: `border.base` from softness 0.5 up. Below 0.5 it moves through the grades toward the text grade, which it reaches at softness 0. | None. It is decoration. |
