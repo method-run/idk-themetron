@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import { buildThemes, toCss, toDtcg, normalizeInputs, contrastTest, PRESETS } from '../src/index.js';
-import { specFiles, tokenManifest, inputsSchema, checkCss, PAIRS, SPEC_URL, INPUTS_SCHEMA_URL, MANIFEST_URL } from '../src/manifest.js';
+import { specFiles, tokenManifest, inputsSchema, checkCss, PAIRS, CONTRACT_VERSION, SPEC_URL, specUrl, INPUTS_SCHEMA_URL, MANIFEST_URL } from '../src/manifest.js';
 
 test('the files in spec/ match the code. Run npm run spec after a change.', async () => {
   for (const [file, text] of Object.entries(specFiles())) {
@@ -78,9 +78,25 @@ test('check skips token definitions, and finds unknown and experimental reads', 
 });
 
 test('the published URLs name the generated files, and the schema has its URL as $id', () => {
-  const names = Object.keys(specFiles()).map((file) => file.replace('spec/', ''));
+  const names = Object.keys(specFiles()).filter((file) => !file.includes('/versions/')).map((file) => file.replace('spec/', ''));
   assert.deepEqual([INPUTS_SCHEMA_URL, MANIFEST_URL].map((url) => url.replace(SPEC_URL, '')).sort(), names.sort());
   assert.equal(inputsSchema().$id, INPUTS_SCHEMA_URL);
+});
+
+test('spec/versions has a copy of each contract version, and each schema has its own URL as $id', async () => {
+  const dir = new URL('../spec/versions/', import.meta.url);
+  const versions = await readdir(dir);
+  assert.ok(versions.includes(CONTRACT_VERSION), 'the current version has a copy. Run npm run spec.');
+  const older = (a, b) => a.localeCompare(b, 'en', { numeric: true }) <= 0;
+  for (const version of versions) {
+    assert.match(version, /^\d+\.\d+\.\d+$/);
+    assert.ok(older(version, CONTRACT_VERSION), `${version} is newer than the contract`);
+    assert.deepEqual((await readdir(new URL(`${version}/`, dir))).sort(), ['inputs.schema.json', 'tokens.manifest.json']);
+    const schema = JSON.parse(await readFile(new URL(`${version}/inputs.schema.json`, dir), 'utf8'));
+    assert.equal(schema.$id, specUrl('inputs.schema.json', version));
+    const manifest = JSON.parse(await readFile(new URL(`${version}/tokens.manifest.json`, dir), 'utf8'));
+    assert.equal(manifest.contract, version);
+  }
 });
 
 // A small JSON Schema validator: the keywords that inputs.schema.json uses, and no more.

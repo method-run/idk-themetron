@@ -29,10 +29,12 @@ The contract is in three files. The code makes them, and a test fails when they 
 
 From the package: `idk-themetron/spec/tokens.manifest.json` and `idk-themetron/spec/inputs.schema.json`.
 
-The site also publishes them at fixed URLs. These URLs always hold the latest files from `main`. They have no version in the path. To pin a version, use the files in the package.
+The site also publishes them at fixed URLs:
 
-- Manifest: <https://method-run.github.io/idk-themetron/schema/tokens.manifest.json>
-- Inputs schema: <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>. This URL is also the schema's `$id`.
+- **Latest:** <https://method-run.github.io/idk-themetron/schema/tokens.manifest.json> and <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>. These always hold the files from `main`.
+- **One version:** put the contract version in the path, such as <https://method-run.github.io/idk-themetron/schema/0.6.0/inputs.schema.json>. Use this URL to pin a version. The files of the current version can still change until the next version. After that, they do not change.
+
+Each schema's URL is also its `$id`. The manifest has no `$id`, because it is data, not a schema. You get the same file without it. The repository keeps each version's files in `spec/versions/`.
 
 ## The rules
 

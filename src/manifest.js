@@ -12,10 +12,19 @@ import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CON
 export const CONTRACT_VERSION = '0.1.0';
 
 // The site publishes the generated files at fixed URLs, so that editors can fetch the schema
-// from a $schema link. These URLs always hold the latest files. scripts/build-site.js copies them.
+// from a $schema link. scripts/build-site.js copies them.
+// - schema/<file> always holds the latest files from main.
+// - schema/<contract version>/<file> holds the files of that version. `npm run spec` writes them
+//   to spec/versions/<version>/. When CONTRACT_VERSION changes, the old folder stays as it is, so
+//   a link to an old version keeps working.
+//
+// The manifest has no $id. A consumer gets the same file with or without it: $id is a JSON
+// Schema keyword, and editors read it only in a schema. The manifest is data, which a consumer
+// loads from MANIFEST_URL or from the package.
 export const SPEC_URL = 'https://method-run.github.io/idk-themetron/schema/';
-export const INPUTS_SCHEMA_URL = `${SPEC_URL}inputs.schema.json`;
-export const MANIFEST_URL = `${SPEC_URL}tokens.manifest.json`;
+export const specUrl = (file, version) => `${SPEC_URL}${version ? `${version}/` : ''}${file}`;
+export const INPUTS_SCHEMA_URL = specUrl('inputs.schema.json');
+export const MANIFEST_URL = specUrl('tokens.manifest.json');
 
 // Stable tokens keep their name, type, and meaning within a major version of the contract.
 // Every other token is experimental: it can change or go away in any version.
@@ -160,7 +169,7 @@ export function tokenManifest() {
 // The JSON Schema of the inputs. It accepts what normalizeInputs accepts, except the checks
 // across themes: that a parent exists, that parents make no loop, and that only the root has
 // no parent.
-export function inputsSchema() {
+export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
   const enumOf = (values) => ({ enum: values });
   const feel = (name, spec) => ({
     description: `${spec.label}: a number from 0 to 1, a word for one, or "${INHERIT}" for the parent's value.`,
@@ -168,7 +177,7 @@ export function inputsSchema() {
   });
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
-    $id: INPUTS_SCHEMA_URL,
+    $id: id,
     title: 'idk-themetron inputs',
     description: 'A tree of themes. Made by `npm run spec` from src/manifest.js. Draft: the inputs can change in any version before 1.0. See spec/inputs.md.',
     type: 'object',
@@ -240,12 +249,17 @@ export function inputsSchema() {
   };
 }
 
-// The generated files in spec/, as { path: text }.
+// The generated files in spec/, as { path: text }: the latest files, and a copy for the
+// current contract version. The copies of older versions are in spec/versions/ too, but the
+// code no longer makes them.
 export function specFiles() {
   const json = (data) => `${JSON.stringify(data, null, 2)}\n`;
+  const pinned = `spec/versions/${CONTRACT_VERSION}`;
   return {
     'spec/tokens.manifest.json': json(tokenManifest()),
     'spec/inputs.schema.json': json(inputsSchema()),
+    [`${pinned}/tokens.manifest.json`]: json(tokenManifest()),
+    [`${pinned}/inputs.schema.json`]: json(inputsSchema({ id: specUrl('inputs.schema.json', CONTRACT_VERSION) })),
   };
 }
 

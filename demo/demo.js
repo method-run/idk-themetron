@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, CONTRACT_VERSION, specUrl, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -1075,8 +1075,7 @@ function tokenText() {
   if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built), null, 2);
   if (ui.format === 'tailwind') return toTailwind(built);
   if (ui.format === 'bootstrap') return toBootstrapSass(built);
-  // The $schema link lets an editor check the file. Share links leave it out, to stay short.
-  return JSON.stringify({ $schema: INPUTS_SCHEMA_URL, version: INPUTS_VERSION, ...rawInputs() }, null, 2);
+  return JSON.stringify(inputsFile(), null, 2);
 }
 
 function renderTokens() {
@@ -1110,6 +1109,13 @@ $('#copy').addEventListener('click', async (e) => {
 
 // Load inputs ({ themes }) in place of the current ones. Throws if they are not valid.
 // Without a version, inputs are the current version.
+// The inputs as a file, for the Inputs view, downloads, and share links. The $schema link lets an
+// editor check the file. It names this contract version, so the file still checks after the
+// inputs change.
+function inputsFile() {
+  return { $schema: specUrl('inputs.schema.json', CONTRACT_VERSION), version: INPUTS_VERSION, ...rawInputs() };
+}
+
 function loadInputs(next, version = next?.version ?? INPUTS_VERSION) {
   if (!next || typeof next !== 'object' || typeof next.themes !== 'object') throw new Error('Use an object with a "themes" field, as in the Inputs view.');
   buildThemes({ version, ...rawInputs(next.themes) });
@@ -1168,7 +1174,7 @@ async function pipe(bytes, stream) {
   return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
 }
 async function shareLink() {
-  const bytes = await pipe(new TextEncoder().encode(JSON.stringify({ version: INPUTS_VERSION, ...rawInputs() })), new CompressionStream('deflate-raw'));
+  const bytes = await pipe(new TextEncoder().encode(JSON.stringify(inputsFile())), new CompressionStream('deflate-raw'));
   const url = new URL(location.href);
   url.search = `?t=${toBase64Url(bytes)}`;
   url.hash = ui.view === 'preview' ? '' : ui.view;

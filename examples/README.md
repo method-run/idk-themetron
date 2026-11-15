@@ -45,7 +45,7 @@ To see the page, serve the project folder, such as with `npx vite --open example
 <details>
 <summary>What to look for in each file</summary>
 
-- **`inputs.json`:** `promo` sets feels with words, such as `"roundness": "pill"`. The status themes set `color`, so their base and action are one color. `promo` and `sale` set only `action`, so they keep the gray base of `default`.
+- **`inputs.json`:** `promo` sets feels with words, such as `"roundness": "pill"`. The status themes set `color`, so their base and action are one color. `promo` and `sale` set only `action`, so they keep the gray base of `default`. Its `$schema` is a path in the repository, so your editor checks it against the schema of the same commit, also offline. In your own files, use the URL in [Inputs](../spec/inputs.md "inputs").
 - **`resolved.json`:** `sale` has promo's heading font and feels. `success` has every setting of `default`.
 - **`tokens.css`:** every theme class gets every token. Themes with the same values share a rule, so `promo` and `sale` share the base rule of `default`. After the rules are the three more-contrast blocks.
 - **`tokens.dtcg.json`:** each theme is a group, with `mode.light`, `mode.dark`, and a `moreContrast` group.
