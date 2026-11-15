@@ -12,7 +12,7 @@ tags: [system/tokens/grades]
 # Grades and contrast
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 57% (4/7) · 2 deferred
+◐ 71% (5/7) · 2 deferred
 <!-- idk-plans:progress:end -->
 
 Each key color becomes a palette of 21 grades, 5 apart: 0, 5, 10, 15, and so on to 100. Grade 0 is pure white and grade 100 is pure black. The grades between them keep the hue of the key color.
@@ -33,6 +33,27 @@ The grade gap is the smallest difference between two grade numbers that always p
 For example, with WCAG 2 at the standard level, any grade 10 on any grade 60 passes for body text. Each theme also states its own gaps in its tokens, because the engine measures them from the real palettes.
 
 APCA does not give the same result in both directions, and it gives less contrast to dark pairs than WCAG 2 does. So the APCA gaps are larger. The engine checks each real pair, so a theme can still pass with smaller gaps in the places where it uses them.
+
+## Text size and weight
+
+The engine checks body text and headings at their real size and weight. Body text uses the body size at regular weight (400). Headings use their own size, in bold (700), because the components set headings in bold.
+
+- **WCAG 2.** Text of 24 px or more is large text. Smaller text is body text. The engine does not use the WCAG 2 rule for bold text (18.66 px and bold), so the WCAG 2 results do not change.
+- **APCA.** APCA's font table gives the minimum Lc for each size and weight. Larger and bolder text needs less contrast. The engine uses the next larger Lc row (rows are 5 apart) and the next lighter weight column, so it never asks for less than the table.
+- **The body-text cap.** The table asks Lc 90 to 100 for body text of 15 or 16 px. On most canvases, no grade has that much contrast. So the APCA minimum for text is never more than the fixed body-text minimum: Lc 75 at the standard level, and Lc 90 at the enhanced level. Thus body text uses the same minimum as before, and only large text gets a smaller minimum.
+- **The enhanced level.** The enhanced level adds Lc 15 to the table value, the same step as for the fixed minimums.
+- **The floor.** The WCAG 2 minimum always applies too.
+
+For the default sizes, the minimums are:
+
+| Text | Size and weight | WCAG 2 standard | APCA standard | APCA enhanced |
+|---|---|---|---|---|
+| Body text | 15 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
+| `fg.base-heading-lg` (h3) | 18 px, 700 | 4.5:1 | Lc 55 | Lc 70 |
+| `fg.base-heading-2xl` (h2) | 26 px, 700 | 3:1 | Lc 45 | Lc 60 |
+| `fg.base-heading-3xl` (h1) | 31 px, 700 | 3:1 | Lc 45 | Lc 60 |
+
+The grade gaps in the table above still use the fixed minimums for text, large text, and controls.
 
 <details>
 <summary>How it works</summary>
@@ -77,7 +98,7 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 
 **Grade gaps.** `gradeGaps` tests every pair of grades in every pair of palettes, in both directions. The gap is the smallest difference larger than the largest difference that fails.
 
-**APCA.** The engine uses APCA-W3 version 0.0.98G-4g. The tests check it against the reference values.
+**APCA.** The engine uses APCA-W3 version 0.0.98G-4g. The tests check it against the reference values. The font table is `fontLookupAPCA` from apca-w3 0.1.9 (table version 0.1.7 G, May 2022). See `apcaMinLc` and `minContrast` in [src/palette.js](../src/palette.js).
 
 </details>
 
@@ -100,6 +121,6 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 - [ ] Add OKHSL as a color model: true hues, and a saturation that always fits the gamut
 - [>] Add HCT (Material 3) as a color model. It needs CAM16, or Google's library.
 - [>] Allow wider-gamut ramps in Display P3
-- [ ] Use APCA's font-size and weight table, so that large text can use a smaller gap
+- [x] Use APCA's font-size and weight table, so that large text can use a smaller gap
 - [x] Check text on see-through panels against the lightest and darkest backdrops
 - [ ] Give the tints less chroma for very bright key colors, such as green

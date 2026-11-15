@@ -47,6 +47,21 @@ test('every required pair passes APCA, at both levels', () => {
   }
 });
 
+test('headings are checked at their size in bold, and with APCA the larger ones can fade further', () => {
+  const theme = (method) => buildThemes({ themes: { default: { contrast: { method }, feel: { softness: 1 } } } }).themes.default;
+  const apca = theme('apca');
+  const size = apca.primitives.font.size;
+  const purposes = apca.modes.light.audit.filter((a) => /heading/.test(a.fg)).map((a) => a.purpose);
+  assert.deepEqual([...new Set(purposes)], ['lg', '2xl', '3xl'].map((s) => `text ${size[s]}px/700`));
+  // At softness 1, a heading is at the min-contrast grade for its size: lighter than body text.
+  const grade = (t, name) => t.modes.light.tokens[name].grade;
+  assert.ok(grade(apca, 'fg.base-heading-3xl') < grade(apca, 'fg.base-heading-lg'));
+  assert.ok(grade(apca, 'fg.base-heading-lg') < grade(apca, 'fg.base-muted'));
+  // WCAG 2 is the floor, so APCA headings are never lighter than WCAG 2 headings.
+  const wcag = theme('wcag');
+  for (const s of ['lg', '2xl', '3xl']) assert.ok(grade(apca, `fg.base-heading-${s}`) >= grade(wcag, `fg.base-heading-${s}`), s);
+});
+
 test('the components use only tokens that the CSS defines', async () => {
   const css = toCss(buildThemes({}));
   const defined = new Set([...css.matchAll(/--(tm-[a-z0-9-]+):/g)].map((m) => m[1]));

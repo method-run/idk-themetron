@@ -1,5 +1,5 @@
 // Build the themes: for each theme, primitive tokens from its settings, then semantic tokens for each mode.
-import { GRADES, contrastTest, gradeGaps, makePalette, measure } from './palette.js';
+import { GRADES, contrastTest, gradeGaps, makePalette, measure, purposeName } from './palette.js';
 import { normalizeInputs, ROLES } from './inputs.js';
 
 export const MODES = ['light', 'dark'];
@@ -248,7 +248,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const check = (fgName, bgName, purpose, required = true) => {
     const fg = tokens[fgName].value;
     const bg = tokens[bgName].value;
-    audit.push({ fg: fgName, bg: bgName, fgValue: fg, bgValue: bg, purpose, required, ...measure(fg, bg), pass: test(fg, bg, purpose) });
+    audit.push({ fg: fgName, bg: bgName, fgValue: fg, bgValue: bg, purpose: purposeName(purpose), required, ...measure(fg, bg), pass: test(fg, bg, purpose) });
   };
 
   // The canvas is grade 5 in light mode and 95 in dark mode. Raised surfaces are one grade
@@ -273,8 +273,11 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // From the canvas outward: the first grade that passes.
   const outward = STOPS.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
   if (dark) outward.reverse();
-  const fgGrade = pick(base, [dark ? 5 : 90, dark ? 0 : 100, ...outward.slice().reverse()], passesAll('text'), bgs);
-  const mutedGrade = pick(base, outward, passesAll('text'), bgs);
+  // Body text is checked at the body size and weight. With APCA the font table asks more than
+  // the body-text minimum at 15 or 16 px, so this is the same as 'text'.
+  const body = { size: primitives.font.size.md, weight: primitives.font.weight.regular };
+  const fgGrade = pick(base, [dark ? 5 : 90, dark ? 0 : 100, ...outward.slice().reverse()], passesAll(body), bgs);
+  const mutedGrade = pick(base, outward, passesAll(body), bgs);
   // Text fading: text can move toward the page, so the page reads as one soft layer. Body text
   // goes to one notch (10 grade numbers) past the min-contrast grade, muted text stays at it, and
   // headings go to the min-contrast grade for their size. Body text does not fade for now
@@ -286,12 +289,14 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   set('fg.base', base, fade(fgGrade, bodyClear));
   set('fg.base-muted', base, mutedGrade);
   // Headings fade further, with softness: to the min-contrast grade for their size at softness 1.
-  // Text of 24 px or more is large (WCAG's rule for regular weight), so headings need not be bold.
+  // Each heading is checked at its size, in bold (components.css sets headings in bold). With
+  // WCAG 2, text of 24 px or more is large. With APCA, the font table gives the minimum, so
+  // larger headings can fade further.
   const fadeHeading = fadeBy(settings.feel.softness);
   const fine = GRADES.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
   if (dark) fine.reverse();
   for (const size of ['lg', '2xl', '3xl']) {
-    const purpose = primitives.font.size[size] >= 24 ? 'large' : 'text';
+    const purpose = { size: primitives.font.size[size], weight: primitives.font.weight.bold };
     const clear = pick(base, fine, passesAll(purpose), bgs);
     set(`fg.base-heading-${size}`, base, fadeHeading(fgGrade, dark ? Math.max(fgGrade, clear) : Math.min(fgGrade, clear)));
     for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(`fg.base-heading-${size}`, bg, purpose);
@@ -303,7 +308,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   // (edge-alpha fades them out from 0.9 to 1).
   set('panel.border', base, fadeBy(Math.max(0, 1 - settings.feel.softness / 0.5))(outward[1], fgGrade));
   set('border.base-strong', base, pick(base, outward, passesAll('ui'), bgs));
-  for (const fg of ['fg.base', 'fg.base-muted']) for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(fg, bg, 'text');
+  for (const fg of ['fg.base', 'fg.base-muted']) for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(fg, bg, body);
   check('fg.base-subtle', 'bg.canvas', 'ui');
   check('border.base-strong', 'bg.surface', 'ui');
   // Field edges recede at the top of softness (0.9 to 1), as the neumorphic hollow takes over
