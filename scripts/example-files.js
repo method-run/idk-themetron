@@ -16,6 +16,7 @@ export function exampleFiles(inputs, pageCss) {
     'tailwind.css': toTailwind(built),
     'shadcn.css': toShadcn(built),
     '_bootstrap.scss': toBootstrapSass(built),
+    '_bootstrap-more.scss': toBootstrapSass(built, { more: true }),
     'mui.json': json(toMui(built)),
     'daisyui.css': toDaisyui(built),
     'bootstrap.css': toBootstrapCss(built),

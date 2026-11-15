@@ -1,0 +1,102 @@
+// Bootstrap 5 Sass variables. Made by themetron. Put this file before Bootstrap:
+// @import "themetron"; @import "bootstrap/scss/bootstrap";
+// Sass variables are fixed when Sass compiles, so these are the root theme's light-mode values.
+// The *-dark variables (Bootstrap 5.3) hold its dark-mode values, for data-bs-theme="dark".
+// These are the more-contrast values, for a second build that loads with media="(prefers-contrast: more)".
+
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Fraunces:wght@400;500;700&display=swap");
+
+// Colors
+$primary: #0624a9;
+$success: #004415;
+$warning: #583000;
+$danger: #770034;
+$secondary: #353a44;
+$light: #eaeef6;
+$dark: #20242c;
+$body-bg: #eaeef6;
+$body-color: #20242c;
+$body-emphasis-color: #20242c;
+$body-secondary-color: #353a44;
+$body-secondary-bg: #c9ced9;
+$body-tertiary-color: #6f7684;
+$body-tertiary-bg: #d9dde7;
+$border-color: #b9bfcb;
+$link-color: #0624a9;
+$primary-text-emphasis: #113bc9;
+$primary-bg-subtle: #e6eeff;
+$primary-border-subtle: #8cb0ff;
+$success-text-emphasis: #005a1f;
+$success-bg-subtle: #c6fbcb;
+$success-border-subtle: #70c37c;
+$warning-text-emphasis: #744100;
+$warning-bg-subtle: #ffead8;
+$warning-border-subtle: #fb9b30;
+$danger-text-emphasis: #9c0046;
+$danger-bg-subtle: #ffe8ec;
+$danger-border-subtle: #ff90ab;
+
+// Colors in dark mode
+$body-bg-dark: #13161d;
+$body-color-dark: #eaeef6;
+$body-emphasis-color-dark: #eaeef6;
+$body-secondary-color-dark: #b9bfcb;
+$body-secondary-bg-dark: #353a44;
+$body-tertiary-color-dark: #6f7684;
+$body-tertiary-bg-dark: #000000;
+$border-color-dark: #353a44;
+$link-color-dark: #a1bfff;
+$primary-text-emphasis-dark: #78a2ff;
+$primary-bg-subtle-dark: #01005e;
+$primary-border-subtle-dark: #0b30b9;
+$success-text-emphasis-dark: #5eb76c;
+$success-bg-subtle-dark: #001c05;
+$success-border-subtle-dark: #004f1a;
+$warning-text-emphasis-dark: #ed8d18;
+$warning-bg-subtle-dark: #261100;
+$warning-border-subtle-dark: #663900;
+$danger-text-emphasis-dark: #ff789c;
+$danger-bg-subtle-dark: #360013;
+$danger-border-subtle-dark: #8a003d;
+
+// Type
+$font-family-sans-serif: Figtree, sans-serif;
+$font-family-monospace: monospace;
+$headings-font-family: Figtree, sans-serif;
+$font-size-base: 0.9375rem;
+$font-size-sm: 0.75rem;
+$font-size-lg: 1.125rem;
+$h1-font-size: 1.9375rem;
+$h2-font-size: 1.625rem;
+$h3-font-size: 1.375rem;
+$h4-font-size: 1.125rem;
+$h5-font-size: 0.9375rem;
+$h6-font-size: 0.75rem;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+$line-height-base: 1.53;
+$headings-line-height: 1.2;
+
+// Space, shape, and depth
+$spacer: 16px;
+$spacers: (0: 0, 1: 4px, 2: 8px, 3: 16px, 4: 24px, 5: 48px);
+$border-width: 1px;
+$border-radius-sm: 1.4px;
+$border-radius: 5.6px;
+$border-radius-lg: 8.4px;
+$btn-border-radius-sm: 4.9px;
+$btn-border-radius: 6.3px;
+$btn-border-radius-lg: 7.7px;
+$input-border-radius-sm: 4.9px;
+$input-border-radius: 6.3px;
+$input-border-radius-lg: 7.7px;
+$input-btn-padding-y: 7px;
+$input-btn-padding-x: 15px;
+$input-btn-line-height: 1.25;
+$focus-ring-width: 2px;
+$focus-ring-color: #2152e4;
+$box-shadow-sm: 0.6px 1.2px 1.7px #20242c29, 0 0.3px 3.8px #20242c14;
+$box-shadow: 0.9px 1.8px 2.1px #20242c29, 0 0.5px 4.7px #20242c14;
+$box-shadow-lg: 2.4px 4.8px 3.9px #20242c29, 0 1.2px 9.2px #20242c14;
+$box-shadow-inset: inset 0 1px 1.9px #20242c1f;
