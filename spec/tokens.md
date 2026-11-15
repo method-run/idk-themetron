@@ -5,7 +5,7 @@ summary: The design tokens that themetron makes, their names, and their formats.
 parent: idk-themetron
 kind: reference
 order: 3
-code: [src/tokens.js, src/export.js]
+code: [src/tokens.js, src/export.js, bin/themetron.js]
 tags: [system/tokens]
 ---
 # Tokens
@@ -197,6 +197,28 @@ Themes that have the same values in a group of tokens share one rule for that gr
 
 </details>
 
+## Command line
+
+`themetron build` makes the tokens from an inputs file. It writes them to stdout, or to the file that `--out` names.
+
+```sh
+npx themetron build inputs.json                          # CSS, to stdout
+npx themetron build inputs.json --format dtcg --out tokens.dtcg.json
+npx themetron --help
+```
+
+`--format` takes the formats of the playground's download:
+
+| Format | What it writes |
+|---|---|
+| `css` | The tokens as CSS custom properties, one rule for each theme. This is the default. |
+| `stylesheet` | The CSS tokens, then `components/components.css`, in one file. |
+| `dtcg` | Design Tokens Community Group JSON. |
+| `tailwind` | A Tailwind CSS v4 theme. It reads the CSS tokens, so add them too. |
+| `shadcn` | Variables for shadcn/ui's `globals.css`. |
+
+If the inputs have problems, the command prints one line for each problem and exits with code 1. It writes no tokens. The [Inputs spec](./inputs.md "inputs") describes the inputs file.
+
 ## More contrast
 
 Every theme ships a second set of semantic tokens at the enhanced level, for readers who ask for more contrast. It uses the same ramps, so only the grades that the tokens pick change, and the `gap-*` tokens. Themes share these rules as they share the others. The token names stay the same, so components need no change.
@@ -228,5 +250,5 @@ Then any themetron theme set works with it, and so do the inputs and the playgro
 - [x] Export for Bootstrap 5 Sass variables, like the first themetron
 - [x] Export for shadcn/ui theme variables
 - [ ] Export for MUI, DaisyUI, and Bootstrap 5 theme variables
-- [ ] Add a command-line tool: `themetron build inputs.json --format css`
+- [x] Add a command-line tool: `themetron build inputs.json --format css`
 - [ ] Use the DTCG resolver format for themes and modes, when tools support it
