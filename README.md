@@ -36,6 +36,7 @@ npm run preview     # serve the built site, at http://localhost:4321/
 npm run plans:preview  # build, then serve: the plans site at /, the playground at /play/
 npm test
 npm run spec        # write spec/tokens.manifest.json and spec/inputs.schema.json from the code
+npx themetron build inputs.json --format css --out tokens.css  # make the tokens from an inputs file
 npx themetron check site.css  # list the themetron tokens that a stylesheet reads
 ```
 
