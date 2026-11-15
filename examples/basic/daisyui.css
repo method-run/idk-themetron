@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Add the themetron CSS too: these values point at its variables. Made by themetron. */
+@plugin "daisyui/theme" {
+  name: "themetron";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+  --color-base-100: var(--tm-bg-surface);
+  --color-base-200: var(--tm-bg-canvas);
+  --color-base-300: var(--tm-bg-sunken);
+  --color-base-content: var(--tm-fg-base);
+  --color-primary: var(--tm-fill-action);
+  --color-primary-content: var(--tm-on-fill-action);
+  --color-secondary: var(--tm-tint-action);
+  --color-secondary-content: var(--tm-on-tint-action);
+  --color-accent: var(--tm-fill-action-exact);
+  --color-accent-content: var(--tm-on-fill-action-exact);
+  --color-neutral: var(--tm-fg-base);
+  --color-neutral-content: var(--tm-bg-canvas);
+  --color-error: light-dark(#bb1758, #f05283);
+  --color-error-content: light-dark(#ffffff, #000000);
+  --color-warning: light-dark(#8f5200, #cc7700);
+  --color-warning-content: light-dark(#ffffff, #000000);
+  --color-success: light-dark(#007128, #3c9e50);
+  --color-success-content: light-dark(#ffffff, #000000);
+  --color-info: var(--tm-fill-action);
+  --color-info-content: var(--tm-on-fill-action);
+  --radius-selector: var(--tm-radius-sm);
+  --radius-field: var(--tm-radius-control);
+  --radius-box: var(--tm-radius-lg);
+  --size-selector: 0.25rem;
+  --size-field: 3.6px;
+  --border: var(--tm-border-width);
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "themetron-dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: var(--tm-bg-surface);
+  --color-base-200: var(--tm-bg-canvas);
+  --color-base-300: var(--tm-bg-sunken);
+  --color-base-content: var(--tm-fg-base);
+  --color-primary: var(--tm-fill-action);
+  --color-primary-content: var(--tm-on-fill-action);
+  --color-secondary: var(--tm-tint-action);
+  --color-secondary-content: var(--tm-on-tint-action);
+  --color-accent: var(--tm-fill-action-exact);
+  --color-accent-content: var(--tm-on-fill-action-exact);
+  --color-neutral: var(--tm-fg-base);
+  --color-neutral-content: var(--tm-bg-canvas);
+  --color-error: light-dark(#bb1758, #f05283);
+  --color-error-content: light-dark(#ffffff, #000000);
+  --color-warning: light-dark(#8f5200, #cc7700);
+  --color-warning-content: light-dark(#ffffff, #000000);
+  --color-success: light-dark(#007128, #3c9e50);
+  --color-success-content: light-dark(#ffffff, #000000);
+  --color-info: var(--tm-fill-action);
+  --color-info-content: var(--tm-on-fill-action);
+  --radius-selector: var(--tm-radius-sm);
+  --radius-field: var(--tm-radius-control);
+  --radius-box: var(--tm-radius-lg);
+  --size-selector: 0.25rem;
+  --size-field: 3.6px;
+  --border: var(--tm-border-width);
+  --depth: 0;
+  --noise: 0;
+}
+
+/* Each theme class sets the colors again, from its own variables. */
+.theme-success, .theme-warning, .theme-danger, .theme-promo, .theme-sale {
+  --color-base-100: var(--tm-bg-surface);
+  --color-base-200: var(--tm-bg-canvas);
+  --color-base-300: var(--tm-bg-sunken);
+  --color-base-content: var(--tm-fg-base);
+  --color-primary: var(--tm-fill-action);
+  --color-primary-content: var(--tm-on-fill-action);
+  --color-secondary: var(--tm-tint-action);
+  --color-secondary-content: var(--tm-on-tint-action);
+  --color-accent: var(--tm-fill-action-exact);
+  --color-accent-content: var(--tm-on-fill-action-exact);
+  --color-neutral: var(--tm-fg-base);
+  --color-neutral-content: var(--tm-bg-canvas);
+  --color-info: var(--tm-fill-action);
+  --color-info-content: var(--tm-on-fill-action);
+}

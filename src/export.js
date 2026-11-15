@@ -590,3 +590,176 @@ export function toBootstrapSass(built) {
     '',
   ].join('\n');
 }
+
+// The status themes that the framework exports read, by the framework's own name: a theme named
+// danger (or error) gives the error color, and so on. A status without a theme is left out, so
+// the framework keeps its own color, unless the format needs every color.
+const STATUSES = { error: ['danger', 'error'], warning: ['warning'], success: ['success'], info: ['info'] };
+const statusThemes = (built) => Object.fromEntries(Object.entries(STATUSES).map(([status, names]) => [status, built.themes[names.find((n) => built.themes[n])]]).filter(([, theme]) => theme));
+
+// "#rrggbb" as "r, g, b", for the -rgb variables of Bootstrap.
+const rgbList = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(', ');
+
+// A Material UI theme, for createTheme(). One theme in both modes, as colorSchemes (MUI v6 and
+// later). Values are plain colors, not CSS variables, because MUI works out lighter and darker
+// shades from them. `theme` picks the theme, the root theme by default. The status colors come
+// from the themes named danger (or error), warning, success, and info. Shadows are left out:
+// MUI has one list of 25 shadows for both modes, and themetron's shadows change with the mode.
+export function toMui(built, { theme: name = ROOT } = {}) {
+  const theme = built.themes[name];
+  if (!theme) throw new Error(`There is no theme named ${name}.`);
+  const p = theme.primitives;
+  const statuses = statusThemes(built);
+  const palette = (mode) => {
+    const v = (token, from = theme) => from.modes[mode].tokens[token].value;
+    return {
+      mode,
+      primary: { main: v('fill.action'), contrastText: v('on-fill.action') },
+      secondary: { main: v('tint.action'), contrastText: v('on-tint.action') },
+      ...Object.fromEntries(Object.entries(statuses).map(([status, t]) => [status, { main: v('fill.action', t), contrastText: v('on-fill.action', t) }])),
+      background: { default: v('bg.canvas'), paper: v('bg.surface') },
+      text: { primary: v('fg.base'), secondary: v('fg.base-muted'), disabled: v('fg.base-subtle') },
+      divider: v('border.base'),
+    };
+  };
+  const heading = { fontFamily: fontList(p.font.family.heading) };
+  return {
+    colorSchemes: { light: { palette: palette('light') }, dark: { palette: palette('dark') } },
+    shape: { borderRadius: p.radius.md },
+    typography: {
+      fontFamily: fontList(p.font.family.body),
+      fontSize: p.font.size.md,
+      fontWeightRegular: p.font.weight.regular,
+      fontWeightMedium: p.font.weight.medium,
+      fontWeightBold: p.font.weight.bold,
+      ...Object.fromEntries(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((h) => [h, heading])),
+    },
+  };
+}
+
+// daisyUI 5 themes, for a Tailwind CSS v4 stylesheet: "themetron", the default, and
+// "themetron-dark", for a dark system setting. Like toTailwind, the colors point at themetron
+// CSS variables, so use it with the output of toCss. The two themes differ only in their
+// color-scheme, and light-dark() in each variable picks the mode. A custom property takes the
+// value of a variable where it is set, so the child theme classes set the daisyUI colors again.
+// The status colors are the fills of the status themes in both modes. A status without a theme
+// gets the action fill, because daisyUI needs every color.
+export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', name = 'themetron' } = {}) {
+  const p = built.themes[ROOT].primitives;
+  const v = (token) => `var(--${prefix}-${cssName(token)})`;
+  const colors = {
+    'base-100': v('bg.surface'),
+    'base-200': v('bg.canvas'),
+    'base-300': v('bg.sunken'),
+    'base-content': v('fg.base'),
+    primary: v('fill.action'),
+    'primary-content': v('on-fill.action'),
+    secondary: v('tint.action'),
+    'secondary-content': v('on-tint.action'),
+    accent: v('fill.action-exact'),
+    'accent-content': v('on-fill.action-exact'),
+    neutral: v('fg.base'),
+    'neutral-content': v('bg.canvas'),
+  };
+  const statuses = statusThemes(built);
+  for (const status of Object.keys(STATUSES)) {
+    const t = statuses[status];
+    const both = (token) => bothModes(t.modes.light.tokens[token].value, t.modes.dark.tokens[token].value);
+    colors[status] = t ? both('fill.action') : v('fill.action');
+    colors[`${status}-content`] = t ? both('on-fill.action') : v('on-fill.action');
+  }
+  const rest = {
+    'radius-selector': v('radius.sm'),
+    'radius-field': v('radius.control'),
+    'radius-box': v('radius.lg'),
+    // daisyUI makes a field ten times this high. The selector size stays daisyUI's own.
+    'size-selector': '0.25rem',
+    'size-field': px(round1(p.control.height / 10)),
+    border: v('border-width'),
+    depth: p.shininess > 0 ? '1' : '0',
+    noise: '0',
+  };
+  const decls = (entries) => entries.map(([k, val]) => `  --${k}: ${val};`).join('\n');
+  const colorEntries = Object.entries(colors).map(([k, val]) => [`color-${k}`, val]);
+  const plugin = (themeName, mode) => `@plugin "daisyui/theme" {\n  name: "${themeName}";\n  default: ${mode === 'light'};\n  prefersdark: ${mode === 'dark'};\n  color-scheme: ${mode};\n${decls([...colorEntries, ...Object.entries(rest)])}\n}\n`;
+  const own = colorEntries.filter(([, val]) => val.startsWith('var('));
+  const children = built.order.slice(1).map((n) => `.${classPrefix}${n}`);
+  return [
+    '@import "tailwindcss";',
+    '@plugin "daisyui";\n',
+    '/* Add the themetron CSS too: these values point at its variables. Made by themetron. */',
+    plugin(name, 'light'),
+    plugin(`${name}-dark`, 'dark'),
+    ...(children.length ? ['/* Each theme class sets the colors again, from its own variables. */', `${children.join(', ')} {\n${decls(own)}\n}\n`] : []),
+  ].join('\n');
+}
+
+// Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. For Bootstrap's
+// Sass, see toBootstrapSass. :root holds the root theme's light values, and
+// [data-bs-theme=dark] its dark values. Each child theme gets a rule on its class too. The
+// values are plain colors, because Bootstrap's -rgb variables need the numbers. The status
+// colors come from the themes named danger, warning, success, and info. Bootstrap's own CSS
+// sets the colors of components such as .btn-primary from Sass, so these variables change
+// only the parts that read them: the body, links, borders, utilities, and the like. The Sass
+// export changes those components too.
+export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
+  const statuses = statusThemes(built);
+  const colors = (theme, mode) => {
+    const out = {};
+    const v = (token, from = theme) => from.modes[mode].tokens[token].value;
+    const color = (k, value) => { out[k] = value; out[`${k}-rgb`] = rgbList(value); };
+    // One theme color with its subtle forms: the fill, and the tint for alerts and badges.
+    const role = (k, t) => {
+      color(k, v('fill.action', t));
+      out[`${k}-text-emphasis`] = v('on-tint.action', t);
+      out[`${k}-bg-subtle`] = v('tint.action', t);
+      out[`${k}-border-subtle`] = v('border.action', t);
+    };
+    role('primary', theme);
+    for (const [status, t] of Object.entries(statuses)) role(status === 'error' ? 'danger' : status, t);
+    color('secondary', v('fg.base-muted'));
+    color('body-color', v('fg.base'));
+    color('body-bg', v('bg.canvas'));
+    color('emphasis-color', v('fg.base'));
+    color('secondary-color', v('fg.base-muted'));
+    color('secondary-bg', v('bg.sunken'));
+    color('tertiary-color', v('fg.base-subtle'));
+    color('tertiary-bg', v('bg.surface'));
+    color('link-color', v('fg.action'));
+    color('link-hover-color', v('fg.action'));
+    out['border-color'] = v('border.base');
+    out['focus-ring-color'] = v('border.focus');
+    return out;
+  };
+  const rest = (theme, mode) => {
+    const c = theme.modes[mode].computed;
+    return { 'box-shadow-sm': c['elevation.1'], 'box-shadow': c['elevation.2'], 'box-shadow-lg': c['elevation.3'] };
+  };
+  const root = built.themes[ROOT];
+  const p = root.primitives;
+  const shared = {
+    'font-sans-serif': fontList(p.font.family.body),
+    'font-monospace': fontList(p.font.family.mono),
+    'body-font-family': fontList(p.font.family.body),
+    'body-font-size': px(p.font.size.md),
+    'body-font-weight': String(p.font.weight.regular),
+    'body-line-height': String(p.font.lineHeight.body),
+    'border-width': px(p.border.width),
+    'border-radius-sm': px(p.radius.sm),
+    'border-radius': px(p.radius.md),
+    'border-radius-lg': px(p.radius.lg),
+    'focus-ring-width': px(p.border.focus),
+    'focus-ring-opacity': '1',
+  };
+  const block = (selector, entries) => `${selector} {\n${Object.entries(entries).map(([k, val]) => `  --bs-${k}: ${val};`).join('\n')}\n}\n`;
+  const out = [
+    '/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. Made by themetron. */\n',
+    block(':root, [data-bs-theme=light]', { ...shared, ...colors(root, 'light'), ...rest(root, 'light') }),
+    block('[data-bs-theme=dark]', { ...colors(root, 'dark'), ...rest(root, 'dark') }),
+  ];
+  for (const name of built.order.slice(1)) {
+    const theme = built.themes[name];
+    out.push(block(`.${classPrefix}${name}`, colors(theme, 'light')), block(`[data-bs-theme=dark] .${classPrefix}${name}, .${classPrefix}${name}[data-bs-theme=dark]`, colors(theme, 'dark')));
+  }
+  return out.join('\n');
+}
