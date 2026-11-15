@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readdir, readFile } from 'node:fs/promises';
 import { buildThemes, toCss, toDtcg, normalizeInputs, contrastTest, PRESETS } from '../src/index.js';
 import { specFiles, releaseFiles, tokenManifest, inputsSchema, checkCss, PAIRS, CONTRACT_VERSION, SPEC_URL, specUrl, INPUTS_SCHEMA_URL, MANIFEST_URL, breakingPart, stableTokens, stableTokenChanges } from '../src/manifest.js';
-import { releasedVersions, newestReleasedManifest, removedMessage } from '../scripts/releases.js';
+import { releasedVersions, newestReleasedManifest, releasePlan, removedMessage } from '../scripts/releases.js';
 
 test('the files in spec/ match the code. Run npm run spec after a change.', async () => {
   for (const [file, text] of Object.entries(specFiles())) {
@@ -23,11 +23,21 @@ test('the breaking part of a version is the first part that is not 0', () => {
   assert.equal(breakingPart('0.6.3'), '0.6');
   assert.equal(breakingPart('1.4.2'), '1');
   assert.equal(breakingPart('0.0.3'), '0.0.3');
+  assert.equal(breakingPart('0.6.0-alpha.2'), '0.6');
+  assert.equal(breakingPart('0.0.3-alpha.0'), '0.0.3');
   const { tokens } = tokenManifest();
   const released = (contract) => ({ contract, tokens: { ...tokens, gone: { stability: 'stable' } } });
   assert.deepEqual(stableTokenChanges(released(CONTRACT_VERSION)), { removed: ['gone'], bumped: false });
   assert.deepEqual(stableTokenChanges(released('0.0.1')), { removed: ['gone'], bumped: true });
   assert.ok(stableTokens().includes('fg-base'));
+});
+
+test('a release copies the contract, an alpha does not, and the two versions must agree', () => {
+  assert.deepEqual(releasePlan('0.2.0', '0.2.0', ['0.1.0']), { snapshot: true });
+  assert.deepEqual(releasePlan('0.2.0-alpha.1', '0.2.0-alpha.1', ['0.1.0']), { snapshot: false });
+  assert.deepEqual(releasePlan('0.1.1-alpha.0', '0.1.0', ['0.1.0']), { snapshot: false }, 'an alpha with the released contract');
+  assert.match(releasePlan('0.2.0-alpha.1', '0.2.0', ['0.1.0']).error, /Give CONTRACT_VERSION .* an alpha version too, such as 0\.2\.0-alpha\.0/);
+  assert.match(releasePlan('0.2.0', '0.2.0-alpha.3', ['0.1.0']).error, /Set CONTRACT_VERSION .* to 0\.2\.0\./);
 });
 
 test('the manifest lists every token that the CSS defines, and nothing else', () => {

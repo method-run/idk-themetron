@@ -271,9 +271,10 @@ export function releaseFiles() {
 
 // The part of a contract version that changes when a stable token goes away. From 1.0 it is
 // the major version. Before 1.0 a minor version can change stable tokens, so it is the first
-// part that is not 0: '0.6.2' gives '0.6'.
+// part that is not 0: '0.6.2' gives '0.6'. A pre-release suffix does not count: '0.6.0-alpha.2'
+// gives '0.6' too.
 export function breakingPart(version) {
-  const parts = version.split('.');
+  const parts = version.replace(/[-+].*$/, '').split('.');
   const lead = parts.findIndex((part) => part !== '0');
   return parts.slice(0, lead === -1 ? parts.length : lead + 1).join('.');
 }
