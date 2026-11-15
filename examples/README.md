@@ -39,6 +39,7 @@ To see the page, serve the project folder, such as with `npx vite --open example
 | 4. Tailwind | [`tailwind.css`](./basic/tailwind.css) | [Tokens](../spec/tokens.md "tokens") | An adapter. It reads the CSS tokens. |
 | 4. shadcn/ui | [`shadcn.css`](./basic/shadcn.css) | [Tokens](../spec/tokens.md "tokens") | An adapter, for shadcn/ui's own names. |
 | 4. Bootstrap 5 | [`_bootstrap.scss`](./basic/_bootstrap.scss) | [Tokens](../spec/tokens.md "tokens") | An adapter, for Bootstrap's Sass variables. It has fixed values, not the CSS tokens. |
+| 4. Bootstrap 5, more contrast | [`_bootstrap-more.scss`](./basic/_bootstrap-more.scss) | [Tokens](../spec/tokens.md "tokens") | The same variables at the more-contrast level, for a second build. |
 | 4. MUI | [`mui.json`](./basic/mui.json) | [Tokens](../spec/tokens.md "tokens") | An adapter, for `createTheme()`. |
 | 4. daisyUI | [`daisyui.css`](./basic/daisyui.css) | [Tokens](../spec/tokens.md "tokens") | An adapter. It reads the CSS tokens. |
 | 4. Bootstrap 5.3 CSS | [`bootstrap.css`](./basic/bootstrap.css) | [Tokens](../spec/tokens.md "tokens") | An adapter, for Bootstrap 5.3's CSS variables and buttons. |

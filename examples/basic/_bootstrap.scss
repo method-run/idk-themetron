@@ -2,6 +2,7 @@
 // @import "themetron"; @import "bootstrap/scss/bootstrap";
 // Sass variables are fixed when Sass compiles, so these are the root theme's light-mode values.
 // The *-dark variables (Bootstrap 5.3) hold its dark-mode values, for data-bs-theme="dark".
+// For more contrast, make a second build: https://github.com/method-run/idk-themetron/blob/main/spec/tokens.md#more-contrast-with-bootstrap-sass
 
 @import url("https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Fraunces:wght@400;500;700&display=swap");
 

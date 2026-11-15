@@ -35,8 +35,8 @@ Components should use semantic tokens for color, and primitives for everything e
 | DTCG JSON | `toDtcg(built)` | Design tools and token pipelines, such as Style Dictionary. Follows the Design Tokens Community Group format. Each theme is a group. |
 | shadcn/ui | `toShadcn(built)` | Its theme variables, for `globals.css`: `--primary`, `--background`, `--radius`, and the rest, in `:root` and `.dark`. Each child theme is a class. |
 | Tailwind v4 | `toTailwind(built)` | A `@theme inline` block whose values point at the CSS variables, so theme classes and modes work in utilities too. Use it with the CSS. Grade 5 is Tailwind's 50, grade 10 is 100, and so on. |
-| Bootstrap 5 Sass | `toBootstrapSass(built)` | Sass variables, such as `$primary`, `$body-bg`, `$border-radius`, and `$box-shadow`. Import the file before Bootstrap. Sass variables are fixed when Sass compiles, so they hold the root theme's light-mode values. The Bootstrap 5.3 `*-dark` variables, such as `$body-bg-dark`, hold its dark-mode values. `$success`, `$info`, `$warning`, and `$danger` come from themes with those names. Other child themes are not in it. |
-| Material UI | `toMui(built, { theme })` | An object for `createTheme()` (MUI v6 or later): a palette for each mode in `colorSchemes`, `shape.borderRadius`, `shadows`, and the fonts. `theme` picks one theme, the root by default. The colors are plain values, because MUI works out shades from them. For MUI v5, pass `colorSchemes.light.palette` as `palette`. |
+| Bootstrap 5 Sass | `toBootstrapSass(built, { more })` | Sass variables, such as `$primary`, `$body-bg`, `$border-radius`, and `$box-shadow`. Import the file before Bootstrap. Sass variables are fixed when Sass compiles, so they hold the root theme's light-mode values. The Bootstrap 5.3 `*-dark` variables, such as `$body-bg-dark`, hold its dark-mode values. `$success`, `$info`, `$warning`, and `$danger` come from themes with those names. Other child themes are not in it. |
+| Material UI | `toMui(built, { theme, more })` | An object for `createTheme()` (MUI v6 or later): a palette for each mode in `colorSchemes`, `shape.borderRadius`, `shadows`, and the fonts. `theme` picks one theme, the root by default. The colors are plain values, because MUI works out shades from them. For MUI v5, pass `colorSchemes.light.palette` as `palette`. |
 | daisyUI 5 | `toDaisyui(built, { prefix, classPrefix, name })` | Two daisyUI themes for a Tailwind v4 stylesheet: `themetron`, the default, and `themetron-dark`, for a dark system setting. The colors point at the CSS variables, so use it with the CSS. Each child theme class sets the daisyUI colors again. |
 | Bootstrap 5.3 CSS | `toBootstrapCss(built)` | Its CSS variables: `--bs-primary`, `--bs-body-bg`, `--bs-border-radius`, and the rest, with their `-rgb` twins, in `:root` and `[data-bs-theme=dark]`. Each child theme is a class. Load it after `bootstrap.css`. It also sets the colors of the solid and outline buttons (`.btn-primary`, `.btn-outline-primary`, …) for primary, secondary, and each status with a theme. Bootstrap sets those from Sass, so its variables alone do not change them. Secondary buttons are quiet buttons. Other component colors that come from Sass, such as table rows, stay Bootstrap's. To change all of them, use the Sass export. |
 
@@ -250,8 +250,51 @@ Every theme ships a second set of semantic tokens at the enhanced level, for rea
 
 - **The reader's setting.** `prefers-contrast: more` turns the variant on. Operating systems set it, for example "Increase contrast" on macOS and iOS.
 - **A switch on the page.** `data-tm-contrast="more"` turns it on for an element and everything in it, and `"base"` turns it off, whatever the reader's setting. Put it on `<html>`, or on an element with a theme class. On another element it changes only the theme classes inside it. Scoped rules beat unscoped ones, and the nearest scope wins, so the attribute beats the media query, and the nearest attribute wins.
-- **Leaving it out.** `toCss(built, { more: false })` makes CSS without the variant. DTCG has it as a `moreContrast` group in each theme. The Tailwind and daisyUI exports read the CSS variables, so they follow the variant. The shadcn/ui, MUI, and Bootstrap exports do not have it yet.
+- **Leaving it out.** `toCss(built, { more: false })` makes CSS without the variant.
+- **In the other exports.** Each export has the variant, in the way its tool allows:
+  - DTCG has it as a `moreContrast` group in each theme.
+  - Tailwind and daisyUI read the CSS variables, so they follow the variant.
+  - shadcn/ui and Bootstrap CSS have a `@media (prefers-contrast: more)` block, so they switch by themselves. They have no `data-tm-contrast` switch.
+  - MUI: `toMui(built, { more: true })` makes a second theme. A palette cannot hold a media query, so your app picks the theme, for example with `useMediaQuery('(prefers-contrast: more)')`.
+  - Bootstrap Sass needs a second build. See [More contrast with Bootstrap Sass](#more-contrast-with-bootstrap-sass).
 - **APCA in light mode.** Body text passes only on the lightest grades, even in black: up to grade 15 at the standard level, and only grade 5 at the enhanced level. A tint's hover and press stop at the last grade where some label passes, so at the enhanced level a soft button's tint does not change on hover.
+
+### More contrast with Bootstrap Sass
+
+Sass sets its values once, when it compiles, so one stylesheet cannot switch to more contrast. Make a second stylesheet with the more-contrast values, and let the browser load it only for readers who ask for more contrast.
+
+1. Make two variable files from the same inputs: `_themetron.scss` with `toBootstrapSass(built)`, and `_themetron-more.scss` with `toBootstrapSass(built, { more: true })`.
+2. Make two entry files. Each one imports its variables, then Bootstrap:
+
+   ```scss
+   // site.scss
+   @import "themetron";
+   @import "bootstrap/scss/bootstrap";
+   ```
+
+   ```scss
+   // site-more.scss
+   @import "themetron-more";
+   @import "bootstrap/scss/bootstrap";
+   ```
+
+3. Compile both, for example `sass site.scss site.css` and `sass site-more.scss site-more.css`.
+4. Load both. Put the more-contrast one second, with a `media` attribute:
+
+   ```html
+   <link rel="stylesheet" href="site.css">
+   <link rel="stylesheet" href="site-more.css" media="(prefers-contrast: more)">
+   ```
+
+<details>
+<summary>How it works</summary>
+
+- The second file is a whole Bootstrap with other colors. It comes later, so where its media query matches, its rules win.
+- The browser downloads both files, but it fetches the second one at low priority while its media query does not match, so the page does not wait for it.
+- To test it, turn on "Increase contrast" on macOS or iOS, or use the "prefers-contrast" emulation in your browser's developer tools.
+- `examples/basic/_bootstrap-more.scss` shows the more-contrast variables for the example inputs.
+
+</details>
 
 ## Compatible libraries
 

@@ -264,6 +264,32 @@ test('the Bootstrap CSS export has its variables, with -rgb twins, for each mode
   assert.ok(css.includes(`--tm-bs-primary: ${t('promo', 'dark', 'fill.action')};`), 'child themes set the helpers in dark mode too');
 });
 
+test('the framework exports have more contrast, in the way each tool allows', () => {
+  const built = buildThemes(STATUS_TREE);
+  const more = (name, mode, token) => built.themes[name].more.modes[mode].tokens[token].value;
+  const base = (name, mode, token) => built.themes[name].modes[mode].tokens[token].value;
+  assert.notEqual(more('default', 'light', 'fill.action'), base('default', 'light', 'fill.action'), 'the test tree has a more-contrast change');
+  // shadcn/ui and Bootstrap CSS: a media block after the base rules, with only the changed values.
+  const media = (css) => css.slice(css.indexOf('@media (prefers-contrast: more) {'));
+  const shadcn = toShadcn(built);
+  assert.match(media(shadcn), new RegExp(`^  :root \\{[^}]*--primary: ${more('default', 'light', 'fill.action')};`, 'm'));
+  assert.match(media(shadcn), new RegExp(`^  \\.dark \\{[^}]*--primary: ${more('default', 'dark', 'fill.action')};`, 'm'));
+  assert.doesNotMatch(media(shadcn), /--radius:/, 'only changed values');
+  const bootstrap = toBootstrapCss(built);
+  assert.match(media(bootstrap), new RegExp(`^  \\.theme-promo \\{[^}]*--bs-primary: ${more('promo', 'light', 'fill.action')};`, 'm'));
+  assert.match(media(bootstrap), new RegExp(`--tm-bs-primary-hover: ${more('default', 'light', 'fill.action-hover')};`));
+  assert.ok(bootstrap.indexOf('@media (prefers-contrast: more)') > bootstrap.indexOf('.theme-promo {'), 'after the base rules');
+  // MUI and Bootstrap Sass: a second theme or file, which the app or the page picks.
+  assert.equal(toMui(built, { more: true }).colorSchemes.dark.palette.primary.main, more('default', 'dark', 'fill.action'));
+  assert.equal(toMui(built, { more: true }).colorSchemes.light.palette.error.main, more('danger', 'light', 'fill.action'));
+  const sass = (options) => toBootstrapSass(built, options);
+  const value = (scss, name) => new RegExp(`^\\$${name}: (.+);$`, 'm').exec(scss)?.[1];
+  assert.equal(value(sass({ more: true }), 'primary'), more('default', 'light', 'fill.action'));
+  assert.equal(value(sass({ more: true }), 'body-color-dark'), more('default', 'dark', 'fg.base'));
+  assert.equal(value(sass(), 'primary'), base('default', 'light', 'fill.action'));
+  assert.match(sass(), /#more-contrast-with-bootstrap-sass/, 'the file says where the steps are');
+});
+
 test('every token has a color, even for key colors at the very ends of the scale', () => {
   for (const color of ['#ffffff', '#ffff00', '#fefefe', '#000000', '#0000ee', '#ff00ee']) {
     const { modes } = buildThemes({ themes: { default: { color } } }).themes.default;

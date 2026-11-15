@@ -435,11 +435,28 @@ export function toTailwind(built, { prefix = 'tm' } = {}) {
 // light and dark values. Each child theme gets a rule on its class too, so
 // class="theme-danger" works on shadcn components. "destructive" comes from a theme
 // named danger, if there is one.
+// A theme at its more-contrast level, when `more` is true and the theme has one. The level holds
+// the enhanced-level modes, primitives, and gaps, so exports read it like the theme itself.
+const atLevel = (theme, more) => (more && theme.more ? { ...theme, ...theme.more } : theme);
+
+// One CSS rule for each [selector, { name: value }] pair, then the same rules again inside
+// @media (prefers-contrast: more), with only the values that change there.
+const withMoreContrast = (pairs, block) => {
+  const changed = pairs
+    .map(([selector, base, more]) => [selector, Object.fromEntries(Object.entries(more).filter(([k, v]) => base[k] !== v))])
+    .filter(([, entries]) => Object.keys(entries).length);
+  const indent = (text) => text.replace(/^(?=.)/gm, '  ');
+  return [
+    ...pairs.map(([selector, base]) => block(selector, base)),
+    ...(changed.length ? [`/* More contrast, for readers who ask for it. */\n@media (prefers-contrast: more) {\n${changed.map(([selector, entries]) => indent(block(selector, entries))).join('\n')}}\n`] : []),
+  ];
+};
+
 export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
-  const vars = (theme, mode) => {
-    const t = theme.modes[mode].tokens;
+  const vars = (theme, mode, more) => {
+    const t = atLevel(theme, more).modes[mode].tokens;
     const v = (name) => t[name].value;
-    const danger = built.themes.danger?.modes[mode].tokens;
+    const danger = built.themes.danger && atLevel(built.themes.danger, more).modes[mode].tokens;
     return {
       background: v('bg.canvas'),
       foreground: v('fg.base'),
@@ -462,7 +479,7 @@ export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
       // Charts: the fills of up to five themes, then more grades of this theme's ramp.
       ...Object.fromEntries([1, 2, 3, 4, 5].map((i) => {
         const other = built.themes[built.order[i - 1]];
-        const color = other ? other.modes[mode].tokens['fill.action'].value : theme.palettes.action.steps[[30, 50, 70, 40, 60][i - 1]];
+        const color = other ? atLevel(other, more).modes[mode].tokens['fill.action'].value : theme.palettes.action.steps[[30, 50, 70, 40, 60][i - 1]];
         return [`chart-${i}`, color];
       })),
       sidebar: v('bg.surface'),
@@ -477,16 +494,16 @@ export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
   };
   const block = (selector, entries) => `${selector} {\n${Object.entries(entries).map(([k, val]) => `  --${k}: ${val};`).join('\n')}\n}\n`;
   const root = built.themes[ROOT];
-  const out = [
-    '/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. Made by themetron. */\n',
-    block(':root', { ...vars(root, 'light'), radius: `${root.primitives.radius.md}px` }),
-    block('.dark', vars(root, 'dark')),
+  const rule = (selector, theme, mode, extra = {}) => [selector, { ...vars(theme, mode, false), ...extra }, { ...vars(theme, mode, true), ...extra }];
+  const pairs = [
+    rule(':root', root, 'light', { radius: `${root.primitives.radius.md}px` }),
+    rule('.dark', root, 'dark'),
+    ...built.order.slice(1).flatMap((name) => [
+      rule(`.${classPrefix}${name}`, built.themes[name], 'light'),
+      rule(`.dark .${classPrefix}${name}, .${classPrefix}${name}.dark`, built.themes[name], 'dark'),
+    ]),
   ];
-  for (const name of built.order.slice(1)) {
-    const theme = built.themes[name];
-    out.push(block(`.${classPrefix}${name}`, vars(theme, 'light')), block(`.dark .${classPrefix}${name}, .${classPrefix}${name}.dark`, vars(theme, 'dark')));
-  }
-  return out.join('\n');
+  return ['/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. Made by themetron. */\n', ...withMoreContrast(pairs, block)].join('\n');
 }
 
 // Bootstrap 5 Sass variables, to put before Bootstrap's own Sass. Sass variables are fixed when
@@ -494,8 +511,11 @@ export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
 // for the body, border, link, and subtle colors, for data-bs-theme="dark": they get the dark-mode
 // values. Theme colors such as $primary have no twins, so they keep the light values. $success,
 // $info, $warning, and $danger come from themes with those names, if there are any.
-export function toBootstrapSass(built) {
-  const root = built.themes[ROOT];
+// More contrast: Sass cannot switch at run time, so `more: true` makes the variables for a second
+// build, which the page loads with media="(prefers-contrast: more)". The steps are in
+// spec/tokens.md, under "More contrast with Bootstrap Sass".
+export function toBootstrapSass(built, { more = false } = {}) {
+  const root = atLevel(built.themes[ROOT], more);
   const p = root.primitives;
   const size = (n) => `${round1(n)}px`;
   const rem = (n) => `${Math.round((n / 16) * 10000) / 10000}rem`;
@@ -516,7 +536,7 @@ export function toBootstrapSass(built) {
     ];
   };
   // Each theme color, and its subtle colors for alerts, badges, and list groups.
-  const themeColors = [['primary', root], ...['success', 'info', 'warning', 'danger'].filter((n) => built.themes[n]).map((n) => [n, built.themes[n]])];
+  const themeColors = [['primary', root], ...['success', 'info', 'warning', 'danger'].filter((n) => built.themes[n]).map((n) => [n, atLevel(built.themes[n], more)])];
   const subtle = (mode) => themeColors.flatMap(([name, theme]) => [
     [`${name}-text-emphasis`, color(theme, mode, 'on-tint.action')],
     [`${name}-bg-subtle`, color(theme, mode, 'tint.action')],
@@ -578,6 +598,9 @@ export function toBootstrapSass(built) {
     '// @import "themetron"; @import "bootstrap/scss/bootstrap";',
     '// Sass variables are fixed when Sass compiles, so these are the root theme\'s light-mode values.',
     '// The *-dark variables (Bootstrap 5.3) hold its dark-mode values, for data-bs-theme="dark".',
+    more
+      ? '// These are the more-contrast values, for a second build that loads with media="(prefers-contrast: more)".'
+      : '// For more contrast, make a second build: https://github.com/method-run/idk-themetron/blob/main/spec/tokens.md#more-contrast-with-bootstrap-sass',
     font ? `\n@import url("${font}");` : '',
     '\n// Colors',
     decl(light),
@@ -607,14 +630,16 @@ const rgbList = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
 // shadows for both modes, so it gets the light-mode shadows. MUI components use the low
 // elevations for resting parts (Paper and Card 1, a contained Button 2), the middle ones for
 // raised parts (a hovered Button 4, a Menu 8), and the high ones for overlays (a Dialog 24), so
-// these map to themetron's elevation 1, 2, and 3.
-export function toMui(built, { theme: name = ROOT } = {}) {
-  const theme = built.themes[name];
-  if (!theme) throw new Error(`There is no theme named ${name}.`);
+// these map to themetron's elevation 1, 2, and 3. `more: true` gives the more-contrast theme.
+// A palette cannot hold a media query, so the app picks it, for example with
+// useMediaQuery('(prefers-contrast: more)').
+export function toMui(built, { theme: name = ROOT, more = false } = {}) {
+  if (!built.themes[name]) throw new Error(`There is no theme named ${name}.`);
+  const theme = atLevel(built.themes[name], more);
   const p = theme.primitives;
   const statuses = statusThemes(built);
   const palette = (mode) => {
-    const v = (token, from = theme) => from.modes[mode].tokens[token].value;
+    const v = (token, from = theme) => atLevel(from, more).modes[mode].tokens[token].value;
     return {
       mode,
       primary: { main: v('fill.action'), contrastText: v('on-fill.action') },
@@ -714,9 +739,9 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', name =
 // secondary uses the quiet button.
 export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
   const statuses = statusThemes(built);
-  const colors = (theme, mode) => {
+  const colors = (theme, mode, more) => {
     const out = {};
-    const v = (token, from = theme) => from.modes[mode].tokens[token].value;
+    const v = (token, from = theme) => atLevel(from, more).modes[mode].tokens[token].value;
     const color = (k, value) => { out[k] = value; out[`${k}-rgb`] = rgbList(value); };
     // One theme color with its subtle forms: the fill, and the tint for alerts and badges.
     // The colors of a solid button and its states, for the button rules below.
@@ -754,8 +779,8 @@ export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
     out['focus-ring-color'] = v('border.focus');
     return out;
   };
-  const rest = (theme, mode) => {
-    const c = theme.modes[mode].computed;
+  const rest = (theme, mode, more) => {
+    const c = atLevel(theme, more).modes[mode].computed;
     return { 'box-shadow-sm': c['elevation.1'], 'box-shadow': c['elevation.2'], 'box-shadow-lg': c['elevation.3'] };
   };
   const root = built.themes[ROOT];
@@ -797,15 +822,16 @@ export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
     ];
   };
   const roles = ['primary', 'secondary', ...Object.keys(statuses).map((status) => (status === 'error' ? 'danger' : status))];
-  const out = [
-    '/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. Made by themetron. */\n',
-    block(':root, [data-bs-theme=light]', { ...shared, ...colors(root, 'light'), ...rest(root, 'light') }),
-    block('[data-bs-theme=dark]', { ...colors(root, 'dark'), ...rest(root, 'dark') }),
+  const both = (selector, make) => [selector, make(false), make(true)];
+  const pairs = [
+    both(':root, [data-bs-theme=light]', (more) => ({ ...shared, ...colors(root, 'light', more), ...rest(root, 'light', more) })),
+    both('[data-bs-theme=dark]', (more) => ({ ...colors(root, 'dark', more), ...rest(root, 'dark', more) })),
+    ...built.order.slice(1).flatMap((name) => [
+      both(`.${classPrefix}${name}`, (more) => colors(built.themes[name], 'light', more)),
+      both(`[data-bs-theme=dark] .${classPrefix}${name}, .${classPrefix}${name}[data-bs-theme=dark]`, (more) => colors(built.themes[name], 'dark', more)),
+    ]),
   ];
-  for (const name of built.order.slice(1)) {
-    const theme = built.themes[name];
-    out.push(block(`.${classPrefix}${name}`, colors(theme, 'light')), block(`[data-bs-theme=dark] .${classPrefix}${name}, .${classPrefix}${name}[data-bs-theme=dark]`, colors(theme, 'dark')));
-  }
+  const out = ['/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. Made by themetron. */\n', ...withMoreContrast(pairs, block)];
   out.push('/* Buttons. Bootstrap sets their colors from Sass, so these rules set them again. */\n', ...roles.flatMap(buttons));
   return out.join('\n');
 }
