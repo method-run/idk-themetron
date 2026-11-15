@@ -218,6 +218,10 @@ test('the MUI theme has a palette for each mode, with the status colors of the s
   assert.match(mui.typography.fontFamily, /sans-serif/);
   assert.equal(toMui(built, { theme: 'promo' }).colorSchemes.light.palette.primary.main, built.themes.promo.modes.light.tokens['fill.action'].value);
   assert.throws(() => toMui(built, { theme: 'nope' }), /no theme named nope/);
+  const e = (level) => built.themes.default.modes.light.computed[`elevation.${level}`];
+  assert.equal(mui.shadows.length, 25);
+  assert.equal(mui.shadows[0], 'none');
+  assert.deepEqual([mui.shadows[1], mui.shadows[2], mui.shadows[4], mui.shadows[8], mui.shadows[24]], [e(1), e(1), e(2), e(2), e(3)]);
 });
 
 test('the daisyUI export has a light and a dark theme that point at the CSS variables', () => {
@@ -248,6 +252,16 @@ test('the Bootstrap CSS export has its variables, with -rgb twins, for each mode
   assert.match(css, /^\.theme-promo \{/m);
   assert.match(css, /^\[data-bs-theme=dark\] \.theme-promo, \.theme-promo\[data-bs-theme=dark\] \{/m);
   assert.doesNotMatch(css, /--bs-success:/, 'no success theme, so Bootstrap keeps its own');
+  // Buttons: one rule for each, reading helper variables that each theme and mode sets.
+  for (const k of ['primary', 'secondary', 'danger']) {
+    assert.match(css, new RegExp(`^\\.btn-${k} \\{\\n  --bs-btn-color: var\\(--tm-bs-${k}-on\\);`, 'm'), k);
+    assert.match(css, new RegExp(`^\\.btn-outline-${k} \\{`, 'm'), k);
+  }
+  assert.doesNotMatch(css, /\.btn-success/, 'no success theme, so Bootstrap keeps its own button');
+  const t = (name, mode, token) => built.themes[name].modes[mode].tokens[token].value;
+  assert.ok(css.includes(`--tm-bs-primary-hover: ${t('default', 'light', 'fill.action-hover')};`));
+  assert.ok(css.includes(`--tm-bs-secondary: ${t('default', 'light', 'fill.quiet')};`));
+  assert.ok(css.includes(`--tm-bs-primary: ${t('promo', 'dark', 'fill.action')};`), 'child themes set the helpers in dark mode too');
 });
 
 test('every token has a color, even for key colors at the very ends of the scale', () => {

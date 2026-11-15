@@ -603,8 +603,11 @@ const rgbList = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
 // A Material UI theme, for createTheme(). One theme in both modes, as colorSchemes (MUI v6 and
 // later). Values are plain colors, not CSS variables, because MUI works out lighter and darker
 // shades from them. `theme` picks the theme, the root theme by default. The status colors come
-// from the themes named danger (or error), warning, success, and info. Shadows are left out:
-// MUI has one list of 25 shadows for both modes, and themetron's shadows change with the mode.
+// from the themes named danger (or error), warning, success, and info. MUI has one list of 25
+// shadows for both modes, so it gets the light-mode shadows. MUI components use the low
+// elevations for resting parts (Paper and Card 1, a contained Button 2), the middle ones for
+// raised parts (a hovered Button 4, a Menu 8), and the high ones for overlays (a Dialog 24), so
+// these map to themetron's elevation 1, 2, and 3.
 export function toMui(built, { theme: name = ROOT } = {}) {
   const theme = built.themes[name];
   if (!theme) throw new Error(`There is no theme named ${name}.`);
@@ -623,9 +626,12 @@ export function toMui(built, { theme: name = ROOT } = {}) {
     };
   };
   const heading = { fontFamily: fontList(p.font.family.heading) };
+  const elevation = (level) => theme.modes.light.computed[`elevation.${level}`];
+  const shadows = Array.from({ length: 25 }, (_, i) => (i === 0 ? 'none' : elevation(i <= 2 ? 1 : i <= 8 ? 2 : 3)));
   return {
     colorSchemes: { light: { palette: palette('light') }, dark: { palette: palette('dark') } },
     shape: { borderRadius: p.radius.md },
+    shadows,
     typography: {
       fontFamily: fontList(p.font.family.body),
       fontSize: p.font.size.md,
@@ -700,8 +706,12 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', name =
 // values are plain colors, because Bootstrap's -rgb variables need the numbers. The status
 // colors come from the themes named danger, warning, success, and info. Bootstrap's own CSS
 // sets the colors of components such as .btn-primary from Sass, so these variables change
-// only the parts that read them: the body, links, borders, utilities, and the like. The Sass
-// export changes those components too.
+// only the parts that read them: the body, links, borders, utilities, and the like. So this
+// also sets the variables of the solid and outline buttons, for primary, secondary, and each
+// status with a theme. Each theme rule sets helper variables (--tm-bs-*) for the label and the
+// hover and press colors, and one rule for each button reads them, so a theme class or dark mode
+// changes the buttons inside it too. Primary and the statuses use the action fill, and
+// secondary uses the quiet button.
 export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
   const statuses = statusThemes(built);
   const colors = (theme, mode) => {
@@ -709,15 +719,28 @@ export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
     const v = (token, from = theme) => from.modes[mode].tokens[token].value;
     const color = (k, value) => { out[k] = value; out[`${k}-rgb`] = rgbList(value); };
     // One theme color with its subtle forms: the fill, and the tint for alerts and badges.
+    // The colors of a solid button and its states, for the button rules below.
+    const button = (k, fill, t) => {
+      for (const [name, token] of [['', fill], ['-hover', `${fill}-hover`], ['-active', `${fill}-active`]]) {
+        out[`--tm-bs-${k}${name}`] = v(token, t);
+        out[`--tm-bs-${k}${name}-on`] = v(`on-${token}`, t);
+      }
+    };
     const role = (k, t) => {
       color(k, v('fill.action', t));
       out[`${k}-text-emphasis`] = v('on-tint.action', t);
       out[`${k}-bg-subtle`] = v('tint.action', t);
       out[`${k}-border-subtle`] = v('border.action', t);
+      button(k, 'fill.action', t);
+      out[`--tm-bs-${k}-text`] = v('fg.action', t);
+      out[`--tm-bs-${k}-border`] = v('border.action', t);
     };
     role('primary', theme);
     for (const [status, t] of Object.entries(statuses)) role(status === 'error' ? 'danger' : status, t);
     color('secondary', v('fg.base-muted'));
+    button('secondary', 'fill.quiet', theme);
+    out['--tm-bs-secondary-text'] = v('fg.base');
+    out['--tm-bs-secondary-border'] = v('border.base-strong');
     color('body-color', v('fg.base'));
     color('body-bg', v('bg.canvas'));
     color('emphasis-color', v('fg.base'));
@@ -751,7 +774,29 @@ export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
     'focus-ring-width': px(p.border.focus),
     'focus-ring-opacity': '1',
   };
-  const block = (selector, entries) => `${selector} {\n${Object.entries(entries).map(([k, val]) => `  --bs-${k}: ${val};`).join('\n')}\n}\n`;
+  // Names that start with -- are whole. The rest are Bootstrap's, after --bs-.
+  const block = (selector, entries) => `${selector} {\n${Object.entries(entries).map(([k, val]) => `  ${k.startsWith('--') ? k : `--bs-${k}`}: ${val};`).join('\n')}\n}\n`;
+  // The solid and the outline button of each role, from the helper variables. The outline
+  // button fills in on hover and press, like Bootstrap's.
+  const buttons = (k) => {
+    const h = (name) => `var(--tm-bs-${k}${name})`;
+    const pressed = { 'btn-active-color': h('-active-on'), 'btn-active-bg': h('-active'), 'btn-active-border-color': h('-active') };
+    return [
+      block(`.btn-${k}`, {
+        'btn-color': h('-on'), 'btn-bg': h(''), 'btn-border-color': h(''),
+        'btn-hover-color': h('-hover-on'), 'btn-hover-bg': h('-hover'), 'btn-hover-border-color': h('-hover'),
+        'btn-focus-shadow-rgb': `var(--bs-${k}-rgb)`, ...pressed,
+        'btn-disabled-color': h('-on'), 'btn-disabled-bg': h(''), 'btn-disabled-border-color': h(''),
+      }),
+      block(`.btn-outline-${k}`, {
+        'btn-color': h('-text'), 'btn-border-color': h('-border'),
+        'btn-hover-color': h('-on'), 'btn-hover-bg': h(''), 'btn-hover-border-color': h(''),
+        'btn-focus-shadow-rgb': `var(--bs-${k}-rgb)`, ...pressed,
+        'btn-disabled-color': h('-text'), 'btn-disabled-bg': 'transparent', 'btn-disabled-border-color': h('-border'),
+      }),
+    ];
+  };
+  const roles = ['primary', 'secondary', ...Object.keys(statuses).map((status) => (status === 'error' ? 'danger' : status))];
   const out = [
     '/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. Made by themetron. */\n',
     block(':root, [data-bs-theme=light]', { ...shared, ...colors(root, 'light'), ...rest(root, 'light') }),
@@ -761,5 +806,6 @@ export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
     const theme = built.themes[name];
     out.push(block(`.${classPrefix}${name}`, colors(theme, 'light')), block(`[data-bs-theme=dark] .${classPrefix}${name}, .${classPrefix}${name}[data-bs-theme=dark]`, colors(theme, 'dark')));
   }
+  out.push('/* Buttons. Bootstrap sets their colors from Sass, so these rules set them again. */\n', ...roles.flatMap(buttons));
   return out.join('\n');
 }
