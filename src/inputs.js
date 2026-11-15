@@ -3,14 +3,31 @@
 import { isHex, parseHex, toHex } from './color.js';
 
 // Each feel is a number from 0 to 1. A word from `stops` can stand for its number.
+// The label is the short name people see. The order is the order that the playground shows.
 export const FEELS = {
-  spaciousness: { label: 'Spaciousness', default: 0.5, stops: { compact: 0, cozy: 0.25, comfortable: 0.5, relaxed: 0.75, spacious: 1 } },
-  roundness: { label: 'Roundness', default: 0.35, stops: { square: 0, slight: 0.25, rounded: 0.5, round: 0.75, pill: 1 } },
+  roundness: { label: 'Round', default: 0.35, stops: { square: 0, slight: 0.25, rounded: 0.5, round: 0.75, pill: 1 } },
+  spaciousness: { label: 'Space', default: 0.5, stops: { compact: 0, cozy: 0.25, comfortable: 0.5, relaxed: 0.75, spacious: 1 } },
   depth: { label: 'Depth', default: 0.3, stops: { flat: 0, low: 0.33, raised: 0.67, floating: 1 } },
-  softness: { label: 'Softness', default: 0.5, stops: { hard: 0, crisp: 0.33, soft: 0.67, pillowy: 1 } },
-  solidity: { label: 'Solidity', default: 1, stops: { clear: 0, frosted: 0.33, tinted: 0.67, solid: 1 } },
-  shininess: { label: 'Shininess', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
+  softness: { label: 'Soft', default: 0.5, stops: { hard: 0, crisp: 0.33, soft: 0.67, pillowy: 1 } },
+  shininess: { label: 'Shine', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
+  clarity: { label: 'Clear', default: 0, stops: { solid: 0, tinted: 0.33, frosted: 0.67, clear: 1 } },
 };
+// Solidity is now clarity, the other way round. Old inputs that set solidity still load: its
+// value turns over (1 - solidity), and its own words still work. Clarity wins when a theme
+// sets both.
+const SOLIDITY_STOPS = { clear: 0, frosted: 0.33, tinted: 0.67, solid: 1 };
+// A feel object with solidity moved to clarity, for tools that keep raw inputs, such as the
+// playground. Words and "inherit" carry over; a value it cannot read stays as solidity, so
+// the engine reports it.
+export function solidityToClarity(feel) {
+  if (!feel || typeof feel !== 'object' || !('solidity' in feel)) return feel;
+  const { solidity, ...rest } = feel;
+  if ('clarity' in rest) return rest;
+  const n = solidity === INHERIT ? INHERIT : typeof solidity === 'string' ? SOLIDITY_STOPS[solidity] : solidity;
+  if (n === INHERIT) return { ...rest, clarity: INHERIT };
+  if (typeof n !== 'number' || !(n >= 0 && n <= 1)) return feel;
+  return { ...rest, clarity: Math.round((1 - n) * 100) / 100 };
+}
 // Typography: how fast text grows above body size, from 0 to 1. Not a feel: it sits with the
 // fonts, and presets do not set it. A word from `stops` can stand for its number.
 export const TYPE_VARIANCE = { label: 'Type variance', default: 0.5, stops: { flat: 0, gentle: 0.25, classic: 0.5, bold: 0.75, dramatic: 1 } };
@@ -22,9 +39,9 @@ export const PRESETS = {
   balanced: { label: 'Balanced', feel: {} },
   flat: { label: 'Flat', feel: { roundness: 0.2, depth: 0, softness: 0.5, shininess: 0 } },
   material: { label: 'Material', feel: { roundness: 0.25, depth: 0.5, softness: 0.7, shininess: 0 } },
-  brutalist: { label: 'Brutalist', feel: { spaciousness: 0.4, roundness: 0, depth: 0, softness: 0, shininess: 0 } },
-  neumorphic: { label: 'Neumorphic', feel: { roundness: 0.6, depth: 0.7, softness: 1, shininess: 0 } },
-  glass: { label: 'Glass', feel: { roundness: 0.6, depth: 0.5, softness: 0.8, shininess: 0.3, solidity: 0.35 } },
+  brutalist: { label: 'Brutalist', feel: { spaciousness: 0.4, roundness: 0, depth: 0.5, softness: 0, shininess: 0 } },
+  neumorphic: { label: 'Neumorphic', feel: { roundness: 0.6, depth: 0.7, softness: 1, shininess: 0, clarity: 0.7 } },
+  glass: { label: 'Glass', feel: { roundness: 0.6, depth: 1, softness: 0.85, shininess: 1, clarity: 1 } },
   glossy: { label: 'Glossy', feel: { roundness: 1, depth: 0.5, softness: 0.6, shininess: 1 } },
   playful: { label: 'Playful', feel: { spaciousness: 0.65, roundness: 0.9, depth: 0.45, softness: 0.3 } },
   dense: { label: 'Dense', feel: { spaciousness: 0, roundness: 0.15, depth: 0.15, softness: 0.5 } },
@@ -248,18 +265,22 @@ function fontField(value, at, field, fail) {
 function feelField(value, at, fail) {
   const out = {};
   if (!value || typeof value !== 'object') { fail(`${at}: use an object of feels.`); return out; }
-  for (const [name, raw] of Object.entries(value)) {
-    if (REMOVED_FEELS.includes(name) || name === 'variance') continue;
+  for (const [given, raw] of Object.entries(value)) {
+    if (REMOVED_FEELS.includes(given) || given === 'variance') continue;
+    const old = given === 'solidity';
+    if (old && 'clarity' in value) continue;
+    const name = old ? 'clarity' : given;
     const spec = FEELS[name];
-    if (!spec) { fail(`${at}.${name}: unknown feel. Use one of: ${Object.keys(FEELS).join(', ')}.`); continue; }
+    if (!spec) { fail(`${at}.${given}: unknown feel. Use one of: ${Object.keys(FEELS).join(', ')}.`); continue; }
+    const stops = old ? SOLIDITY_STOPS : spec.stops;
     let n = raw;
     if (n === INHERIT) { out[name] = INHERIT; continue; }
     if (typeof n === 'string') {
-      if (spec.stops[n] === undefined) { fail(`${at}.${name}: unknown word "${n}". Use a number from 0 to 1, "inherit", or one of: ${Object.keys(spec.stops).join(', ')}.`); continue; }
-      n = spec.stops[n];
+      if (stops[n] === undefined) { fail(`${at}.${given}: unknown word "${n}". Use a number from 0 to 1, "inherit", or one of: ${Object.keys(stops).join(', ')}.`); continue; }
+      n = stops[n];
     }
-    if (typeof n !== 'number' || !(n >= 0 && n <= 1)) { fail(`${at}.${name}: use a number from 0 to 1.`); continue; }
-    out[name] = n;
+    if (typeof n !== 'number' || !(n >= 0 && n <= 1)) { fail(`${at}.${given}: use a number from 0 to 1.`); continue; }
+    out[name] = old ? Math.round((1 - n) * 100) / 100 : n;
   }
   return out;
 }

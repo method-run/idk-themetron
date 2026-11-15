@@ -147,28 +147,8 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "spaciousness": {
-              "description": "Spaciousness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "compact",
-                    "cozy",
-                    "comfortable",
-                    "relaxed",
-                    "spacious",
-                    "inherit"
-                  ]
-                }
-              ]
-            },
             "roundness": {
-              "description": "Roundness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "description": "Round: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
               "anyOf": [
                 {
                   "type": "number",
@@ -182,6 +162,26 @@
                     "rounded",
                     "round",
                     "pill",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "spaciousness": {
+              "description": "Space: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "compact",
+                    "cozy",
+                    "comfortable",
+                    "relaxed",
+                    "spacious",
                     "inherit"
                   ]
                 }
@@ -207,7 +207,7 @@
               ]
             },
             "softness": {
-              "description": "Softness: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "description": "Soft: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
               "anyOf": [
                 {
                   "type": "number",
@@ -225,27 +225,8 @@
                 }
               ]
             },
-            "solidity": {
-              "description": "Solidity: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                {
-                  "enum": [
-                    "clear",
-                    "frosted",
-                    "tinted",
-                    "solid",
-                    "inherit"
-                  ]
-                }
-              ]
-            },
             "shininess": {
-              "description": "Shininess: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "description": "Shine: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
               "anyOf": [
                 {
                   "type": "number",
@@ -258,6 +239,25 @@
                     "satin",
                     "plastic",
                     "glassy",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "clarity": {
+              "description": "Clear: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "solid",
+                    "tinted",
+                    "frosted",
+                    "clear",
                     "inherit"
                   ]
                 }

@@ -131,3 +131,17 @@ test('a child can take a preset and still inherit single feels', () => {
   assert.equal(resolved.plain.feel.depth, resolved.default.feel.depth);
   assert.equal(resolved.plain.kind, 'full');
 });
+
+test('solidity still loads, turned over into clarity', () => {
+  const { themes } = normalizeInputs({
+    themes: {
+      default: { feel: { solidity: 0.25 } },
+      words: { parent: 'default', feel: { solidity: 'frosted' } },
+      both: { parent: 'default', feel: { clarity: 0.1, solidity: 0.2 } },
+    },
+  });
+  assert.equal(themes.default.feel.clarity, 0.75);
+  assert.equal(themes.words.feel.clarity, 0.67, "solidity's own words still work");
+  assert.equal(themes.both.feel.clarity, 0.1, 'clarity wins');
+  assert.equal('solidity' in themes.default.feel, false);
+});

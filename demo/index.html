@@ -67,6 +67,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .preset-list { position: absolute; z-index: 5; top: calc(100% + 4px); left: 0; min-width: 180px; display: flex; flex-direction: column; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); }
 .preset-list button { all: unset; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; color: var(--ink); }
 .preset-list button:hover, .preset-list button:focus-visible { background: var(--hover); }
+.preset-list .preset-lucky { margin-top: 4px; border-top: 1px solid var(--line); border-radius: 0 0 6px 6px; }
 .preset-list button[aria-current="true"]::after { content: " ✓"; color: var(--muted); }
 
 .color-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) 96px 26px; gap: 6px; align-items: center; }
@@ -114,6 +115,20 @@ button, input, select, textarea { font: inherit; color: inherit; }
 details.feels > summary { cursor: pointer; font-size: 13px; color: var(--muted); padding: 2px 0; }
 details.feels > summary:hover { color: var(--ink); }
 details.feels[open] > summary { margin-bottom: 12px; }
+/* The feel chart: rings and spokes in the line color, the shape in the action color, and a node
+   on each spoke to drag. Filled nodes are the theme's own feels, hollow ones inherited. */
+.feel-chart { display: block; width: 100%; max-width: 320px; margin: 4px auto 8px; overflow: visible; touch-action: none; user-select: none; }
+.feel-ring, .feel-spoke { fill: none; stroke: var(--line); stroke-width: 1; }
+.feel-shape { fill: color-mix(in oklab, var(--tm-fill-action) 22%, transparent); stroke: var(--tm-fill-action); stroke-width: 1.5; stroke-linejoin: round; }
+.feel-label { font-size: 11px; font-weight: 500; fill: var(--ink); }
+.feel-value { font-family: var(--mono); font-weight: 400; fill: var(--muted); }
+.feel-node { cursor: grab; outline: none; }
+.feel-node.dragging { cursor: grabbing; }
+.feel-hit { fill: transparent; }
+.feel-dot { fill: var(--panel); stroke: var(--tm-fill-action); stroke-width: 2; transition: r 120ms ease; }
+.feel-node.own .feel-dot { fill: var(--tm-fill-action); }
+.feel-node:hover .feel-dot, .feel-node.dragging .feel-dot { r: 8; }
+.feel-node:focus-visible .feel-dot { stroke: var(--tm-border-focus); stroke-width: 3; }
 .fader.own-feel .fader-head label::after { content: " •"; color: var(--ink); }
 .color-row input[type="color"] { width: 34px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; cursor: pointer; }
 .color-row input[type="text"], .color-row select, .field select, .field input, textarea.io { min-width: 0; height: 30px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 0 8px; }
@@ -209,13 +224,13 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .stages.both { grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); }
 .stage { position: relative; isolation: isolate; border-radius: 12px; overflow: hidden; padding: calc(var(--tm-rhythm) * 6); box-shadow: 0 0 0 1px var(--line); }
 /* Color glows behind the sample, so see-through panels have something to show through. They
-   fade out as solidity rises, and are gone at full solidity. Grades mirror in dark mode
+   fade in as clarity rises, and are gone at clarity 0. Grades mirror in dark mode
    (30 and 70, 40 and 60), so the glows look the same in both modes. */
 .stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background:
   radial-gradient(circle at 12% 8% in oklab, color-mix(in oklab, var(--tm-fill-action) 45%, transparent) 0, transparent 34%),
   radial-gradient(circle at 92% 40% in oklab, color-mix(in oklab, light-dark(var(--tm-action-30), var(--tm-action-70)) 45%, transparent) 0, transparent 30%),
   radial-gradient(circle at 30% 95% in oklab, color-mix(in oklab, light-dark(var(--tm-base-40), var(--tm-base-60)) 30%, transparent) 0, transparent 30%);
-  opacity: min(1, calc((1 - var(--solidity, 1)) * 1.5)); }
+  opacity: min(1, calc(var(--clarity, 0) * 1.5)); }
 /* Photo backdrop: a photo behind the samples, colored with each theme's ramps by demo.js, and
    blurred. The canvas reaches past the stage by twice the blur, so the edges stay sharp. */
 .stage-photo { display: none; }

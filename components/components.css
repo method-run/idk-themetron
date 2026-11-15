@@ -102,7 +102,7 @@
   --_alpha: var(--tm-fill-alpha);
   --_line: var(--tm-text-shadow-action);
   --_halo-strength: var(--_fill-faded);
-  /* How far the button fades with solidity: 1 is all the way to its opacity (--_alpha), 0.5 half
+  /* How far the button fades with clarity: 1 is all the way to its opacity (--_alpha), 0.5 half
      as far. The painted opacity, of the fill, the shine layers, and the edge: */
   --_fade: 1;
   --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
@@ -129,7 +129,7 @@
   /* The edge fades with the button, and over the top of softness (--tm-edge-alpha). */
   border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
   border-radius: var(--tm-radius-control);
-  /* Fills and tints turn see-through at low solidity: --tm-fill-alpha for solid fills, and
+  /* Fills and tints turn see-through at high clarity: --tm-fill-alpha for solid fills, and
      --tm-tint-alpha for tints. */
   background-color: color-mix(in oklab, var(--_paint-bg) calc(var(--_opacity) * 100%), transparent);
   /* A light frost: a quarter of the cards' blur, so see-through buttons stay see-through. */
@@ -257,7 +257,7 @@
 /* No fill, so no frost: their labels read like any text on the page. */
 .tm-button--outline, .tm-button--ghost { text-shadow: inherit; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
 /* The outline fades with the fill's opacity. The label identifies the button, so its edge can
-   be fainter than 3:1 at low solidity. Hover and press tints fade like soft buttons. */
+   be fainter than 3:1 at high clarity. Hover and press tints fade like soft buttons. */
 .tm-button--outline { border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent); }
 .tm-button--ghost { border-color: transparent; }
 .tm-button--outline::before, .tm-button--outline::after, .tm-button--ghost::before, .tm-button--ghost::after { content: none; }

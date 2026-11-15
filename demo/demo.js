@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, solidityToClarity } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -16,12 +16,12 @@ const el = (tag, attrs = {}, ...children) => {
 };
 
 const FEEL_HINTS = {
-  spaciousness: 'Padding, gaps, and line height.',
   roundness: 'Corners, as a share of the most a part can round.',
+  spaciousness: 'Padding, gaps, and line height.',
   depth: 'Soft shadows, and how far buttons rise on hover.',
   softness: 'How blurry shadows are. At the top, a light shadow too, for a neumorphic look.',
-  solidity: 'How see-through cards, tints, fields, and fills are.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
+  clarity: 'How see-through cards, tints, fields, and fills are.',
 };
 
 const FONT_CHOICES = {
@@ -251,6 +251,8 @@ function toRoles(themes, version) {
     // Removed feels stay in the saved themes, so they come back on a branch that has them.
     // The engine skips them.
     if (version === 1 && 'neutral' in t) { t.base ??= t.neutral; delete t.neutral; }
+    // Solidity is now clarity, the other way round.
+    if (t.feel) t.feel = solidityToClarity(t.feel);
     if ('color' in t) {
       if (version !== 1) t.base ??= t.color;
       t.action ??= t.color;
@@ -329,6 +331,84 @@ function addChild(parent) {
 
 const FEEL_COUNT = Object.keys(FEELS).length;
 
+// Set one feel as the open theme's own, from a slider or the chart.
+const setOwnFeel = (name, value) => { own().feel = { ...own().feel, [name]: value }; update(); };
+
+// ---- The feel chart: a spider chart of the feels, one spoke each, clockwise from the top in
+// FEELS order. 0 is the middle and 1 the outer ring. Drag a node along its spoke to set that
+// feel, or focus it and use the arrow keys. A filled node is the theme's own feel; a hollow
+// one comes from the parent or the defaults.
+const CHART = { r: 80, label: 100 };
+const svg = (tag, attrs = {}, ...children) => {
+  const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
+    else node.setAttribute(k, v);
+  }
+  node.append(...children);
+  return node;
+};
+// The spoke of the i-th feel: a unit vector, starting straight up.
+const spoke = (i) => {
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / FEEL_COUNT;
+  return [Math.cos(a), Math.sin(a)];
+};
+const at = (i, value, r = CHART.r) => spoke(i).map((u) => round2(u * value * r));
+const round2 = (n) => Math.round(n * 100) / 100;
+const ringPoints = (value) => Object.keys(FEELS).map((_, i) => at(i, value).join(',')).join(' ');
+
+function feelChart() {
+  const names = Object.keys(FEELS);
+  const chart = svg('svg', { class: 'feel-chart', id: 'feel-chart', viewBox: '-140 -118 280 236', role: 'group', 'aria-label': 'Feels chart' });
+  for (const ring of [0.25, 0.5, 0.75, 1]) chart.append(svg('polygon', { class: 'feel-ring', points: ringPoints(ring) }));
+  names.forEach((_, i) => chart.append(svg('line', { class: 'feel-spoke', x1: 0, y1: 0, x2: at(i, 1)[0], y2: at(i, 1)[1] })));
+  chart.append(svg('polygon', { class: 'feel-shape', id: 'feel-shape' }));
+  names.forEach((name, i) => {
+    const [ux, uy] = spoke(i);
+    const [lx, ly] = [ux * CHART.label, uy * CHART.label];
+    const anchor = Math.abs(ux) < 0.2 ? 'middle' : ux > 0 ? 'start' : 'end';
+    chart.append(svg('text', { class: 'feel-label', x: round2(lx), y: round2(ly + (uy > 0.5 ? 10 : uy < -0.5 ? -4 : 4)), 'text-anchor': anchor },
+      FEELS[name].label, svg('tspan', { class: 'feel-value', id: `chart-value-${name}`, dx: 4 })));
+    // The node's value along its spoke, from a pointer position in the chart's units.
+    const valueAt = (e) => {
+      const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(chart.getScreenCTM().inverse());
+      return round2(Math.min(1, Math.max(0, (p.x * ux + p.y * uy) / CHART.r)));
+    };
+    const node = svg('g', {
+      class: 'feel-node', id: `chart-node-${name}`, tabindex: 0, role: 'slider',
+      'aria-label': FEELS[name].label, 'aria-valuemin': 0, 'aria-valuemax': 1,
+      onpointerdown: (e) => { node.setPointerCapture(e.pointerId); node.classList.add('dragging'); setOwnFeel(name, valueAt(e)); e.preventDefault(); },
+      onpointermove: (e) => { if (node.hasPointerCapture(e.pointerId)) { const v = valueAt(e); if (v !== node._value) setOwnFeel(name, v); } },
+      onpointerup: () => node.classList.remove('dragging'),
+      onpointercancel: () => node.classList.remove('dragging'),
+      onkeydown: (e) => {
+        const step = { ArrowUp: 0.01, ArrowRight: 0.01, ArrowDown: -0.01, ArrowLeft: -0.01, PageUp: 0.1, PageDown: -0.1 }[e.key];
+        const to = e.key === 'Home' ? 0 : e.key === 'End' ? 1 : step === undefined ? undefined : round2(Math.min(1, Math.max(0, node._value + step * (e.shiftKey ? 10 : 1))));
+        if (to === undefined) return;
+        e.preventDefault();
+        setOwnFeel(name, to);
+      },
+    }, svg('circle', { class: 'feel-hit', r: 14 }), svg('circle', { class: 'feel-dot', r: 6 }));
+    chart.append(node);
+  });
+  return chart;
+}
+
+// Move the shape and the nodes to the open theme's feels.
+function syncFeelChart(feel, mine) {
+  const names = Object.keys(FEELS);
+  $('#feel-shape').setAttribute('points', names.map((name, i) => at(i, feel[name]).join(',')).join(' '));
+  names.forEach((name, i) => {
+    const node = $(`#chart-node-${name}`);
+    node._value = feel[name];
+    node.setAttribute('transform', `translate(${at(i, feel[name]).join(' ')})`);
+    node.setAttribute('aria-valuenow', feel[name]);
+    node.setAttribute('aria-valuetext', `${feelWord(name, feel[name])}, ${feel[name].toFixed(2)}`);
+    node.classList.toggle('own', ownsFeel(mine, name));
+    $(`#chart-value-${name}`).textContent = feel[name].toFixed(2);
+  });
+}
+
 const SECTION_CONTROLS = {
   contrast: () => [
     el('div', { class: 'contrast-row' },
@@ -366,9 +446,18 @@ const SECTION_CONTROLS = {
       el('button', { class: 'x', type: 'button', id: `font-x-${field}`, 'aria-label': `Clear the ${label.toLowerCase()} font`, title: 'Clear', onclick: () => setFont(field, '') }, '×'),
     )).concat(varianceFader());
   },
-  feel: () => [
+  feel: () => {
     // Apply a preset: a one-time stamp. It sets every feel as the theme's own, and the theme
     // keeps no link to the preset. Then each feel can be changed or removed on its own.
+    const stamp = (valueOf) => {
+      // Removed feels stay, so they come back on a branch that has them.
+      const kept = Object.fromEntries(Object.entries(own().feel ?? {}).filter(([k]) => !FEELS[k]));
+      own().feel = { ...kept, ...Object.fromEntries(Object.entries(FEELS).map(([k, spec]) => [k, valueOf(k, spec)])) };
+      delete own().preset;
+      $('#preset-menu').open = false;
+      update();
+    };
+    return [
     el('details', { class: 'preset-menu', id: 'preset-menu' },
       el('summary', { class: 'tm-button tm-button--outline tm-button--sm' }, 'Apply a preset ▾'),
       el('div', { class: 'preset-list', role: 'menu', 'aria-label': 'Presets' },
@@ -376,19 +465,15 @@ const SECTION_CONTROLS = {
           type: 'button',
           role: 'menuitem',
           'data-preset': key,
-          onclick: () => {
-            const preset = p.feel;
-            // Removed feels stay, so they come back on a branch that has them.
-            const kept = Object.fromEntries(Object.entries(own().feel ?? {}).filter(([k]) => !FEELS[k]));
-            own().feel = { ...kept, ...Object.fromEntries(Object.entries(FEELS).map(([k, spec]) => [k, preset[k] ?? spec.default])) };
-            delete own().preset;
-            $('#preset-menu').open = false;
-            update();
-          },
-        }, p.label)))),
+          onclick: () => stamp((k, spec) => p.feel[k] ?? spec.default),
+        }, p.label)),
+        // Every feel at random, in the sliders' steps of 0.01. A playground stamp only: the
+        // engine has no random preset, so a saved theme always builds the same.
+        el('button', { type: 'button', role: 'menuitem', class: 'preset-lucky', onclick: () => stamp(() => Math.round(Math.random() * 100) / 100) }, 'I feel lucky'))),
     el('div', { class: 'preset-note', id: 'preset-note' }),
+    feelChart(),
     el('details', { class: 'feels', id: 'feel-details' }, el('summary', {}, 'Adjust the feels'), el('div', { class: 'group', style: 'gap: 16px' }, ...Object.entries(FEELS).map(([name, spec]) => {
-      const setFeel = (v) => { own().feel = { ...own().feel, [name]: v }; update(); };
+      const setFeel = (v) => setOwnFeel(name, v);
       return el('div', { class: 'fader', 'data-fader': name },
         el('div', { class: 'fader-head' }, el('label', { for: `feel-${name}` }, spec.label),
           el('span', { class: 'fader-right' }, el('output', { id: `out-${name}`, for: `feel-${name}` }),
@@ -400,7 +485,8 @@ const SECTION_CONTROLS = {
         }, word))),
       );
     }))),
-  ],
+    ];
+  },
 };
 
 // A feel is the theme's own when it sets it.
@@ -553,6 +639,7 @@ function renderControlsState() {
     const rest = isRoot() ? 'the defaults' : theme.parent;
     $('#preset-note').textContent = `${match ? `Matches ${PRESETS[match].label}.` : 'Custom.'} ${
       mineCount === FEEL_COUNT ? 'Every feel is this theme\'s own.' : mineCount === 0 ? `All feels come from ${rest}.` : `${mineCount} of ${FEEL_COUNT} feels are this theme's own; the rest come from ${rest}.`}`;
+    syncFeelChart(settings.feel, mine);
     for (const [name, value] of Object.entries(settings.feel)) {
       $(`#feel-${name}`).value = Math.round(value * 100);
       const word = feelWord(name, value);

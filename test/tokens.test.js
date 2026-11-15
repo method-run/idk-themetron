@@ -154,9 +154,9 @@ test('feels change the primitives', () => {
   const blur = (css) => parseFloat(css.split(', ').find((l) => !l.startsWith('-')).split(' ')[2]);
   assert.ok(blur(shadow(1)) > blur(shadow(0.5)) && blur(shadow(0.5)) > blur(shadow(0)));
   assert.ok(!shadow(0.85).startsWith('-') && shadow(0.95).startsWith('-'));
-  // Solidity: opaque at 1, and each kind of part at its clearest at 0.
-  const clear = p({ solidity: 0 }).effect;
-  for (const k of ['panelAlpha', 'panelAlphaInverted', 'fillAlpha', 'fillAlphaInverted', 'tintAlpha', 'tintAlphaInverted', 'fieldAlpha']) assert.equal(p({ solidity: 1 }).effect[k], 1, k);
+  // Clarity: opaque at 0, and each kind of part at its clearest at 1.
+  const clear = p({ clarity: 1 }).effect;
+  for (const k of ['panelAlpha', 'panelAlphaInverted', 'fillAlpha', 'fillAlphaInverted', 'tintAlpha', 'tintAlphaInverted', 'fieldAlpha']) assert.equal(p({ clarity: 0 }).effect[k], 1, k);
   assert.deepEqual([clear.panelAlpha, clear.fillAlpha, clear.fillAlphaInverted, clear.tintAlpha, clear.fieldAlpha], [0.1, 0.5, 0.3, 0.1, 0.3]);
   // Depth: flat at 0, and every elevation floats further as depth grows.
   const shadows = (depth) => buildThemes({ themes: { default: { feel: { depth } } } }).themes.default.modes.light.computed;

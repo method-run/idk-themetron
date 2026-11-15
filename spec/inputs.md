@@ -112,12 +112,14 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 
 | Feel | 0 | Words | 1 | It changes |
 |---|---|---|---|---|
-| `spaciousness` | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | How many grid squares padding, gaps, and line heights take. The grid itself is always 4 px. |
-| `roundness` | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
-| `depth` | Flat | flat, low, raised, floating | Floating | How far parts float above the page: soft shadows, and how far buttons rise on hover |
-| `softness` | Hard | hard, crisp, soft, pillowy | Pillowy | How blurry shadows are, and how far headings lighten toward their min-contrast grade. At the top of the range (0.9 to 1), a light shadow fades in up and to the left, and the edges of buttons and cards fade out, for a neumorphic look. |
-| `solidity` | Clear | clear, frosted, tinted, solid | Solid | How see-through parts are. At 0, cards, tints, and quiet buttons are 10% opaque, fields 30%, and solid fills 50%; inverted fills 30%, and inverted cards, tints, and quiet buttons 95%. At 1, everything is opaque. |
-| `shininess` | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts, from the part's own ramp. Buttons get a brighter top and a darker bottom. Other parts get a gradient, an edge band, and a glow. Labels get a 1 px line that sets them into the surface. |
+| `roundness` (Round) | Square corners | square, slight, rounded, round, pill | Pill shapes | The radius of each part, as a share of the most that part can round |
+| `spaciousness` (Space) | Dense | compact, cozy, comfortable, relaxed, spacious | Airy | How many grid squares padding, gaps, and line heights take. The grid itself is always 4 px. |
+| `depth` (Depth) | Flat | flat, low, raised, floating | Floating | How far parts float above the page: soft shadows, and how far buttons rise on hover |
+| `softness` (Soft) | Hard | hard, crisp, soft, pillowy | Pillowy | How blurry shadows are, and how far headings lighten toward their min-contrast grade. At the top of the range (0.9 to 1), a light shadow fades in up and to the left, and the edges of buttons and cards fade out, for a neumorphic look. |
+| `shininess` (Shine) | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts, from the part's own ramp. Buttons get a brighter top and a darker bottom. Other parts get a gradient, an edge band, and a glow. Labels get a 1 px line that sets them into the surface. |
+| `clarity` (Clear) | Solid | solid, tinted, frosted, clear | Clear | How see-through parts are. The default is 0. At 0, everything is opaque. At 1, cards, tints, and quiet buttons are 10% opaque, fields 30%, and solid fills 50%; inverted fills 30%, and inverted cards, tints, and quiet buttons 95%. |
+
+Clarity replaces `solidity`, and is its inverse: clarity = 1 − solidity. Inputs that set `solidity` still load. The engine turns the value over into clarity, and solidity's own words still work. If a theme sets both, clarity wins.
 
 The other feels (`thickness`, `bounciness`, `snappiness`, and `tone`) are removed for now. They can come back one at a time. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, the tokens that they set have fixed values: 1 px borders, and the same motion in every theme, with no overshoot.
 
@@ -148,8 +150,8 @@ The formulas are in `buildPrimitives` in [src/tokens.js](../src/tokens.js). In s
 - Line heights: for each text size, the whole number of squares nearest to the size × `1.4 + 0.25 s` (body), or × `1.15 + 0.1 s` (tight, for headings and controls), and never less than the size. The grid is fixed and the ratios only grow, so line heights never shrink as spaciousness grows.
 - Controls: a tight line, plus padding and border that add up to whole squares. The padding is 0.45 of a space unit down, and 0.95 across, rounded to whole squares. These factors differ from the space steps' factors, so the padding and the space steps grow at different points along the slider. Small and large controls differ by whole pairs of squares, so they center on grid lines in one row. In the most compact themes, a small control is as tall as the default.
 - Radius: a share of the most that each part can round. Controls: `r × height ÷ 2`, for each control size, so `r = 1` makes every size a pill. Cards: `r ×` their padding (`space.lg`). Alerts and text areas: `r × space.md`. Small parts: `r × space.xs`. So a corner never cuts into the content. Badges, switches, and progress bars round by `r ×` their own height `÷ 2`, from the `roundness` token, so they too are pills only at `r = 1`.
-- Shadows: elevation 1, 2, and 3 float `d × 4`, `d × 6`, and `d × 16` px below the part, and half that to the right, as if lit from the upper left. The key shadow's blur is `1 + 0.6 ×` that offset, and a wider ambient shadow blurs `2 + 1.5 ×` it. Buttons rise `d` px on hover, at most 1 px. The inset shadow of pressed and sunken parts is `max(1, 2 d)` px down. Softness multiplies every shadow's blur by `0.4 × 6.25^softness`: 0.4 at 0, 1 at the default (0.5), and 2.5 at 1. Harder shadows are darker: below softness 0.5, the key shadow's opacity rises from 16%, to fully opaque at softness 0, and its blur shrinks in a straight line to 0, so it is a sharp block. At softness 0 exactly, there is no ambient shadow. The inset shadow of text fields, checks, and radios hardens the same way: fully opaque with no blur at softness 0. From softness 0.9 to 1, a light shadow fades in up and to the left, at least as far as a raised part's (elevation 2) shadow, so resting buttons show it too: white at up to 90% in light mode, and a color 15 grade numbers lighter than the canvas at up to 35% in dark mode. Over the same range, text fields, checks, and radios look pressed into the page: their inset shadow moves to the top and left edges, a light inset shadow of the same color fades in inside the bottom and right edges, both at up to twice the strength of the outer shadows (the light one at most fully opaque), and shrunk by half their blur, so each stays on its own side, and their edge recedes to the lightest grade that still passes the control contrast.
-- Opacity: each kind of part goes from its clearest opacity at solidity 0 to opaque at 1, evenly. Page-like parts (cards, fields, tints, quiet buttons) have their label on the far side of the page, so they can be very see-through; solid fills have their label on the page's side, so they stay at 50% or more, and their labels get a halo of the fill's color as they fade. Inverted parts swap the two. The audit checks each label on its part as seen over the canvas and the surface, as a warning. Blur is not part of solidity: see `tm-over-media`.
+- Shadows: elevation 1, 2, and 3 float `d × 4`, `d × 6`, and `d × 16` px below the part, and half that to the right, as if lit from the upper left. The key shadow's blur is `1 + 0.6 ×` that offset, and a wider ambient shadow blurs `2 + 1.5 ×` it. Buttons rise `d` px on hover, at most 1 px. The inset shadow of pressed and sunken parts is `max(1, 2 d)` px down. Softness multiplies every shadow's blur by `0.4 × 6.25^softness`: 0.4 at 0, 1 at the default (0.5), and 2.5 at 1. Harder shadows are darker: below softness 0.5, the key shadow's opacity rises from 16%, to fully opaque at softness 0, and its blur shrinks in a straight line to 0, so it is a sharp block. At softness 0 exactly, there is no ambient shadow. Card and dialog edges harden the same way: from the usual edge grade at softness 0.5, through the grades, to the text grade at softness 0. The inset shadow of text fields, checks, and radios hardens the same way: fully opaque with no blur at softness 0. From softness 0.9 to 1, a light shadow fades in up and to the left, at least as far as a raised part's (elevation 2) shadow, so resting buttons show it too: white at up to 90% in light mode, and a color 15 grade numbers lighter than the canvas at up to 35% in dark mode. Over the same range, text fields, checks, and radios look pressed into the page: their inset shadow moves to the top and left edges, a light inset shadow of the same color fades in inside the bottom and right edges, both at up to twice the strength of the outer shadows (the light one at most fully opaque), and shrunk by half their blur, so each stays on its own side, and their edge recedes to the lightest grade that still passes the control contrast.
+- Opacity: each kind of part goes from its clearest opacity at clarity 1 to opaque at 0, evenly. Page-like parts (cards, fields, tints, quiet buttons) have their label on the far side of the page, so they can be very see-through; solid fills have their label on the page's side, so they stay at 50% or more, and their labels get a halo of the fill's color as they fade. Inverted parts swap the two. The audit checks each label on its part as seen over the canvas and the surface, as a warning. Blur is not part of clarity: see `tm-over-media`.
 - Text fading: headings (`fg.base-heading-lg`, `-2xl`, `-3xl`) lighten with softness, all along its range, to the min-contrast grade for their size at softness 1, where 24 px or more counts as large at any weight, so headings need not be bold. The engine can also fade body text, to one notch (10 grade numbers) past the min-contrast text grade, but nothing turns that on yet. Linear, rounded to a grade.
 - Edges: from softness 0.9 to 1, the edges of buttons and cards fade out (`edge-alpha`, 1 to 0), so shadows alone shape them. Outline buttons, fields, dialogs, and drawers keep their edges.
 - Shine: from the part's own ramp, not white. The shininess sets its strength, from none at 0. Most parts paint a gradient (a lighter rim and top, a darker shadow and bottom), a thin edge band, and a soft glow at the top. Buttons paint no gradient: two masked layers brighten their top and darken their bottom. Labels get a 1 px line of their part's ramp. See [How shininess becomes styles](../docs/shininess-flow.md "shininess-flow").
@@ -181,18 +183,18 @@ Every line height is still a whole number of grid squares, so the grid holds at 
 
 A preset is a set of feels with a familiar name. A feel that a preset does not set takes its default. No preset sets the type variance. With only six feels for now, some presets look alike. Their names stay, so inputs that use them still load.
 
-| Preset | Spaciousness | Roundness | Depth | Softness | Solidity | Shininess |
+| Preset | Roundness | Spaciousness | Depth | Softness | Shininess | Clarity |
 |---|---|---|---|---|---|---|
-| Default | 0.5 | 0.35 | 0.3 | 0.5 | 1 | 0 |
+| Default | 0.35 | 0.5 | 0.3 | 0.5 | 0 | 0 |
 | `balanced` | default | default | default | default | default | default |
-| `flat` | default | 0.2 | 0 | 0.5 | default | 0 |
-| `material` | default | 0.25 | 0.5 | 0.7 | default | 0 |
-| `brutalist` | 0.4 | 0 | 0 | 0 | default | 0 |
-| `neumorphic` | default | 0.6 | 0.7 | 1 | default | 0 |
-| `glass` | default | 0.6 | 0.5 | 0.8 | 0.35 | 0.3 |
-| `glossy` | default | 1 | 0.5 | 0.6 | default | 1 |
-| `playful` | 0.65 | 0.9 | 0.45 | 0.3 | default | default |
-| `dense` | 0 | 0.15 | 0.15 | 0.5 | default | default |
+| `flat` | 0.2 | default | 0 | 0.5 | 0 | default |
+| `material` | 0.25 | default | 0.5 | 0.7 | 0 | default |
+| `brutalist` | 0 | 0.4 | 0.5 | 0 | 0 | default |
+| `neumorphic` | 0.6 | default | 0.7 | 1 | 0 | 0.7 |
+| `glass` | 0.6 | default | 1 | 0.85 | 1 | 1 |
+| `glossy` | 1 | default | 0.5 | 0.6 | 1 | default |
+| `playful` | 0.9 | 0.65 | 0.45 | 0.3 | default | default |
+| `dense` | 0.15 | 0 | 0.15 | 0.5 | default | default |
 
 ## Contrast
 

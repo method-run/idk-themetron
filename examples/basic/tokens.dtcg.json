@@ -731,12 +731,12 @@
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
-          "$description": "The opacity of a solid fill at solidity 0."
+          "$description": "The opacity of a solid fill at clarity 1."
         },
         "tintAlphaInvertedClearest": {
           "$type": "number",
           "$value": 0.95,
-          "$description": "The opacity of an inverted tint at solidity 0."
+          "$description": "The opacity of an inverted tint at clarity 1."
         },
         "panelBorderWidth": {
           "$type": "dimension",
@@ -3187,12 +3187,12 @@
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
-          "$description": "The opacity of a solid fill at solidity 0."
+          "$description": "The opacity of a solid fill at clarity 1."
         },
         "tintAlphaInvertedClearest": {
           "$type": "number",
           "$value": 0.95,
-          "$description": "The opacity of an inverted tint at solidity 0."
+          "$description": "The opacity of an inverted tint at clarity 1."
         },
         "panelBorderWidth": {
           "$type": "dimension",
@@ -5643,12 +5643,12 @@
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
-          "$description": "The opacity of a solid fill at solidity 0."
+          "$description": "The opacity of a solid fill at clarity 1."
         },
         "tintAlphaInvertedClearest": {
           "$type": "number",
           "$value": 0.95,
-          "$description": "The opacity of an inverted tint at solidity 0."
+          "$description": "The opacity of an inverted tint at clarity 1."
         },
         "panelBorderWidth": {
           "$type": "dimension",
@@ -8099,12 +8099,12 @@
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
-          "$description": "The opacity of a solid fill at solidity 0."
+          "$description": "The opacity of a solid fill at clarity 1."
         },
         "tintAlphaInvertedClearest": {
           "$type": "number",
           "$value": 0.95,
-          "$description": "The opacity of an inverted tint at solidity 0."
+          "$description": "The opacity of an inverted tint at clarity 1."
         },
         "panelBorderWidth": {
           "$type": "dimension",
@@ -10555,12 +10555,12 @@
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
-          "$description": "The opacity of a solid fill at solidity 0."
+          "$description": "The opacity of a solid fill at clarity 1."
         },
         "tintAlphaInvertedClearest": {
           "$type": "number",
           "$value": 0.95,
-          "$description": "The opacity of an inverted tint at solidity 0."
+          "$description": "The opacity of an inverted tint at clarity 1."
         },
         "panelBorderWidth": {
           "$type": "dimension",
@@ -13011,12 +13011,12 @@
         "fillAlphaClearest": {
           "$type": "number",
           "$value": 0.5,
-          "$description": "The opacity of a solid fill at solidity 0."
+          "$description": "The opacity of a solid fill at clarity 1."
         },
         "tintAlphaInvertedClearest": {
           "$type": "number",
           "$value": 0.95,
-          "$description": "The opacity of an inverted tint at solidity 0."
+          "$description": "The opacity of an inverted tint at clarity 1."
         },
         "panelBorderWidth": {
           "$type": "dimension",

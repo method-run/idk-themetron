@@ -31,12 +31,12 @@
       "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
-        "spaciousness": 0.5,
         "roundness": 0.35,
+        "spaciousness": 0.5,
         "depth": 0.3,
         "softness": 0.5,
-        "solidity": 1,
-        "shininess": 0
+        "shininess": 0,
+        "clarity": 0
       },
       "contrast": {
         "method": "wcag",
@@ -66,12 +66,12 @@
       "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
-        "spaciousness": 0.5,
         "roundness": 0.35,
+        "spaciousness": 0.5,
         "depth": 0.3,
         "softness": 0.5,
-        "solidity": 1,
-        "shininess": 0
+        "shininess": 0,
+        "clarity": 0
       },
       "contrast": {
         "method": "wcag",
@@ -101,12 +101,12 @@
       "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
-        "spaciousness": 0.5,
         "roundness": 0.35,
+        "spaciousness": 0.5,
         "depth": 0.3,
         "softness": 0.5,
-        "solidity": 1,
-        "shininess": 0
+        "shininess": 0,
+        "clarity": 0
       },
       "contrast": {
         "method": "wcag",
@@ -136,12 +136,12 @@
       "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
-        "spaciousness": 0.5,
         "roundness": 0.35,
+        "spaciousness": 0.5,
         "depth": 0.3,
         "softness": 0.5,
-        "solidity": 1,
-        "shininess": 0
+        "shininess": 0,
+        "clarity": 0
       },
       "contrast": {
         "method": "wcag",
@@ -171,12 +171,12 @@
       "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
-        "spaciousness": 0.5,
         "roundness": 1,
+        "spaciousness": 0.5,
         "depth": 0.3,
         "softness": 0.5,
-        "solidity": 1,
-        "shininess": 0.33
+        "shininess": 0.33,
+        "clarity": 0
       },
       "contrast": {
         "method": "wcag",
@@ -206,12 +206,12 @@
       "typeVariance": 0.5,
       "preset": "balanced",
       "feel": {
-        "spaciousness": 0.5,
         "roundness": 1,
+        "spaciousness": 0.5,
         "depth": 0.3,
         "softness": 0.5,
-        "solidity": 1,
-        "shininess": 0.33
+        "shininess": 0.33,
+        "clarity": 0
       },
       "contrast": {
         "method": "wcag",

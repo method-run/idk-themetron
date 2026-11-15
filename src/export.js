@@ -47,11 +47,11 @@ export function primitiveEntries(p) {
   out.push(['tint-alpha', String(p.effect.tintAlpha)]);
   // The opacity of fields: inputs, selects, and text areas.
   out.push(['field-alpha', String(p.effect.fieldAlpha)]);
-  // The opacity of a solid fill, and of an inverted tint, at solidity 0. A component divides by
+  // The opacity of a solid fill, and of an inverted tint, at clarity 1. A component divides by
   // these to tell how far a part has faded: (1 - alpha) / (1 - clearest).
   out.push(['fill-alpha-clearest', String(p.effect.clearest.fill)], ['tint-alpha-inverted-clearest', String(p.effect.clearest.tintInverted)]);
   // A button's shine brightens its top and darkens its bottom. When parts are see-through
-  // (solidity under 1), it filters the backdrop, so the page through the fill is shaded too. When
+  // (clarity over 0), it filters the backdrop, so the page through the fill is shaded too. When
   // they are opaque, the backdrop is only the fill, so a layer painted in the fill's color with a
   // plain filter looks the same and does not read what is behind it. At shininess 0, neither.
   const sh = p.shininess;
@@ -361,8 +361,8 @@ export function toDtcg(built) {
       tintAlphaInverted: tok('number', p.effect.tintAlphaInverted, { $description: 'The tint opacity of a part with tm-invert.' }),
       fieldAlpha: tok('number', p.effect.fieldAlpha, { $description: 'The opacity of fields.' }),
       edgeAlpha: tok('number', p.effect.edgeAlpha, { $description: 'The opacity of button and card edges: 1, fading to 0 over the top tenth of softness.' }),
-      fillAlphaClearest: tok('number', p.effect.clearest.fill, { $description: 'The opacity of a solid fill at solidity 0.' }),
-      tintAlphaInvertedClearest: tok('number', p.effect.clearest.tintInverted, { $description: 'The opacity of an inverted tint at solidity 0.' }),
+      fillAlphaClearest: tok('number', p.effect.clearest.fill, { $description: 'The opacity of a solid fill at clarity 1.' }),
+      tintAlphaInvertedClearest: tok('number', p.effect.clearest.tintInverted, { $description: 'The opacity of an inverted tint at clarity 1.' }),
       panelBorderWidth: tok('dimension', { value: p.panelBorderWidth, unit: 'px' }),
     };
     const modesOf = (level) => {

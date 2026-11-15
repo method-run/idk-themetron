@@ -64,7 +64,7 @@ const TINT_SHINE = { rim: -15, top: -10, shadow: 10, bottom: 5 };
 // and 25.
 const STOPS = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
 const FLAT = { blur: 0, lift: 0 };
-// The opacity of each kind of part at solidity 0. Solidity 1 makes every part opaque, and the
+// The opacity of each kind of part at clarity 1. Clarity 0 makes every part opaque, and the
 // opacity grows evenly between. Page-like parts (cards, fields, tints, quiet buttons) have
 // their label on the far side of the page, so the page showing through keeps their contrast:
 // they can be very see-through. Solid fills have their label on the page's side, so they stop at
@@ -73,8 +73,10 @@ const FLAT = { blur: 0, lift: 0 };
 const CLEAREST = { panel: 0.1, panelInverted: 0.95, fill: 0.5, fillInverted: 0.3, tint: 0.1, tintInverted: 0.95, field: 0.3 };
 
 export function buildPrimitives(settings, palettes, gaps) {
-  const { spaciousness: s, roundness: r, depth: d, shininess: sh, solidity: so } = settings.feel;
-  const solid = (min) => round(min + (1 - min) * so);
+  const { spaciousness: s, roundness: r, depth: d, shininess: sh, clarity } = settings.feel;
+  // Clarity is how see-through parts are: each opacity goes from 1 at clarity 0 to its CLEAREST
+  // at 1.
+  const solid = (min) => round(min + (1 - min) * (1 - clarity));
   const v = settings.typeVariance;
 
   // The grid: an invisible grid of GRID px squares, down and across. Its size never changes.
@@ -171,8 +173,8 @@ export function buildPrimitives(settings, palettes, gaps) {
       // The edges of buttons and cards fade out over the top tenth of softness (0.9 to 1), for a
       // neumorphic look, where shadows alone shape the parts.
       edgeAlpha: round(1 - Math.min(1, Math.max(0, (settings.feel.softness - 0.9) / 0.1))),
-      // How see-through each kind of part is: from its CLEAREST opacity at solidity 0, to
-      // opaque at 1.
+      // How see-through each kind of part is: from its CLEAREST opacity at clarity 1, to
+      // opaque at 0.
       panelAlpha: solid(CLEAREST.panel),
       panelAlphaInverted: solid(CLEAREST.panelInverted),
       fillAlpha: solid(CLEAREST.fill),
@@ -294,7 +296,10 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   }
   set('fg.base-subtle', base, pick(base, outward, passesAll('ui'), bgs));
   set('border.base', base, outward[1]);
-  set('panel.border', base, outward[1]);
+  // Card and dialog edges harden below softness 0.5: through the grades from the usual edge to
+  // the text grade at softness 0, a brutalist outline. From 0.5 up they are the usual edge
+  // (edge-alpha fades them out from 0.9 to 1).
+  set('panel.border', base, fadeBy(Math.max(0, 1 - settings.feel.softness / 0.5))(outward[1], fgGrade));
   set('border.base-strong', base, pick(base, outward, passesAll('ui'), bgs));
   for (const fg of ['fg.base', 'fg.base-muted']) for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(fg, bg, 'text');
   check('fg.base-subtle', 'bg.canvas', 'ui');
@@ -497,7 +502,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   }
 
   // See-through parts: a label is checked on its part as seen over the canvas and the surface.
-  // Not required: the opacities come straight from solidity, and the audit warns where a label
+  // Not required: the opacities come straight from clarity, and the audit warns where a label
   // falls short. Inverted parts are over the other mode's page, which this mode does not see.
   const e = primitives.effect;
   const seen = (fgName, bgName, alpha) => {
@@ -524,7 +529,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
 const NO_SHADOW = '0 0 #0000';
 
 // Values for one mode that are not one palette color: panels and shadows. A panel is the
-// surface, see-through as solidity allows. It names the token it copies, so the CSS can point
+// surface, see-through as clarity allows. It names the token it copies, so the CSS can point
 // at it, with its opacity.
 function computed(dark, tokens, feel, base, effect) {
   const { depth } = feel;
