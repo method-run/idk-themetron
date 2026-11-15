@@ -5,8 +5,8 @@
 // themetron check <file.css>...: list the themetron tokens that a stylesheet reads. Exits 1
 // when it reads a token that the contract does not have. --strict also fails on experimental
 // tokens. --prefix <p> is for CSS made with another prefix than "tm".
-// Both commands stop at a flag that they do not know. With --unknown-flags warn, they print a
-// warning and go on, so a script can pass flags that only a newer version knows.
+// Both commands stop at a flag that they do not know. A build flag that the chosen format does
+// not use gets a warning, and the build goes on without it.
 import { readFile, writeFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, InputError } from '../src/index.js';
@@ -17,9 +17,8 @@ const USAGE = `Usage:
                   [--prefix tm] [--class-prefix theme-] [--no-root] [--no-more]
   themetron check <file.css>... [--strict] [--prefix tm]
 
-Both commands also take --unknown-flags error|warn. With "error", the default, a flag that the
-command does not know stops it. With "warn", the command prints a warning and skips the flag.
-Then write a value after an unknown flag with "=", such as --new-flag=value.
+A flag that the command does not know stops it. A build flag that the format does not use, such
+as --prefix with dtcg, prints a warning, and the build goes on without it.
 
 build formats:
   css         The tokens as CSS custom properties, one rule for each theme. The default.
@@ -58,36 +57,24 @@ const CSS_FLAGS = {
 class Problem extends Error {}
 class UsageError extends Problem {}
 
-// Read the arguments of a command. A flag that the command does not know, or that does nothing
-// here, is an error. With --unknown-flags warn, it is a warning, and the command skips it.
+// Read the arguments of a command. A flag that the command does not know, or a flag with a
+// missing or extra value, is an error. Not strict, parseArgs does not check these itself, but
+// its own messages are long, so this gives short ones.
 function parse(args, options) {
-  const { values, positionals, tokens } = parseArgs({ args, allowPositionals: true, strict: false, tokens: true, options: {
-    ...options,
-    'unknown-flags': { type: 'string', default: 'error' },
-  } });
-  const policy = values['unknown-flags'];
-  if (policy !== 'error' && policy !== 'warn') throw new UsageError(`--unknown-flags: use error or warn, not "${policy}".`);
-  delete values['unknown-flags'];
-  const unknown = (flag, why) => {
-    if (policy === 'error') throw new UsageError(`${flag}: ${why}`);
-    console.error(`Warning: skipped ${flag}: ${why}`);
-  };
+  const { values, positionals, tokens } = parseArgs({ args, allowPositionals: true, strict: false, tokens: true, options });
   for (const token of tokens) {
-    if (token.kind !== 'option' || token.name === 'unknown-flags') continue;
+    if (token.kind !== 'option') continue;
     const option = options[token.name];
-    if (!option) {
-      unknown(token.rawName, 'unknown flag.');
-      delete values[token.name];
-    } else if ((option.type === 'string') !== (typeof token.value === 'string')) {
-      // Not strict, parseArgs does not check types. A bad value is an error under both settings.
+    if (!option) throw new UsageError(`${token.rawName}: unknown flag.`);
+    if ((option.type === 'string') !== (typeof token.value === 'string')) {
       throw new UsageError(option.type === 'string' ? `${token.rawName} needs a value.` : `${token.rawName} takes no value.`);
     }
   }
-  return { values, positionals, unknown };
+  return { values, positionals };
 }
 
 async function build(args) {
-  const { values, positionals, unknown } = parse(args, {
+  const { values, positionals } = parse(args, {
     format: { type: 'string', short: 'f', default: 'css' },
     out: { type: 'string', short: 'o' },
     ...CSS_FLAGS,
@@ -96,7 +83,7 @@ async function build(args) {
   const format = FORMATS[values.format];
   if (!format) throw new UsageError(`--format: use one of ${Object.keys(FORMATS).join(', ')}, not "${values.format}".`);
   for (const flag of Object.keys(CSS_FLAGS)) {
-    if (flag in values && !format.flags.includes(flag)) unknown(`--${flag}`, `does nothing with --format ${values.format}.`);
+    if (flag in values && !format.flags.includes(flag)) console.error(`Warning: skipped --${flag}: it does nothing with --format ${values.format}.`);
   }
   const options = {
     prefix: format.flags.includes('prefix') ? values.prefix : undefined,
