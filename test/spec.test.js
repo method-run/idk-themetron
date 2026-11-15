@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildThemes, toCss, toDtcg, normalizeInputs, contrastTest, PRESETS } from '../src/index.js';
-import { specFiles, tokenManifest, inputsSchema, checkCss, PAIRS } from '../src/manifest.js';
+import { specFiles, tokenManifest, inputsSchema, checkCss, PAIRS, SPEC_URL, INPUTS_SCHEMA_URL, MANIFEST_URL } from '../src/manifest.js';
 
 test('the files in spec/ match the code. Run npm run spec after a change.', async () => {
   for (const [file, text] of Object.entries(specFiles())) {
@@ -75,6 +75,12 @@ test('the components read no token outside the contract', async () => {
 test('check skips token definitions, and finds unknown and experimental reads', () => {
   const css = ':root { --tm-bg-canvas: var(--tm-base-5); } a { color: var(--tm-fg-base); background: var(--tm-nope, red); box-shadow: var(--tm-highlight-action); }';
   assert.deepEqual(checkCss(css), { unknown: ['nope'], experimental: ['highlight-action'], stable: ['fg-base'] });
+});
+
+test('the published URLs name the generated files, and the schema has its URL as $id', () => {
+  const names = Object.keys(specFiles()).map((file) => file.replace('spec/', ''));
+  assert.deepEqual([INPUTS_SCHEMA_URL, MANIFEST_URL].map((url) => url.replace(SPEC_URL, '')).sort(), names.sort());
+  assert.equal(inputsSchema().$id, INPUTS_SCHEMA_URL);
 });
 
 // A small JSON Schema validator: the keywords that inputs.schema.json uses, and no more.

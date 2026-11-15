@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -1075,7 +1075,8 @@ function tokenText() {
   if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built), null, 2);
   if (ui.format === 'tailwind') return toTailwind(built);
   if (ui.format === 'bootstrap') return toBootstrapSass(built);
-  return JSON.stringify({ version: INPUTS_VERSION, ...rawInputs() }, null, 2);
+  // The $schema link lets an editor check the file. Share links leave it out, to stay short.
+  return JSON.stringify({ $schema: INPUTS_SCHEMA_URL, version: INPUTS_VERSION, ...rawInputs() }, null, 2);
 }
 
 function renderTokens() {
