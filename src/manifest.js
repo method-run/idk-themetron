@@ -11,6 +11,12 @@ import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CON
 // Patch: values change, but names, types, and meanings stay the same.
 export const CONTRACT_VERSION = '0.1.0';
 
+// The site publishes the generated files at fixed URLs, so that editors can fetch the schema
+// from a $schema link. These URLs always hold the latest files. scripts/build-site.js copies them.
+export const SPEC_URL = 'https://method-run.github.io/idk-themetron/schema/';
+export const INPUTS_SCHEMA_URL = `${SPEC_URL}inputs.schema.json`;
+export const MANIFEST_URL = `${SPEC_URL}tokens.manifest.json`;
+
 // Stable tokens keep their name, type, and meaning within a major version of the contract.
 // Every other token is experimental: it can change or go away in any version.
 const STABLE = [
@@ -162,6 +168,7 @@ export function inputsSchema() {
   });
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
+    $id: INPUTS_SCHEMA_URL,
     title: 'idk-themetron inputs',
     description: 'A tree of themes. Made by `npm run spec` from src/manifest.js. Draft: the inputs can change in any version before 1.0. See spec/inputs.md.',
     type: 'object',

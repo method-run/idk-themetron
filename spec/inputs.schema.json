@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://method-run.github.io/idk-themetron/schema/inputs.schema.json",
   "title": "idk-themetron inputs",
   "description": "A tree of themes. Made by `npm run spec` from src/manifest.js. Draft: the inputs can change in any version before 1.0. See spec/inputs.md.",
   "type": "object",

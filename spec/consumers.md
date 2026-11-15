@@ -12,7 +12,7 @@ aliases: [Using themetron in a site or library]
 # Using themetron in a site or library
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 50% (3/6)
+◐ 66% (4/6)
 <!-- idk-plans:progress:end -->
 
 > **Status:** contract 0.1.0, not released yet. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
@@ -28,6 +28,11 @@ The contract is in three files. The code makes them, and a test fails when they 
 | [`components/components.css`](../components/components.css) | The reference components. They follow this contract. |
 
 From the package: `idk-themetron/spec/tokens.manifest.json` and `idk-themetron/spec/inputs.schema.json`.
+
+The site also publishes them at fixed URLs. These URLs always hold the latest files from `main`. They have no version in the path. To pin a version, use the files in the package.
+
+- Manifest: <https://method-run.github.io/idk-themetron/schema/tokens.manifest.json>
+- Inputs schema: <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>. This URL is also the schema's `$id`.
 
 ## The rules
 
@@ -244,5 +249,5 @@ The contract started again at 0.1.0. The versions before it were drafts, and no 
 - [x] The color pairs that pass, in the manifest, with a test for every preset
 - [x] `themetron check`, for consumers
 - [ ] A test that fails when a stable token goes away and the major version stays the same
-- [ ] Publish the manifest and the schema at a fixed URL, so `$schema` links work in editors
+- [x] Publish the manifest and the schema at a fixed URL, so `$schema` links work in editors
 - [ ] Change idk-plans to read themetron tokens, with the mapping above
