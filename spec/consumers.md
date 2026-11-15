@@ -12,7 +12,7 @@ aliases: [Using themetron in a site or library]
 # Using themetron in a site or library
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 66% (4/6)
+◐ 83% (5/6)
 <!-- idk-plans:progress:end -->
 
 > **Status:** contract 0.1.0, not released yet. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
@@ -237,7 +237,15 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 
 The package version goes up each time the contract version goes up, by at least as much. A breaking change to the contract is a breaking change to the package. The package can also go up alone, for example for a bug fix or a new export.
 
-Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog.
+Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog. One change is different: removing or renaming a stable token raises the contract version at once.
+
+The breaking part of a version is the major version from 1.0. Before 1.0, it is the minor version: `0.1`.
+
+[`test/fixtures/stable-tokens.json`](../test/fixtures/stable-tokens.json) lists the stable tokens and the contract version. A test fails when a stable token in that list goes away and the breaking part of the version stays the same. To remove or rename a stable token:
+
+1. Raise `CONTRACT_VERSION` in `src/manifest.js` past its breaking part, for example from `0.1.0` to `0.2.0`.
+2. List the change under **Unreleased** in the changelog.
+3. Run `npm run spec`. It writes the manifest and refreshes the list. It does not refresh the list when a stable token went away and the version has no breaking bump.
 
 To release:
 
@@ -258,6 +266,6 @@ The contract started again at 0.1.0. The versions before it were drafts, and no 
 - [x] A token manifest made from the code, with a test that keeps it current
 - [x] The color pairs that pass, in the manifest, with a test for every preset
 - [x] `themetron check`, for consumers
-- [ ] A test that fails when a stable token goes away and the major version stays the same
+- [x] A test that fails when a stable token goes away and the major version stays the same
 - [x] Publish the manifest and the schema at a fixed URL, so `$schema` links work in editors
 - [ ] Change idk-plans to read themetron tokens, with the mapping above
