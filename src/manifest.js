@@ -9,7 +9,7 @@ import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CON
 // Major: a stable token is removed or renamed, or its type or meaning changes.
 // Minor: a token is added, or an experimental token becomes stable.
 // Patch: values change, but names, types, and meanings stay the same.
-export const CONTRACT_VERSION = '0.6.0';
+export const CONTRACT_VERSION = '0.1.0';
 
 // Stable tokens keep their name, type, and meaning within a major version of the contract.
 // Every other token is experimental: it can change or go away in any version.

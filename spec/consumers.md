@@ -15,7 +15,7 @@ aliases: [Using themetron in a site or library]
 ◐ 50% (3/6)
 <!-- idk-plans:progress:end -->
 
-> **Status:** contract 0.6.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
+> **Status:** contract 0.1.0, not released yet. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
 
 A **consumer** is a site, a doc generator, or a component library that reads a themetron stylesheet. This page says what a consumer can depend on, and what it must do. If a consumer follows it, every themetron theme set works with it, and you can change themes without changing the consumer.
 
@@ -228,20 +228,15 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 - **Minor:** a token is added, or an experimental token becomes stable.
 - **Patch:** values change, but the names, types, and meanings stay the same. For example, better grades or new feels.
 
+The package version goes up each time the contract version goes up, by at least as much. A breaking change to the contract is a breaking change to the package. The package can also go up alone, for example for a bug fix or a new export.
+
+Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog.
+
 ## Changelog
 
-- **0.6.0:**
-  - Removed: the hover and press gloss grades of action fills, quiet buttons, and exact buttons (`gloss-action-hover-*`, `gloss-quiet-active-*`, …), and `highlight-quiet`, `glow-quiet`, `highlight-action-exact`, `glow-action-exact`. Buttons now shade through their backdrop instead of painting gradients, so nothing reads them. The resting gloss grades stay.
-  - New: `fg-base-heading-lg`, `-2xl`, and `-3xl`, for headings, which lighten with softness. `edge-alpha`, which fades button and card edges at the top of softness. `border-base-field` and `elevation-field`, for text fields, checks, and radios: at the top of softness the edge recedes and the field looks pressed into the page. `text-shadow-*` for each part, and `text-halo` for `tm-over-media`. `field-alpha`, and the clearest opacities `fill-alpha-clearest` and `tint-alpha-inverted-clearest`. `shine-backdrop-top`, `-bottom`, `shine-filter-top`, `-bottom`, and `shine-paint`, which pick how buttons shade: through the backdrop when parts are see-through, painted when they are opaque.
-  - Changed: `border-width` and `panel-border-width` now follow the thin feel, and `edge-alpha` fades to half, not to 0. Below softness 0.5, `panel-border` moves toward the text grade, and the key shadow of `elevation-1`, `-2`, and `-3` grows darker and sharper.
-- **0.5.0:**
-  - Removed: `fill-base` and its states and labels, since the quiet button (`fill-quiet`) is the base role's button now. Removed the finished shine gradients `gloss`, `gloss-base`, and `gloss-action`, and `highlight`: parts now paint the shared `shine-image`.
-  - New: grades 15, 25, … 85 in every ramp, so ramps have 21 grades, 5 apart. A label for each state of each fill and tint (`on-fill-action-hover`, `on-tint-base-active`, …). `tint-*-active`. The quiet button (`fill-quiet`, `on-fill-quiet`, and their states) and the exact button's states. Gloss grades for each part and state (`gloss-action-hover-rim`, …), `highlight-*` and `glow-*` for each part, `shine-image`, `shininess`, and `roundness`. `radius-control-sm` and `-lg`. `backdrop` and `backdrop-control`.
-  - Changed: `tint-base` is 10 grade numbers beyond the canvas and the surface, so 15 in light mode, not 10, and no longer the same as `bg-sunken`.
-- **0.4.0:** new guaranteed pair: `fill-base` and `fill-action` on `bg-canvas` pass the UI contrast (3:1 in WCAG 2), so a solid button's shape shows. In dark neumorphic and glass themes, a fill can move a grade or two to make this pass.
-- **0.3.0:** color tokens end with their role, `base` or `action`. `fg-default`, `fg-muted`, and `fg-subtle` are now `fg-base`, `fg-base-muted`, and `fg-base-subtle`. `border-default` and `border-strong` are now `border-base` and `border-base-strong`. The ramps are now `base-*` and `action-*`. The accent set is now the action set: `accent-fill` is `fill-action`, `accent-on-fill` is `on-fill-action`, `accent-text` is `fg-action`, and so on. New: `fill-base`, `tint-base`, and their labels and hover forms, for quiet controls. Each theme class now sets every token, so the manifest has `role` in place of `colorTheme`.
-- **0.2.0:** the ramp grades and `gap-*` are stable. The accent set (`accent-fill` … `accent-border`) and motion (`duration-*`, `ease-*`) are experimental.
-- **0.1.0:** the first contract.
+- **Unreleased:** the first contract, 0.1.0.
+
+The contract started again at 0.1.0. The versions before it were drafts, and no one used them. Their notes are in the git history of this file.
 
 ## Tasks
 
