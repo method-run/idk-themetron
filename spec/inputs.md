@@ -228,7 +228,7 @@ Each theme makes a light mode and a dark mode. You do not set the dark colors. T
 
 ## Schema and version
 
-[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. The site publishes it at <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>, and a copy for each contract version at `schema/<version>/inputs.schema.json`. See [Using themetron](./consumers.md "consumers"). A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, and that only `default` has no parent. The engine checks those.
+[`inputs.schema.json`](./inputs.schema.json) is the JSON Schema of the inputs. It is a draft, and it changes with the inputs. The code makes it from the lists of fields, feels, presets, and settings, with `npm run spec`. The site publishes it at <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>, and a copy for each released contract version at `schema/<version>/inputs.schema.json`. See [Using themetron](./consumers.md "consumers"). A test checks that the schema and the engine accept and reject the same inputs. The schema cannot check across themes: that each parent exists, that the parents make no loop, and that only `default` has no parent. The engine checks those.
 
 An inputs file can have two more fields:
 
@@ -236,7 +236,7 @@ An inputs file can have two more fields:
 - Version `1` still loads. In it, `neutral` was the base color, `color` was the action color only, and `fillLabel` flipped the labels on fills. The engine reads a version 1 file with those meanings. Without `"version": 1`, `neutral` is an error that names the new field.
 - `feel.tone` is gone too, and so are the other removed feels. The engine skips them.
 - `fillLabel` is gone in every version: every fill has light labels in light mode and dark labels in dark mode. The engine skips the field, so old files still load, and the schema marks it deprecated. To flip one part, put the class `tm-invert` on it. We removed `fillLabel` because it was easy to miss, and it made one theme's buttons the opposite of the others.
-- `$schema`: a path or URL to the schema, for editors. The engine ignores it. The playground's Inputs view, downloads, and share links include the URL of the current version's schema, such as `https://method-run.github.io/idk-themetron/schema/0.6.0/inputs.schema.json`. A file with a version in its URL still checks after the inputs change.
+- `$schema`: a path or URL to the schema, for editors. The engine ignores it. Use `https://method-run.github.io/idk-themetron/schema/inputs.schema.json` for the latest schema, or a released version's URL to pin it. The playground's Inputs view, downloads, and share links include the latest URL, because the playground runs the latest engine.
 
 ## Checks
 

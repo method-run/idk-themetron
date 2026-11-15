@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, CONTRACT_VERSION, specUrl, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -1110,10 +1110,9 @@ $('#copy').addEventListener('click', async (e) => {
 // Load inputs ({ themes }) in place of the current ones. Throws if they are not valid.
 // Without a version, inputs are the current version.
 // The inputs as a file, for the Inputs view, downloads, and share links. The $schema link lets an
-// editor check the file. It names this contract version, so the file still checks after the
-// inputs change.
+// editor check the file. It names the latest schema, the one that matches this playground.
 function inputsFile() {
-  return { $schema: specUrl('inputs.schema.json', CONTRACT_VERSION), version: INPUTS_VERSION, ...rawInputs() };
+  return { $schema: INPUTS_SCHEMA_URL, version: INPUTS_VERSION, ...rawInputs() };
 }
 
 function loadInputs(next, version = next?.version ?? INPUTS_VERSION) {
