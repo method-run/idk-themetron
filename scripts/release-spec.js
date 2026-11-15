@@ -1,10 +1,19 @@
 // Copy the contracts of the current version to spec/versions/<contract version>/, for a release.
 // The site publishes each copy at schema/<version>/. A released copy never changes: if the
-// contract changed since its version was released, this stops, and asks for a new version.
+// contract changed since its version was released, this stops, and asks for a new version. It
+// also stops when a stable token went away since the newest release without a breaking bump.
 // Usage: npm run spec:release. `npm version` runs it, and adds the copy to the version commit.
 import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { releaseFiles, CONTRACT_VERSION } from '../src/manifest.js';
+import { releaseFiles, stableTokenChanges, breakingPart, CONTRACT_VERSION } from '../src/manifest.js';
+import { newestReleasedManifest, removedMessage } from './releases.js';
+
+const released = await newestReleasedManifest();
+const { removed, bumped } = released ? stableTokenChanges(released) : { removed: [] };
+if (removed.length && !bumped) {
+  console.error(removedMessage(released.contract, removed, breakingPart(CONTRACT_VERSION)));
+  process.exit(1);
+}
 
 const files = Object.entries(releaseFiles());
 const changed = [];

@@ -237,15 +237,14 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 
 The package version goes up each time the contract version goes up, by at least as much. A breaking change to the contract is a breaking change to the package. The package can also go up alone, for example for a bug fix or a new export.
 
-Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog. One change is different: removing or renaming a stable token raises the contract version at once.
+Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog.
 
 The breaking part of a version is the major version from 1.0. Before 1.0, it is the minor version: `0.1`.
 
-[`test/fixtures/stable-tokens.json`](../test/fixtures/stable-tokens.json) lists the stable tokens and the contract version. A test fails when a stable token in that list goes away and the breaking part of the version stays the same. To remove or rename a stable token:
+A test compares the stable tokens with the newest release in `spec/versions/`. It fails when a stable token from that release went away and the breaking part of the version stays the same. `npm run spec:release` does the same check. Before the first release, nothing is checked. To remove or rename a stable token after a release:
 
-1. Raise `CONTRACT_VERSION` in `src/manifest.js` past its breaking part, for example from `0.1.0` to `0.2.0`.
+1. Raise `CONTRACT_VERSION` in `src/manifest.js` past the breaking part of the newest release, for example from `0.1.0` to `0.2.0`. Do this once for each release, even when you remove more tokens.
 2. List the change under **Unreleased** in the changelog.
-3. Run `npm run spec`. It writes the manifest and refreshes the list. It does not refresh the list when a stable token went away and the version has no breaking bump.
 
 To release:
 
