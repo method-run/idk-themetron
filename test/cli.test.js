@@ -77,7 +77,10 @@ test('build exits 1 for a missing file, bad JSON, or an unknown format', async (
       [[bad], /bad\.json: .*JSON/],
       [[join(example, 'inputs.json'), '--format', 'scss'], /--format: use one of css, stylesheet, dtcg, tailwind, shadcn/],
       [[], /build needs one inputs file/],
-      [[join(example, 'inputs.json'), '--nope'], /Unknown option/],
+      [[join(example, 'inputs.json'), '--nope'], /--nope: unknown flag/],
+      [[join(example, 'inputs.json'), '--out'], /--out needs a value/],
+      [[join(example, 'inputs.json'), '--format', 'dtcg', '--prefix', 'x'], /--prefix: does nothing with --format dtcg/],
+      [[join(example, 'inputs.json'), '--unknown-flags', 'maybe'], /--unknown-flags: use error or warn/],
     ]) {
       const { code, stderr } = await run('build', ...args);
       assert.equal(code, 1, args.join(' '));
@@ -86,6 +89,32 @@ test('build exits 1 for a missing file, bad JSON, or an unknown format', async (
   } finally {
     await rm(dir, { recursive: true });
   }
+});
+
+test('build passes the CSS flags to the export', async () => {
+  const inputs = join(example, 'inputs.json');
+  const { buildThemes, toCss, toTailwind, toShadcn } = await import('../src/index.js');
+  const built = buildThemes(JSON.parse(await readFile(inputs, 'utf8')));
+  const css = await run('build', inputs, '--prefix', 'x', '--class-prefix', 't-', '--no-root', '--no-more');
+  assert.equal(css.stdout, toCss(built, { prefix: 'x', classPrefix: 't-', root: false, more: false }));
+  assert.equal((await run('build', inputs, '-f', 'tailwind', '--prefix', 'x')).stdout, toTailwind(built, { prefix: 'x' }));
+  assert.equal((await run('build', inputs, '-f', 'shadcn', '--class-prefix', 't-')).stdout, toShadcn(built, { classPrefix: 't-' }));
+  const sheet = await run('build', inputs, '-f', 'stylesheet', '--no-more');
+  assert.ok(sheet.stdout.startsWith(toCss(built, { more: false })));
+});
+
+test('--unknown-flags warn skips unknown and unused flags with a warning', async () => {
+  const inputs = join(example, 'inputs.json');
+  const plain = await run('build', inputs, '-f', 'dtcg');
+  const warned = await run('build', inputs, '-f', 'dtcg', '--new-flag=1', '--prefix', 'x', '--unknown-flags', 'warn');
+  assert.equal(warned.code, 0);
+  assert.equal(warned.stdout, plain.stdout);
+  assert.match(warned.stderr, /Warning: skipped --new-flag: unknown flag/);
+  assert.match(warned.stderr, /Warning: skipped --prefix: does nothing with --format dtcg/);
+  const checked = await run('check', join(example, 'page.css'), '--nope', '--unknown-flags', 'warn');
+  assert.equal(checked.code, 0);
+  assert.match(checked.stderr, /Warning: skipped --nope/);
+  assert.equal((await run('check', join(example, 'page.css'), '--nope')).code, 1, 'error is the default');
 });
 
 test('--help prints the usage of both commands', async () => {

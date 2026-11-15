@@ -219,6 +219,19 @@ npx themetron --help
 
 If the inputs have problems, the command prints one line for each problem and exits with code 1. It writes no tokens. The [Inputs spec](./inputs.md "inputs") describes the inputs file.
 
+These flags change the CSS. Each one is an option of the export function, and works only with the formats in its row.
+
+| Flag | What it does | Formats |
+|---|---|---|
+| `--prefix <p>` | Token names start with `--<p>-`. The default is `tm`. | `css`, `tailwind` |
+| `--class-prefix <c>` | Theme classes are `.<c><name>`. The default is `theme-`. | `css`, `stylesheet`, `shadcn` |
+| `--no-root` | The root theme's rule leaves out `:root`, so only its class sets it. | `css`, `stylesheet` |
+| `--no-more` | Leave out the more-contrast rules. | `css`, `stylesheet` |
+
+`stylesheet` takes no `--prefix`, because the components read `--tm-*` tokens.
+
+A flag that the command does not know, or that does nothing with the format, stops the command. Add `--unknown-flags warn` to print a warning and skip the flag. This helps a script that passes flags from a newer version. Then write a value after an unknown flag with `=`, such as `--new-flag=value`. `themetron check` takes `--unknown-flags` too.
+
 ## More contrast
 
 Every theme ships a second set of semantic tokens at the enhanced level, for readers who ask for more contrast. It uses the same ramps, so only the grades that the tokens pick change, and the `gap-*` tokens. Themes share these rules as they share the others. The token names stay the same, so components need no change.
