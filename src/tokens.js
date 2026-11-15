@@ -37,10 +37,9 @@ function buildLevel(settings, palettes, variant = false) {
 
 // ---- Primitives: values that do not change with the mode.
 
-// Fixed values for the parts that the removed feels (thickness, bounciness, snappiness)
-// used to set. The tokens stay, so components still work: hairline borders, no blur outside
-// tm-over-media, and calm motion with no overshoot.
-const BORDER_WIDTH = 1;
+// Fixed values for the parts that the removed feels (bounciness, snappiness) used to set. The
+// tokens stay, so components still work: no blur outside tm-over-media, and calm motion with no
+// overshoot.
 // The grid square, in px, and the body text size, until typography settings set it.
 const GRID = 4;
 const MOTION = {
@@ -105,7 +104,10 @@ export function buildPrimitives(settings, palettes, gaps) {
   const leading = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, bodyRatio)]));
   const leadingTight = Object.fromEntries(Object.entries(fontSize).map(([k, v]) => [k, snap(v, tightRatio)]));
 
-  const borderWidth = BORDER_WIDTH;
+  // Thinness sets the edge width: 4 px at 0, 1 px (a hairline) at the default 0.8, and none at
+  // 1. Whole px. Parts that must keep an edge (fields, checks, outline buttons, the focus ring)
+  // never go below 1 px in the CSS.
+  const borderWidth = Math.round((1 - settings.feel.thinness) * 4);
   // A control is a tight line plus padding and border that add up to whole squares: a bit less
   // than half a space unit down, and about one unit across. The factors are not the space
   // steps' factors, so that the padding and the space steps grow at different points along the
@@ -170,9 +172,9 @@ export function buildPrimitives(settings, palettes, gaps) {
       ...FLAT,
       // Buttons rise on hover: up to 1 px, with depth. More is distracting.
       lift: round(d * 1, 1),
-      // The edges of buttons and cards fade out over the top tenth of softness (0.9 to 1), for a
-      // neumorphic look, where shadows alone shape the parts.
-      edgeAlpha: round(1 - Math.min(1, Math.max(0, (settings.feel.softness - 0.9) / 0.1))),
+      // The edges of buttons and cards fade to half over the top tenth of softness (0.9 to 1), for
+      // a neumorphic look, where shadows shape the parts. Thinness takes them away altogether.
+      edgeAlpha: round(1 - 0.5 * Math.min(1, Math.max(0, (settings.feel.softness - 0.9) / 0.1))),
       // How see-through each kind of part is: from its CLEAREST opacity at clarity 1, to
       // opaque at 0.
       panelAlpha: solid(CLEAREST.panel),

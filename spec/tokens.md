@@ -56,13 +56,13 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 | `control.height`, `control.heightSm`, `control.heightLg`, `control.paddingX`, `control.paddingY` | | For buttons, fields, and avatars. Heights are whole rhythm steps. |
 | `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `controlSm`, `controlLg`, `full`. Each control radius is a pill at full roundness, for its own control size. `sm`, `md`, and `lg` round as far as the padding of the parts that use them. |
 | `roundness` | `roundness` | The roundness feel, from 0 to 1. A part of height `h` that has no radius token of its own rounds by `roundness × h ÷ 2`, so it is a pill at 1. The components use it for badges, switches, and progress bars. Experimental. |
-| `border.width`, `border.focusWidth` | | The focus width is at least 2 px. |
+| `border.width`, `border.focusWidth` | | The edge width, from thinness: `round((1 − thinness) × 4)` px, so 4 px at 0, 1 px at the default (0.8), and 0 at thinness 1. CSS: `border-width` and `panel-border-width`. The focus width is `max(2, width + 1)` px. |
 | `duration.<speed>` | `duration.base` | `fast`, `base`, `slow`. |
 | `easing.<use>` | `easing.enter` | `standard`, `enter`, `exit`. Motion is the same in every theme for now, with no overshoot. |
 | `shininess`, `effect.panelBlur`, `effect.lift` | | The shininess (0 to 1), a blur radius (0 for now: see `tm-over-media`), and the hover lift (up to 1 px, from depth). The shine itself is `shine-image`, built on each element: see [consumers](./consumers.md "consumers"). |
 | `effect.fillAlpha`, `effect.tintAlpha`, `effect.fieldAlpha`, `effect.fillAlphaInverted`, `effect.tintAlphaInverted` | `fill-alpha` | The opacity of solid fills, of tints and quiet buttons, and of fields, from clarity. Cards use `bg.panel`. See [Feels](./inputs.md#feels). `fill-alpha-clearest` and `tint-alpha-inverted-clearest` are the opacities at clarity 1, so a component can tell how far a part has faded. |
 | `shine-backdrop-top`, `-bottom`, `shine-filter-top`, `-bottom`, `shine-paint` | | How buttons shade. When parts are see-through, the backdrop filters brighten the top and darken the bottom. When parts are opaque, the plain filters do it on layers painted in the fill's color (`shine-paint` is 1). The components weaken the shadow on light fills, from the fill's own lightness. `none` and 0 at shininess 0. CSS only. |
-| `edge-alpha` | | The opacity of button and card edges: 1, fading to 0 from softness 0.9 to 1, for a neumorphic look. |
+| `edge-alpha` | | The opacity of button and card edges: 1, fading to 0.5 from softness 0.9 to 1, for a neumorphic look. Thinness, not softness, removes edges. |
 
 ## Semantic tokens
 

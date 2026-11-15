@@ -55,11 +55,12 @@ A part takes its color from the nearest theme class, such as `theme-danger`. `tm
 | Roundness (Round) | Every radius. At full roundness, buttons and badges are pills, and cards round a lot. |
 | Spaciousness (Space) | Padding, gaps, line heights, control height |
 | Depth (Depth) | Shadows: solid, quiet, soft, and exact buttons rest on `elevation-1`, and change to `elevation-2` on hover as they rise by `lift`. Outline and ghost buttons stay flat. Cards use `elevation-2`, raised cards and dialogs `elevation-3`, text fields, checks, and radios `elevation-field`, and tracks and pressed buttons `elevation-inset`. |
-| Softness (Soft) | How blurry the shadows are, and how far headings lighten; at the top of the range, a light shadow up and to the left, button and card edges fade out (`edge-alpha`), and text fields look pressed into the page (`elevation-field`, `border-base-field`), for a neumorphic look |
+| Softness (Soft) | How blurry the shadows are, and how far headings lighten; at the top of the range, a light shadow up and to the left, button and card edges fade to half (`edge-alpha`), and text fields look pressed into the page (`elevation-field`, `border-base-field`), for a neumorphic look |
+| Thinness (Thin) | How wide edges are (`border-width`, `panel-border-width`). Fields, checks, radios, switches, outline buttons, dividers, tabs, and links keep at least 1 px. The edges of cards, dialogs, other buttons, badges, and alerts can go away. |
 | Shininess (Shine) | Buttons get a brighter top and a darker bottom. Checks, radios, switches, badges, avatars, progress bars, and the pressed segment get a gradient, an edge band, and a glow. Labels on buttons, badges, avatars, and pressed segments get a 1 px line that sets them into the surface (`text-shadow-*`). |
 | Clarity (Clear) | How see-through cards, fields, tints, quiet buttons, and solid fills are. Labels on fading solid fills get a halo of the fill's color. |
 
-The other feels are removed for now. Until they come back, borders are 1 px, and motion is the same in every theme. The components still read the same tokens, so the effects come back without changes here.
+The motion feels are removed for now. Until they come back, motion is the same in every theme. The components still read the same tokens, so the effects come back without changes here.
 
 <details>
 <summary>How it works</summary>

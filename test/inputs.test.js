@@ -145,3 +145,9 @@ test('solidity still loads, turned over into clarity', () => {
   assert.equal(themes.both.feel.clarity, 0.1, 'clarity wins');
   assert.equal('solidity' in themes.default.feel, false);
 });
+
+test('thickness still loads, turned over into thinness', () => {
+  const { themes } = normalizeInputs({ themes: { default: { feel: { thickness: 0.25 } }, words: { parent: 'default', feel: { thickness: 'chunky' } } } });
+  assert.equal(themes.default.feel.thinness, 0.75, 'the value turns over');
+  assert.equal(themes.words.feel.thinness, 0, "thickness's own words still work");
+});

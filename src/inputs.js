@@ -9,42 +9,51 @@ export const FEELS = {
   spaciousness: { label: 'Space', default: 0.5, stops: { compact: 0, cozy: 0.25, comfortable: 0.5, relaxed: 0.75, spacious: 1 } },
   depth: { label: 'Depth', default: 0.3, stops: { flat: 0, low: 0.33, raised: 0.67, floating: 1 } },
   softness: { label: 'Soft', default: 0.5, stops: { hard: 0, crisp: 0.33, soft: 0.67, pillowy: 1 } },
+  thinness: { label: 'Thin', default: 0.8, stops: { chunky: 0, heavy: 0.25, regular: 0.5, hairline: 0.8, none: 1 } },
   shininess: { label: 'Shine', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
   clarity: { label: 'Clear', default: 0, stops: { solid: 0, tinted: 0.33, frosted: 0.67, clear: 1 } },
 };
-// Solidity is now clarity, the other way round. Old inputs that set solidity still load: its
-// value turns over (1 - solidity), and its own words still work. Clarity wins when a theme
-// sets both.
-const SOLIDITY_STOPS = { clear: 0, frosted: 0.33, tinted: 0.67, solid: 1 };
-// A feel object with solidity moved to clarity, for tools that keep raw inputs, such as the
-// playground. Words and "inherit" carry over; a value it cannot read stays as solidity, so
-// the engine reports it.
-export function solidityToClarity(feel) {
-  if (!feel || typeof feel !== 'object' || !('solidity' in feel)) return feel;
-  const { solidity, ...rest } = feel;
-  if ('clarity' in rest) return rest;
-  const n = solidity === INHERIT ? INHERIT : typeof solidity === 'string' ? SOLIDITY_STOPS[solidity] : solidity;
-  if (n === INHERIT) return { ...rest, clarity: INHERIT };
-  if (typeof n !== 'number' || !(n >= 0 && n <= 1)) return feel;
-  return { ...rest, clarity: Math.round((1 - n) * 100) / 100 };
+// Old feels that came back the other way round: solidity is now clarity, and thickness is now
+// thinness. Old inputs that set them still load: the value turns over (1 - value), and the old
+// words still work. The new name wins when a theme sets both.
+const TURNED_FEELS = {
+  solidity: { to: 'clarity', stops: { clear: 0, frosted: 0.33, tinted: 0.67, solid: 1 } },
+  thickness: { to: 'thinness', stops: { none: 0, hairline: 0.25, regular: 0.5, heavy: 0.75, chunky: 1 } },
+};
+const turn = (n) => Math.round((1 - n) * 100) / 100;
+// A feel object with the old feels moved to their new names, for tools that keep raw inputs,
+// such as the playground. Words and "inherit" carry over; a value it cannot read stays under
+// the old name, so the engine reports it.
+export function turnOldFeels(feel) {
+  if (!feel || typeof feel !== 'object') return feel;
+  let out = feel;
+  for (const [old, { to, stops }] of Object.entries(TURNED_FEELS)) {
+    if (!(old in out)) continue;
+    const { [old]: raw, ...rest } = out;
+    const n = raw === INHERIT ? INHERIT : typeof raw === 'string' ? stops[raw] : raw;
+    if (to in rest) out = rest;
+    else if (n === INHERIT) out = { ...rest, [to]: INHERIT };
+    else if (typeof n === 'number' && n >= 0 && n <= 1) out = { ...rest, [to]: turn(n) };
+  }
+  return out;
 }
 // Typography: how fast text grows above body size, from 0 to 1. Not a feel: it sits with the
 // fonts, and presets do not set it. A word from `stops` can stand for its number.
 export const TYPE_VARIANCE = { label: 'Type variance', default: 0.5, stops: { flat: 0, gentle: 0.25, classic: 0.5, bold: 0.75, dramatic: 1 } };
 // Feels that are gone for now. Old inputs that set them still load: the engine skips them.
-export const REMOVED_FEELS = ['thickness', 'bounciness', 'snappiness', 'tone'];
+export const REMOVED_FEELS = ['bounciness', 'snappiness', 'tone'];
 
 // A preset is a set of feels with a familiar name. A theme's own feels override it.
 export const PRESETS = {
   balanced: { label: 'Balanced', feel: {} },
-  flat: { label: 'Flat', feel: { roundness: 0.2, depth: 0, softness: 0.5, shininess: 0 } },
-  material: { label: 'Material', feel: { roundness: 0.25, depth: 0.5, softness: 0.7, shininess: 0 } },
-  brutalist: { label: 'Brutalist', feel: { spaciousness: 0.4, roundness: 0, depth: 0.5, softness: 0, shininess: 0 } },
-  neumorphic: { label: 'Neumorphic', feel: { roundness: 0.6, depth: 0.7, softness: 1, shininess: 0, clarity: 0.7 } },
-  glass: { label: 'Glass', feel: { roundness: 0.6, depth: 1, softness: 0.85, shininess: 1, clarity: 1 } },
-  glossy: { label: 'Glossy', feel: { roundness: 1, depth: 0.5, softness: 0.6, shininess: 1 } },
-  playful: { label: 'Playful', feel: { spaciousness: 0.65, roundness: 0.9, depth: 0.45, softness: 0.3 } },
-  dense: { label: 'Dense', feel: { spaciousness: 0, roundness: 0.15, depth: 0.15, softness: 0.5 } },
+  flat: { label: 'Flat', feel: { thinness: 0.8, roundness: 0.2, depth: 0, softness: 0.5, shininess: 0 } },
+  material: { label: 'Material', feel: { thinness: 1, roundness: 0.25, depth: 0.5, softness: 0.7, shininess: 0 } },
+  brutalist: { label: 'Brutalist', feel: { thinness: 0.25, spaciousness: 0.4, roundness: 0, depth: 0.5, softness: 0, shininess: 0 } },
+  neumorphic: { label: 'Neumorphic', feel: { thinness: 1, roundness: 0.6, depth: 0.7, softness: 1, shininess: 0, clarity: 0.7 } },
+  glass: { label: 'Glass', feel: { thinness: 0.8, roundness: 0.6, depth: 1, softness: 0.85, shininess: 1, clarity: 1 } },
+  glossy: { label: 'Glossy', feel: { thinness: 0.8, roundness: 1, depth: 0.5, softness: 0.6, shininess: 1 } },
+  playful: { label: 'Playful', feel: { thinness: 0.6, spaciousness: 0.65, roundness: 0.9, depth: 0.45, softness: 0.3 } },
+  dense: { label: 'Dense', feel: { thinness: 0.8, spaciousness: 0, roundness: 0.15, depth: 0.15, softness: 0.5 } },
 };
 
 export const ROOT = 'default';
@@ -267,12 +276,12 @@ function feelField(value, at, fail) {
   if (!value || typeof value !== 'object') { fail(`${at}: use an object of feels.`); return out; }
   for (const [given, raw] of Object.entries(value)) {
     if (REMOVED_FEELS.includes(given) || given === 'variance') continue;
-    const old = given === 'solidity';
-    if (old && 'clarity' in value) continue;
-    const name = old ? 'clarity' : given;
+    const old = TURNED_FEELS[given];
+    if (old && old.to in value) continue;
+    const name = old?.to ?? given;
     const spec = FEELS[name];
     if (!spec) { fail(`${at}.${given}: unknown feel. Use one of: ${Object.keys(FEELS).join(', ')}.`); continue; }
-    const stops = old ? SOLIDITY_STOPS : spec.stops;
+    const stops = old?.stops ?? spec.stops;
     let n = raw;
     if (n === INHERIT) { out[name] = INHERIT; continue; }
     if (typeof n === 'string') {
@@ -280,7 +289,7 @@ function feelField(value, at, fail) {
       n = stops[n];
     }
     if (typeof n !== 'number' || !(n >= 0 && n <= 1)) { fail(`${at}.${given}: use a number from 0 to 1.`); continue; }
-    out[name] = old ? Math.round((1 - n) * 100) / 100 : n;
+    out[name] = old ? turn(n) : n;
   }
   return out;
 }

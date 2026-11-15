@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, solidityToClarity } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -19,7 +19,8 @@ const FEEL_HINTS = {
   roundness: 'Corners, as a share of the most a part can round.',
   spaciousness: 'Padding, gaps, and line height.',
   depth: 'Soft shadows, and how far buttons rise on hover.',
-  softness: 'How blurry shadows are. At the top, a light shadow too, for a neumorphic look.',
+  softness: 'How blurry shadows are, and how far edges fade. At the top, a light shadow too, for a neumorphic look.',
+  thinness: 'How thick edges are: 4 px at the left, a hairline at the default, none at the right. Fields, checks, outline buttons, and focus rings keep a hairline.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
   clarity: 'How see-through cards, tints, fields, and fills are.',
 };
@@ -251,8 +252,8 @@ function toRoles(themes, version) {
     // Removed feels stay in the saved themes, so they come back on a branch that has them.
     // The engine skips them.
     if (version === 1 && 'neutral' in t) { t.base ??= t.neutral; delete t.neutral; }
-    // Solidity is now clarity, the other way round.
-    if (t.feel) t.feel = solidityToClarity(t.feel);
+    // Solidity is now clarity, and thickness thinness, the other way round.
+    if (t.feel) t.feel = turnOldFeels(t.feel);
     if ('color' in t) {
       if (version !== 1) t.base ??= t.color;
       t.action ??= t.color;
@@ -359,7 +360,7 @@ const ringPoints = (value) => Object.keys(FEELS).map((_, i) => at(i, value).join
 
 function feelChart() {
   const names = Object.keys(FEELS);
-  const chart = svg('svg', { class: 'feel-chart', id: 'feel-chart', viewBox: '-140 -118 280 236', role: 'group', 'aria-label': 'Feels chart' });
+  const chart = svg('svg', { class: 'feel-chart', id: 'feel-chart', viewBox: '-170 -118 340 236', role: 'group', 'aria-label': 'Feels chart' });
   for (const ring of [0.25, 0.5, 0.75, 1]) chart.append(svg('polygon', { class: 'feel-ring', points: ringPoints(ring) }));
   names.forEach((_, i) => chart.append(svg('line', { class: 'feel-spoke', x1: 0, y1: 0, x2: at(i, 1)[0], y2: at(i, 1)[1] })));
   chart.append(svg('polygon', { class: 'feel-shape', id: 'feel-shape' }));

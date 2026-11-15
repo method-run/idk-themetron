@@ -225,6 +225,26 @@
                 }
               ]
             },
+            "thinness": {
+              "description": "Thin: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "chunky",
+                    "heavy",
+                    "regular",
+                    "hairline",
+                    "none",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
             "shininess": {
               "description": "Shine: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
               "anyOf": [
@@ -262,10 +282,6 @@
                   ]
                 }
               ]
-            },
-            "thickness": {
-              "deprecated": true,
-              "description": "Ignored. This feel is removed for now."
             },
             "bounciness": {
               "deprecated": true,

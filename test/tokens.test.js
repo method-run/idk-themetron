@@ -147,7 +147,10 @@ test('feels change the primitives', () => {
   }
   assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 15, lg: 18, xl: 22, '2xl': 26, '3xl': 31 });
   // Removed feels still load, and change nothing.
-  assert.deepEqual(p({ thickness: 0, bounciness: 1, snappiness: 1 }), p({}));
+  assert.deepEqual(p({ bounciness: 1, snappiness: 1 }), p({}));
+  // Thinness: 4 px edges at 0, a hairline at the default, none at 1.
+  assert.deepEqual([0, 0.8, 1].map((thinness) => p({ thinness }).border.width), [4, 1, 0]);
+  assert.equal(p({}).border.width, 1);
   // Softness: the default keeps the shadows as they were; softer is blurrier; the light shadow
   // (a first layer with a negative offset) only appears at the top of the range.
   const shadow = (softness) => buildThemes({ themes: { default: { feel: { depth: 0.5, softness } } } }).themes.default.modes.light.computed['elevation.2'];
@@ -226,10 +229,10 @@ test('the invert class flips the mode of an element', () => {
 
 test('space, line heights, and control heights sit on the rhythm grid', () => {
   for (const spaciousness of [0, 0.1, 0.25, 0.4, 0.5, 0.6, 0.75, 0.9, 1]) {
-    for (const thickness of [0, 0.25, 0.5, 0.75, 1]) {
-      const p = buildThemes({ themes: { default: { feel: { spaciousness, thickness } } } }).themes.default.primitives;
+    for (const thinness of [0, 0.25, 0.5, 0.75, 1]) {
+      const p = buildThemes({ themes: { default: { feel: { spaciousness, thinness } } } }).themes.default.primitives;
       const r = p.rhythm;
-      const on = (v, what) => assert.equal(v % r, 0, `s ${spaciousness} t ${thickness}: ${what} ${v} is not a multiple of ${r}`);
+      const on = (v, what) => assert.equal(v % r, 0, `s ${spaciousness} t ${thinness}: ${what} ${v} is not a multiple of ${r}`);
       for (const [k, v] of Object.entries(p.space)) on(v, `space.${k}`);
       for (const [k, v] of Object.entries(p.font.leading)) { on(v, `leading.${k}`); assert.ok(v >= p.font.size[k]); }
       for (const [k, v] of Object.entries(p.font.leadingTight)) { on(v, `leadingTight.${k}`); assert.ok(v >= p.font.size[k]); }
