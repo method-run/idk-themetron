@@ -281,3 +281,29 @@ test('the grid stays 4 px, and space, line heights, and control heights never sh
     assert.ok(now.radius.lg <= now.space.lg, 'a card corner does not cut into its padding');
   }
 });
+
+test('see-through labels are checked over white and black backdrops, as warnings only', () => {
+  const audit = (clarity) => buildThemes({ themes: { default: { color: '#2456e8', feel: { clarity } } } }).themes.default.modes;
+  // Opaque parts have no backdrop rows.
+  for (const m of ['light', 'dark']) assert.equal(audit(0)[m].audit.filter((a) => a.backdrop !== undefined).length, 0, m);
+  const modes = audit(1);
+  const blend = (fg, bg, alpha) => `#${[1, 3, 5].map((i) => Math.round(alpha * parseInt(fg.slice(i, i + 2), 16) + (1 - alpha) * parseInt(bg.slice(i, i + 2), 16)).toString(16).padStart(2, '0')).join('')}`;
+  for (const m of ['light', 'dark']) {
+    const { audit: rows, tokens } = modes[m];
+    const backdrop = rows.filter((a) => a.backdrop !== undefined);
+    // Cards (two labels), fields, three fills, and two tints, each over white and black.
+    assert.equal(backdrop.length, 16, m);
+    for (const a of backdrop) {
+      assert.equal(a.required, false);
+      assert.equal(a.warn, !a.pass);
+      assert.match(a.bg, / over a (white|black) backdrop \(base (0|100)\)$/);
+    }
+    // The values are the part's color at its opacity over pure white and pure black.
+    const panel = backdrop.filter((a) => a.fg === 'fg.base' && a.bg.startsWith('bg.panel at 10%'));
+    assert.deepEqual(panel.map((a) => a.bgValue), [blend(tokens['bg.surface'].value, '#ffffff', 0.1), blend(tokens['bg.surface'].value, '#000000', 0.1)]);
+    const fill = backdrop.filter((a) => a.fg === 'on-fill.action');
+    assert.deepEqual(fill.map((a) => a.bgValue), [blend(tokens['fill.action'].value, '#ffffff', 0.5), blend(tokens['fill.action'].value, '#000000', 0.5)]);
+  }
+  // A light card over black loses its dark text, and the audit says so.
+  assert.ok(modes.light.audit.some((a) => a.fg === 'fg.base' && a.bg.includes('black backdrop') && a.warn));
+});

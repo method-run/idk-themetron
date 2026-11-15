@@ -524,6 +524,28 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     for (const role of ROLES) seen(`on-tint.${role}${state}`, `tint.${role}${state}`, e.tintAlpha);
   }
 
+  // A see-through part can also sit over a photo, or over a part of any color. So each resting
+  // label is also checked as seen over the two extreme backdrops: the base ramp's grades 0 and
+  // 100. They are pure white and pure black, because the grades fix luminance. Cards and fields
+  // are checked here too: over the page their text is safe, but not over any backdrop. Warnings
+  // only, and none for an opaque part.
+  const backdrops = [['white', 0], ['black', 100]];
+  const overBackdrop = (fgName, bgName, alpha, label = bgName) => {
+    if (alpha >= 1) return;
+    for (const [word, grade] of backdrops) {
+      const fg = tokens[fgName].value;
+      const bg = over(tokens[bgName].value, base.steps[grade], alpha);
+      audit.push({ fg: fgName, bg: `${label} at ${Math.round(alpha * 100)}% over a ${word} backdrop (base ${grade})`, fgValue: fg, bgValue: bg, purpose: 'text', required: false, backdrop: grade, ...measure(fg, bg), pass: test(fg, bg, 'text') });
+      audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
+    }
+  };
+  for (const fg of ['fg.base', 'fg.base-muted']) overBackdrop(fg, 'bg.surface', e.panelAlpha, 'bg.panel');
+  overBackdrop('fg.base', 'bg.field', e.fieldAlpha);
+  overBackdrop('on-fill.action', 'fill.action', e.fillAlpha);
+  overBackdrop('on-fill.quiet', 'fill.quiet', e.tintAlpha);
+  overBackdrop('on-fill.action-exact', 'fill.action-exact', 1 - (1 - e.fillAlpha) / 2);
+  for (const role of ROLES) overBackdrop(`on-tint.${role}`, `tint.${role}`, e.tintAlpha);
+
   return { tokens, audit, computed: computed(dark, tokens, settings.feel, palettes.base, e) };
 }
 
