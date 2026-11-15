@@ -691,12 +691,14 @@ function applyMedia() {
   for (const stage of document.querySelectorAll('#previews .stage')) stage.classList.toggle('tm-over-media', pane.photo);
 }
 
-// The view menu opens under its button, at its right edge. The popover closes on Escape and on
-// a click outside it.
+// The view menu opens under its button, at its right edge, but stays 16 px inside the window: on
+// a narrow screen the button is at the left. The popover closes on Escape and on a click outside it.
 $('#view-menu').addEventListener('toggle', (e) => {
   if (e.newState !== 'open') return;
+  const menu = $('#view-menu');
   const r = $('#view-menu-btn').getBoundingClientRect();
-  Object.assign($('#view-menu').style, { top: `${r.bottom + 6}px`, right: `${Math.max(16, innerWidth - r.right)}px`, left: 'auto' });
+  const left = Math.max(16, Math.min(r.right - menu.offsetWidth, innerWidth - 16 - menu.offsetWidth));
+  Object.assign(menu.style, { top: `${r.bottom + 6}px`, left: `${left}px`, right: 'auto' });
 });
 
 function renderView() {
