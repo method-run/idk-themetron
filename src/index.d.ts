@@ -194,6 +194,8 @@ export function toDtcg(built: BuiltThemes): Record<string, any>;
 export function toTailwind(built: BuiltThemes, options?: { prefix?: string }): string;
 /** shadcn/ui theme variables, for its globals.css. */
 export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string }): string;
+/** Bootstrap 5 Sass variables, to import before Bootstrap. The root theme's light values, with *-dark twins. */
+export function toBootstrapSass(built: BuiltThemes): string;
 /** A Google Fonts URL for the named font families of all themes, or null. */
 export function fontImport(built: BuiltThemes): string | null;
 
@@ -297,3 +299,11 @@ export function tokenManifest(): TokenManifest;
 export function inputsSchema(): Record<string, any>;
 /** The version of the token contract. It is not the package version. */
 export const CONTRACT_VERSION: string;
+/** The base URL where the site publishes the manifest and the inputs schema. */
+export const SPEC_URL: string;
+/** The URL of a published contract file: the latest one, or a released version's copy. */
+export function specUrl(file: string, version?: string): string;
+/** The URL of the latest inputs schema. It is also the schema's $id. */
+export const INPUTS_SCHEMA_URL: string;
+/** The URL of the latest token manifest. */
+export const MANIFEST_URL: string;
