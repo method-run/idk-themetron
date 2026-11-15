@@ -11,7 +11,7 @@ tags: [system/playground]
 # Playground
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 77% (7/9)
+◐ 88% (8/9)
 <!-- idk-plans:progress:end -->
 
 The playground is a web page with the inputs on the left and the result on the right. Each change rebuilds the themes at once.
@@ -47,7 +47,7 @@ There are two ways to run it:
 
 - [x] Show the inputs, the preview, the palettes, the tokens, and the audit
 - [x] Show light and dark mode side by side
-- [ ] Publish the playground on GitHub Pages
+- [x] Publish the playground on GitHub Pages: [method-run.github.io/idk-themetron/play](https://method-run.github.io/idk-themetron/play/)
 - [x] Share a theme as a link
 - [x] Open and download the inputs as a file, and download each token format
 - [x] Show several themes at once: side by side, and nested in their parents
