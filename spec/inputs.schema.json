@@ -63,15 +63,58 @@
                 "string",
                 "null"
               ],
-              "description": "A Google font family, or null for the browser's font."
+              "description": "A Google font family, or null for the browser's font. With src, the name that the CSS gives to the files."
             },
             "fallback": {
               "type": "string",
               "description": "A CSS generic family, such as sans-serif."
+            },
+            "src": {
+              "type": "array",
+              "minItems": 1,
+              "description": "Your own font files, in place of Google Fonts. Each file is one @font-face rule. Needs a family.",
+              "items": {
+                "$ref": "#/$defs/fontFile"
+              }
             }
           }
         }
       ]
+    },
+    "fontFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^[^\\s\"'\\\\?#]+\\.(woff2|woff|ttf|otf)([?#][^\\s\"'\\\\]*)?$",
+          "description": "The URL of a .woff2, .woff, .ttf, or .otf file. The extension sets the format."
+        },
+        "weight": {
+          "description": "The weight of the file, such as 400, or a range for a variable font, such as \"100 900\".",
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            },
+            {
+              "type": "string",
+              "pattern": "^(1000|[1-9]\\d{0,2})( (1000|[1-9]\\d{0,2}))?$"
+            }
+          ]
+        },
+        "style": {
+          "enum": [
+            "normal",
+            "italic"
+          ],
+          "description": "The style of the file. Not set: normal."
+        }
+      }
     },
     "theme": {
       "type": "object",

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdir, readFile } from 'node:fs/promises';
-import { buildThemes, toCss, toDtcg, normalizeInputs, contrastTest, PRESETS } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, normalizeInputs, contrastTest, fontImport, fontFaces, PRESETS } from '../src/index.js';
 import { specFiles, releaseFiles, tokenManifest, inputsSchema, checkCss, PAIRS, CONTRACT_VERSION, SPEC_URL, specUrl, INPUTS_SCHEMA_URL, MANIFEST_URL, breakingPart, stableTokens, stableTokenChanges } from '../src/manifest.js';
 import { releasedVersions, newestReleasedManifest, releasePlan, removedMessage } from '../scripts/releases.js';
 
@@ -143,8 +143,13 @@ function validate(schema, value, root = schema) {
   if (schema.type) {
     const types = [schema.type].flat();
     const kind = value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
-    if (!types.includes(kind)) return false;
+    if (!types.includes(kind) && !(types.includes('integer') && Number.isInteger(value))) return false;
   }
+  if (Array.isArray(value)) {
+    if (value.length < (schema.minItems ?? 0)) return false;
+    if (schema.items && !value.every((v) => validate(schema.items, v, root))) return false;
+  }
+  if (schema.required && value && typeof value === 'object' && schema.required.some((k) => !(k in value))) return false;
   if (typeof value === 'number' && ((schema.minimum ?? -Infinity) > value || (schema.maximum ?? Infinity) < value)) return false;
   if (typeof value === 'string' && schema.pattern && !new RegExp(schema.pattern).test(value)) return false;
   if (value && typeof value === 'object' && !Array.isArray(value)) {
@@ -184,6 +189,15 @@ test('the inputs schema agrees with the engine', () => {
     { themes: { default: { fillLabel: 'auto' } } },
     { themes: { default: { tint: '#fff' } } },
     { themes: { default: { font: { family: 'Inter', weight: 400 } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.woff2', weight: '100 900' }, { url: 'https://x.test/Inter-Italic.ttf?v=2', weight: 400, style: 'italic' }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ weight: 400 }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.css' }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/In ter.woff2' }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.woff2', weight: 400.5 }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.woff2', weight: '100-900' }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.woff2', style: 'oblique' }] } } } },
+    { themes: { default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.woff2', format: 'woff2' }] } } } },
     { themes: { danger: { parent: 'default', color: '#d6336c', feel: { spaciousness: 'inherit' } } } },
     { themes: { Danger: { parent: 'default' } } },
     { themes: { danger: { parent: 'default', label: 'Danger zone' } } },
@@ -226,4 +240,22 @@ test('the files in examples/ match the code. Run npm run examples after a change
   // The page reads only contract tokens, and gives each experimental token a fallback.
   assert.deepEqual(checkCss(pageCss).unknown, []);
   for (const name of checkCss(pageCss).experimental) assert.match(pageCss, new RegExp(`var\\(--tm-${name}, `), name);
+});
+
+test('a family with its own files gets @font-face rules, and no Google Fonts import', () => {
+  const built = buildThemes({ themes: {
+    default: { font: { family: 'Inter', src: [{ url: '/fonts/Inter.woff2?v=2', weight: '100 900' }, { url: '/fonts/Inter-Italic.otf', style: 'italic' }] }, headingFont: 'Fraunces' },
+    // The same family without files, in another theme: it still loads from the files.
+    plain: { parent: 'default', font: 'Inter' },
+  } });
+  const css = toCss(built);
+  assert.equal(fontImport(built), 'https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;700&display=swap');
+  assert.ok(css.startsWith(`@import url("${fontImport(built)}");`), '@import comes first');
+  assert.equal(fontFaces(built), [
+    '@font-face {\n  font-family: "Inter";\n  src: url("/fonts/Inter.woff2?v=2") format("woff2");\n  font-weight: 100 900;\n  font-display: swap;\n}',
+    '@font-face {\n  font-family: "Inter";\n  src: url("/fonts/Inter-Italic.otf") format("opentype");\n  font-style: italic;\n  font-display: swap;\n}\n',
+  ].join('\n'));
+  assert.equal(css.split('@font-face').length - 1, 2, 'each file once, though two themes use it');
+  assert.equal(fontFaces(buildThemes({ themes: { default: { font: 'Inter' } } })), '');
+  assert.equal(fontImport(buildThemes({ themes: { default: { font: { family: 'Inter', src: [{ url: '/a.ttf' }] } } } })), null);
 });

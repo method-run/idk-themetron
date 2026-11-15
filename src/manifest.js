@@ -3,7 +3,7 @@
 // `npm run spec` writes them to spec/. A test fails when the files and the code differ.
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
-import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME } from './inputs.js';
+import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES } from './inputs.js';
 
 // The version of the token contract. It is not the package version.
 // Major: a stable token is removed or renamed, or its type or meaning changes.
@@ -202,11 +202,30 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
             type: 'object',
             additionalProperties: false,
             properties: {
-              family: { type: ['string', 'null'], description: 'A Google font family, or null for the browser\'s font.' },
+              family: { type: ['string', 'null'], description: 'A Google font family, or null for the browser\'s font. With src, the name that the CSS gives to the files.' },
               fallback: { type: 'string', description: 'A CSS generic family, such as sans-serif.' },
+              src: {
+                type: 'array',
+                minItems: 1,
+                description: 'Your own font files, in place of Google Fonts. Each file is one @font-face rule. Needs a family.',
+                items: { $ref: '#/$defs/fontFile' },
+              },
             },
           },
         ],
+      },
+      fontFile: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['url'],
+        properties: {
+          url: { type: 'string', pattern: FONT_URL.source, description: 'The URL of a .woff2, .woff, .ttf, or .otf file. The extension sets the format.' },
+          weight: {
+            description: 'The weight of the file, such as 400, or a range for a variable font, such as "100 900".',
+            anyOf: [{ type: 'integer', minimum: 1, maximum: 1000 }, { type: 'string', pattern: FONT_WEIGHT.source }],
+          },
+          style: { ...enumOf(FONT_STYLES), description: 'The style of the file. Not set: normal.' },
+        },
       },
       theme: {
         type: 'object',

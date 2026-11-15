@@ -11,7 +11,7 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 23% (3/13) · 1 deferred
+◐ 30% (4/13) · 1 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
@@ -77,7 +77,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 | `base` | `#808080` | The base color: backgrounds, text, borders, and quiet controls. `{ "color": "#808080" }` is the same. |
 | `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. |
 | `color` | None | Sets `base` and `action` to one color. `base` and `action` override it. |
-| `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback" }`. A string sets only `family`. |
+| `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback", "src" }`. A string sets only `family`. See [Fonts](#fonts). |
 | `headingFont` | `font` | The font for headings. |
 | `monoFont` | The browser's default `monospace` font | The font for code. |
 | `typeVariance` | `0.5` (`classic`) | How fast text grows above body size, from 0 to 1, or a word: `flat`, `gentle`, `classic`, `bold`, `dramatic`. Small and body text barely move. Not a feel: presets do not set it. See [Type sizes](#type-sizes). |
@@ -116,14 +116,51 @@ To add a color, add a child theme. Themetron adds no colors of its own, such as 
 
 ### Fonts
 
-A font is a `family` and a `fallback`.
+A font is a `family`, a `fallback`, and optional `src` files.
 
-- `family` is a Google Fonts family name, for now. The CSS export loads it from Google Fonts. Your own font files are a later task.
+- `family` is a font family name. Without `src`, it is a Google Fonts family, and the CSS export loads it from Google Fonts.
 - `fallback` is a CSS font list that ends in a generic family, such as `Georgia, serif` or `system-ui, sans-serif`. The browser uses it while the font loads, and if the font does not load.
+- `src` is a list of your own font files. Use it for a font that is not on Google Fonts, or to serve fonts from your own site. It needs a `family`.
 
 ```json
 { "font": { "family": "Figtree", "fallback": "system-ui, sans-serif" } }
 ```
+
+#### Your own font files
+
+Each file in `src` has these fields:
+
+| Field | Value |
+|---|---|
+| `url` | The URL of the file. It must end in `.woff2`, `.woff`, `.ttf`, or `.otf`. A query or hash after the extension is OK. The URL cannot have spaces or quotes. |
+| `weight` | Optional. The weight of the file, from 1 to 1000, such as `400`. For a variable font, a range, such as `"100 900"`. |
+| `style` | Optional. `normal` or `italic`. If you do not set it, the browser uses `normal`. |
+
+```json
+{
+  "font": {
+    "family": "Inter",
+    "fallback": "system-ui, sans-serif",
+    "src": [
+      { "url": "/fonts/Inter.woff2", "weight": "100 900" },
+      { "url": "/fonts/Inter-Italic.woff2", "weight": "100 900", "style": "italic" }
+    ]
+  }
+}
+```
+
+The CSS export writes one `@font-face` rule for each file, with `font-display: swap`. The extension sets the `format()`. A family with files does not load from Google Fonts. This is true in all themes, also in a theme that names the family without files.
+
+<details>
+<summary>Limits of <code>src</code></summary>
+
+- The engine does not fetch the files. It does not check that they exist, or that the weights are correct.
+- A relative URL is relative to the stylesheet, not to the page.
+- Each file has one URL. There is no list of formats for one file, and no `unicode-range`.
+- The style is `normal` or `italic` only. An `oblique` angle is not supported.
+- The playground keeps `src` from an imported theme. It cannot add or change files. If you pick a font in the playground, the files go away for that field.
+
+</details>
 
 ## Feels
 
@@ -252,7 +289,7 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [x] Change the engine and the playground to the theme tree
 - [x] Write a JSON Schema for the inputs, so that editors can check and complete them
 - [x] Start with the browser's own fonts, and add a Google font only when you choose one
-- [ ] Let a theme load its own font files, not only Google Fonts
+- [x] Let a theme load its own font files, not only Google Fonts
 - [ ] Let a part override a feel, such as rounder buttons than cards. themetron-3 had this idea.
 - [ ] Add the "embossed" feel from themetron-3: text shadow on raised parts
 - [ ] Add a "vibrance" feel that sets the chroma of tints

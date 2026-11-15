@@ -1,6 +1,6 @@
 // Write a set of themes in formats that other tools read.
 import { GRADES } from './palette.js';
-import { ROOT, ROLES } from './inputs.js';
+import { ROOT, ROLES, FONT_FIELDS } from './inputs.js';
 
 const px = (n) => `${n}px`;
 const ms = (n) => `${n}ms`;
@@ -241,8 +241,11 @@ export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = tru
   // root itself: <html data-tm-contrast="more">, or an element with a theme class.
   const block = (head, list, scoped) => `${head} {\n${list.map(([sel, body]) => `  ${scoped ? `:scope:is(${sel}), ${sel}` : sel} {\n${body}\n  }`).join('\n')}\n}\n`;
   const fonts = fontImport(built);
+  const faces = fontFaces(built);
   return [
+    // @import must come first in a stylesheet.
     fonts ? `@import url("${fonts}");\n` : '',
+    ...(faces ? [faces] : []),
     // On a theme class, color-scheme would undo a forced mode around it, so it goes on :root only.
     root ? ':root { color-scheme: light dark; }' : '',
     '[data-tm-mode="light"] { color-scheme: light; }',
@@ -308,15 +311,51 @@ function invertRulesAfter(prefix) {
   return `.${prefix}-invert { ${set('flipped', 'inverted')} }\n.${prefix}-invert * { ${set('normal', 'normal')} }\n`;
 }
 
-// A Google Fonts URL for the named font families of all themes, or null.
-export function fontImport(built) {
-  const families = new Set();
+// The fonts that the themes name: each family once, with its files. A family with files
+// in any theme loads from them, so it does not also load from Google Fonts.
+function namedFonts(built) {
+  const families = new Map();
   for (const theme of Object.values(built.themes)) {
-    for (const field of ['font', 'headingFont', 'monoFont']) if (theme.settings[field].family) families.add(theme.settings[field].family);
+    for (const field of FONT_FIELDS) {
+      const { family, src } = theme.settings[field];
+      if (!family) continue;
+      if (!families.has(family)) families.set(family, []);
+      if (src) families.get(family).push(...src);
+    }
   }
-  if (!families.size) return null;
-  const q = [...families].map((f) => `family=${encodeURIComponent(f).replace(/%20/g, '+')}:wght@400;500;700`).join('&');
+  return families;
+}
+
+// A Google Fonts URL for the named font families of all themes, or null.
+// Families with their own files are not in it.
+export function fontImport(built) {
+  const families = [...namedFonts(built)].filter(([, src]) => !src.length).map(([family]) => family);
+  if (!families.length) return null;
+  const q = families.map((f) => `family=${encodeURIComponent(f).replace(/%20/g, '+')}:wght@400;500;700`).join('&');
   return `https://fonts.googleapis.com/css2?${q}&display=swap`;
+}
+
+const FONT_FORMATS = { woff2: 'woff2', woff: 'woff', ttf: 'truetype', otf: 'opentype' };
+const cssString = (text) => `"${text.replace(/["\\]/g, '\\$&')}"`;
+
+// The @font-face rules for the themes' own font files, or ''. One rule for each file.
+export function fontFaces(built) {
+  const rules = new Set();
+  for (const [family, src] of namedFonts(built)) {
+    for (const file of src) {
+      const ext = file.url.replace(/[?#].*$/, '').split('.').pop();
+      rules.add([
+        '@font-face {',
+        `  font-family: ${cssString(family)};`,
+        `  src: url(${cssString(file.url)}) format("${FONT_FORMATS[ext]}");`,
+        ...(file.weight ? [`  font-weight: ${file.weight};`] : []),
+        ...(file.style ? [`  font-style: ${file.style};`] : []),
+        '  font-display: swap;',
+        '}',
+      ].join('\n'));
+    }
+  }
+  return rules.size ? `${[...rules].join('\n')}\n` : '';
 }
 
 // Design Tokens Community Group format. One group for each theme, with every token
