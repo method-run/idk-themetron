@@ -41,7 +41,7 @@ To see the page, serve the project folder, such as with `npx vite --open example
 | 4. Bootstrap 5 | [`_bootstrap.scss`](./basic/_bootstrap.scss) | [Tokens](../spec/tokens.md "tokens") | An adapter, for Bootstrap's Sass variables. It has fixed values, not the CSS tokens. |
 | 4. MUI | [`mui.json`](./basic/mui.json) | [Tokens](../spec/tokens.md "tokens") | An adapter, for `createTheme()`. |
 | 4. daisyUI | [`daisyui.css`](./basic/daisyui.css) | [Tokens](../spec/tokens.md "tokens") | An adapter. It reads the CSS tokens. |
-| 4. Bootstrap 5.3 CSS | [`bootstrap.css`](./basic/bootstrap.css) | [Tokens](../spec/tokens.md "tokens") | An adapter, for Bootstrap 5.3's CSS variables. |
+| 4. Bootstrap 5.3 CSS | [`bootstrap.css`](./basic/bootstrap.css) | [Tokens](../spec/tokens.md "tokens") | An adapter, for Bootstrap 5.3's CSS variables and buttons. |
 | 5. Audit | [`audit.md`](./basic/audit.md) | [Grades and contrast](../spec/grades.md "grades") | A report. The pairs that it counts are in the manifest. |
 | 6. Consumer | [`page.html`](./basic/page.html), [`page.css`](./basic/page.css), [`check.txt`](./basic/check.txt) | [Using themetron](../spec/consumers.md "consumers") | A site that follows the contract. `check.txt` shows that `page.css` reads only contract tokens. It reads the experimental action tokens with fallbacks. |
 

@@ -1065,9 +1065,9 @@ const FORMAT_NOTES = {
   tailwind: 'A Tailwind CSS v4 theme. Add the CSS tokens too: these names point at them.',
   shadcn: 'For shadcn/ui: paste into globals.css in place of its :root and .dark blocks. Child themes become classes, such as .theme-danger.',
   bootstrap: 'Bootstrap 5 Sass variables: import this file before Bootstrap. Sass is fixed when it compiles, so these are the root theme\'s light values, and the *-dark variables hold its dark values.',
-  mui: 'A Material UI theme for the root theme, in both modes: pass it to createTheme() (MUI v6 or later).',
+  mui: 'A Material UI theme for the root theme, in both modes: pass it to createTheme() (MUI v6 or later). The shadows are the light-mode ones.',
   daisyui: 'Two daisyUI 5 themes, light and dark, for your Tailwind CSS. Add the CSS tokens too: these colors point at them.',
-  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes.',
+  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too.',
   inputs: 'Your themes as inputs. Open this file again here, or build the tokens from it with the engine.',
 };
 
