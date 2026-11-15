@@ -9,7 +9,7 @@
 // warning and go on, so a script can pass flags that only a newer version knows.
 import { readFile, writeFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, InputError } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, InputError } from '../src/index.js';
 import { checkCss, CONTRACT_VERSION } from '../src/manifest.js';
 
 const USAGE = `Usage:
@@ -27,6 +27,7 @@ build formats:
   dtcg        Design Tokens Community Group JSON.
   tailwind    A Tailwind CSS v4 theme. Add the CSS tokens too.
   shadcn      Variables for shadcn/ui's globals.css.
+  bootstrap   Bootstrap 5 Sass variables. Import the file before Bootstrap.
 
 build flags for CSS:
   --prefix p          Token names start with --p-. The default is tm. For css and tailwind.
@@ -43,6 +44,7 @@ const FORMATS = {
   dtcg: { flags: [], make: (built) => `${JSON.stringify(toDtcg(built), null, 2)}\n` },
   tailwind: { flags: ['prefix'], make: (built, o) => toTailwind(built, o) },
   shadcn: { flags: ['class-prefix'], make: (built, o) => toShadcn(built, o) },
+  bootstrap: { flags: [], make: (built) => toBootstrapSass(built) },
 };
 const CSS_FLAGS = {
   prefix: { type: 'string' },
