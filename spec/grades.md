@@ -12,7 +12,7 @@ tags: [system/tokens/grades]
 # Grades and contrast
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 42% (3/7) · 2 deferred
+◐ 57% (4/7) · 2 deferred
 <!-- idk-plans:progress:end -->
 
 Each key color becomes a palette of 21 grades, 5 apart: 0, 5, 10, 15, and so on to 100. Grade 0 is pure white and grade 100 is pure black. The grades between them keep the hue of the key color.
@@ -101,5 +101,5 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 - [>] Add HCT (Material 3) as a color model. It needs CAM16, or Google's library.
 - [>] Allow wider-gamut ramps in Display P3
 - [ ] Use APCA's font-size and weight table, so that large text can use a smaller gap
-- [ ] Check text on see-through panels against the lightest and darkest backdrops
+- [x] Check text on see-through panels against the lightest and darkest backdrops
 - [ ] Give the tints less chroma for very bright key colors, such as green

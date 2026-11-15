@@ -1217,7 +1217,7 @@ function renderAudit() {
   view.replaceChildren(
     el('p', { class: 'audit-sum' }, `The ${labelOf(state.selected)} theme. `, fails.length
       ? `${fails.length} of ${all.filter((a) => a.required).length} required pairs fail ${std}. No grade in the palette can pass, so themetron used the grade with the most contrast.`
-      : `All ${all.filter((a) => a.required).length} required pairs pass ${std}. "Warn" marks the exact button where its colors miss the setting: it uses the key color exactly, so it cannot always pass.`),
+      : `All ${all.filter((a) => a.required).length} required pairs pass ${std}. "Warn" marks a pair that is not required and misses the setting: the exact button, which uses the key color exactly, and labels on see-through parts, as seen over the page and over a white or black backdrop.`),
     ...MODES().map((mode) => {
       const { audit, tokens } = theme.modes[mode];
       return el('div', { class: 'tablewrap' }, el('table', {},
@@ -1232,7 +1232,8 @@ function renderAudit() {
           el('td', { class: 'num' }, `${a.wcag.toFixed(2)}:1`),
           el('td', { class: 'num' }, `Lc ${a.apca.toFixed(1)}`),
           el('td', {}, (() => {
-            // Every pair is guaranteed, except the exact button's, which warns where it misses.
+            // Every required pair is guaranteed. The others (the exact button, see-through parts)
+            // warn where they miss.
             const status = a.pass ? 'pass' : a.warn ? 'warn' : 'fail';
             return el('span', { class: `pill ${status}` }, status);
           })()),
