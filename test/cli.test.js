@@ -22,7 +22,7 @@ async function run(...args) {
 
 test('build writes each format the same as the committed example files', async () => {
   const inputs = join(example, 'inputs.json');
-  for (const [format, file] of [['css', 'tokens.css'], ['dtcg', 'tokens.dtcg.json'], ['tailwind', 'tailwind.css'], ['shadcn', 'shadcn.css']]) {
+  for (const [format, file] of [['css', 'tokens.css'], ['dtcg', 'tokens.dtcg.json'], ['tailwind', 'tailwind.css'], ['shadcn', 'shadcn.css'], ['bootstrap', '_bootstrap.scss']]) {
     const { code, stdout } = await run('build', inputs, '--format', format);
     assert.equal(code, 0, format);
     assert.equal(stdout, await readFile(join(example, file), 'utf8'), format);
@@ -75,7 +75,7 @@ test('build exits 1 for a missing file, bad JSON, or an unknown format', async (
     for (const [args, message] of [
       [[join(dir, 'missing.json')], /no such file/],
       [[bad], /bad\.json: .*JSON/],
-      [[join(example, 'inputs.json'), '--format', 'scss'], /--format: use one of css, stylesheet, dtcg, tailwind, shadcn/],
+      [[join(example, 'inputs.json'), '--format', 'scss'], /--format: use one of css, stylesheet, dtcg, tailwind, shadcn, bootstrap/],
       [[], /build needs one inputs file/],
       [[join(example, 'inputs.json'), '--nope'], /--nope: unknown flag/],
       [[join(example, 'inputs.json'), '--out'], /--out needs a value/],

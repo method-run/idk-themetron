@@ -11,7 +11,7 @@ tags: [system/tokens]
 # Tokens
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 46% (6/13) · 2 deferred
+◐ 53% (7/13) · 2 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine makes these tokens.
@@ -216,6 +216,7 @@ npx themetron --help
 | `dtcg` | Design Tokens Community Group JSON. |
 | `tailwind` | A Tailwind CSS v4 theme. It reads the CSS tokens, so add them too. |
 | `shadcn` | Variables for shadcn/ui's `globals.css`. |
+| `bootstrap` | Bootstrap 5 Sass variables. Import the file before Bootstrap. |
 
 If the inputs have problems, the command prints one line for each problem and exits with code 1. It writes no tokens. The [Inputs spec](./inputs.md "inputs") describes the inputs file.
 
