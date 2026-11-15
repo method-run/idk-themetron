@@ -1214,32 +1214,46 @@ function renderAudit() {
   const all = MODES().flatMap((m) => theme.modes[m].audit);
   const fails = all.filter((a) => a.required && !a.pass);
   const std = `${method === 'apca' ? 'APCA, with the WCAG 2 floor,' : 'WCAG 2'} (${level})`;
+  // Rows over a white or black backdrop depend on what the page puts behind a see-through part,
+  // so they get their own tables, after the rows that the theme controls.
+  const table = (mode, rows) => {
+    const { tokens } = theme.modes[mode];
+    return el('div', { class: 'tablewrap' }, el('table', {},
+      el('thead', {}, el('tr', {}, ...[`${mode} mode`, 'Text or part', 'On', 'Purpose', 'WCAG', 'APCA', 'Result'].map((h) => el('th', {}, h)))),
+      el('tbody', {}, ...rows.map((a) => el('tr', {},
+        // Each row carries the colors it measured: a see-through part's row has its color as seen,
+        // which no token holds.
+        el('td', {}, el('span', { class: 'aa', style: `color:${a.fgValue};background:${a.bgValue}` }, a.purpose === 'ui' ? '■ ▲' : 'Aa')),
+        el('td', {}, el('code', {}, a.fg), el('span', { class: 'fader-hint' }, ` ${tokens[a.fg]?.ref ?? a.fgValue}`)),
+        el('td', {}, el('code', {}, a.bg), el('span', { class: 'fader-hint' }, ` ${tokens[a.bg]?.ref ?? a.bgValue}`)),
+        el('td', {}, a.purpose),
+        el('td', { class: 'num' }, `${a.wcag.toFixed(2)}:1`),
+        el('td', { class: 'num' }, `Lc ${a.apca.toFixed(1)}`),
+        el('td', {}, (() => {
+          // Every required pair is guaranteed. The others (the exact button, see-through parts)
+          // warn where they miss.
+          const status = a.pass ? 'pass' : a.warn ? 'warn' : 'fail';
+          return el('span', { class: `pill ${status}` }, status);
+        })()),
+      ))),
+    ));
+  };
+  const onPage = (mode) => theme.modes[mode].audit.filter((a) => a.backdrop === undefined);
+  const overBackdrop = (mode) => theme.modes[mode].audit.filter((a) => a.backdrop !== undefined);
+  const backdropRows = MODES().flatMap(overBackdrop);
+  const backdropMisses = backdropRows.filter((a) => !a.pass).length;
   view.replaceChildren(
     el('p', { class: 'audit-sum' }, `The ${labelOf(state.selected)} theme. `, fails.length
       ? `${fails.length} of ${all.filter((a) => a.required).length} required pairs fail ${std}. No grade in the palette can pass, so themetron used the grade with the most contrast.`
-      : `All ${all.filter((a) => a.required).length} required pairs pass ${std}. "Warn" marks a pair that is not required and misses the setting: the exact button, which uses the key color exactly, and labels on see-through parts, as seen over the page and over a white or black backdrop.`),
-    ...MODES().map((mode) => {
-      const { audit, tokens } = theme.modes[mode];
-      return el('div', { class: 'tablewrap' }, el('table', {},
-        el('thead', {}, el('tr', {}, ...[`${mode} mode`, 'Text or part', 'On', 'Purpose', 'WCAG', 'APCA', 'Result'].map((h) => el('th', {}, h)))),
-        el('tbody', {}, ...audit.map((a) => el('tr', {},
-          // Each row carries the colors it measured: a see-through part's row has its color as seen,
-          // which no token holds.
-          el('td', {}, el('span', { class: 'aa', style: `color:${a.fgValue};background:${a.bgValue}` }, a.purpose === 'ui' ? '■ ▲' : 'Aa')),
-          el('td', {}, el('code', {}, a.fg), el('span', { class: 'fader-hint' }, ` ${tokens[a.fg]?.ref ?? a.fgValue}`)),
-          el('td', {}, el('code', {}, a.bg), el('span', { class: 'fader-hint' }, ` ${tokens[a.bg]?.ref ?? a.bgValue}`)),
-          el('td', {}, a.purpose),
-          el('td', { class: 'num' }, `${a.wcag.toFixed(2)}:1`),
-          el('td', { class: 'num' }, `Lc ${a.apca.toFixed(1)}`),
-          el('td', {}, (() => {
-            // Every required pair is guaranteed. The others (the exact button, see-through parts)
-            // warn where they miss.
-            const status = a.pass ? 'pass' : a.warn ? 'warn' : 'fail';
-            return el('span', { class: `pill ${status}` }, status);
-          })()),
-        ))),
-      ));
-    }),
+      : `All ${all.filter((a) => a.required).length} required pairs pass ${std}. "Warn" marks a pair that is not required and misses the setting: the exact button, which uses the key color exactly, and labels on see-through parts, as seen over the page.`),
+    ...MODES().map((mode) => table(mode, onPage(mode))),
+    ...(backdropRows.length ? [
+      el('h3', { class: 'audit-head' }, 'Over a photo or video'),
+      el('p', { class: 'audit-sum' }, `See-through parts show what is behind them. Your page chooses that, not the theme, so these rows show the worst cases: a white and a black backdrop. ${backdropMisses
+        ? `${backdropMisses} of ${backdropRows.length} miss the setting. Over a busy or extreme photo, give those parts a solid panel, or less clarity.`
+        : `All ${backdropRows.length} pass, so these parts are safe over any photo.`} These rows never fail the theme. To see it, turn on Photo backdrop in Preview.`),
+      ...MODES().filter((mode) => overBackdrop(mode).length).map((mode) => table(mode, overBackdrop(mode))),
+    ] : []),
   );
 }
 
