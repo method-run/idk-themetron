@@ -237,7 +237,9 @@ The contract has its own version, `contract` in the manifest. It is not the pack
 
 The package version goes up each time the contract version goes up, by at least as much. A breaking change to the contract is a breaking change to the package. The package can also go up alone, for example for a bug fix or a new export.
 
-Change the versions only when you release. Until then, list the changes under **Unreleased** in the changelog.
+Change the versions only when you publish: a release, or an alpha. Until then, list the changes under **Unreleased** in the changelog.
+
+An alpha is a test version of the next release, such as `0.2.0-alpha.1`. It goes to npm under the `next` tag, so `npm install` still gets the last release. An alpha makes no promise: the next alpha can break it. `spec/versions/` keeps a copy of each release only, never of an alpha.
 
 The breaking part of a version is the major version from 1.0. Before 1.0, it is the minor version: `0.1`.
 
@@ -246,13 +248,23 @@ A test compares the stable tokens with the newest release in `spec/versions/`. I
 1. Raise `CONTRACT_VERSION` in `src/manifest.js` past the breaking part of the newest release, for example from `0.1.0` to `0.2.0`. Do this once for each release, even when you remove more tokens.
 2. List the change under **Unreleased** in the changelog.
 
+To publish an alpha:
+
+1. If the contract changed since the last release or alpha, set `CONTRACT_VERSION` in `src/manifest.js` to the new alpha version, and run `npm run spec`.
+2. Run `npm version 0.2.0-alpha.0` for the first alpha of 0.2.0, and `npm version prerelease` for the next ones. It also runs `npm run spec:release`, which checks the versions and the stable tokens, but makes no copy.
+3. Push, and publish the package with `npm publish --tag next`.
+
 To release:
 
-1. If the contract changed, raise `CONTRACT_VERSION` in `src/manifest.js`, run `npm run spec`, and move the **Unreleased** notes under the new version.
-2. Run `npm version <patch|minor|major>`. It also runs `npm run spec:release`, which copies the contract files to `spec/versions/<contract version>/`, and adds them to the version commit.
+1. If the contract changed, set `CONTRACT_VERSION` in `src/manifest.js` to the release version, such as `0.2.0` after `0.2.0-alpha.3`. Run `npm run spec`, and move the **Unreleased** notes under the new version.
+2. Run `npm version <patch|minor|major>`, or `npm version 0.2.0` after alphas. It also runs `npm run spec:release`, which copies the contract files to `spec/versions/<contract version>/`, and adds them to the version commit.
 3. Push, and publish the package.
 
-`npm run spec:release` stops if the files of a released version would change. Then the contract changed since that release, and it needs a new version.
+`npm run spec:release` stops when:
+
+- The files of a released version would change. Then the contract changed since that release, and it needs a new version.
+- The package is an alpha, and the contract has a new version that is not an alpha. Give the contract the alpha version too.
+- The package is a release, and the contract is still an alpha.
 
 ## Changelog
 
