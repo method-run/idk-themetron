@@ -269,6 +269,33 @@ export function releaseFiles() {
   };
 }
 
+// The part of a contract version that changes when a stable token goes away. From 1.0 it is
+// the major version. Before 1.0 a minor version can change stable tokens, so it is the first
+// part that is not 0: '0.6.2' gives '0.6'.
+export function breakingPart(version) {
+  const parts = version.split('.');
+  const lead = parts.findIndex((part) => part !== '0');
+  return parts.slice(0, lead === -1 ? parts.length : lead + 1).join('.');
+}
+
+// The stable token names at this contract version. test/fixtures/stable-tokens.json keeps a
+// copy, so a test can see when a stable token goes away. `npm run spec` refreshes it.
+export function stableBaseline() {
+  const { contract, tokens } = tokenManifest();
+  return { contract, tokens: Object.keys(tokens).filter((name) => tokens[name].stability === 'stable').sort() };
+}
+
+// Compare a saved baseline with the code. Returns the stable tokens that went away, and
+// whether the breaking part of the contract version changed since the baseline.
+export function stableTokenChanges(baseline) {
+  const current = stableBaseline();
+  const kept = new Set(current.tokens);
+  return {
+    removed: baseline.tokens.filter((name) => !kept.has(name)),
+    bumped: breakingPart(baseline.contract) !== breakingPart(current.contract),
+  };
+}
+
 // Check a stylesheet that reads themetron tokens. Returns the tokens that it reads but the
 // contract does not have, and the experimental ones that it reads.
 export function checkCss(css, { prefix = 'tm' } = {}) {
