@@ -40,7 +40,7 @@ function buildLevel(settings, palettes, variant = false) {
 // Fixed values for the parts that the removed feels (bounciness, snappiness) used to set. The
 // tokens stay, so components still work: no blur outside tm-over-media, and calm motion with no
 // overshoot.
-// The grid square, in px, and the body text size, until typography settings set it.
+// The grid square, in px.
 const GRID = 4;
 const MOTION = {
   duration: { fast: 130, base: 220, slow: 370 },

@@ -311,7 +311,7 @@ function contrastField(value, at, fail) {
   return out;
 }
 
-// The word for a feel value: the nearest stop.
+// The type variance: a number from 0 to 1, or one of its words.
 function varianceField(raw, at, fail) {
   const n = typeof raw === 'string' ? TYPE_VARIANCE.stops[raw] : raw;
   if (typeof n === 'number' && n >= 0 && n <= 1) return n;

@@ -43,7 +43,7 @@ The engine keeps the key color's hue and chroma, in the theme's color model, and
 
 ## 3. Make the primitives
 
-The feels and the type variance become sizes, radii, shadows, opacities, and shine. For example, spaciousness sets how many grid squares the space unit takes, and roundness sets each radius as a share of the most that part can round. Borders and motion are fixed for now. See the table of formulas in [Inputs](../spec/inputs.md "inputs"). To follow one feel through every layer, see [How shininess becomes styles](./shininess-flow.md "shininess-flow").
+The feels and the type variance become sizes, radii, shadows, opacities, and shine. For example, spaciousness sets how many grid squares the space unit takes, and roundness sets each radius as a share of the most that part can round. Thinness sets the edge width. Motion is fixed for now. See the table of formulas in [Inputs](../spec/inputs.md "inputs"). To follow one feel through every layer, see [How shininess becomes styles](./shininess-flow.md "shininess-flow").
 
 ## 4. Pick the tokens for each mode
 

@@ -726,7 +726,7 @@
         "edgeAlpha": {
           "$type": "number",
           "$value": 1,
-          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+          "$description": "The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness."
         },
         "fillAlphaClearest": {
           "$type": "number",
@@ -3182,7 +3182,7 @@
         "edgeAlpha": {
           "$type": "number",
           "$value": 1,
-          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+          "$description": "The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness."
         },
         "fillAlphaClearest": {
           "$type": "number",
@@ -5638,7 +5638,7 @@
         "edgeAlpha": {
           "$type": "number",
           "$value": 1,
-          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+          "$description": "The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness."
         },
         "fillAlphaClearest": {
           "$type": "number",
@@ -8094,7 +8094,7 @@
         "edgeAlpha": {
           "$type": "number",
           "$value": 1,
-          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+          "$description": "The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness."
         },
         "fillAlphaClearest": {
           "$type": "number",
@@ -10550,7 +10550,7 @@
         "edgeAlpha": {
           "$type": "number",
           "$value": 1,
-          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+          "$description": "The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness."
         },
         "fillAlphaClearest": {
           "$type": "number",
@@ -13006,7 +13006,7 @@
         "edgeAlpha": {
           "$type": "number",
           "$value": 1,
-          "$description": "The opacity of button and card edges: 1, fading to 0 over the top tenth of softness."
+          "$description": "The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness."
         },
         "fillAlphaClearest": {
           "$type": "number",

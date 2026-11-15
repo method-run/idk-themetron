@@ -19,7 +19,7 @@ A tree with nesting: one root theme with a gray base and a blue action color, th
 ```mermaid
 flowchart TD
   default[default: full, the root] --> success[success: color]
-  default --> warning[warning: color, dark labels]
+  default --> warning[warning: color]
   default --> danger[danger: color]
   default --> promo[promo: full, Fraunces headings, pill shape]
   promo --> sale[sale: color]
@@ -33,7 +33,7 @@ To see the page, serve the project folder, such as with `npx vite --open example
 |---|---|---|---|
 | 1. Inputs | [`inputs.json`](./basic/inputs.json) | [Inputs](../spec/inputs.md "inputs"), [`inputs.schema.json`](../spec/inputs.schema.json) | Draft. Can change in any version before 1.0. |
 | 2. Resolved settings | [`resolved.json`](./basic/resolved.json) | None | Internal. It shows what each theme takes from its parents. Do not depend on it. |
-| 3. Token contract | [`tokens.manifest.json`](../spec/tokens.manifest.json) | [Using themetron](../spec/consumers.md "consumers") | Contract 0.2.0. The same file for every theme tree. |
+| 3. Token contract | [`tokens.manifest.json`](../spec/tokens.manifest.json) | [Using themetron](../spec/consumers.md "consumers") | Contract 0.6.0. The same file for every theme tree. |
 | 4. CSS tokens | [`tokens.css`](./basic/tokens.css) | [Tokens](../spec/tokens.md "tokens") | Follows the contract. Stable tokens keep their names. |
 | 4. DTCG | [`tokens.dtcg.json`](./basic/tokens.dtcg.json) | [Tokens](../spec/tokens.md "tokens"), and the DTCG format | Follows the contract. |
 | 4. Tailwind | [`tailwind.css`](./basic/tailwind.css) | [Tokens](../spec/tokens.md "tokens") | An adapter. It reads the CSS tokens. |

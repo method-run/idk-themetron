@@ -1,6 +1,6 @@
 {
   "name": "idk-themetron",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Make an accessible design-token theme from a few human-friendly inputs.",
   "type": "module",

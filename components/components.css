@@ -429,7 +429,7 @@
   gap: var(--tm-space-md);
   /* The edge is inside the padding, so the card's outer edges stay on the rhythm grid. */
   padding: calc(var(--tm-space-lg) - var(--tm-panel-border-width));
-  /* The edge fades out over the top of softness (--tm-edge-alpha). */
+  /* The edge fades to half over the top of softness (--tm-edge-alpha). */
   border: var(--tm-panel-border-width) solid color-mix(in oklab, var(--tm-panel-border) calc(var(--tm-edge-alpha, 1) * 100%), transparent);
   border-radius: var(--tm-radius-lg);
   background: var(--tm-bg-panel);

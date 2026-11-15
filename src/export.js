@@ -29,7 +29,7 @@ export function primitiveEntries(p) {
   // The roundness, from 0 to 1, for parts that round as a share of their own size:
   // calc(var(--tm-roundness) * height / 2) is a pill at full roundness.
   out.push(['roundness', String(p.roundness)]);
-  // The opacity of button and card edges: 1, fading to 0 over the top tenth of softness.
+  // The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness.
   out.push(['edge-alpha', String(p.effect.edgeAlpha)]);
   // The shininess, from 0 to 1: the shared shine (see shineRules) scales its opacity by it.
   out.push(['shininess', String(p.shininess)]);
@@ -96,9 +96,10 @@ export function semanticEntries(theme, prefix = 'tm') {
   // other parts) and small base parts (a switch's knob). Buttons shade through their backdrop
   // instead, so quiet and exact buttons have none.
   const shined = ['action', 'base-muted'];
-  // The top edge of a filled part catches the light: a 1 px line of a lighter grade of the
-  // part's own color, with the shininess as its opacity. One for fills, and one for tints.
-  // The components draw it with box-shadow: inset 0 1px 0 <color>.
+  // The top edge of a filled part catches the light: a band of a lighter grade of the part's
+  // own color, with the shininess as its opacity. One for fills, and one for tints. The
+  // components draw it with box-shadow, about a twenty-first of the part's height and at least
+  // 1 px, and half as wide along the left edge.
   const shine = theme.settings.feel.shininess;
   // In dark mode the band is half as strong: a light line on a light fill stands out more.
   const mixed = (ref, share) => `color-mix(in oklch, var(--${prefix}-${ref}) ${round1(share * 100)}%, transparent)`;
@@ -360,7 +361,7 @@ export function toDtcg(built) {
       tintAlpha: tok('number', p.effect.tintAlpha, { $description: 'The tint opacity of soft and quiet buttons.' }),
       tintAlphaInverted: tok('number', p.effect.tintAlphaInverted, { $description: 'The tint opacity of a part with tm-invert.' }),
       fieldAlpha: tok('number', p.effect.fieldAlpha, { $description: 'The opacity of fields.' }),
-      edgeAlpha: tok('number', p.effect.edgeAlpha, { $description: 'The opacity of button and card edges: 1, fading to 0 over the top tenth of softness.' }),
+      edgeAlpha: tok('number', p.effect.edgeAlpha, { $description: 'The opacity of button and card edges: 1, fading to 0.5 over the top tenth of softness.' }),
       fillAlphaClearest: tok('number', p.effect.clearest.fill, { $description: 'The opacity of a solid fill at clarity 1.' }),
       tintAlphaInvertedClearest: tok('number', p.effect.clearest.tintInverted, { $description: 'The opacity of an inverted tint at clarity 1.' }),
       panelBorderWidth: tok('dimension', { value: p.panelBorderWidth, unit: 'px' }),
