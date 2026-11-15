@@ -11,7 +11,7 @@ tags: [system/tokens]
 # Tokens
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 38% (5/13) · 2 deferred
+◐ 46% (6/13) · 2 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine makes these tokens.
@@ -35,6 +35,7 @@ Components should use semantic tokens for color, and primitives for everything e
 | DTCG JSON | `toDtcg(built)` | Design tools and token pipelines, such as Style Dictionary. Follows the Design Tokens Community Group format. Each theme is a group. |
 | shadcn/ui | `toShadcn(built)` | Its theme variables, for `globals.css`: `--primary`, `--background`, `--radius`, and the rest, in `:root` and `.dark`. Each child theme is a class. |
 | Tailwind v4 | `toTailwind(built)` | A `@theme inline` block whose values point at the CSS variables, so theme classes and modes work in utilities too. Use it with the CSS. Grade 5 is Tailwind's 50, grade 10 is 100, and so on. |
+| Bootstrap 5 Sass | `toBootstrapSass(built)` | Sass variables, such as `$primary`, `$body-bg`, `$border-radius`, and `$box-shadow`. Import the file before Bootstrap. Sass variables are fixed when Sass compiles, so they hold the root theme's light-mode values. The Bootstrap 5.3 `*-dark` variables, such as `$body-bg-dark`, hold its dark-mode values. `$success`, `$info`, `$warning`, and `$danger` come from themes with those names. Other child themes are not in it. |
 
 A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and `themes.danger.mode.light.on-fill.action` in DTCG JSON.
 
@@ -208,7 +209,7 @@ Every theme ships a second set of semantic tokens at the enhanced level, for rea
 
 - **The reader's setting.** `prefers-contrast: more` turns the variant on. Operating systems set it, for example "Increase contrast" on macOS and iOS.
 - **A switch on the page.** `data-tm-contrast="more"` turns it on for an element and everything in it, and `"base"` turns it off, whatever the reader's setting. Put it on `<html>`, or on an element with a theme class. On another element it changes only the theme classes inside it. Scoped rules beat unscoped ones, and the nearest scope wins, so the attribute beats the media query, and the nearest attribute wins.
-- **Leaving it out.** `toCss(built, { more: false })` makes CSS without the variant. DTCG has it as a `moreContrast` group in each theme. The Tailwind export reads the CSS variables, so it follows the variant. The shadcn/ui export does not have it yet.
+- **Leaving it out.** `toCss(built, { more: false })` makes CSS without the variant. DTCG has it as a `moreContrast` group in each theme. The Tailwind export reads the CSS variables, so it follows the variant. The shadcn/ui and Bootstrap exports do not have it yet.
 - **APCA in light mode.** Body text passes only on the lightest grades, even in black: up to grade 15 at the standard level, and only grade 5 at the enhanced level. A tint's hover and press stop at the last grade where some label passes, so at the enhanced level a soft button's tint does not change on hover.
 
 ## Compatible libraries
@@ -224,7 +225,7 @@ Then any themetron theme set works with it, and so do the inputs and the playgro
 ## Tasks
 
 - [x] Version the token names, and list changes in a changelog. See [consumers](./consumers.md "consumers").
-- [ ] Export for Bootstrap 5 Sass variables, like the first themetron
+- [x] Export for Bootstrap 5 Sass variables, like the first themetron
 - [x] Export for shadcn/ui theme variables
 - [ ] Export for MUI, DaisyUI, and Bootstrap 5 theme variables
 - [ ] Add a command-line tool: `themetron build inputs.json --format css`

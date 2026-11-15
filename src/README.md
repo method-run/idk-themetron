@@ -14,7 +14,7 @@ tags: [system/engine]
 ○ 0% (0/2)
 <!-- idk-plans:progress:end -->
 
-The engine turns inputs into a theme. It has no dependencies, so the same files run in Node and in a browser. It does not use the network, except that the CSS export names Google Fonts for named font families.
+The engine turns inputs into a theme. It has no dependencies, so the same files run in Node and in a browser. It does not use the network, except that the CSS and Bootstrap exports name Google Fonts for named font families.
 
 ```mermaid
 flowchart LR
@@ -36,7 +36,7 @@ flowchart LR
 | `palette.js` | Grades, palettes, contrast thresholds, and grade gaps |
 | `inputs.js` | The feels, the type variance, their words, presets, the input checks, and the theme tree: each theme's settings from its parents |
 | `tokens.js` | `buildThemes`: for each theme, primitives, semantic tokens for each mode, and the audit |
-| `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, and the Google Fonts URL |
+| `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, `toBootstrapSass`, and the Google Fonts URL |
 | `manifest.js` | The token contract: the manifest, the inputs schema, and `checkCss` |
 | `index.js` | The public functions |
 

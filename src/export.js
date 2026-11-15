@@ -488,3 +488,105 @@ export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
   }
   return out.join('\n');
 }
+
+// Bootstrap 5 Sass variables, to put before Bootstrap's own Sass. Sass variables are fixed when
+// Sass compiles, so most are the root theme's light-mode values. Bootstrap 5.3 has *-dark twins
+// for the body, border, link, and subtle colors, for data-bs-theme="dark": they get the dark-mode
+// values. Theme colors such as $primary have no twins, so they keep the light values. $success,
+// $info, $warning, and $danger come from themes with those names, if there are any.
+export function toBootstrapSass(built) {
+  const root = built.themes[ROOT];
+  const p = root.primitives;
+  const size = (n) => `${round1(n)}px`;
+  const rem = (n) => `${Math.round((n / 16) * 10000) / 10000}rem`;
+  const color = (theme, mode, name) => theme.modes[mode].tokens[name].value;
+  // The colors that have a dark twin in Bootstrap 5.3, from one mode.
+  const modal = (mode) => {
+    const v = (name) => color(root, mode, name);
+    return [
+      ['body-bg', v('bg.canvas')],
+      ['body-color', v('fg.base')],
+      ['body-emphasis-color', v('fg.base')],
+      ['body-secondary-color', v('fg.base-muted')],
+      ['body-secondary-bg', v('tint.base')],
+      ['body-tertiary-color', v('fg.base-subtle')],
+      ['body-tertiary-bg', v('bg.sunken')],
+      ['border-color', v('border.base')],
+      ['link-color', v('fg.action')],
+    ];
+  };
+  // Each theme color, and its subtle colors for alerts, badges, and list groups.
+  const themeColors = [['primary', root], ...['success', 'info', 'warning', 'danger'].filter((n) => built.themes[n]).map((n) => [n, built.themes[n]])];
+  const subtle = (mode) => themeColors.flatMap(([name, theme]) => [
+    [`${name}-text-emphasis`, color(theme, mode, 'on-tint.action')],
+    [`${name}-bg-subtle`, color(theme, mode, 'tint.action')],
+    [`${name}-border-subtle`, color(theme, mode, 'tint.action-active')],
+  ]);
+  const light = [
+    ...themeColors.map(([name, theme]) => [name, color(theme, 'light', 'fill.action')]),
+    ['secondary', color(root, 'light', 'fg.base-muted')],
+    ['light', root.palettes.base.steps[5]],
+    ['dark', root.palettes.base.steps[90]],
+    ...modal('light'),
+    ...subtle('light'),
+  ];
+  const dark = [...modal('dark'), ...subtle('dark')].map(([k, v]) => [`${k}-dark`, v]);
+  const fonts = [
+    ['font-family-sans-serif', fontList(p.font.family.body)],
+    ['font-family-monospace', fontList(p.font.family.mono)],
+    ['headings-font-family', fontList(p.font.family.heading)],
+    ['font-size-base', rem(p.font.size.md)],
+    ['font-size-sm', rem(p.font.size.sm)],
+    ['font-size-lg', rem(p.font.size.lg)],
+    ...['3xl', '2xl', 'xl', 'lg', 'md', 'sm'].map((k, i) => [`h${i + 1}-font-size`, rem(p.font.size[k])]),
+    ['font-weight-normal', p.font.weight.regular],
+    ['font-weight-medium', p.font.weight.medium],
+    ['font-weight-bold', p.font.weight.bold],
+    ['line-height-base', p.font.lineHeight.body],
+    ['headings-line-height', p.font.lineHeight.heading],
+  ];
+  // Bootstrap's spacers are 0.25, 0.5, 1, 1.5, and 3 times $spacer: themetron's xs to lg, and 2xl.
+  const spacers = ['xs', 'sm', 'md', 'lg', '2xl'].map((k, i) => `${i + 1}: ${size(p.space[k])}`).join(', ');
+  const shapes = [
+    ['spacer', size(p.space.md)],
+    ['spacers', `(0: 0, ${spacers})`],
+    ['border-width', size(p.border.width)],
+    ['border-radius-sm', size(p.radius.sm)],
+    ['border-radius', size(p.radius.md)],
+    ['border-radius-lg', size(p.radius.lg)],
+    // Buttons and fields use the control radii, which are pills at full roundness.
+    ['btn-border-radius-sm', size(p.radius.controlSm)],
+    ['btn-border-radius', size(p.radius.control)],
+    ['btn-border-radius-lg', size(p.radius.controlLg)],
+    ['input-border-radius-sm', size(p.radius.controlSm)],
+    ['input-border-radius', size(p.radius.control)],
+    ['input-border-radius-lg', size(p.radius.controlLg)],
+    ['input-btn-padding-y', size(p.control.paddingY)],
+    ['input-btn-padding-x', size(p.control.paddingX)],
+    ['input-btn-line-height', p.font.lineHeight.control],
+    ['focus-ring-width', size(p.border.focus)],
+    ['focus-ring-color', color(root, 'light', 'border.focus')],
+    ['box-shadow-sm', root.modes.light.computed['elevation.1']],
+    ['box-shadow', root.modes.light.computed['elevation.2']],
+    ['box-shadow-lg', root.modes.light.computed['elevation.3']],
+    ['box-shadow-inset', root.modes.light.computed['elevation.inset']],
+  ];
+  const decl = (entries) => entries.map(([k, v]) => `$${k}: ${v};`).join('\n');
+  const font = fontImport(built);
+  return [
+    '// Bootstrap 5 Sass variables. Made by themetron. Put this file before Bootstrap:',
+    '// @import "themetron"; @import "bootstrap/scss/bootstrap";',
+    '// Sass variables are fixed when Sass compiles, so these are the root theme\'s light-mode values.',
+    '// The *-dark variables (Bootstrap 5.3) hold its dark-mode values, for data-bs-theme="dark".',
+    font ? `\n@import url("${font}");` : '',
+    '\n// Colors',
+    decl(light),
+    '\n// Colors in dark mode',
+    decl(dark),
+    '\n// Type',
+    decl(fonts),
+    '\n// Space, shape, and depth',
+    decl(shapes),
+    '',
+  ].join('\n');
+}

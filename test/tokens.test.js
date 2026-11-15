@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { PRESETS, buildThemes, toCss, toDtcg, toShadcn, toTailwind, tokenManifest } from '../src/index.js';
+import { PRESETS, buildThemes, toCss, toDtcg, toShadcn, toTailwind, toBootstrapSass, tokenManifest } from '../src/index.js';
 
 // A root color and a child color theme. Hard cases: yellow, near white, near black, neon.
 const TRICKY = [
@@ -177,6 +177,25 @@ test('the shadcn/ui export has its variables, for the root and each child theme'
   assert.match(css, /^:root \{/m);
   assert.match(css, /^\.dark \{/m);
   assert.match(css, /^\.theme-danger \{/m);
+});
+
+test('the Bootstrap export sets its Sass variables, with light values and dark twins', () => {
+  const built = buildThemes({ themes: { default: { color: '#2456e8' }, danger: { parent: 'default', color: '#d6336c' }, promo: { parent: 'default', action: '#7c3aed' } } });
+  const scss = toBootstrapSass(built);
+  const value = (name) => new RegExp(`^\\$${name}: (.+);$`, 'm').exec(scss)?.[1];
+  const { light, dark } = built.themes.default.modes;
+  assert.equal(value('primary'), light.tokens['fill.action'].value);
+  assert.equal(value('danger'), built.themes.danger.modes.light.tokens['fill.action'].value);
+  assert.equal(value('body-bg'), light.tokens['bg.canvas'].value);
+  assert.equal(value('body-bg-dark'), dark.tokens['bg.canvas'].value);
+  assert.equal(value('link-color-dark'), dark.tokens['fg.action'].value);
+  assert.equal(value('danger-bg-subtle-dark'), built.themes.danger.modes.dark.tokens['tint.action'].value);
+  assert.equal(value('box-shadow'), light.computed['elevation.2']);
+  for (const name of ['border-color', 'border-width', 'border-radius', 'border-radius-sm', 'border-radius-lg', 'box-shadow-sm', 'box-shadow-lg', 'font-family-sans-serif', 'font-size-base', 'spacer', 'spacers']) assert.ok(value(name), name);
+  // Bootstrap has no variable for a theme it does not name, and no dark twin for theme colors.
+  assert.equal(value('success'), undefined);
+  assert.equal(value('primary-dark'), undefined);
+  assert.doesNotMatch(scss, /promo/);
 });
 
 test('every token has a color, even for key colors at the very ends of the scale', () => {

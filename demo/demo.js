@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -540,7 +540,7 @@ function renderSegs() {
   seg($('#contrast-view'), [['base', 'Base'], ['more', 'More contrast']], ui.contrast, (v) => { ui.contrast = v; renderSegs(); renderControlsState(); renderView(); });
   const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
   $('#view-summary').textContent = `· ${ui.view === 'tokens' ? 'Both modes' : modeLabel}${ui.contrast === 'more' && ui.view !== 'tokens' ? ' · More contrast' : ''}`;
-  seg($('#format'), [['stylesheet', 'Stylesheet'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
+  seg($('#format'), [['stylesheet', 'Stylesheet'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['bootstrap', 'Bootstrap'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
 }
 
 const MODEL_NOTES = {
@@ -1064,6 +1064,7 @@ const FORMAT_NOTES = {
   dtcg: 'The tokens as Design Tokens Community Group JSON, for design tools and token pipelines such as Style Dictionary.',
   tailwind: 'A Tailwind CSS v4 theme. Add the CSS tokens too: these names point at them.',
   shadcn: 'For shadcn/ui: paste into globals.css in place of its :root and .dark blocks. Child themes become classes, such as .theme-danger.',
+  bootstrap: 'Bootstrap 5 Sass variables: import this file before Bootstrap. Sass is fixed when it compiles, so these are the root theme\'s light values, and the *-dark variables hold its dark values.',
   inputs: 'Your themes as inputs. Open this file again here, or build the tokens from it with the engine.',
 };
 
@@ -1073,6 +1074,7 @@ function tokenText() {
   if (ui.format === 'css') return toCss(built);
   if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built), null, 2);
   if (ui.format === 'tailwind') return toTailwind(built);
+  if (ui.format === 'bootstrap') return toBootstrapSass(built);
   return JSON.stringify({ version: INPUTS_VERSION, ...rawInputs() }, null, 2);
 }
 
@@ -1144,6 +1146,7 @@ const DOWNLOADS = {
   css: ['themetron.css', 'text/css'],
   dtcg: ['themetron.tokens.json', 'application/json'],
   tailwind: ['themetron.tailwind.css', 'text/css'],
+  bootstrap: ['_themetron.scss', 'text/x-scss'],
   inputs: ['themetron-inputs.json', 'application/json'],
 };
 $('#download').addEventListener('click', () => {
