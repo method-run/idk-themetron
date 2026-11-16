@@ -91,7 +91,7 @@ export function buildPrimitives(settings, palettes, gaps) {
   const space = Object.fromEntries(Object.entries({ xs: 0.32, sm: 0.5, md: 1, lg: 1.5, xl: 2, '2xl': 3, '3xl': 4 }).map(([k, x]) => [k, squares(unit * x) * GRID]));
 
   // Text sizes come from the type variance (a typography setting), not from spaciousness. Small and body text barely
-  // move: small text is 13, 12, then 11 px, and body text is 15 px, then 16 px in the top
+  // move: small text is 13, 12, then 11 px, and body text is 16 px, then 17 px in the top
   // quarter. Larger text grows by a ratio for each step, from 1.125 through 1.2 (the default)
   // to 1.5, so headings spread out as the variance grows.
   const fontSize = typeSizes(v);
@@ -274,7 +274,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   const outward = STOPS.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
   if (dark) outward.reverse();
   // Body text is checked at the body size and weight. With APCA the font table asks more than
-  // the body-text minimum at 15 or 16 px, so this is the same as 'text'.
+  // the body-text minimum at 16 or 17 px, so this is the same as 'text'.
   const body = { size: primitives.font.size.md, weight: primitives.font.weight.regular };
   const fgGrade = pick(base, [dark ? 5 : 90, dark ? 0 : 100, ...outward.slice().reverse()], passesAll(body), bgs);
   const mutedGrade = pick(base, outward, passesAll(body), bgs);
@@ -659,7 +659,7 @@ function withAlpha(hex, alpha) {
 // Text sizes for a type variance from 0 to 1. Every size above body text only grows with it.
 function typeSizes(v) {
   const sm = Math.round(13 - 2 * v);
-  const md = Math.round(15 + 2 * Math.max(0, v - 0.5));
+  const md = Math.round(16 + 2 * Math.max(0, v - 0.5));
   // The heading ratio: 1.125 at 0, 1.2 at 0.5, and 1.5 at 1, even in log steps between.
   const [from, to, t] = v <= 0.5 ? [1.125, 1.2, v / 0.5] : [1.2, 1.5, (v - 0.5) / 0.5];
   const ratio = from * (to / from) ** t;
