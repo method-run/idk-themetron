@@ -4,6 +4,7 @@
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
 import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES } from './inputs.js';
+import { ICON_DEFAULTS, ICON_STYLES, ICON_WEIGHT } from './icons.js';
 
 // The version of the token contract. It is not the package version.
 // Major: a stable token is removed or renamed, or its type or meaning changes.
@@ -55,6 +56,9 @@ const MEANING = {
   'border-base-strong': 'The edges of fields and controls. Passes the control contrast.',
   'border-base-field': 'The edges of text fields and selects. border-base-strong, receding at the top of softness to the lightest grade that passes the control contrast.',
   'border-focus': 'Focus rings. The same as border-action.',
+  'font-icon': 'The icon font: Material Symbols in the Sharp, Outlined (standard), or Rounded style, from icons.style. Set font-variation-settings from icon-fill and icon-weight.',
+  'icon-fill': 'Whether icons are filled: 1 (filled) or 0 (outlines), from icons.fill. The FILL axis of the icon font.',
+  'icon-weight': 'The line weight of icons, from 100 to 700, from icons.weight. The wght axis of the icon font.',
   'tint-base': 'Neutral soft fills, such as hover and selected backgrounds for menu items and list rows, and neutral tags. They show on the canvas and on surfaces.',
   'tint-base-hover': 'A quiet soft fill on hover: 10 grade numbers from the tint, toward the text.',
   'tint-base-active': 'A quiet soft fill while it is pressed: 20 grade numbers from the tint, toward the text.',
@@ -243,6 +247,16 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
           typeVariance: {
             description: `${TYPE_VARIANCE.label}: how fast text grows above body size, a number from 0 to 1 or a word for one. Small and body text barely move. From the parent if not set.`,
             anyOf: [{ type: 'number', minimum: 0, maximum: 1 }, enumOf(Object.keys(TYPE_VARIANCE.stops))],
+          },
+          icons: {
+            type: 'object',
+            additionalProperties: false,
+            description: 'How the icons look: Material Symbols. Each field comes from the parent if not set.',
+            properties: {
+              style: { ...enumOf(ICON_STYLES), description: `The icon style. Default: "${ICON_DEFAULTS.style}".` },
+              fill: { type: 'boolean', description: `true for filled icons, false for outlines. Default: ${ICON_DEFAULTS.fill}.` },
+              weight: { type: 'integer', minimum: ICON_WEIGHT.min, maximum: ICON_WEIGHT.max, description: `The line weight, like a font weight. Default: ${ICON_DEFAULTS.weight}.` },
+            },
           },
           preset: { ...enumOf(Object.keys(PRESETS)), description: 'A set of feels. The theme\'s own feels override it.' },
           feel: {

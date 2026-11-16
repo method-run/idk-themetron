@@ -1,6 +1,7 @@
 // The human-friendly inputs: a tree of themes. Check them, fill in defaults, and
 // work out each theme's full settings from its parents.
 import { isHex, parseHex, toHex } from './color.js';
+import { ICON_DEFAULTS, ICON_STYLES, ICON_WEIGHT } from './icons.js';
 
 // Each feel is a number from 0 to 1. A word from `stops` can stand for its number.
 // The label is the short name people see. The order is the order that the playground shows.
@@ -59,7 +60,7 @@ export const PRESETS = {
 export const ROOT = 'default';
 // A feel set to this takes the parent's value, even when the theme has a preset.
 export const INHERIT = 'inherit';
-export const THEME_FIELDS = ['parent', 'label', 'base', 'action', 'color', 'font', 'headingFont', 'monoFont', 'typeVariance', 'preset', 'feel', 'contrast'];
+export const THEME_FIELDS = ['parent', 'label', 'base', 'action', 'color', 'font', 'headingFont', 'monoFont', 'typeVariance', 'icons', 'preset', 'feel', 'contrast'];
 export const FONT_FIELDS = ['font', 'headingFont', 'monoFont'];
 // APCA keeps the WCAG 2 minimums as a floor, so it is always at least as strict.
 export const CONTRAST_METHODS = ['wcag', 'apca'];
@@ -89,6 +90,7 @@ export const ROOT_DEFAULTS = {
   font: { family: null, fallback: 'sans-serif' },
   monoFont: { family: null, fallback: 'monospace' },
   typeVariance: TYPE_VARIANCE.default,
+  icons: ICON_DEFAULTS,
   preset: 'balanced',
   contrast: { method: 'wcag', level: 'standard', model: 'oklch' },
 };
@@ -169,6 +171,7 @@ export function normalizeInputs(raw = {}) {
     if ('typeVariance' in t) own.typeVariance = varianceField(t.typeVariance, `${at}.typeVariance`, fail);
     // Type variance was a feel for a short while. A saved playground can still have it there.
     else if (t.feel?.variance !== undefined && t.feel.variance !== INHERIT) own.typeVariance = varianceField(t.feel.variance, `${at}.feel.variance`, fail);
+    if ('icons' in t) own.icons = iconsField(t.icons, `${at}.icons`, fail);
     if ('feel' in t) own.feel = feelField(t.feel, `${at}.feel`, fail);
     if ('contrast' in t) own.contrast = contrastField(t.contrast, `${at}.contrast`, fail);
     themes[name] = own;
@@ -225,6 +228,8 @@ function resolveTheme(name, own, parent) {
     headingFont: own.headingFont ?? own.font ?? from.headingFont,
     monoFont: own.monoFont ?? from.monoFont,
     typeVariance: own.typeVariance ?? from.typeVariance,
+    // Each icon setting on its own: a child can change the fill and keep its parent's style.
+    icons: { ...from.icons, ...own.icons },
     preset,
     feel,
     contrast: { ...from.contrast, ...own.contrast },
@@ -349,6 +354,26 @@ function contrastField(value, at, fail) {
     else fail(`${at}.model: use one of: ${CONTRAST_MODELS.join(', ')}.`);
   }
   for (const key of Object.keys(value)) if (!['method', 'level', 'model'].includes(key)) fail(`${at}.${key}: unknown field. Use "method" and "model".`);
+  return out;
+}
+
+// The icons: { style, fill, weight }. Each one is optional.
+function iconsField(value, at, fail) {
+  const out = {};
+  if (!value || typeof value !== 'object' || Array.isArray(value)) { fail(`${at}: use { "style", "fill", "weight" }.`); return out; }
+  if ('style' in value) {
+    if (ICON_STYLES.includes(value.style)) out.style = value.style;
+    else fail(`${at}.style: use one of: ${ICON_STYLES.join(', ')}.`);
+  }
+  if ('fill' in value) {
+    if (typeof value.fill === 'boolean') out.fill = value.fill;
+    else fail(`${at}.fill: use true (filled) or false (outlines).`);
+  }
+  if ('weight' in value) {
+    if (Number.isInteger(value.weight) && value.weight >= ICON_WEIGHT.min && value.weight <= ICON_WEIGHT.max) out.weight = value.weight;
+    else fail(`${at}.weight: use a whole number from ${ICON_WEIGHT.min} to ${ICON_WEIGHT.max}, such as 400.`);
+  }
+  for (const key of Object.keys(value)) if (!['style', 'fill', 'weight'].includes(key)) fail(`${at}.${key}: unknown field. Use "style", "fill", and "weight".`);
   return out;
 }
 

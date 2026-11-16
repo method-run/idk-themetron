@@ -29,6 +29,11 @@
         "fallback": "monospace"
       },
       "typeVariance": 0.5,
+      "icons": {
+        "style": "standard",
+        "fill": false,
+        "weight": 400
+      },
       "preset": "balanced",
       "feel": {
         "roundness": 0.35,
@@ -65,6 +70,11 @@
         "fallback": "monospace"
       },
       "typeVariance": 0.5,
+      "icons": {
+        "style": "standard",
+        "fill": false,
+        "weight": 400
+      },
       "preset": "balanced",
       "feel": {
         "roundness": 0.35,
@@ -101,6 +111,11 @@
         "fallback": "monospace"
       },
       "typeVariance": 0.5,
+      "icons": {
+        "style": "standard",
+        "fill": false,
+        "weight": 400
+      },
       "preset": "balanced",
       "feel": {
         "roundness": 0.35,
@@ -137,6 +152,11 @@
         "fallback": "monospace"
       },
       "typeVariance": 0.5,
+      "icons": {
+        "style": "standard",
+        "fill": false,
+        "weight": 400
+      },
       "preset": "balanced",
       "feel": {
         "roundness": 0.35,
@@ -173,6 +193,11 @@
         "fallback": "monospace"
       },
       "typeVariance": 0.5,
+      "icons": {
+        "style": "standard",
+        "fill": false,
+        "weight": 400
+      },
       "preset": "balanced",
       "feel": {
         "roundness": 1,
@@ -209,6 +234,11 @@
         "fallback": "monospace"
       },
       "typeVariance": 0.5,
+      "icons": {
+        "style": "standard",
+        "fill": false,
+        "weight": 400
+      },
       "preset": "balanced",
       "feel": {
         "roundness": 1,

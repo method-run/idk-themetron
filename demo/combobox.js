@@ -3,17 +3,21 @@
 // The menu is a popover, so it shows over any scrolling panel.
 //
 //   combobox(input, {
-//     groups: () => [{ label, items: [{ value, label, note, font }] }],
+//     groups: () => [{ label, items: [{ value, label, note, font, icon, search }] }],
 //     onPick: (value) => {},          // a row was chosen
 //     onOpen: (menu) => {},           // before the menu shows, such as to set its theme class
 //     onGroupShown: (group) => {},    // a group scrolled into view, such as to load its fonts
+//     empty: 'No matches.',           // the text when nothing matches
 //   });
+//
+// A row can show a tm-icon before its name (icon: the icon's name), and match more text than
+// it shows (search: such as the name with spaces).
 //
 // Keys: Down and Up move, Home and End jump, Enter picks, Escape closes. Enter with no row
 // active leaves the field's own change event to the page.
 let count = 0;
 
-export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
+export function combobox(input, { groups, onPick, onOpen, onGroupShown, empty = 'No matches. Press Enter to use what you typed.' }) {
   const id = `tm-combobox-${++count}`;
   const menu = document.createElement('div');
   menu.className = 'tm-menu';
@@ -40,7 +44,7 @@ export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
 
   function render() {
     const query = (typed ?? '').trim().toLowerCase();
-    const match = (group, item) => !query || [item.label, item.value, item.note].some((t) => t?.toLowerCase().includes(query)) || group.label?.toLowerCase().startsWith(query);
+    const match = (group, item) => !query || [item.label, item.value, item.note, item.search].some((t) => t?.toLowerCase().includes(query)) || group.label?.toLowerCase().startsWith(query);
     rows = [];
     seen?.disconnect();
     menu.replaceChildren();
@@ -65,6 +69,13 @@ export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
         row.setAttribute('role', 'option');
         row.setAttribute('aria-selected', String(item.value === input.value));
         if (item.font) row.style.setProperty('--menu-item-font', item.font);
+        if (item.icon) {
+          const icon = document.createElement('span');
+          icon.className = 'tm-icon';
+          icon.setAttribute('aria-hidden', 'true');
+          icon.textContent = item.icon;
+          row.append(icon);
+        }
         const name = document.createElement('span');
         name.textContent = item.label ?? item.value;
         row.append(name);
@@ -85,10 +96,10 @@ export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
       seen?.observe(box);
     }
     if (!rows.length) {
-      const empty = document.createElement('div');
-      empty.className = 'tm-menu-empty';
-      empty.textContent = 'No matches. Press Enter to use what you typed.';
-      menu.append(empty);
+      const none = document.createElement('div');
+      none.className = 'tm-menu-empty';
+      none.textContent = empty;
+      menu.append(none);
     }
     setActive(query ? 0 : rows.findIndex((r) => r.item.value === input.value));
   }

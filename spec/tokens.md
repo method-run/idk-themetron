@@ -63,6 +63,7 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 | `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `controlSm`, `controlLg`, `full`. Each control radius is a pill at full roundness, for its own control size. `sm`, `md`, and `lg` round as far as the padding of the parts that use them. |
 | `roundness` | `roundness` | The roundness feel, from 0 to 1. A part of height `h` that has no radius token of its own rounds by `roundness × h ÷ 2`, so it is a pill at 1. The components use it for badges, switches, and progress bars. Experimental. |
 | `border.width`, `border.focus` | | The edge width, from thinness: `round((1 − thinness) × 4)` px, so 4 px at 0, 1 px at the default (0.8), and 0 at thinness 1. CSS: `border-width` and `panel-border-width`. The focus width is `max(2, width + 1)` px. |
+| `icon.family`, `icon.fill`, `icon.weight` | | The icons: Material Symbols. From the theme's `icons` input: the style's font, the fill (1 or 0), and the line weight (100 to 700). CSS: `font-icon`, `icon-fill`, `icon-weight`. |
 | `duration.<speed>` | `duration.base` | `fast`, `base`, `slow`. |
 | `easing.<use>` | `easing.enter` | `standard`, `enter`, `exit`. Motion is the same in every theme for now, with no overshoot. |
 | `shininess`, `effect.panelBlur`, `effect.lift` | | The shininess (0 to 1), a blur radius (0 for now: see `tm-over-media`), and the hover lift (up to 1 px, from depth). The shine itself is `shine-image`, built on each element: see [consumers](./consumers.md "consumers"). |

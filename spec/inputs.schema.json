@@ -173,6 +173,31 @@
             }
           ]
         },
+        "icons": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "How the icons look: Material Symbols. Each field comes from the parent if not set.",
+          "properties": {
+            "style": {
+              "enum": [
+                "sharp",
+                "standard",
+                "rounded"
+              ],
+              "description": "The icon style. Default: \"standard\"."
+            },
+            "fill": {
+              "type": "boolean",
+              "description": "true for filled icons, false for outlines. Default: false."
+            },
+            "weight": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 700,
+              "description": "The line weight, like a font weight. Default: 400."
+            }
+          }
+        },
         "preset": {
           "enum": [
             "balanced",

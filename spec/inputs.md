@@ -53,7 +53,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 | Kind | It changes |
 |---|---|
 | **Color theme** | Only colors, and its label: `color`, `base`, `action`, and `label`. It has the fonts and feels of its parent. |
-| **Full theme** | Fonts, feels, contrast, or a preset too. |
+| **Full theme** | Fonts, icons, feels, contrast, or a preset too. |
 
 <details>
 <summary>Why a tree, and why two colors for each theme</summary>
@@ -81,6 +81,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 | `headingFont` | `font` | The font for headings. |
 | `monoFont` | The browser's default `monospace` font | The font for code. |
 | `typeVariance` | `0.5` (`classic`) | How fast text grows above body size, from 0 to 1, or a word: `flat`, `gentle`, `classic`, `bold`, `dramatic`. Small and body text barely move. Not a feel: presets do not set it. See [Type sizes](#type-sizes). |
+| `icons` | `{ "style": "standard", "fill": false, "weight": 400 }` | The icons: Material Symbols. `style` is `sharp`, `standard`, or `rounded`: the corners, from square to round. `standard` is the font Google calls Outlined. `fill` is `true` for filled icons. `weight` is the line weight, from 100 to 700. Each field comes from the parent if not set. Not a feel: presets do not set it, so filled icons can go with thin borders, and sharp icons with round buttons. |
 | `preset` | `balanced` | A set of feels. See [Presets](#presets). |
 | `feel` | The preset's values | The feels. See [Feels](#feels). |
 | `contrast` | `{ "method": "wcag" }` | The contrast standard. See [Contrast](#contrast). |
@@ -297,7 +298,7 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [ ] Add Lightest and Darkest sliders that clamp the ramps. See [Plan: lightest and darkest limits](#base-and-action).
 - [ ] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
 - [ ] Add gradient fills and backgrounds, from the same blend as the tinted white and black
-- [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. The corner style could follow the roundness feel.
+- [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. Material Symbols is the only set for now.
 - [>] Let a role take its color from another theme by name, such as `"action": "brand"`. Parked until themes have more than two roles. With two roles, the parent or a copy of the hex covers almost every case. The work is on the branch of [#5](https://github.com/method-run/idk-themetron/pull/5): the engine, the schema, and a playground menu that picks a theme's color.
 - [ ] Decide whether to add a third role, such as secondary. See [Other roles](#other-roles).
 

@@ -1,6 +1,7 @@
 // Build the themes: for each theme, primitive tokens from its settings, then semantic tokens for each mode.
 import { GRADES, contrastTest, gradeGaps, makePalette, measure, purposeName } from './palette.js';
 import { normalizeInputs, ROLES } from './inputs.js';
+import { iconStyle } from './icons.js';
 
 export const MODES = ['light', 'dark'];
 
@@ -167,6 +168,8 @@ export function buildPrimitives(settings, palettes, gaps) {
     roundness: r,
     shininess: sh,
     border: { width: borderWidth, focus: Math.max(2, borderWidth + 1) },
+    // Material Symbols, from the theme's icons input. See icons.js.
+    icon: iconStyle(settings.icons),
     motion: MOTION,
     effect: {
       ...FLAT,

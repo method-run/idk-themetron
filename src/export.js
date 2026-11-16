@@ -1,6 +1,7 @@
 // Write a set of themes in formats that other tools read.
 import { GRADES } from './palette.js';
 import { ROOT, ROLES, FONT_FIELDS } from './inputs.js';
+import { iconImport } from './icons.js';
 
 const px = (n) => `${n}px`;
 const ms = (n) => `${n}ms`;
@@ -34,6 +35,8 @@ export function primitiveEntries(p) {
   // The shininess, from 0 to 1: the shared shine (see shineRules) scales its opacity by it.
   out.push(['shininess', String(p.shininess)]);
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
+  // The icon font, and its fill (0 or 1) and line weight (100 to 700), for font-variation-settings.
+  out.push(['font-icon', `"${p.icon.family}"`], ['icon-fill', String(p.icon.fill)], ['icon-weight', String(p.icon.weight)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
   for (const [k, v] of Object.entries(p.motion.easing)) out.push([`ease-${k}`, bezier(v)]);
   out.push(['panel-blur', px(p.effect.blur)], ['lift', px(p.effect.lift)]);
@@ -245,6 +248,7 @@ export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = tru
   return [
     // @import must come first in a stylesheet.
     fonts ? `@import url("${fonts}");\n` : '',
+    `@import url("${iconImport(built)}");\n`,
     ...(faces ? [faces] : []),
     // On a theme class, color-scheme would undo a forced mode around it, so it goes on :root only.
     root ? ':root { color-scheme: light dark; }' : '',
