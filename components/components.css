@@ -269,6 +269,23 @@
 
 .tm-button--sm { --_shine-height: var(--tm-control-height-sm); min-height: var(--tm-control-height-sm); border-radius: var(--tm-radius-control-sm); padding-block: 0; padding-inline: max(0px, calc(var(--tm-space-sm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
 .tm-button--lg { --_shine-height: var(--tm-control-height-lg); min-height: var(--tm-control-height-lg); border-radius: var(--tm-radius-control-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + var(--tm-space-sm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
+/* An icon-only button is square: as wide as it is tall, with no side padding. Give it an
+   aria-label, since it has no text. */
+.tm-button--icon { padding-inline: 0; aspect-ratio: 1; }
+.tm-button--icon:not(.tm-button--sm, .tm-button--lg) { width: var(--tm-control-height); }
+.tm-button--icon.tm-button--sm { width: var(--tm-control-height-sm); }
+.tm-button--icon.tm-button--lg { width: var(--tm-control-height-lg); }
+/* A label in its own element, such as <span>Save</span>, centers on its capital letters, not
+   its line box: descenders hang below, as in print, and an icon centers on the capitals.
+   text-box trims only block boxes, and a bare text label is an anonymous box that CSS cannot
+   reach, so the label needs the element. Browsers without text-box keep the line box. The
+   button's height does not change. */
+@supports (text-box: trim-both cap alphabetic) {
+  .tm-button > :not(.tm-icon) { text-box: trim-both cap alphabetic; }
+}
+/* Next to an icon, the gap leaves out the 1/12 of the icon's box that each side of the font's
+   drawing leaves empty. */
+.tm-button:has(> .tm-icon) { gap: max(var(--tm-space-xs), var(--tm-space-sm) - 1.25em / 12); }
 
 /* ---- Fields */
 
@@ -295,8 +312,10 @@
 /* Browsers size a native select by its own rules, so one-line fields get a fixed height.
    Round fields move their text in from the curve: the side padding is at least the corner
    radius, rounded up to whole grid squares, so the text's edge stays on a grid line. */
-.tm-input, .tm-select {
+.tm-input, .tm-select, .tm-input-icon {
   --_field-inset: max(var(--tm-control-padding-x), calc(round(up, min(var(--tm-radius-control), var(--tm-radius-lg)), var(--tm-rhythm)) - max(1px, var(--tm-border-width))));
+}
+.tm-input, .tm-select {
   height: var(--tm-control-height);
   padding-inline: var(--_field-inset);
 }
@@ -733,6 +752,58 @@
 .tm-menu-note { margin-left: auto; font-family: var(--tm-font-body); font-size: var(--tm-font-size-sm); color: var(--tm-fg-base-muted); white-space: nowrap; }
 .tm-menu-item:is(:hover, .is-active, [aria-current="true"]) .tm-menu-note { color: inherit; }
 .tm-menu-empty { padding: var(--tm-space-xs) var(--tm-space-sm); color: var(--tm-fg-base-muted); }
+
+/* ---- Icon: a Material Symbols icon, by name, such as <span class="tm-icon" aria-hidden="true">star</span>.
+   The font draws the word as one glyph. Thinness sets the fill and the line weight, and
+   roundness the style (--tm-font-icon). An icon is 1.25 times the text size, centered on the
+   text's lowercase letters, and the font picks its optical size from that size. --filled and
+   --outline set the fill on one icon, such as a chosen star. The word stays hidden while the
+   font loads, and the box is one icon wide, so a long word never pushes the text around. */
+
+.tm-icon {
+  --_icon-fill: var(--tm-icon-fill);
+  display: inline-block;
+  width: 1em;
+  overflow: hidden;
+  font-family: var(--tm-font-icon);
+  font-size: 1.25em;
+  font-style: normal;
+  font-weight: normal;
+  font-variation-settings: "FILL" var(--_icon-fill), "wght" var(--tm-icon-weight);
+  font-feature-settings: "liga";
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  direction: ltr;
+  vertical-align: -0.3em;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+.tm-icon--filled { --_icon-fill: 1; }
+.tm-icon--outline { --_icon-fill: 0; }
+/* In a button, the icon sits in the flex row with the label, and keeps its size. */
+.tm-button .tm-icon { flex: none; }
+/* A field with an icon at its start, such as a search field: <span class="tm-input-icon">, with
+   the icon and then the tm-input. The icon sits at the field's side padding, the same as the
+   text on the other side, in the muted text color, and clicks go through it to the field. The
+   text moves past the icon and a gap, which leaves out the 1/12 of the icon's box that each
+   side of the font's drawing leaves empty. */
+.tm-input-icon {
+  position: relative;
+  display: block;
+  font-size: max(16px, var(--tm-font-size-md));
+}
+.tm-input-icon > .tm-icon {
+  position: absolute;
+  inset-inline-start: calc(max(1px, var(--tm-border-width)) + var(--_field-inset));
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--tm-fg-base-muted);
+  pointer-events: none;
+}
+.tm-input-icon > .tm-input { padding-inline-start: calc(var(--_field-inset) + 1.25em + max(var(--tm-space-xs), var(--tm-space-sm) - 1.25em / 12)); }
 
 /* ---- Widths on the grid. Parts that shrink to their text round their width up to whole
    rhythm steps, so their right edges land on grid lines too. calc-size() is new (Chrome and

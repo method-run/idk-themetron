@@ -268,7 +268,7 @@ To release:
 
 ## Changelog
 
-- **Unreleased:** no changes yet.
+- **Unreleased:** new experimental tokens `font-icon`, `icon-fill`, and `icon-weight`, for Material Symbols icons. A theme's new `icons` input sets them. The CSS loads the icon font with a second `@import`.
 - **0.1.0:** the first contract, in package 0.1.0.
 
 The contract started again at 0.1.0. The versions before it were drafts, and no one used them. Their notes are in the git history of this file.

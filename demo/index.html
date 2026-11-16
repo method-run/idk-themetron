@@ -259,6 +259,7 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .all-buttons .tm-row { align-items: flex-start; }
 .all-buttons .tm-row + .tm-row { margin-top: var(--tm-space-sm); }
 .spec .tm-card { display: flex; flex-direction: column; gap: var(--tm-space-md); }
+.icon-search { max-width: 20rem; }
 .track { position: relative; height: calc(var(--tm-rhythm) * 8); border-radius: var(--tm-radius-control); background: var(--tm-bg-sunken); box-shadow: var(--tm-elevation-inset); border: var(--tm-border-width) solid var(--tm-border-base); }
 .track .dot { position: absolute; top: 50%; left: 6px; width: 22px; height: 22px; margin-top: -11px; border-radius: calc(var(--tm-radius-control) * 0.6 + 2px); background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); box-shadow: var(--tm-elevation-1); transition: left var(--tm-duration-slow) var(--tm-ease-enter); }
 .track.on .dot { left: calc(100% - 28px); }
@@ -413,16 +414,17 @@ td code { font-family: var(--mono); font-size: 12px; }
     <section class="spec" aria-label="Buttons">
       <h2 class="spec-label">Buttons</h2>
       <div class="tm-row">
-        <button class="tm-button tm-button--sm" type="button">Small</button>
-        <button class="tm-button" type="button">{{theme}} button</button>
-        <button class="tm-button tm-button--lg" type="button">Large</button>
+        <button class="tm-button tm-button--sm" type="button"><span class="tm-icon" aria-hidden="true">add</span><span>Small</span></button>
+        <button class="tm-button" type="button"><span class="tm-icon" aria-hidden="true">check</span><span>{{theme}} button</span></button>
+        <button class="tm-button tm-button--lg" type="button"><span>Large</span><span class="tm-icon" aria-hidden="true">settings</span></button>
       </div>
       <div class="tm-row">
-        <button class="tm-button tm-button--quiet" type="button">Quiet</button>
-        <button class="tm-button tm-button--soft" type="button">Soft</button>
-        <button class="tm-button tm-button--outline" type="button">Outline</button>
-        <button class="tm-button tm-button--ghost" type="button">Ghost</button>
-        <button class="tm-button tm-button--exact" type="button">Exact</button>
+        <button class="tm-button tm-button--quiet" type="button"><span class="tm-icon" aria-hidden="true">arrow_forward</span><span>Quiet</span></button>
+        <button class="tm-button tm-button--soft" type="button"><span class="tm-icon" aria-hidden="true">upload_file</span><span>Soft</span></button>
+        <button class="tm-button tm-button--outline" type="button"><span class="tm-icon" aria-hidden="true">content_copy</span><span>Outline</span></button>
+        <button class="tm-button tm-button--ghost" type="button"><span>Ghost</span></button>
+        <button class="tm-button tm-button--exact" type="button"><span class="tm-icon" aria-hidden="true">check_circle</span><span>Exact</span></button>
+        <button class="tm-button tm-button--ghost tm-button--icon" type="button" aria-label="More"><span class="tm-icon" aria-hidden="true">more_horiz</span></button>
       </div>
       <details class="all-buttons" data-preview-details="inverted">
         <summary class="tm-small tm-muted">Inverted: class="tm-invert" shows a part in the other mode</summary>
@@ -435,6 +437,18 @@ td code { font-family: var(--mono); font-size: 12px; }
         <summary class="tm-small tm-muted">Descendant themes' buttons, on this background</summary>
         <div class="tm-row" data-descendant-buttons></div>
       </details>
+    </section>
+
+    <section class="spec" aria-label="Icons">
+      <h2 class="spec-label">Icons</h2>
+      <p class="tm-text tm-muted">Material Symbols. The theme's Icons settings set the style, the fill, and the line weight.</p>
+      <div class="tm-field icon-search">
+        <label class="tm-label" for="icon-search-NAME">Find an icon</label>
+        <span class="tm-input-icon">
+          <span class="tm-icon" aria-hidden="true">search</span>
+          <input class="tm-input" id="icon-search-NAME" type="text" data-icon-search placeholder="star, thumb up, upload…" spellcheck="false">
+        </span>
+      </div>
     </section>
 
     <section class="spec" aria-label="Card">
@@ -509,7 +523,7 @@ td code { font-family: var(--mono); font-size: 12px; }
         <label class="tm-choice"><input type="checkbox" role="switch" class="tm-switch" checked> Switch, on</label>
         <label class="tm-choice"><input type="checkbox" role="switch" class="tm-switch"> Switch, off</label>
         <div class="tm-progress" role="progressbar" aria-label="Progress" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"><span style="--value: 68%"></span></div>
-        <div class="tm-alert"><strong>{{theme}} alert</strong><span>Something went wrong. <a class="tm-link" href="#preview">Try again</a>.</span></div>
+        <div class="tm-alert"><strong><span class="tm-icon" aria-hidden="true">error</span> {{theme}} alert</strong><span>Something went wrong. <a class="tm-link" href="#preview">Try again</a>.</span></div>
         <div class="tm-row"><button class="tm-button" type="submit">Save {{theme}}</button></div>
       </form>
     </section>

@@ -49,6 +49,7 @@ export interface ThemeInput {
   monoFont?: FontInput;
   /** How fast text grows above body size: 0 to 1, or a word such as "classic". */
   typeVariance?: number | string;
+  icons?: Partial<Icons>;
   preset?: PresetName;
   feel?: Partial<Record<FeelName, FeelValue>>;
   contrast?: { method?: ContrastMethod; model?: ContrastModel };
@@ -82,6 +83,7 @@ export interface ThemeOwnFields {
   headingFont?: Font;
   monoFont?: Font;
   typeVariance?: number;
+  icons?: Partial<Icons>;
   preset?: PresetName;
   feel?: Partial<Record<FeelName, number | 'inherit'>>;
   contrast?: { method?: ContrastMethod; model?: ContrastModel };
@@ -100,6 +102,7 @@ export interface ResolvedTheme {
   headingFont: Font;
   monoFont: Font;
   typeVariance: number;
+  icons: Icons;
   preset: PresetName;
   feel: Record<FeelName, number>;
   contrast: { method: ContrastMethod; level: ContrastLevel; model: ContrastModel };
@@ -242,6 +245,7 @@ export const ROOT_DEFAULTS: {
   font: Font;
   monoFont: Font;
   typeVariance: number;
+  icons: Icons;
   preset: PresetName;
   contrast: { method: ContrastMethod; level: ContrastLevel; model: ContrastModel };
 };
@@ -294,6 +298,36 @@ export function apcaMinLc(size: number, weight: number): number;
 export function minContrast(method: ContrastMethod, level: ContrastLevel, purpose: Purpose | TextPurpose): number;
 /** A short name for a purpose: "text", or "text 18px/700". */
 export function purposeName(purpose: Purpose | TextPurpose): string;
+
+// ---- icons.js
+
+export type IconStyleName = 'sharp' | 'standard' | 'rounded';
+/** A theme's icons input: the Material Symbols style, fill, and line weight. */
+export interface Icons {
+  style: IconStyleName;
+  /** true for filled icons, false for outlines. */
+  fill: boolean;
+  /** The line weight, from 100 to 700. */
+  weight: number;
+}
+/** The icon tokens of a theme. */
+export interface IconStyle {
+  /** "Material Symbols Sharp", "Material Symbols Outlined" (standard), or "Material Symbols Rounded". */
+  family: string;
+  /** 1 (filled) or 0 (outlines). */
+  fill: 0 | 1;
+  /** The line weight, from 100 to 700. */
+  weight: number;
+}
+/** The Material Symbols icons that the CSS loads. */
+export const ICONS: string[];
+export const ICON_STYLES: IconStyleName[];
+export const ICON_WEIGHT: { min: number; max: number };
+/** The root theme's icons. */
+export const ICON_DEFAULTS: Icons;
+export function iconStyle(icons: Icons): IconStyle;
+/** A Google Fonts URL for the icon styles of all themes, with only the ICONS glyphs. */
+export function iconImport(built: BuiltThemes): string;
 
 // ---- color.js
 

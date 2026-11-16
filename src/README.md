@@ -37,6 +37,7 @@ flowchart LR
 | `inputs.js` | The feels, the type variance, their words, presets, the input checks, and the theme tree: each theme's settings from its parents |
 | `tokens.js` | `buildThemes`: for each theme, primitives, semantic tokens for each mode, and the audit |
 | `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, `toBootstrapSass`, `toMui`, `toDaisyui`, `toBootstrapCss`, and the Google Fonts URL |
+| `icons.js` | The Material Symbols icons that the CSS loads, the icon tokens from a theme's `icons` input, and their Google Fonts URL |
 | `manifest.js` | The token contract: the manifest, the inputs schema, and `checkCss` |
 | `index.js` | The public functions |
 | `index.d.ts` | The TypeScript types of the public functions and the inputs, written by hand. A test checks that it declares every export of `index.js`. |

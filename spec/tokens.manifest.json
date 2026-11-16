@@ -778,6 +778,27 @@
       "modes": false,
       "stability": "stable"
     },
+    "font-icon": {
+      "tier": "primitive",
+      "type": "fontFamily",
+      "modes": false,
+      "stability": "experimental",
+      "meaning": "The icon font: Material Symbols in the Sharp, Outlined (standard), or Rounded style, from icons.style. Set font-variation-settings from icon-fill and icon-weight."
+    },
+    "icon-fill": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental",
+      "meaning": "Whether icons are filled: 1 (filled) or 0 (outlines), from icons.fill. The FILL axis of the icon font."
+    },
+    "icon-weight": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental",
+      "meaning": "The line weight of icons, from 100 to 700, from icons.weight. The wght axis of the icon font."
+    },
     "duration-fast": {
       "tier": "primitive",
       "type": "duration",

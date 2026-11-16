@@ -4,7 +4,7 @@ import '../components/components.css';
 import componentsCss from '../components/components.css?raw';
 import { combobox } from './combobox.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -51,6 +51,8 @@ expandPresets(state.themes);
 for (const t of Object.values(state.themes)) if (t.contrast?.model === 'lch') delete t.contrast.model;
 // "Both" is gone: APCA now keeps the WCAG 2 minimums as a floor.
 for (const t of Object.values(state.themes)) if (t.contrast?.method === 'both') t.contrast.method = 'apca';
+// The icon style "outlined" is now "standard": fill is a setting of its own.
+for (const t of Object.values(state.themes)) if (t.icons?.style === 'outlined') t.icons.style = 'standard';
 // ?preset=glass opens the playground with a preset on the root theme, for links and screenshots.
 const askedPreset = new URLSearchParams(location.search).get('preset');
 if (PRESETS[askedPreset]) { state.themes[ROOT].preset = askedPreset; delete state.themes[ROOT].feel; }
@@ -137,6 +139,7 @@ const SECTIONS = [
   ['base', 'Base color', ['base']],
   ['color', 'Action color', ['action']],
   ['fonts', 'Typography', ['font', 'headingFont', 'monoFont', 'typeVariance']],
+  ['icons', 'Icons', ['icons']],
   ['feel', 'Feel', ['preset', 'feel']],
 ];
 // Sections that the playground does not show for now. Their values still load and apply.
@@ -458,6 +461,28 @@ const SECTION_CONTROLS = {
         el('div', { class: 'own-font-note fader-hint', id: `own-font-note-${field}`, hidden: true }));
     }).concat(varianceFader());
   },
+  // The icons: corners from sharp to round, outlines or filled, and a line weight. Each one is
+  // the theme's own once set.
+  icons: () => [
+    el('div', { class: 'fader', 'data-fader': 'iconStyle' },
+      el('div', { class: 'fader-head' }, el('label', { for: 'icon-style' }, 'Corners'),
+        el('span', { class: 'fader-right' }, el('output', { id: 'out-iconStyle', for: 'icon-style' }))),
+      el('div', { class: 'fader-hint' }, 'From square corners and flat line ends to round ones.'),
+      el('input', { type: 'range', id: 'icon-style', min: 0, max: ICON_CORNERS.length - 1, step: 1, oninput: (e) => setIcons('style', ICON_CORNERS[e.target.value][0]) }),
+      el('div', { class: 'words' }, ...ICON_CORNERS.map(([style, word], i) => el('button', {
+        type: 'button', style: `left: ${(i / (ICON_CORNERS.length - 1)) * 100}%`, 'data-word': style, onclick: () => setIcons('style', style),
+      }, word)))),
+    el('div', { class: 'model-row' }, el('span', { class: 'font-label' }, 'Fill'),
+      el('div', { class: 'tm-segmented tm-segmented--sm', id: 'icon-fill', role: 'group', 'aria-label': 'Icon fill' })),
+    el('div', { class: 'fader', 'data-fader': 'iconWeight' },
+      el('div', { class: 'fader-head' }, el('label', { for: 'icon-weight' }, 'Weight'),
+        el('span', { class: 'fader-right' }, el('output', { id: 'out-iconWeight', for: 'icon-weight' }))),
+      el('div', { class: 'fader-hint' }, 'The line weight, like a font weight. Filled icons keep it for the parts that stay lines.'),
+      el('input', { type: 'range', id: 'icon-weight', min: ICON_WEIGHT.min, max: ICON_WEIGHT.max, step: 50, oninput: (e) => setIcons('weight', Number(e.target.value)) }),
+      el('div', { class: 'words' }, ...Object.entries(ICON_WEIGHT_WORDS).map(([word, value]) => el('button', {
+        type: 'button', style: `left: ${((value - ICON_WEIGHT.min) / (ICON_WEIGHT.max - ICON_WEIGHT.min)) * 100}%`, 'data-word': word, onclick: () => setIcons('weight', value),
+      }, word)))),
+  ],
   feel: () => {
     // Apply a preset: a one-time stamp. It sets every feel as the theme's own, and the theme
     // keeps no link to the preset. Then each feel can be changed or removed on its own.
@@ -513,6 +538,11 @@ function unsetFeel(name) {
   else delete mine.feel;
   update();
 }
+
+// The icon styles from square to round, and the words that the slider shows.
+const ICON_CORNERS = ICON_STYLES.map((style) => [style, style]);
+const ICON_WEIGHT_WORDS = { thin: 100, light: 300, regular: 400, bold: 700 };
+const setIcons = (key, value) => { own().icons = { ...own().icons, [key]: value }; update(); };
 
 // The type variance: a slider like a feel's, in the typography section.
 function varianceFader() {
@@ -751,6 +781,10 @@ function renderSegs() {
   const setContrast = (key, v) => { own().contrast = { ...own().contrast, [key]: v }; update(); };
   seg($('#method'), [['wcag', 'WCAG 2'], ['apca', 'APCA']], contrast.method, (v) => setContrast('method', v));
   seg($('#model'), [['oklch', 'OKLCH'], ['hsl', 'HSL']], contrast.model, (v) => setContrast('model', v));
+  const icons = built?.themes[state.selected] ? selected().settings.icons : null;
+  if (icons) {
+    seg($('#icon-fill'), [[false, 'Outline'], [true, 'Filled']], icons.fill, (v) => setIcons('fill', v));
+  }
   seg($('#mode'), [['light', 'Light'], ['dark', 'Dark'], ['both', 'Both']], ui.mode, (v) => { ui.mode = v; renderSegs(); renderView(); });
   seg($('#contrast-view'), [['base', 'Base'], ['more', 'More contrast']], ui.contrast, (v) => { ui.contrast = v; renderSegs(); renderControlsState(); renderView(); });
   const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
@@ -844,6 +878,22 @@ function renderControlsState() {
     document.querySelector('[data-fader="typeVariance"]').classList.toggle('own-feel', 'typeVariance' in mine);
     $('#variance-x').hidden = !('typeVariance' in mine);
     for (const b of document.querySelectorAll('#type-variance ~ .words button')) b.setAttribute('aria-current', String(b.dataset.word === word));
+  }
+
+  if ($('#icon-style')) {
+    const i = ICON_CORNERS.findIndex(([style]) => style === settings.icons.style);
+    $('#icon-style').value = i;
+    $('#out-iconStyle').textContent = ICON_CORNERS[i][1];
+    document.querySelector('[data-fader="iconStyle"]').classList.toggle('own-feel', mine.icons?.style !== undefined);
+    for (const b of document.querySelectorAll('#icon-style ~ .words button')) b.setAttribute('aria-current', String(b.dataset.word === settings.icons.style));
+  }
+
+  if ($('#icon-weight')) {
+    const { weight } = settings.icons;
+    $('#icon-weight').value = weight;
+    $('#out-iconWeight').textContent = String(weight);
+    document.querySelector('[data-fader="iconWeight"]').classList.toggle('own-feel', mine.icons?.weight !== undefined);
+    for (const b of document.querySelectorAll('#icon-weight ~ .words button')) b.setAttribute('aria-current', String(ICON_WEIGHT_WORDS[b.dataset.word] === weight));
   }
 
   if ($('#preset-menu')) {
@@ -966,6 +1016,8 @@ function renderPreview() {
   const key = [MODES().join(), ui.contrast, ...shown.map((n) => `${themeClass(n)}:${built.themes[n].kind}`), JSON.stringify(built.order.map(labelOf))].join('|');
   if (key !== previewKey) {
     previewKey = key;
+    for (const menu of iconMenus) menu.destroy();
+    iconMenus = [];
     box.replaceChildren(shown.length > 1 ? compareStrip(shown) : '', ...shown.map((name) => {
       const t = built.themes[name];
       const section = el('details', {
@@ -1158,6 +1210,7 @@ function stageFor(name, mode) {
       for (const other of document.querySelectorAll(`[data-preview-details="${key}"]`)) other.open = details.open;
     });
   }
+  for (const input of stage.querySelectorAll('[data-icon-search]')) iconMenus.push(iconSearch(input, name, mode));
   for (const button of stage.querySelectorAll('[data-open]')) button.addEventListener('click', () => openDialog(stage.querySelector(`#${button.dataset.open}`)));
   for (const dialog of stage.querySelectorAll('dialog')) {
     for (const button of dialog.querySelectorAll('[data-close]')) button.addEventListener('click', () => closeDialog(dialog));
@@ -1170,6 +1223,22 @@ function stageFor(name, mode) {
     });
   }
   return stage;
+}
+
+// The icon search: a combobox of every icon in ICONS, as the icon and its name. Typing filters
+// them, and "thumb up" finds thumb_up. The menu shows in its stage's theme and mode.
+let iconMenus = [];
+function iconSearch(input, name, mode) {
+  return combobox(input, {
+    groups: () => [{ label: null, items: ICONS.map((icon) => ({ value: icon, icon, search: icon.replaceAll('_', ' ') })) }],
+    onPick: () => {},
+    onOpen: (menu) => {
+      menu.className = `tm-menu ${themeClass(name)}`;
+      menu.setAttribute('data-tm-mode', mode);
+      menu.setAttribute('data-tm-contrast', ui.contrast);
+    },
+    empty: 'No icons match.',
+  });
 }
 
 // Open: show it, then add .is-open on the next frame, so the move in can run.
