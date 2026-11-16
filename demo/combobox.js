@@ -104,13 +104,16 @@ export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
     } else input.removeAttribute('aria-activedescendant');
   }
 
-  // Below the field, or above it when there is more room there.
+  // Below the field, or above it when there is more room there. On a phone, the visual
+  // viewport leaves out the keyboard, so the menu stays above it.
   function place() {
     const box = input.getBoundingClientRect();
     const gap = 4;
-    const below = innerHeight - box.bottom - gap;
-    const above = box.top - gap;
-    menu.style.minWidth = `${box.width}px`;
+    const view = window.visualViewport ?? { offsetTop: 0, height: innerHeight };
+    const below = view.offsetTop + view.height - box.bottom - gap;
+    const above = box.top - view.offsetTop - gap;
+    menu.style.maxWidth = `${innerWidth - 2 * gap}px`;
+    menu.style.minWidth = `${Math.min(box.width, innerWidth - 2 * gap)}px`;
     menu.style.left = `${Math.max(gap, Math.min(box.left, innerWidth - menu.offsetWidth - gap))}px`;
     const up = below < Math.min(menu.scrollHeight, 240) && above > below;
     menu.style.maxHeight = `min(var(--menu-max-height, 20rem), ${(up ? above : below) - gap}px)`;
@@ -129,6 +132,7 @@ export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
     rows[active]?.row.scrollIntoView({ block: 'center' });
     addEventListener('resize', place);
     addEventListener('scroll', place, true);
+    window.visualViewport?.addEventListener('resize', place);
   }
 
   function close() {
@@ -138,6 +142,7 @@ export function combobox(input, { groups, onPick, onOpen, onGroupShown }) {
     input.removeAttribute('aria-activedescendant');
     removeEventListener('resize', place);
     removeEventListener('scroll', place, true);
+    window.visualViewport?.removeEventListener('resize', place);
   }
 
   function pick(value) {

@@ -112,6 +112,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .model-row .font-label { font-size: 13px; color: var(--muted); }
 .font-row .font-label { font-size: 13px; color: var(--muted); }
 .font-row input { width: 100%; box-sizing: border-box; height: 30px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 0 8px; }
+.font-field { display: flex; flex-direction: column; gap: 6px; }
+.own-font-note { padding-left: 78px; overflow-wrap: anywhere; }
+.own-font-note .small-btn { margin-left: 4px; }
+.own-font-note[hidden] { display: none; }
+.own-font-note .small-btn { color: var(--ink); }
+.own-font-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: var(--tm-space-md); }
+.own-font-dialog [hidden] { display: none; }
+.own-font-actions { justify-content: flex-end; }
 details.feels > summary { cursor: pointer; font-size: 13px; color: var(--muted); padding: 2px 0; }
 details.feels > summary:hover { color: var(--ink); }
 details.feels[open] > summary { margin-bottom: 12px; }
@@ -310,6 +318,9 @@ td code { font-family: var(--mono); font-size: 12px; }
   .app { grid-template-columns: minmax(0, 1fr); }
   .controls { border-right: 0; border-bottom: 1px solid var(--line); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .out-head, .view { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
+  /* On the narrowest phones, the tabs get tighter, so they fit beside the pane button. */
+  .out-head .left { min-width: 0; }
+  .view-tabs button { padding-inline: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
@@ -485,6 +496,10 @@ td code { font-family: var(--mono); font-size: 12px; }
         <div class="tm-field">
           <label class="tm-label" for="f-empty-NAME">Comments</label>
           <textarea class="tm-textarea" id="f-empty-NAME" rows="2" placeholder="Anything we should know?"></textarea>
+        </div>
+        <div class="tm-field">
+          <label class="tm-label" for="f-file-NAME">Route map</label>
+          <input class="tm-file" type="file" id="f-file-NAME">
         </div>
         <label class="tm-choice"><input type="checkbox" class="tm-check" checked> Checkbox</label>
         <label class="tm-choice"><input type="radio" class="tm-radio" name="p-NAME" checked> Radio one</label>

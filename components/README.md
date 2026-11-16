@@ -31,7 +31,7 @@ The component library is one CSS file. It has no JavaScript. Each component read
 | Part | Classes | Variants |
 |---|---|---|
 | Button | `tm-button` | `--soft`, `--quiet`, `--outline`, `--ghost`, `--exact`; sizes `--sm`, `--lg` |
-| Field | `tm-field`, `tm-label`, `tm-input`, `tm-select`, `tm-textarea`, `tm-hint`, `tm-error` | `--soft` (the action tint and edge, for a state such as an error), `--quiet` (the base tint, with the usual edge), such as `tm-input--soft`; `aria-invalid="true"` |
+| Field | `tm-field`, `tm-label`, `tm-input`, `tm-select`, `tm-textarea`, `tm-file` (on `<input type="file">`: its button is a quiet button), `tm-hint`, `tm-error` | `--soft` (the action tint and edge, for a state such as an error), `--quiet` (the base tint, with the usual edge), such as `tm-input--soft`; `aria-invalid="true"` |
 | Checkbox and radio | `tm-check`, `tm-radio`, inside `tm-choice` | `--soft`, `--quiet`: the tint shows while it is not checked |
 | Switch | `tm-switch` on a checkbox with `role="switch"` | |
 | Card | `tm-card` | `--flat`, `--raised` |
@@ -42,7 +42,7 @@ The component library is one CSS file. It has no JavaScript. Each component read
 | Tabs | `tm-tabs` with buttons that have `aria-selected` | |
 | Segmented control | `tm-segmented` with buttons that have `aria-pressed`, and `role="group"` with an `aria-label`. One control tall, borders included. | `--sm` |
 | Menu | `tm-menu` with `tm-menu-item` rows, `tm-menu-group` and `tm-menu-label` for groups, `tm-menu-note` for a note at the end of a row, and `tm-menu-empty` | The active row has `is-active`, and the chosen row `aria-selected="true"`, which shows a check. Set `--menu-item-font` on a row to give it its own font. See below. |
-| Dialog | `tm-dialog` on a `<dialog>` | Pops in with the enter curve. See below. |
+| Dialog | `tm-dialog` on a `<dialog>` | Pops in with the enter curve. On a short screen, it scrolls inside. See below. |
 | Drawer | `tm-drawer` on a `<dialog>` | Slides in from the right. |
 | Text | `tm-h1`, `tm-h2`, `tm-h3`, `tm-text`, `tm-muted`, `tm-small`, `tm-code`, `tm-link` | |
 | Layout | `tm-stack`, `tm-row`, `tm-divider` | |
