@@ -1,7 +1,7 @@
 # idk-themetron
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 63% (35/55) · 3 deferred
+◐ 65% (36/55) · 3 deferred
 <!-- idk-plans:progress:end -->
 
 idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color, fonts, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
@@ -101,5 +101,5 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 - [x] Write the first specs: inputs, tokens, grades, and components
 - [x] Make a playground that shows the theme change as you change the inputs
 - [x] Publish the repository: [github.com/method-run/idk-themetron](https://github.com/method-run/idk-themetron)
-- [ ] Publish the package on npm
+- [x] Publish the package on npm: [@method-run/idk-themetron](https://www.npmjs.com/package/@method-run/idk-themetron)
 - [x] Host the playground: [method-run.github.io/idk-themetron](https://method-run.github.io/idk-themetron/), built by GitHub Pages on each push to main
