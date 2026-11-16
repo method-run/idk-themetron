@@ -7,38 +7,31 @@
       "fonts": [
         {
           "family": "Open Sans",
-          "fallback": "sans-serif",
-          "note": "Humanist"
+          "fallback": "sans-serif"
         },
         {
           "family": "Oswald",
-          "fallback": "sans-serif",
-          "note": "Grotesque"
+          "fallback": "sans-serif"
         },
         {
           "family": "Roboto",
-          "fallback": "sans-serif",
-          "note": "Neo grotesque"
+          "fallback": "sans-serif"
         },
         {
           "family": "Google Sans",
-          "fallback": "sans-serif",
-          "note": "Geometric"
+          "fallback": "sans-serif"
         },
         {
           "family": "Nunito",
-          "fallback": "sans-serif",
-          "note": "Rounded"
+          "fallback": "sans-serif"
         },
         {
           "family": "Saira",
-          "fallback": "sans-serif",
-          "note": "Superellipse"
+          "fallback": "sans-serif"
         },
         {
           "family": "Quantico",
-          "fallback": "sans-serif",
-          "note": "Glyphic"
+          "fallback": "sans-serif"
         }
       ]
     },
@@ -47,38 +40,31 @@
       "fonts": [
         {
           "family": "Alegreya",
-          "fallback": "serif",
-          "note": "Humanist"
+          "fallback": "serif"
         },
         {
           "family": "Cormorant Garamond",
-          "fallback": "serif",
-          "note": "Old style"
+          "fallback": "serif"
         },
         {
           "family": "Lora",
-          "fallback": "serif",
-          "note": "Transitional"
+          "fallback": "serif"
         },
         {
           "family": "Instrument Serif",
-          "fallback": "serif",
-          "note": "Modern"
+          "fallback": "serif"
         },
         {
           "family": "Bitter",
-          "fallback": "serif",
-          "note": "Scotch"
+          "fallback": "serif"
         },
         {
           "family": "Playfair Display",
-          "fallback": "serif",
-          "note": "Didone"
+          "fallback": "serif"
         },
         {
           "family": "Alfa Slab One",
-          "fallback": "serif",
-          "note": "Fat face"
+          "fallback": "serif"
         }
       ]
     },
@@ -87,23 +73,19 @@
       "fonts": [
         {
           "family": "Great Vibes",
-          "fallback": "cursive",
-          "note": "Formal"
+          "fallback": "cursive"
         },
         {
           "family": "Caveat",
-          "fallback": "cursive",
-          "note": "Handwritten"
+          "fallback": "cursive"
         },
         {
           "family": "Patrick Hand",
-          "fallback": "cursive",
-          "note": "Upright script"
+          "fallback": "cursive"
         },
         {
           "family": "Zeyada",
-          "fallback": "cursive",
-          "note": "Informal"
+          "fallback": "cursive"
         }
       ]
     },
@@ -121,21 +103,10 @@
         {
           "family": "Source Code Pro",
           "fallback": "monospace"
-        }
-      ]
-    },
-    {
-      "label": "Blackletter and pixel",
-      "fonts": [
-        {
-          "family": "Pirata One",
-          "fallback": "sans-serif",
-          "note": "Blackletter"
         },
         {
-          "family": "Press Start 2P",
-          "fallback": "sans-serif",
-          "note": "Pixel"
+          "family": "Fira Code",
+          "fallback": "monospace"
         }
       ]
     },
@@ -153,40 +124,6 @@
         {
           "family": "PT Serif",
           "fallback": "serif"
-        }
-      ]
-    },
-    {
-      "label": "Calm",
-      "fonts": [
-        {
-          "family": "Kedebideri",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Cantarell",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Commissioner",
-          "fallback": "sans-serif"
-        }
-      ]
-    },
-    {
-      "label": "Competent",
-      "fonts": [
-        {
-          "family": "Source Serif 4",
-          "fallback": "serif"
-        },
-        {
-          "family": "Inter",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Lato",
-          "fallback": "sans-serif"
         }
       ]
     },
@@ -225,23 +162,6 @@
       ]
     },
     {
-      "label": "Fancy",
-      "fonts": [
-        {
-          "family": "Imperial Script",
-          "fallback": "cursive"
-        },
-        {
-          "family": "Ballet",
-          "fallback": "cursive"
-        },
-        {
-          "family": "Lavishly Yours",
-          "fallback": "cursive"
-        }
-      ]
-    },
-    {
       "label": "Vintage",
       "fonts": [
         {
@@ -262,6 +182,10 @@
       "label": "Artistic",
       "fonts": [
         {
+          "family": "Pirata One",
+          "fallback": "sans-serif"
+        },
+        {
           "family": "Limelight",
           "fallback": "sans-serif"
         },
@@ -270,25 +194,8 @@
           "fallback": "sans-serif"
         },
         {
-          "family": "Story Script",
-          "fallback": "sans-serif"
-        }
-      ]
-    },
-    {
-      "label": "Playful",
-      "fonts": [
-        {
-          "family": "Kablammo",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Henny Penny",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Mountains of Christmas",
-          "fallback": "serif"
+          "family": "Imperial Script",
+          "fallback": "cursive"
         }
       ]
     },
@@ -300,11 +207,11 @@
           "fallback": "serif"
         },
         {
-          "family": "Cherry Cream Soda",
+          "family": "Henny Penny",
           "fallback": "sans-serif"
         },
         {
-          "family": "Irish Grover",
+          "family": "Cherry Cream Soda",
           "fallback": "sans-serif"
         }
       ]
@@ -344,59 +251,12 @@
       ]
     },
     {
-      "label": "Excited",
-      "fonts": [
-        {
-          "family": "Eater",
-          "fallback": "serif"
-        },
-        {
-          "family": "Condiment",
-          "fallback": "cursive"
-        },
-        {
-          "family": "Aguafina Script",
-          "fallback": "cursive"
-        }
-      ]
-    },
-    {
-      "label": "Active",
-      "fonts": [
-        {
-          "family": "Faster One",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Arizonia",
-          "fallback": "cursive"
-        },
-        {
-          "family": "Qwitcher Grypen",
-          "fallback": "cursive"
-        }
-      ]
-    },
-    {
-      "label": "Loud",
-      "fonts": [
-        {
-          "family": "Alien Block",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Oi",
-          "fallback": "serif"
-        },
-        {
-          "family": "Danfo",
-          "fallback": "serif"
-        }
-      ]
-    },
-    {
       "label": "Rugged",
       "fonts": [
+        {
+          "family": "Press Start 2P",
+          "fallback": "sans-serif"
+        },
         {
           "family": "Black Ops One",
           "fallback": "sans-serif"
@@ -441,40 +301,6 @@
         },
         {
           "family": "Audiowide",
-          "fallback": "sans-serif"
-        }
-      ]
-    },
-    {
-      "label": "Innovative",
-      "fonts": [
-        {
-          "family": "Nabla",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Sankofa Display",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Honk",
-          "fallback": "sans-serif"
-        }
-      ]
-    },
-    {
-      "label": "Awkward",
-      "fonts": [
-        {
-          "family": "Coral Pixels",
-          "fallback": "serif"
-        },
-        {
-          "family": "Rubik Iso",
-          "fallback": "sans-serif"
-        },
-        {
-          "family": "Rubik Glitch Pop",
           "fallback": "sans-serif"
         }
       ]
