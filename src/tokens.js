@@ -289,14 +289,15 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
   set('fg.base', base, fade(fgGrade, bodyClear));
   set('fg.base-muted', base, mutedGrade);
   // Headings fade further, with softness: to the min-contrast grade for their size at softness 1.
-  // Each heading is checked at its size, in bold (components.css sets headings in bold). With
-  // WCAG 2, text of 24 px or more is large. With APCA, the font table gives the minimum, so
+  // Each heading is checked at its size, at regular weight. components.css sets headings in bold,
+  // which needs less contrast, so this is the safe side for any weight from regular up.
+  // With WCAG 2, text of 24 px or more is large. With APCA, the font table gives the minimum, so
   // larger headings can fade further.
   const fadeHeading = fadeBy(settings.feel.softness);
   const fine = GRADES.filter((g) => (dark ? g < canvasGrade : g > canvasGrade));
   if (dark) fine.reverse();
   for (const size of ['lg', '2xl', '3xl']) {
-    const purpose = { size: primitives.font.size[size], weight: primitives.font.weight.bold };
+    const purpose = { size: primitives.font.size[size], weight: primitives.font.weight.regular };
     const clear = pick(base, fine, passesAll(purpose), bgs);
     set(`fg.base-heading-${size}`, base, fadeHeading(fgGrade, dark ? Math.max(fgGrade, clear) : Math.min(fgGrade, clear)));
     for (const bg of ['bg.canvas', 'bg.surface', 'bg.sunken']) check(`fg.base-heading-${size}`, bg, purpose);
