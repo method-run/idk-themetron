@@ -11,7 +11,7 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 23% (3/13)
+◐ 23% (3/13) · 1 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
@@ -63,6 +63,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 - **`color` for both.** A status theme, such as danger, is often one color everywhere: a red box, red text, and a red button. `color` sets both roles at once.
 - **Base, not neutral.** A theme's base color can be gray, or not. A danger theme that sets `color` has a red base: a pink box with dark red text. So the field is `base`, not `neutral`.
 - **Action, not accent.** "Accent" sounds minor, but the key color is often the most important part of a theme. "Key" names the color, not its job. "Interactive" is exact, but long. So the role is "action", and "key color" is a theme's color in a role.
+- **More roles later.** Two roles cover most pages, but some tools expect more. See [Other roles](#other-roles) under the tasks.
 - **From the tree, not from the page.** The order of themes in the tree and the order of elements on a page are not always the same. A theme that depends on the page could look different in each place. Also, the engine could not check the pairs of its action text on that page's base.
 
 </details>
@@ -260,4 +261,20 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [ ] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
 - [ ] Add gradient fills and backgrounds, from the same blend as the tinted white and black
 - [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. The corner style could follow the roundness feel.
-- [ ] Let a role take its color from another theme by name, such as `"action": "brand"`. Today a role that a theme does not set comes from its parent, which covers most cases.
+- [>] Let a role take its color from another theme by name, such as `"action": "brand"`. Parked until themes have more than two roles. With two roles, the parent or a copy of the hex covers almost every case. The work is on the branch of [#5](https://github.com/method-run/idk-themetron/pull/5): the engine, the schema, and a playground menu that picks a theme's color.
+- [ ] Decide whether to add a third role, such as secondary. See [Other roles](#other-roles).
+
+### Other roles
+
+Themes have two roles today: base and action. These are the roles that we could add, best first:
+
+1. **Secondary:** a second brand color, for secondary buttons, highlights, and chart series. MUI, daisyUI, Bootstrap, and Material 3 all have one. Today the framework exports use a stand-in: the action tint for MUI and daisyUI `secondary`, and the muted base text for Bootstrap `secondary`. With a secondary role, links to other themes become useful, such as `"secondary": { "theme": "brand", "role": "action" }`.
+2. **Surface and ink:** split base in two, so that the page background can have a different hue from the text and the borders. This is like Material 3's neutral and neutral variant. It is useful for warm or cool pages, but it adds many tokens.
+3. **Focus or selection:** a separate color for focus rings and selection. This is probably one token, not a role with a ramp.
+
+These are not roles:
+
+- **Status colors**, such as danger, success, warning, and info, are themes. A theme class changes the normal tokens. See [Theme classes](./consumers.md "consumers").
+- **Data visualization colors** are a set of series colors. That is a different system.
+
+We decided against two names: "neutral" for base, and "accent" for action. The reasons are under "Why a tree, and why two colors for each theme", near the top of this page.
