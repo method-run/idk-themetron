@@ -1,7 +1,7 @@
 # idk-themetron
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 61% (34/55) · 3 deferred
+◐ 63% (35/55) · 3 deferred
 <!-- idk-plans:progress:end -->
 
 idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color, fonts, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
@@ -93,7 +93,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 - [Using themetron in a site or library](./spec/consumers.md "consumers"): The contract between themetron and the sites and libraries that use its stylesheets. Which tokens are stable, which color pairs pass, how theme classes and modes work, and how to check a stylesheet. Written so that a tool such as idk-plans can adopt themetron themes with little work. ◐ 83% (5/6)
 - [Components](./components/README.md "components"): A small CSS component library that reads only themetron tokens. It shows how each feel changes real parts, such as buttons, fields, and cards. ◐ 28% (2/7)
 - [Examples](./examples/README.md "examples"): A small theme tree, and the file that each pipeline level makes from it, up to a page that reads the tokens. Each level names its spec.
-- [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ○ 0% (0/1)
+- [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ● 100% (1/1)
 - [Playground](./demo/README.md "playground"): A web page where you change the inputs and see the components, palettes, tokens, and contrast audit change at once, in light and dark mode. ◐ 88% (8/9)
 <!-- idk-plans:children:end -->
 
