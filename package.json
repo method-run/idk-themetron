@@ -16,6 +16,7 @@
     "plans:preview": "npm run build && vite preview --outDir ../_site",
     "test": "node --test",
     "spec": "node scripts/spec.js",
+    "fonts": "node scripts/font-choices.js",
     "spec:release": "node scripts/release-spec.js",
     "version": "npm run spec:release && git add spec/versions",
     "examples": "node scripts/examples.js",

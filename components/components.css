@@ -651,6 +651,60 @@
   transform: translateX(100%);
 }
 
+/* ---- Menu: a panel of choices, such as the list of a combobox. role="listbox" with
+   role="option" rows, or role="menu" with role="menuitem" rows. Groups have a label. The
+   active row (the one that keys move to) has .is-active or aria-current, and the chosen row
+   has aria-selected="true" or aria-checked="true", which shows a check. Each row can have its
+   own font: set --menu-item-font on it. The note in a row keeps the menu's font. Opaque,
+   like dialogs, so its text contrast is the checked contrast on bg.surface. It can be a
+   popover: the page places it, as top and left. */
+
+.tm-menu {
+  box-sizing: border-box;
+  min-width: 12rem;
+  max-height: var(--menu-max-height, 20rem);
+  margin: 0;
+  padding: max(0px, calc(var(--tm-space-xs) - var(--tm-panel-border-width)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: var(--tm-panel-border-width) solid var(--tm-panel-border);
+  border-radius: var(--tm-radius-md);
+  background: var(--tm-bg-surface);
+  color: var(--tm-fg-base);
+  font-family: var(--tm-font-body);
+  font-size: var(--tm-font-size-md);
+  line-height: var(--tm-leading-tight-md);
+  box-shadow: var(--tm-elevation-3);
+}
+.tm-menu[popover] { position: fixed; inset: auto; }
+.tm-menu-group + .tm-menu-group { margin-top: var(--tm-space-xs); }
+.tm-menu-label {
+  padding: var(--tm-space-xs) var(--tm-space-sm);
+  font-size: var(--tm-font-size-sm);
+  line-height: var(--tm-leading-tight-sm);
+  font-weight: var(--tm-font-weight-medium);
+  color: var(--tm-fg-base-muted);
+}
+.tm-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--tm-space-sm);
+  min-height: var(--tm-control-height-sm);
+  padding: 0 var(--tm-space-sm);
+  border-radius: var(--tm-radius-control-sm);
+  font-family: var(--menu-item-font, inherit);
+  cursor: pointer;
+  user-select: none;
+}
+/* The check: a fixed column, so the names line up whether or not a row is chosen. */
+.tm-menu-item::before { content: "✓"; flex: none; width: 1em; font-family: var(--tm-font-body); visibility: hidden; }
+.tm-menu-item:is([aria-selected="true"], [aria-checked="true"])::before { visibility: visible; }
+.tm-menu-item:is(:hover, .is-active, [aria-current="true"]) { background: var(--tm-tint-action); color: var(--tm-on-tint-action); }
+.tm-menu-item[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.tm-menu-note { margin-left: auto; font-family: var(--tm-font-body); font-size: var(--tm-font-size-sm); color: var(--tm-fg-base-muted); white-space: nowrap; }
+.tm-menu-item:is(:hover, .is-active, [aria-current="true"]) .tm-menu-note { color: inherit; }
+.tm-menu-empty { padding: var(--tm-space-xs) var(--tm-space-sm); color: var(--tm-fg-base-muted); }
+
 /* ---- Widths on the grid. Parts that shrink to their text round their width up to whole
    rhythm steps, so their right edges land on grid lines too. calc-size() is new (Chrome and
    Edge 129+), so other browsers keep the natural width. */
