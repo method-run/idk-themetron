@@ -532,7 +532,7 @@ let fontMenus = [];
 function fontGroups(field) {
   const groups = fontChoices.groups.map((g) => ({
     label: g.label,
-    items: g.fonts.map((f) => ({ value: f.family, note: g.label === 'Monospace' ? null : f.note, font: `"${PREVIEW_PREFIX}${f.family}", ${f.fallback}` })),
+    items: g.fonts.map((f) => ({ value: f.family, font: `"${PREVIEW_PREFIX}${f.family}", ${f.fallback}` })),
   }));
   if (field === 'monoFont') groups.sort((a, b) => (b.label === 'Monospace') - (a.label === 'Monospace'));
   return [{ label: null, items: [{ value: BROWSER_FONT }] }, ...groups];

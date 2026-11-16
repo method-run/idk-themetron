@@ -9,14 +9,21 @@ test('the font menu takes the most popular family for a filter, and no family tw
   const families = [family('Common', 1), family('Second', 2), family('Third', 3)];
   const tags = [['Common', '', '/Sans/Humanist', '100'], ['Common', '', '/Sans/Grotesque', '100'], ['Second', '', '/Sans/Grotesque', '90']];
   const sans = pickFonts(families, tags).find((g) => g.label === 'Sans serif');
-  assert.deepEqual(sans.fonts.map((f) => [f.family, f.note]), [['Common', 'Humanist'], ['Second', 'Grotesque']]);
+  assert.deepEqual(sans.fonts.map((f) => f.family), ['Common', 'Second']);
 });
 
 test('feelings take the highest scores first, and popularity breaks ties', () => {
   const families = [family('Popular', 1), family('Fitting', 50), family('Also', 40), family('Last', 60)];
-  const tags = [['Popular', '', '/Expressive/Calm', '60'], ['Fitting', '', '/Expressive/Calm', '100'], ['Also', '', '/Expressive/Calm', '100'], ['Last', '', '/Expressive/Calm', '70']];
-  const calm = pickFonts(families, tags).find((g) => g.label === 'Calm');
-  assert.deepEqual(calm.fonts.map((f) => f.family), ['Also', 'Fitting', 'Last']);
+  const tags = [['Popular', '', '/Expressive/Business', '60'], ['Fitting', '', '/Expressive/Business', '100'], ['Also', '', '/Expressive/Business', '100'], ['Last', '', '/Expressive/Business', '70']];
+  const business = pickFonts(families, tags).find((g) => g.label === 'Business');
+  assert.deepEqual(business.fonts.map((f) => f.family), ['Also', 'Fitting', 'Last']);
+});
+
+test('a group always has its fixed families, and no other group takes them', () => {
+  const families = [family('Fira Code', 9, { category: 'Monospace' }), family('Mono One', 1, { category: 'Monospace' })];
+  const tags = [['Fira Code', '', '/Monospace/Monospace', '100'], ['Mono One', '', '/Monospace/Monospace', '100'], ['Fira Code', '', '/Expressive/Stiff', '100']];
+  const groups = pickFonts(families, tags);
+  assert.deepEqual(groups.map((g) => [g.label, g.fonts.map((f) => f.family)]), [['Monospace', ['Mono One', 'Fira Code']]]);
 });
 
 test('the font menu leaves out families for other scripts, Noto, and low scores', () => {
@@ -36,5 +43,5 @@ test('the committed font list has every group, and each font once', () => {
   const { groups } = JSON.parse(readFileSync(new URL('../demo/font-choices.json', import.meta.url)));
   const names = groups.flatMap((g) => g.fonts.map((f) => f.family));
   assert.equal(new Set(names).size, names.length);
-  for (const label of ['Sans serif', 'Serif', 'Calligraphy', 'Monospace', 'Blackletter and pixel']) assert.ok(groups.some((g) => g.label === label), label);
+  for (const label of ['Sans serif', 'Serif', 'Calligraphy', 'Monospace', 'Artistic', 'Rugged']) assert.ok(groups.some((g) => g.label === label), label);
 });
