@@ -45,7 +45,8 @@
     "bin",
     "src",
     "components/components.css",
-    "spec"
+    "spec",
+    "!spec/versions"
   ],
   "bin": {
     "themetron": "./bin/themetron.js"
