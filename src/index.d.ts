@@ -12,14 +12,25 @@ export type ContrastMethod = 'wcag' | 'apca';
 export type ContrastLevel = 'standard' | 'enhanced';
 export type ContrastModel = 'oklch' | 'hsl';
 export type Purpose = 'text' | 'large' | 'ui';
+/** Text of a size in px and a weight, for APCA's font table. */
+export interface TextPurpose { size: number; weight: number }
 export type Mode = 'light' | 'dark';
 export type Role = 'base' | 'action';
 
 /** A number from 0 to 1, a word for one (such as "pill"), or "inherit" for the parent's value. */
 export type FeelValue = number | string;
 
-/** A font family name, or a family and a CSS fallback list. */
-export type FontInput = string | { family?: string | null; fallback?: string };
+/** One of your own font files. See "Your own font files" in spec/inputs.md. */
+export interface FontFile {
+  /** The URL of a .woff2, .woff, .ttf, or .otf file. */
+  url: string;
+  /** One weight, such as 400, or a range for a variable font, such as "100 900". */
+  weight?: number | string;
+  style?: 'normal' | 'italic';
+}
+
+/** A font family name, or a family, a CSS fallback list, and your own font files. */
+export type FontInput = string | { family?: string | null; fallback?: string; src?: FontFile[] };
 
 /** A hex color, or { color }. */
 export type RoleInput = Hex | { color?: Hex };
@@ -56,6 +67,8 @@ export interface Inputs {
 export interface Font {
   family: string | null;
   fallback: string;
+  /** Your own font files. Weights are strings. */
+  src?: { url: string; weight?: string; style?: 'normal' | 'italic' }[];
 }
 
 /** A theme's own fields, checked, with words turned into numbers. */
@@ -129,7 +142,8 @@ export interface AuditEntry {
   bg: string;
   fgValue: string;
   bgValue: string;
-  purpose: Purpose;
+  /** A purpose, or a text size and weight as "text 18px/700". */
+  purpose: string;
   required: boolean;
   wcag: number;
   apca: number;
@@ -195,9 +209,17 @@ export function toTailwind(built: BuiltThemes, options?: { prefix?: string }): s
 /** shadcn/ui theme variables, for its globals.css. */
 export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string }): string;
 /** Bootstrap 5 Sass variables, to import before Bootstrap. The root theme's light values, with *-dark twins. */
-export function toBootstrapSass(built: BuiltThemes): string;
-/** A Google Fonts URL for the named font families of all themes, or null. */
+export function toBootstrapSass(built: BuiltThemes, options?: { more?: boolean }): string;
+/** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. */
+export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string }): string;
+/** A Material UI theme for createTheme(), with light and dark colorSchemes. */
+export function toMui(built: BuiltThemes, options?: { theme?: string; more?: boolean }): Record<string, any>;
+/** daisyUI 5 themes for a Tailwind CSS v4 stylesheet. Use it with the output of toCss. */
+export function toDaisyui(built: BuiltThemes, options?: { prefix?: string; classPrefix?: string; name?: string }): string;
+/** A Google Fonts URL for the named font families of all themes, or null. Families with their own files are not in it. */
 export function fontImport(built: BuiltThemes): string | null;
+/** The @font-face rules for the themes' own font files, or "". */
+export function fontFaces(built: BuiltThemes): string;
 
 // ---- inputs.js
 
@@ -225,6 +247,11 @@ export const ROOT_DEFAULTS: {
 };
 export const THEME_FIELDS: (keyof ThemeInput)[];
 export const FONT_FIELDS: ('font' | 'headingFont' | 'monoFont')[];
+/** The pattern of a font file URL. */
+export const FONT_URL: RegExp;
+/** The pattern of a font file weight: "400", or a range such as "100 900". */
+export const FONT_WEIGHT: RegExp;
+export const FONT_STYLES: ('normal' | 'italic')[];
 export const CONTRAST_METHODS: ContrastMethod[];
 export const CONTRAST_LEVELS: ContrastLevel[];
 export const CONTRAST_MODELS: ContrastModel[];
@@ -258,9 +285,15 @@ export function gradeLuminance(grade: number): number;
 export function makePalette(keyHex: Hex, model?: ContrastModel): Palette;
 /** The WCAG 2 ratio and the APCA Lc of a pair. */
 export function measure(fgHex: Hex, bgHex: Hex): { wcag: number; apca: number };
-export type ContrastTest = (fgHex: Hex, bgHex: Hex, purpose: Purpose) => boolean;
+export type ContrastTest = (fgHex: Hex, bgHex: Hex, purpose: Purpose | TextPurpose) => boolean;
 export function contrastTest(setting?: { method?: ContrastMethod; level?: ContrastLevel }): ContrastTest;
 export function gradeGaps(palettes: Palette[], test: ContrastTest): GradeGaps;
+/** The smallest APCA Lc in its font table for text of this size (px) and weight. Infinity where no row fits. */
+export function apcaMinLc(size: number, weight: number): number;
+/** The minimum contrast for a method, level, and purpose: a WCAG 2 ratio or an APCA Lc. */
+export function minContrast(method: ContrastMethod, level: ContrastLevel, purpose: Purpose | TextPurpose): number;
+/** A short name for a purpose: "text", or "text 18px/700". */
+export function purposeName(purpose: Purpose | TextPurpose): string;
 
 // ---- color.js
 
