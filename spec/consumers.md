@@ -15,7 +15,7 @@ aliases: [Using themetron in a site or library]
 ◐ 83% (5/6)
 <!-- idk-plans:progress:end -->
 
-> **Status:** contract 0.1.0, not released yet. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
+> **Status:** contract 0.1.0, released with package 0.1.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
 
 A **consumer** is a site, a doc generator, or a component library that reads a themetron stylesheet. This page says what a consumer can depend on, and what it must do. If a consumer follows it, every themetron theme set works with it, and you can change themes without changing the consumer.
 
@@ -268,7 +268,8 @@ To release:
 
 ## Changelog
 
-- **Unreleased:** the first contract, 0.1.0.
+- **Unreleased:** no changes yet.
+- **0.1.0:** the first contract, in package 0.1.0.
 
 The contract started again at 0.1.0. The versions before it were drafts, and no one used them. Their notes are in the git history of this file.
 

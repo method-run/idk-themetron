@@ -32,8 +32,6 @@ Zoom in: [Inputs](./spec/inputs.md "inputs") · [Engine](./src/README.md "engine
 npm install @method-run/idk-themetron
 ```
 
-The package is not on npm yet. Until it is, install it from GitHub: `npm install github:method-run/idk-themetron`.
-
 Use it from code:
 
 ```js
@@ -76,7 +74,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 
 1. If the token contract changed, raise `CONTRACT_VERSION` and move the **Unreleased** changelog notes under it. See [Versions](./spec/consumers.md#versions "consumers").
 2. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
-3. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/`, `components/components.css`, the README, and the license.
+3. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the README, and the license.
 4. If you changed a public function or the inputs, update `src/index.d.ts`. A test fails when `index.js` exports a name that `index.d.ts` does not declare.
 5. Run `npm version patch`, `npm version minor`, or `npm version major`. This changes the version in `package.json`, and makes a commit and a tag. The package version goes up whenever the contract version does, by at least as much.
 6. Run `npm publish --access public`. npm makes a scoped package private unless you ask, so use `--access public`. (`publishConfig` in `package.json` also sets it.) `prepublishOnly` runs the tests and the docs check first.
