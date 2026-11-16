@@ -150,18 +150,18 @@ test('feels change the primitives', () => {
   assert.equal(p({ roundness: 0 }).radius.control, 0);
   assert.equal(p({ roundness: 1 }).radius.control, p({ roundness: 1 }).control.height / 2);
   assert.equal(p({ shininess: 0.4 }).shininess, 0.4);
-  // Type variance: small text stays at 11 px or more, body text at 15 or 16, and every larger
+  // Type variance: small text stays at 11 px or more, body text at 16 or 17, and every larger
   // size only grows. The default keeps the classic 1.2 scale.
   let last = null;
   for (let i = 0; i <= 20; i++) {
     const v = i / 20;
     const size = buildThemes({ themes: { default: { typeVariance: v } } }).themes.default.primitives.font.size;
     assert.ok(size.sm >= 11 && size.sm <= 13 && size.xs >= 11, `small text at ${v}`);
-    assert.ok(size.md === 15 || size.md === 16, `body text at ${v}`);
+    assert.ok(size.md === 16 || size.md === 17, `body text at ${v}`);
     if (last) for (const k of ['md', 'lg', 'xl', '2xl', '3xl']) assert.ok(size[k] >= last[k], `${k} grows at ${v}`);
     last = size;
   }
-  assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 15, lg: 18, xl: 22, '2xl': 26, '3xl': 31 });
+  assert.deepEqual(p({}).font.size, { xs: 11, sm: 12, md: 16, lg: 19, xl: 23, '2xl': 28, '3xl': 33 });
   // Removed feels still load, and change nothing.
   assert.deepEqual(p({ bounciness: 1, snappiness: 1 }), p({}));
   // Thinness: 4 px edges at 0, a hairline at the default, none at 1.
@@ -379,7 +379,7 @@ test('the grid stays 4 px, and space, line heights, and control heights never sh
   for (let i = 0; i <= 100; i++) {
     const now = p(i / 100);
     assert.equal(now.rhythm, 4);
-    assert.equal(now.font.size.md, 15, 'spaciousness does not change the text size');
+    assert.equal(now.font.size.md, 16, 'spaciousness does not change the text size');
     const sizes = [...Object.values(now.space), ...Object.values(now.font.leading), ...Object.values(now.font.leadingTight), now.control.heightSm, now.control.height, now.control.heightLg];
     if (prev) sizes.forEach((v, k) => assert.ok(v >= prev[k], `spaciousness ${i / 100}: ${v} < ${prev[k]}`));
     prev = sizes;

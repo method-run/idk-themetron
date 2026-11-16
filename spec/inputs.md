@@ -190,15 +190,15 @@ Words are easy to learn, but a slider needs numbers between the words. A number 
 
 ## Type sizes
 
-The type variance `v` sets every text size. Small text is `round(13 − 2v)` px: 13, then 12 at the default, then 11 at the most. Body text is 15 px, or 16 px in the top quarter. Each step above body text is the step below it times a ratio: 1.125 at `v = 0`, 1.2 at the default, and 1.5 at `v = 1`, even in log steps between. `xs` is one pixel under small text, and at least 11 px.
+The type variance `v` sets every text size. Small text is `round(13 − 2v)` px: 13, then 12 at the default, then 11 at the most. Body text is 16 px, or 17 px in the top quarter. Each step above body text is the step below it times a ratio: 1.125 at `v = 0`, 1.2 at the default, and 1.5 at `v = 1`, even in log steps between. `xs` is one pixel under small text, and at least 11 px.
 
 | `typeVariance` | `sm` | `md` | Ratio | h1 (`3xl`) |
 |---|---|---|---|---|
-| 0, flat | 13 | 15 | 1.125 | 24 |
-| 0.5, classic | 12 | 15 | 1.2 | 31 |
-| 1, dramatic | 11 | 16 | 1.5 | 81 |
+| 0, flat | 13 | 16 | 1.125 | 26 |
+| 0.5, classic | 12 | 16 | 1.2 | 33 |
+| 1, dramatic | 11 | 17 | 1.5 | 86 |
 
-Every line height is still a whole number of grid squares, so the grid holds at every size. Small text stays at 11 px or more, and body text at 15 px or more: smaller text is not safe to read. Fields use text of at least 16 px, because iOS zooms the page in when you tap a field with smaller text.
+Every line height is still a whole number of grid squares, so the grid holds at every size. Small text stays at 11 px or more, and body text at 16 px or more. At 16 px, body text can meet APCA's font table, which asks Lc 100 at 15 px: more than most color pairs can reach. Fields also use text of at least 16 px, because iOS zooms the page in when you tap a field with smaller text.
 
 ## Presets
 

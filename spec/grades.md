@@ -40,7 +40,7 @@ The engine checks body text and headings at their real size and weight. Body tex
 
 - **WCAG 2.** Text of 24 px or more is large text. Smaller text is body text. The engine does not use the WCAG 2 rule for bold text (18.66 px and bold), so the WCAG 2 results do not change.
 - **APCA.** APCA's font table gives the minimum Lc for each size and weight. Larger and bolder text needs less contrast. The engine uses the next larger Lc row (rows are 5 apart) and the next lighter weight column, so it never asks for less than the table.
-- **The body-text cap.** The table asks Lc 90 to 100 for body text of 15 or 16 px. On most canvases, no grade has that much contrast. So the APCA minimum for text is never more than the fixed body-text minimum: Lc 75 at the standard level, and Lc 90 at the enhanced level. Thus body text uses the same minimum as before, and only large text gets a smaller minimum.
+- **The body-text cap.** The table asks Lc 90 for body text of 16 px, and more for smaller text. On most canvases, no grade has that much contrast. So the APCA minimum for text is never more than the fixed body-text minimum: Lc 75 at the standard level, and Lc 90 at the enhanced level. Thus body text uses the same minimum as before, and only large text gets a smaller minimum.
 - **The enhanced level.** The enhanced level adds Lc 15 to the table value, the same step as for the fixed minimums.
 - **The floor.** The WCAG 2 minimum always applies too.
 
@@ -48,10 +48,10 @@ For the default sizes, the minimums are:
 
 | Text | Size and weight | WCAG 2 standard | APCA standard | APCA enhanced |
 |---|---|---|---|---|
-| Body text | 15 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
-| `fg.base-heading-lg` (h3) | 18 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
-| `fg.base-heading-2xl` (h2) | 26 px, 400 | 3:1 | Lc 60 | Lc 75 |
-| `fg.base-heading-3xl` (h1) | 31 px, 400 | 3:1 | Lc 55 | Lc 70 |
+| Body text | 16 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
+| `fg.base-heading-lg` (h3) | 19 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
+| `fg.base-heading-2xl` (h2) | 28 px, 400 | 3:1 | Lc 55 | Lc 70 |
+| `fg.base-heading-3xl` (h1) | 33 px, 400 | 3:1 | Lc 50 | Lc 65 |
 
 The grade gaps in the table above still use the fixed minimums for text, large text, and controls.
 
