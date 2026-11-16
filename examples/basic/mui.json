@@ -103,7 +103,7 @@
   ],
   "typography": {
     "fontFamily": "Figtree, sans-serif",
-    "fontSize": 15,
+    "fontSize": 16,
     "fontWeightRegular": 400,
     "fontWeightMedium": 500,
     "fontWeightBold": 700,
