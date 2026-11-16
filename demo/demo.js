@@ -2,7 +2,7 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, ROLES } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, ROLES, normalizeInputs } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -432,18 +432,12 @@ const SECTION_CONTROLS = {
     el('div', { class: 'fader-hint', id: 'model-note' }),
   ],
   color: () => [
-    el('div', { class: 'color-row single' },
-      el('input', { type: 'color', id: 'theme-color', 'aria-label': 'Action color', oninput: (e) => { own().action = e.target.value; update(); } }),
-      el('span', { class: 'fader-hint', id: 'color-note' },
-        el('span', { id: 'color-hex' }),
-        el('button', { class: 'x', type: 'button', id: 'color-x', 'aria-label': "Use the parent's action color", title: "Use the parent's action color", onclick: () => { delete own().action; update(); } }, '×'))),
+    roleRow('action'),
     el('div', { class: 'fader-hint' }, 'For links, buttons, checks, focus rings, and other parts that you act on, or that show their state.'),
     el('div', { class: 'fader-hint' }, 'Solid fills have light labels in light mode, and dark labels in dark mode, for every key color. To flip a part, give it the class tm-invert.'),
   ],
   base: () => [
-    el('div', { class: 'color-row single' },
-      el('input', { type: 'color', id: 'base-color', 'aria-label': 'Base color', oninput: (e) => { own().base = e.target.value; update(); } }),
-      el('span', { class: 'fader-hint', id: 'base-note' })),
+    roleRow('base'),
     el('div', { class: 'fader-hint' }, 'For backgrounds, text, borders, and quiet buttons. A gray makes pure grays.'),
   ],
   // Each role is a Google font picker. Empty means the font comes from the parent, or
@@ -531,6 +525,116 @@ function varianceFader() {
   );
 }
 
+// ---- Role colors. Each role row has a swatch that opens a menu: the colors of every theme, a
+// custom color, and the parent's color. A theme's color links the role, as { theme, role }, so it
+// follows later changes to that color. Unlink keeps the color as the theme's own hex.
+
+const isLink = (value) => typeof value === 'object' && value !== null && 'theme' in value;
+// "Brand · action", or "This theme · action" for a link to the theme's own other role.
+const linkText = (name, link, role, self = 'This theme') => `${link.theme === name ? self : labelOf(link.theme)} · ${link.role ?? role}`;
+
+// True when setting `role` of `name` to `value` makes the inputs fail, such as with a loop.
+// The engine's own check decides, so the rule stays in one place.
+function linkFails(name, role, value) {
+  const themes = { ...state.themes, [name]: { ...state.themes[name], [role]: value } };
+  try { normalizeInputs(rawInputs(themes)); return false; } catch (err) {
+    if (err instanceof InputError) return true;
+    throw err;
+  }
+}
+
+function roleRow(role) {
+  return el('div', { class: 'color-row role-row' },
+    el('button', { class: 'role-swatch', type: 'button', id: `${role}-swatch`, 'aria-haspopup': 'dialog', 'aria-label': `Choose the ${role} color`, onclick: (e) => openRoleMenu(role, e.currentTarget) }),
+    el('span', { class: 'fader-hint role-note', id: `${role}-note` }),
+    // The browser's color picker, for "Custom color". It has no button of its own.
+    el('input', { type: 'color', class: 'role-native', id: `${role}-color`, tabindex: '-1', 'aria-hidden': 'true', oninput: (e) => { own()[role] = e.target.value; update(); } }),
+  );
+}
+
+function renderRoleRow(role, hex, value, fromParent) {
+  const swatch = $(`#${role}-swatch`);
+  if (!swatch) return;
+  swatch.style.background = hex;
+  const input = $(`#${role}-color`);
+  if (document.activeElement !== input) input.value = hex;
+  // Base has the × of its section instead.
+  const unset = isRoot() || value === undefined || role === 'base' ? null : el('button', { class: 'x', type: 'button', 'aria-label': `Use the parent's ${role} color`, title: `Use the parent's ${role} color`, onclick: () => { delete own()[role]; update(); } }, '×');
+  $(`#${role}-note`).replaceChildren(...(isLink(value)
+    ? [el('span', { class: 'own' }, hex),
+      el('span', { class: 'link-chip', title: `This color follows ${linkText(state.selected, value, role)}. It changes when that color changes.` }, `follows ${linkText(state.selected, value, role)}`),
+      el('button', { class: 'small-btn', type: 'button', title: 'Keep this color as the theme\'s own, and stop following', onclick: () => { own()[role] = hex; update(); } }, 'Unlink')]
+    : [el('span', { class: value === undefined ? '' : 'own' }, hex), value === undefined ? fromParent : '', unset]));
+}
+
+const roleMenu = el('div', { class: 'view-menu role-menu', id: 'role-menu', popover: true, role: 'dialog', 'aria-label': 'Choose a color' });
+document.body.append(roleMenu);
+let roleAnchor = null;
+
+function openRoleMenu(role, anchor) {
+  roleAnchor = anchor;
+  renderRoleMenu(role);
+  roleMenu.showPopover();
+  // Under the swatch, at its left edge, but 16 px inside the window.
+  const r = anchor.getBoundingClientRect();
+  const left = Math.max(16, Math.min(r.left, innerWidth - 16 - roleMenu.offsetWidth));
+  const top = r.bottom + 6 + roleMenu.offsetHeight > innerHeight - 16 ? Math.max(16, r.top - 6 - roleMenu.offsetHeight) : r.bottom + 6;
+  Object.assign(roleMenu.style, { top: `${top}px`, left: `${left}px`, right: 'auto' });
+  (roleMenu.querySelector('.role-pick[aria-pressed="true"]') ?? roleMenu.querySelector('button:not(:disabled)'))?.focus();
+}
+
+function renderRoleMenu(role) {
+  const name = state.selected;
+  const current = own()[role];
+  const pick = (value) => {
+    if (value === undefined) delete own()[role]; else own()[role] = value;
+    roleMenu.hidePopover();
+    update();
+  };
+  // One line for each theme, with a swatch for each role. This theme comes first, with only its
+  // other role. A swatch that would make a loop is off.
+  const line = (n) => el('div', { class: 'role-line' },
+    el('span', { class: 'role-theme' }, n === name ? 'This theme' : labelOf(n)),
+    ...ROLES.map((r) => {
+      if (n === name && r === role) return el('span');
+      const value = r === role ? { theme: n } : { theme: n, role: r };
+      const on = isLink(current) && current.theme === n && (current.role ?? role) === r;
+      const fails = !on && linkFails(name, role, value);
+      return el('button', {
+        type: 'button', class: 'role-pick', 'aria-pressed': String(on), disabled: fails,
+        title: fails ? `${labelOf(n)} ${r}: this would make a loop` : `Follow the ${r} color of ${n === name ? 'this theme' : labelOf(n)}`,
+        onclick: () => pick(value),
+      }, el('i', { style: `background:${built.themes[n].settings[r]}` }), r);
+    }));
+  const parent = isRoot() ? null : built.themes[state.themes[name].parent];
+  roleMenu.replaceChildren(
+    el('div', { class: 'role-menu-head' }, 'Theme colors'),
+    el('div', { class: 'fader-hint' }, `Pick one, and this theme's ${role} color follows it.`),
+    el('div', { class: 'role-lines' }, ...[name, ...treeOrder().filter((n) => n !== name && built.themes[n])].map(line)),
+    el('hr'),
+    el('button', { type: 'button', class: 'role-action', onclick: () => {
+      roleMenu.hidePopover();
+      const input = $(`#${role}-color`);
+      try { input.showPicker(); } catch { input.click(); }
+    } }, el('i', { class: 'custom' }), 'Custom color…'),
+    parent ? el('button', { type: 'button', class: 'role-action', 'aria-pressed': String(current === undefined), onclick: () => pick(undefined) },
+      el('i', { style: `background:${parent.settings[role]}` }), `Use the parent's (${parent.settings[role]})`) : null,
+  );
+}
+
+// Arrow keys move between the buttons of the menu. Escape closes it, and focus goes back to the swatch.
+roleMenu.addEventListener('keydown', (e) => {
+  const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+  if (!step) return;
+  const buttons = [...roleMenu.querySelectorAll('button:not(:disabled)')];
+  const i = buttons.indexOf(document.activeElement);
+  buttons[(i + step + buttons.length) % buttons.length]?.focus();
+  e.preventDefault();
+});
+roleMenu.addEventListener('toggle', (e) => {
+  if (e.newState === 'closed' && (roleMenu.contains(document.activeElement) || document.activeElement === document.body)) roleAnchor?.focus();
+});
+
 const BROWSER_FONT = 'Browser default';
 
 // Empty clears the theme's own font. "Browser default" sets the browser's font on
@@ -577,6 +681,7 @@ function renderControlsState() {
     if (meta) {
       meta.replaceChildren(
         el('span', {}, name === ROOT ? 'root' : `${t.kind} · ↳ ${labelOf(t.parent)}`),
+        ...ROLES.filter((role) => isLink(state.themes[name]?.[role])).map((role) => el('span', { class: 'link-meta', title: `The ${role} color follows ${linkText(name, state.themes[name][role], role, labelOf(name))}.` }, `${role} ⇢`)),
         el('span', { class: 'strip' }, ...GRADES.slice(1, -1).map((g) => el('i', { style: `background:${t.palettes.action.steps[g]}` }))),
       );
     }
@@ -604,18 +709,7 @@ function renderControlsState() {
     $('#model-note').textContent = MODEL_NOTES[settings.contrast.model];
   }
 
-  const color = $('#theme-color');
-  if (color) {
-    if (document.activeElement !== color) color.value = settings.action;
-    $('#color-hex').replaceChildren(el('span', { class: 'action' in mine ? 'own' : '' }, settings.action), 'action' in mine || isRoot() ? '' : fromParent);
-    $('#color-x').hidden = isRoot() || !('action' in mine);
-  }
-
-  const base = $('#base-color');
-  if (base) {
-    if (document.activeElement !== base) base.value = settings.base;
-    $('#base-note').replaceChildren(el('span', { class: 'base' in mine ? 'own' : '' }, settings.base), 'base' in mine || isRoot() ? '' : fromParent);
-  }
+  for (const role of ROLES) renderRoleRow(role, settings[role], mine[role], fromParent);
 
   for (const [field] of FONT_FIELDS) {
     const input = $(`#font-${field}`);
@@ -993,8 +1087,10 @@ function renderPalettes() {
   const ownBase = (n) => n === ROOT || built.themes[n].palettes.base.key !== built.themes[built.themes[n].parent]?.palettes.base.key;
   const rows = built.order.flatMap((n) => {
     const t = built.themes[n];
-    const action = { id: n, label: `${labelOf(n)} action`, palette: t.palettes.action, note: `${t.kind} theme`, theme: atLevel(t), ramp: 'action' };
-    return ownBase(n) ? [{ id: `${n}-base`, label: `${labelOf(n)} base`, palette: t.palettes.base, theme: atLevel(t), ramp: 'base' }, action] : [action];
+    // A linked role makes the same ramp as the color it follows, so its note says which.
+    const follows = (role) => (isLink(state.themes[n]?.[role]) ? `same as ${linkText(n, state.themes[n][role], role, labelOf(n))}` : null);
+    const action = { id: n, label: `${labelOf(n)} action`, palette: t.palettes.action, note: [`${t.kind} theme`, follows('action')].filter(Boolean).join(' · '), theme: atLevel(t), ramp: 'action' };
+    return ownBase(n) ? [{ id: `${n}-base`, label: `${labelOf(n)} base`, palette: t.palettes.base, note: follows('base'), theme: atLevel(t), ramp: 'base' }, action] : [action];
   });
   // The tokens that use each grade of a row, in one mode.
   const usage = (row, mode) => {

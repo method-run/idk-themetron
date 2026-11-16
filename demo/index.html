@@ -134,6 +134,28 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .color-row input[type="text"], .color-row select, .field select, .field input, textarea.io { min-width: 0; height: 30px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 0 8px; }
 .color-row .x { width: 26px; height: 26px; border: 0; background: none; color: var(--muted); border-radius: 6px; cursor: pointer; font-size: 16px; }
 .color-row .x:hover { background: var(--hover); color: var(--ink); }
+.role-row { position: relative; grid-template-columns: 34px minmax(0, 1fr); }
+.role-swatch { width: 34px; height: 30px; padding: 0; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.role-swatch:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.role-note { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.role-note .x { width: 22px; height: 22px; font-size: 14px; }
+.link-chip { padding: 1px 7px; border-radius: 999px; background: var(--hover); color: var(--ink); font-size: 12px; }
+/* The browser's color picker opens from here, but the swatch is the visible control. */
+.role-native { position: absolute; left: 0; bottom: 0; width: 34px; height: 1px; padding: 0; border: 0; opacity: 0; pointer-events: none; }
+.role-menu { width: min(320px, calc(100vw - 32px)); padding: 10px 12px; }
+.role-menu-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+.role-lines { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px 6px; align-items: center; margin: 8px 0; }
+.role-line { display: contents; }
+.role-theme { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.role-pick, .role-action { display: inline-flex; gap: 6px; align-items: center; border: 1px solid transparent; background: none; border-radius: 6px; padding: 3px 8px 3px 4px; font-size: 12px; color: var(--ink); cursor: pointer; }
+.role-pick:hover:not(:disabled), .role-action:hover { background: var(--hover); }
+.role-pick[aria-pressed="true"], .role-action[aria-pressed="true"] { border-color: var(--ink); }
+.role-pick:disabled { opacity: 0.35; cursor: not-allowed; }
+.role-pick i, .role-action i { width: 18px; height: 18px; border-radius: 4px; border: 1px solid var(--line); }
+.role-action { width: 100%; padding: 6px 8px; font-size: 13px; }
+.role-action i.custom { background: conic-gradient(red, yellow, lime, cyan, blue, magenta, red); }
+.role-menu hr { margin: 6px 0; border: 0; border-top: 1px solid var(--line); }
+.link-meta { color: var(--ink); }
 .color-meta { grid-column: 2 / -1; display: flex; gap: 8px; align-items: center; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: -2px; }
 .strip { display: flex; height: 6px; flex: 1; border-radius: 3px; overflow: hidden; }
 .strip i { flex: 1; }
