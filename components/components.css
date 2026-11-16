@@ -80,7 +80,7 @@
 .tm-link { transition: color var(--tm-duration-fast) var(--tm-ease-standard), text-decoration-thickness var(--tm-duration-fast) var(--tm-ease-standard); }
 .tm-link:hover { text-decoration-thickness: calc(max(1px, var(--tm-border-width)) + 1px); }
 
-:where(.tm-button, .tm-input, .tm-select, .tm-textarea, .tm-check, .tm-radio, .tm-switch, .tm-tabs button, .tm-link):focus-visible {
+:where(.tm-button, .tm-input, .tm-select, .tm-textarea, .tm-file, .tm-check, .tm-radio, .tm-switch, .tm-tabs button, .tm-link):focus-visible {
   outline: var(--tm-focus-width) solid var(--tm-border-focus);
   outline-offset: 2px;
 }
@@ -342,6 +342,29 @@
 /* The subtle text color can be too faint on a tint, so tinted fields use the muted one. */
 :is(.tm-input--soft, .tm-textarea--soft, .tm-input--quiet, .tm-textarea--quiet)::placeholder { color: var(--tm-fg-base-muted); }
 .tm-field .tm-error { font-size: var(--tm-font-size-sm); color: var(--tm-fg-action); }
+
+/* A file field: the browser's own file input, with its button drawn as a quiet button, and the
+   name of the chosen file beside it in the muted text color. */
+.tm-file {
+  max-width: 100%;
+  color: var(--tm-fg-base-muted);
+  font: inherit;
+  font-size: var(--tm-font-size-sm);
+}
+.tm-file::file-selector-button {
+  min-height: var(--tm-control-height-sm);
+  margin-right: var(--tm-space-sm);
+  padding: 0 var(--tm-space-sm);
+  border: max(1px, var(--tm-border-width)) solid var(--tm-fill-quiet-active);
+  border-radius: var(--tm-radius-control-sm);
+  background: var(--tm-fill-quiet);
+  color: var(--tm-on-fill-quiet);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--tm-duration-fast) var(--tm-ease-standard);
+}
+.tm-file:hover::file-selector-button { background: var(--tm-fill-quiet-hover); color: var(--tm-on-fill-quiet-hover); }
+.tm-file:active::file-selector-button { background: var(--tm-fill-quiet-active); color: var(--tm-on-fill-quiet-active); }
 
 /* ---- Checkbox, radio, and switch: native inputs with a new look. */
 
@@ -612,8 +635,12 @@
    Close: remove .is-open, then call close() when the transition ends. */
 
 .tm-dialog, .tm-drawer {
+  /* The width holds the padding, inside a .tm-theme or not. */
+  box-sizing: border-box;
   max-width: none;
   max-height: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   margin: 0;
   padding: calc(var(--tm-space-lg) - var(--tm-panel-border-width));
   border: var(--tm-panel-border-width) solid var(--tm-panel-border);
@@ -638,7 +665,9 @@
 .tm-dialog {
   inset: 0;
   margin: auto;
-  width: min(90vw, 28rem);
+  width: min(100vw - 2 * var(--tm-space-md), 28rem);
+  /* On a short screen, such as a phone with its keyboard open, the dialog scrolls inside. */
+  max-height: calc(100dvh - 2 * var(--tm-space-md));
   border-radius: var(--tm-radius-lg);
   transform: translateY(12px) scale(0.9);
 }

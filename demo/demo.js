@@ -4,7 +4,7 @@ import '../components/components.css';
 import componentsCss from '../components/components.css?raw';
 import { combobox } from './combobox.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -102,7 +102,7 @@ function update() {
       return;
     }
     store(STORE_KEY, state);
-    $('#theme-css').textContent = toCss(built, { root: false });
+    $('#theme-css').textContent = withUploads(toCss(built, { root: false }));
     renderControlsState();
     renderView();
   });
@@ -430,7 +430,8 @@ const SECTION_CONTROLS = {
     el('div', { class: 'fader-hint' }, 'For backgrounds, text, borders, and quiet buttons. A gray makes pure grays.'),
   ],
   // Each role is a Google font picker. Empty means the font comes from the parent, or
-  // for the root, the browser. "Browser default" turns a parent's web font off.
+  // for the root, the browser. "Browser default" turns a parent's web font off, and
+  // "Your own font…" opens a dialog for a font file.
   fonts: () => {
     for (const menu of fontMenus) menu.destroy();
     fontMenus = [];
@@ -441,14 +442,20 @@ const SECTION_CONTROLS = {
       });
       fontMenus.push(combobox(input, {
         groups: () => fontGroups(field),
-        onPick: (value) => setFont(field, value),
+        onPick: (value) => {
+          if (value !== OWN_FONT) return setFont(field, value);
+          input.value = fontText(own()[field]);
+          openOwnFont(field);
+        },
         onOpen: themeMenu,
         onGroupShown: loadFontPreviews,
       }));
-      return el('div', { class: 'font-row', 'data-font-row': field },
-        el('label', { class: 'font-label', for: `font-${field}` }, label),
-        input,
-        el('button', { class: 'x', type: 'button', id: `font-x-${field}`, 'aria-label': `Clear the ${label.toLowerCase()} font`, title: 'Clear', onclick: () => setFont(field, '') }, '×'));
+      return el('div', { class: 'font-field' },
+        el('div', { class: 'font-row', 'data-font-row': field },
+          el('label', { class: 'font-label', for: `font-${field}` }, label),
+          input,
+          el('button', { class: 'x', type: 'button', id: `font-x-${field}`, 'aria-label': `Clear the ${label.toLowerCase()} font`, title: 'Clear', onclick: () => setFont(field, '') }, '×')),
+        el('div', { class: 'own-font-note fader-hint', id: `own-font-note-${field}`, hidden: true }));
     }).concat(varianceFader());
   },
   feel: () => {
@@ -535,7 +542,7 @@ function fontGroups(field) {
     items: g.fonts.map((f) => ({ value: f.family, font: `"${PREVIEW_PREFIX}${f.family}", ${f.fallback}` })),
   }));
   if (field === 'monoFont') groups.sort((a, b) => (b.label === 'Monospace') - (a.label === 'Monospace'));
-  return [{ label: null, items: [{ value: BROWSER_FONT }] }, ...groups];
+  return [{ label: null, items: [{ value: BROWSER_FONT }, { value: OWN_FONT }] }, ...groups];
 }
 
 // The menu shows in the selected theme and the preview's mode, so it is a live sample of
@@ -552,7 +559,7 @@ function themeMenu(menu) {
 const PREVIEW_PREFIX = 'Preview ';
 const previewsLoaded = new Set();
 async function loadFontPreviews(group) {
-  const families = group.items.map((i) => i.value).filter((f) => f !== BROWSER_FONT && !previewsLoaded.has(f));
+  const families = group.items.map((i) => i.value).filter((f) => f !== BROWSER_FONT && f !== OWN_FONT && !previewsLoaded.has(f));
   if (!families.length) return;
   families.forEach((f) => previewsLoaded.add(f));
   const text = [...new Set(families.join(''))].join('');
@@ -564,6 +571,169 @@ async function loadFontPreviews(group) {
     // Offline: the rows keep their fallback fonts. Try again next time.
     families.forEach((f) => previewsLoaded.delete(f));
   }
+}
+
+// The text that a font field shows for a theme's own font.
+const fontText = (mine) => (mine === undefined ? '' : typeof mine === 'string' ? mine : mine.family ?? BROWSER_FONT);
+
+// ---- Your own font: a font file from a link, or an upload. An upload stays in this browser,
+// in IndexedDB, so that the preview can show it. The inputs name a path on your site instead,
+// and the preview swaps that path for the file.
+const OWN_FONT = 'Your own font…';
+const uploads = new Map(); // path → { file, url }, where url is a blob: URL for the file
+const fontStatus = new Map(); // font file URL → 'ok', 'failed', or a check that is still running
+
+function fontDb(mode, run) {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('themetron-playground-fonts', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('files', { keyPath: 'path' });
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => {
+      const tx = req.result.transaction('files', mode);
+      const ask = run(tx.objectStore('files'));
+      tx.oncomplete = () => resolve(ask.result);
+      tx.onerror = () => reject(tx.error);
+    };
+  });
+}
+
+function addUpload(path, file) {
+  if (uploads.has(path)) URL.revokeObjectURL(uploads.get(path).url);
+  uploads.set(path, { file, url: URL.createObjectURL(file) });
+  fontStatus.delete(path);
+}
+
+async function loadUploads() {
+  try {
+    for (const { path, file } of await fontDb('readonly', (s) => s.getAll())) addUpload(path, file);
+    if (uploads.size) update();
+  } catch { /* storage is optional */ }
+}
+
+// The CSS for the preview: uploaded files load from this browser, not from their paths.
+// The paths have no quotes or spaces, so each one is in the CSS exactly as url("path").
+const withUploads = (css) => [...uploads].reduce((out, [path, { url }]) => out.replaceAll(`url("${path}")`, `url("${url}")`), css);
+
+// Check once that a font's file loads, and show the result in its note.
+function checkFont(family, url) {
+  if (fontStatus.has(url)) return;
+  // An upload can come in while a check runs. Then a newer check owns the result.
+  const check = Symbol('loading');
+  fontStatus.set(url, check);
+  requestAnimationFrame(() => document.fonts.load(`1em "${family}"`).then((faces) => (faces.length ? 'ok' : 'failed'), () => 'failed').then((status) => {
+    if (fontStatus.get(url) !== check) return;
+    fontStatus.set(url, status);
+    if (built) renderControlsState();
+  }));
+}
+
+function renderOwnFontNote(field, mine) {
+  const note = $(`#own-font-note-${field}`);
+  const src = typeof mine === 'object' && mine.family && mine.src?.[0];
+  note.hidden = !src;
+  if (!src) return;
+  const upload = uploads.get(src.url);
+  checkFont(mine.family, src.url);
+  const failed = fontStatus.get(src.url) === 'failed';
+  const text = upload
+    ? `Uploaded ${upload.file.name}. The export loads it from ${src.url}, so put the file there on your site.${failed ? ' This file did not load: it may not be a font.' : ''}`
+    : /^[a-z]+:|^\/\//i.test(src.url)
+      ? `From ${new URL(src.url, location.href).host}.${failed ? ' It did not load. Check the link, and that its site lets other sites load the file (CORS).' : ''}`
+      : `The export loads it from ${src.url}.${failed ? ' This browser does not have the file, so the preview shows the fallback font. Upload the file to see it.' : ''}`;
+  note.title = src.url;
+  note.replaceChildren(text, ' ', el('button', { class: 'small-btn', type: 'button', onclick: () => openOwnFont(field) }, 'Edit'));
+}
+
+// The dialog for your own font. It wears the selected theme, like the font menus, so it is a
+// live sample of the dialog part, and of fields and buttons in it.
+function openOwnFont(field) {
+  const now = typeof own()[field] === 'object' ? own()[field] : {};
+  const first = now.src?.[0];
+  let file = first && uploads.get(first.url)?.file;
+  let source = file ? 'upload' : 'link';
+  const id = (part) => `own-font-${part}`;
+  const text = (part, attrs) => el('input', { class: 'tm-input', id: id(part), type: 'text', spellcheck: 'false', autocomplete: 'off', ...attrs });
+  const field_ = (part, label, control, hint) => el('div', { class: 'tm-field' }, el('label', { class: 'tm-label', for: id(part) }, label), control, hint && el('span', { class: 'tm-hint' }, hint));
+
+  const family = text('family', { value: now.family ?? '', placeholder: 'My Font' });
+  const link = text('link', { type: 'url', inputmode: 'url', value: (!file && first?.url) || '', placeholder: 'https://example.com/fonts/my-font.woff2' });
+  const path = text('path', { value: (file && first.url) || '', placeholder: '/fonts/my-font.woff2' });
+  // The browser names a file that you choose now. This names the one from before.
+  const chosen = el('span', { class: 'tm-hint' }, file ? `Uploaded before: ${file.name}` : 'A .woff2, .woff, .ttf, or .otf file.');
+  const picker = el('input', {
+    class: 'tm-file', id: id('file'), type: 'file', accept: '.woff2,.woff,.ttf,.otf',
+    onchange: (e) => {
+      file = e.target.files[0];
+      if (!file) return;
+      chosen.hidden = true;
+      path.value = `/fonts/${file.name.replace(/[^\w.-]+/g, '-')}`;
+      if (!family.value.trim()) family.value = file.name.replace(/\.\w+$/, '').replace(/[-_]+/g, ' ');
+    },
+  });
+  const generic = field === 'monoFont' ? 'monospace' : 'sans-serif';
+  const fallback = el('select', { class: 'tm-select', id: id('fallback') }, ...[...new Set([now.fallback ?? generic, 'sans-serif', 'serif', 'monospace', 'cursive'])].map((f) => el('option', { value: f, selected: f === (now.fallback ?? generic) }, f)));
+  const weight = text('weight', { inputmode: 'numeric', value: first?.weight ?? '', placeholder: '400, or 100 900' });
+  const error = el('p', { class: 'tm-alert own-font-error', role: 'alert', hidden: true });
+
+  const linkPart = field_('link', 'Link to the font file', link, 'A .woff2, .woff, .ttf, or .otf file. Its site must let other sites load it.');
+  const uploadPart = el('div', { class: 'tm-stack' },
+    field_('file', 'Font file', picker, null),
+    chosen,
+    field_('path', 'Path on your site', path, 'The file stays in this browser. The export loads it from this path, so put the file there.'));
+  const seg = el('div', { class: 'tm-segmented', role: 'group', 'aria-label': 'Where the font file is' });
+  const show = () => {
+    seg.replaceChildren(...[['link', 'Link'], ['upload', 'Upload']].map(([value, label]) => el('button', {
+      type: 'button', 'aria-pressed': String(value === source), onclick: () => { source = value; show(); },
+    }, label)));
+    linkPart.hidden = source !== 'link';
+    uploadPart.hidden = source !== 'upload';
+  };
+  show();
+
+  const dialog = el('dialog', { class: `tm-theme tm-dialog own-font-dialog ${themeClass(state.selected)}`, 'aria-labelledby': id('title') });
+  if (ui.mode !== 'both') dialog.setAttribute('data-tm-mode', ui.mode);
+  const label = FONT_FIELDS.find(([f]) => f === field)[1].toLowerCase();
+  const save = () => {
+    const url = (source === 'link' ? link : path).value.trim();
+    const name = family.value.trim();
+    const w = weight.value.trim();
+    const problem = !name ? 'Give the font a name.'
+      : source === 'upload' && !file ? 'Choose a font file.'
+      : !FONT_URL.test(url) ? `The ${source === 'link' ? 'link' : 'path'} must end in .woff2, .woff, .ttf, or .otf, and have no spaces or quotes.`
+      : w && !FONT_WEIGHT.test(w) ? 'The weight is a number from 1 to 1000, such as 400. For a variable font, give two, such as 100 900.'
+      : '';
+    error.textContent = problem;
+    error.hidden = !problem;
+    if (problem) return;
+    if (source === 'upload') {
+      addUpload(url, file);
+      fontDb('readwrite', (s) => s.put({ path: url, file })).catch(() => { /* the preview works until a reload */ });
+    }
+    fontStatus.delete(url);
+    own()[field] = { family: name, fallback: fallback.value, src: [{ url, ...(w && { weight: /^\d+$/.test(w) ? Number(w) : w }) }] };
+    closeDialog(dialog);
+    update();
+  };
+
+  dialog.append(el('form', { class: 'tm-stack', method: 'dialog', onsubmit: (e) => { e.preventDefault(); save(); } },
+    el('h3', { class: 'tm-h3', id: id('title') }, `Your own ${label} font`),
+    field_('family', 'Font name', family, null),
+    seg, linkPart, uploadPart,
+    el('div', { class: 'own-font-pair' },
+      field_('fallback', 'Fallback', fallback, null),
+      field_('weight', 'Weight', weight, 'Optional.')),
+    error,
+    el('div', { class: 'tm-row own-font-actions' },
+      el('button', { class: 'tm-button tm-button--ghost', type: 'button', onclick: () => closeDialog(dialog) }, 'Cancel'),
+      el('button', { class: 'tm-button', type: 'submit' }, 'Use this font'))));
+  // Escape and a click on the backdrop close it with the exit motion. Closed, it goes away,
+  // and the focus goes back to the font field.
+  dialog.addEventListener('cancel', (e) => { e.preventDefault(); closeDialog(dialog); });
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) closeDialog(dialog); });
+  dialog.addEventListener('close', () => { dialog.remove(); $(`#font-${field}`)?.focus({ preventScroll: true }); });
+  document.body.append(dialog);
+  openDialog(dialog);
+  family.focus();
 }
 
 // Empty clears the theme's own font. "Browser default" sets the browser's font on
@@ -657,8 +827,9 @@ function renderControlsState() {
     const mineFont = mine[field];
     const sameAsBody = field === 'headingFont' && font.family === settings.font.family && font.fallback === settings.font.fallback;
     if (document.activeElement !== input) {
-      input.value = mineFont === undefined ? '' : typeof mineFont === 'string' ? mineFont : mineFont.family ?? BROWSER_FONT;
+      input.value = fontText(mineFont);
     }
+    renderOwnFontNote(field, mineFont);
     const shown = sameAsBody ? 'Same as body' : font.family ? font.family : `Browser ${font.fallback}`;
     input.placeholder = shown + (isRoot() || sameAsBody ? '' : fromParent);
     $(`#font-x-${field}`).hidden = !(field in mine);
@@ -1379,6 +1550,7 @@ function renderAll() {
 
 applyPane();
 renderAll();
+loadUploads();
 loadSharedLink();
 if (VIEWS.includes(location.hash.slice(1))) showView(location.hash.slice(1));
 
