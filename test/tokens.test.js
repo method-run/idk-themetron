@@ -47,16 +47,17 @@ test('every required pair passes APCA, at both levels', () => {
   }
 });
 
-test('headings are checked at their size in bold, and with APCA the larger ones can fade further', () => {
+test('headings are checked at their size at regular weight, and with APCA the larger ones can fade further', () => {
   const theme = (method) => buildThemes({ themes: { default: { contrast: { method }, feel: { softness: 1 } } } }).themes.default;
   const apca = theme('apca');
   const size = apca.primitives.font.size;
   const purposes = apca.modes.light.audit.filter((a) => /heading/.test(a.fg)).map((a) => a.purpose);
-  assert.deepEqual([...new Set(purposes)], ['lg', '2xl', '3xl'].map((s) => `text ${size[s]}px/700`));
-  // At softness 1, a heading is at the min-contrast grade for its size: lighter than body text.
+  assert.deepEqual([...new Set(purposes)], ['lg', '2xl', '3xl'].map((s) => `text ${size[s]}px/400`));
+  // At softness 1, a heading is at the min-contrast grade for its size: h1 is lighter than h3, and
+  // no heading is darker than muted text, which is at the min-contrast grade for body text.
   const grade = (t, name) => t.modes.light.tokens[name].grade;
   assert.ok(grade(apca, 'fg.base-heading-3xl') < grade(apca, 'fg.base-heading-lg'));
-  assert.ok(grade(apca, 'fg.base-heading-lg') < grade(apca, 'fg.base-muted'));
+  assert.ok(grade(apca, 'fg.base-heading-lg') <= grade(apca, 'fg.base-muted'));
   // WCAG 2 is the floor, so APCA headings are never lighter than WCAG 2 headings.
   const wcag = theme('wcag');
   for (const s of ['lg', '2xl', '3xl']) assert.ok(grade(apca, `fg.base-heading-${s}`) >= grade(wcag, `fg.base-heading-${s}`), s);

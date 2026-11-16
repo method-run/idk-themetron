@@ -36,7 +36,7 @@ APCA does not give the same result in both directions, and it gives less contras
 
 ## Text size and weight
 
-The engine checks body text and headings at their real size and weight. Body text uses the body size at regular weight (400). Headings use their own size, in bold (700), because the components set headings in bold.
+The engine checks body text and headings at their real size and weight. Body text uses the body size at regular weight (400). Headings use their own size, at regular weight (400). The components set headings in bold, and bold text needs less contrast, so this is the safe side. It holds for any heading weight from regular to bold.
 
 - **WCAG 2.** Text of 24 px or more is large text. Smaller text is body text. The engine does not use the WCAG 2 rule for bold text (18.66 px and bold), so the WCAG 2 results do not change.
 - **APCA.** APCA's font table gives the minimum Lc for each size and weight. Larger and bolder text needs less contrast. The engine uses the next larger Lc row (rows are 5 apart) and the next lighter weight column, so it never asks for less than the table.
@@ -49,9 +49,9 @@ For the default sizes, the minimums are:
 | Text | Size and weight | WCAG 2 standard | APCA standard | APCA enhanced |
 |---|---|---|---|---|
 | Body text | 15 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
-| `fg.base-heading-lg` (h3) | 18 px, 700 | 4.5:1 | Lc 55 | Lc 70 |
-| `fg.base-heading-2xl` (h2) | 26 px, 700 | 3:1 | Lc 45 | Lc 60 |
-| `fg.base-heading-3xl` (h1) | 31 px, 700 | 3:1 | Lc 45 | Lc 60 |
+| `fg.base-heading-lg` (h3) | 18 px, 400 | 4.5:1 | Lc 75 | Lc 90 |
+| `fg.base-heading-2xl` (h2) | 26 px, 400 | 3:1 | Lc 60 | Lc 75 |
+| `fg.base-heading-3xl` (h1) | 31 px, 400 | 3:1 | Lc 55 | Lc 70 |
 
 The grade gaps in the table above still use the fixed minimums for text, large text, and controls.
 
