@@ -11,7 +11,7 @@ tags: [system/components]
 # Components
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 16% (1/6)
+◐ 28% (2/7)
 <!-- idk-plans:progress:end -->
 
 The component library is one CSS file. It has no JavaScript. Each component reads only `--tm-*` tokens, so it follows any themetron theme and both modes.
@@ -41,6 +41,7 @@ The component library is one CSS file. It has no JavaScript. Each component read
 | Progress | `tm-progress` with a `span`, and `--value` | |
 | Tabs | `tm-tabs` with buttons that have `aria-selected` | |
 | Segmented control | `tm-segmented` with buttons that have `aria-pressed`, and `role="group"` with an `aria-label`. One control tall, borders included. | `--sm` |
+| Menu | `tm-menu` with `tm-menu-item` rows, `tm-menu-group` and `tm-menu-label` for groups, `tm-menu-note` for a note at the end of a row, and `tm-menu-empty` | The active row has `is-active`, and the chosen row `aria-selected="true"`, which shows a check. Set `--menu-item-font` on a row to give it its own font. See below. |
 | Dialog | `tm-dialog` on a `<dialog>` | Pops in with the enter curve. See below. |
 | Drawer | `tm-drawer` on a `<dialog>` | Slides in from the right. |
 | Text | `tm-h1`, `tm-h2`, `tm-h3`, `tm-text`, `tm-muted`, `tm-small`, `tm-code`, `tm-link` | |
@@ -73,6 +74,7 @@ The motion feels are removed for now. Until they come back, motion is the same i
 - A dialog or drawer moves only while it has the class `is-open`. To open it, call `showModal()`, then add `is-open` on the next frame. To close it, remove `is-open`, then call `close()` when the transition ends. The playground's `openDialog` and `closeDialog` in `demo/demo.js` do this.
 - Dialogs and drawers are opaque, so their text contrast is the checked contrast on `bg.surface`. As clarity rises, cards (`bg-panel`), fields (`field-alpha`), tints and quiet buttons (`tint-alpha`), and solid fills (`fill-alpha`) turn see-through, each down to its own limit, and inverted parts use the `-inverted` opacities. A button's shine is in layers behind the label, and fades less than the fill, so a nearly clear button still shows it. A label whose polarity matches the page behind it gets a halo of its part's fill color as the part fades: solid fills normally, and tints and quiet buttons when inverted. The audit warns where a label would fall short on its part as seen over the canvas or the surface. Over photos, put `tm-over-media` on the area: see-through parts then blur what is behind them, and text gets a halo.
 - **Rhythm grid.** Every part's outer edges, borders included, start and end on the rhythm grid, and so do text lines. Padding has the border width taken off it, down and across, so left edges line up too. Buttons, badges, tabs, and segmented controls round their width up to whole steps with `calc-size()`, so their right edges line up as well; browsers without it (before Chrome and Edge 129) keep the natural width. Parts that fill their container take its width, so their right edge follows the page. Line heights are fixed px values on the grid. Inline code and small print get `line-height: 0`, so they cannot stretch a line. A switch that is taller than its line is rounded up to whole steps. Native selects get a fixed height, because browsers size them by their own rules.
+- A menu is opaque, like a dialog, so its text contrast is the checked contrast on `bg.surface`. The active row uses `tint-action` and `on-tint-action`. A row's note keeps the menu's font when the row has its own. The CSS has no behavior: the page opens the menu, places it, and moves the active row. The playground's font fields do this with `combobox()` in `demo/combobox.js`: a text field with a menu that it filters as you type, with keys and ARIA roles. The menu is a popover, so it shows over panels that scroll.
 - With `prefers-reduced-motion`, transitions take no time.
 - **Performance.** Cards and controls read their blur from `--tm-backdrop` and `--tm-backdrop-control`, which are `none` when the clarity has no blur. Any `backdrop-filter`, even `blur(0px)`, gives a part its own layer that re-captures what is behind it. On many parts at once that costs memory, and can show blank rectangles for a moment on hover.
 - A test checks that every token that the CSS reads is in the theme's CSS.
@@ -82,7 +84,8 @@ The motion feels are removed for now. Until they come back, motion is the same i
 ## Tasks
 
 - [x] Add a dialog and a drawer
-- [ ] Add a menu, a tooltip, a table, and a toast
+- [x] Add a menu
+- [ ] Add a tooltip, a table, and a toast
 - [ ] Add a component test page with screenshots of each preset, to find visual regressions
 - [ ] Make a neumorphic variant for alerts and badges, which now use a flat tint
 - [ ] Publish the components as a separate package

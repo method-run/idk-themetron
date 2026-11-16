@@ -326,7 +326,6 @@ td code { font-family: var(--mono); font-size: 12px; }
 
     <div class="theme-cards" id="themes"></div>
     <div class="fader-hint">A child takes every setting that it does not override from its parent. A child that changes only its color is a color theme.</div>
-    <datalist id="font-list"></datalist>
   </aside>
   <div class="splitter" id="splitter" role="separator" tabindex="0" aria-orientation="vertical" aria-controls="controls" aria-label="Resize the inputs" aria-valuemin="260" aria-valuemax="640"></div>
 
@@ -453,6 +452,17 @@ td code { font-family: var(--mono); font-size: 12px; }
         <div class="tm-field">
           <label class="tm-label" for="f-team-NAME">Team</label>
           <select class="tm-select" id="f-team-NAME"><option>North</option><option>River</option></select>
+        </div>
+        <div class="tm-field">
+          <span class="tm-label" id="f-menu-NAME">Menu</span>
+          <div class="tm-menu" role="listbox" aria-labelledby="f-menu-NAME">
+            <div class="tm-menu-group" role="group" aria-labelledby="f-menu-g-NAME">
+              <div class="tm-menu-label" id="f-menu-g-NAME">Meeting point</div>
+              <div class="tm-menu-item" role="option" aria-selected="true">North gate<span class="tm-menu-note">9:00</span></div>
+              <div class="tm-menu-item is-active" role="option" aria-selected="false">River dock<span class="tm-menu-note">11:30</span></div>
+              <div class="tm-menu-item" role="option" aria-selected="false" style="--menu-item-font: var(--tm-font-mono)">Tide station 4<span class="tm-menu-note">Own font</span></div>
+            </div>
+          </div>
         </div>
         <div class="tm-field">
           <label class="tm-label" for="f-mail-NAME">Email</label>

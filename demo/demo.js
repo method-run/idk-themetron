@@ -2,6 +2,8 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
+import { combobox } from './combobox.js';
+import fontChoices from './font-choices.json';
 import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -25,18 +27,11 @@ const FEEL_HINTS = {
   clarity: 'How see-through cards, tints, fields, and fills are.',
 };
 
-const FONT_CHOICES = {
-  sans: ['Atkinson Hyperlegible', 'DM Sans', 'Figtree', 'Work Sans', 'Manrope', 'Nunito', 'Outfit', 'Public Sans', 'Rubik', 'Bricolage Grotesque', 'Syne', 'Archivo', 'Lexend', 'IBM Plex Sans', 'Inter'],
-  serif: ['Fraunces', 'Newsreader', 'Lora', 'Playfair Display', 'Instrument Serif', 'Literata', 'Source Serif 4', 'DM Serif Display', 'Young Serif'],
-  display: ['Archivo Black', 'Bungee', 'Righteous', 'Press Start 2P', 'Monoton', 'Rubik Mono One'],
-  mono: ['JetBrains Mono', 'IBM Plex Mono', 'Fira Code', 'Space Mono', 'DM Mono', 'Martian Mono'],
-};
+// The Google fonts that the font menus suggest, in groups. npm run fonts writes the file
+// from the filters on fonts.google.com. Any other Google font works too: type its name.
+const FONT_FALLBACKS = new Map(fontChoices.groups.flatMap((g) => g.fonts.map((f) => [f.family, f.fallback])));
 const FONT_FIELDS = [['font', 'Body'], ['headingFont', 'Heading'], ['monoFont', 'Mono']];
-const fallbackFor = (family, field) => {
-  if (field === 'monoFont' || FONT_CHOICES.mono.includes(family)) return 'monospace';
-  if (FONT_CHOICES.serif.includes(family)) return 'serif';
-  return 'sans-serif';
-};
+const fallbackFor = (family, field) => (field === 'monoFont' ? 'monospace' : FONT_FALLBACKS.get(family) ?? 'sans-serif');
 
 const START = {
   selected: ROOT,
@@ -437,15 +432,24 @@ const SECTION_CONTROLS = {
   // Each role is a Google font picker. Empty means the font comes from the parent, or
   // for the root, the browser. "Browser default" turns a parent's web font off.
   fonts: () => {
-    $('#font-list').replaceChildren(el('option', { value: BROWSER_FONT }), ...Object.values(FONT_CHOICES).flat().map((f) => el('option', { value: f })));
-    return FONT_FIELDS.map(([field, label]) => el('div', { class: 'font-row', 'data-font-row': field },
-      el('label', { class: 'font-label', for: `font-${field}` }, label),
-      el('input', {
-        id: `font-${field}`, list: 'font-list', spellcheck: 'false', autocomplete: 'off',
+    for (const menu of fontMenus) menu.destroy();
+    fontMenus = [];
+    return FONT_FIELDS.map(([field, label]) => {
+      const input = el('input', {
+        id: `font-${field}`, spellcheck: 'false', autocomplete: 'off',
         onchange: (e) => setFont(field, e.target.value.trim()),
-      }),
-      el('button', { class: 'x', type: 'button', id: `font-x-${field}`, 'aria-label': `Clear the ${label.toLowerCase()} font`, title: 'Clear', onclick: () => setFont(field, '') }, '×'),
-    )).concat(varianceFader());
+      });
+      fontMenus.push(combobox(input, {
+        groups: () => fontGroups(field),
+        onPick: (value) => setFont(field, value),
+        onOpen: themeMenu,
+        onGroupShown: loadFontPreviews,
+      }));
+      return el('div', { class: 'font-row', 'data-font-row': field },
+        el('label', { class: 'font-label', for: `font-${field}` }, label),
+        input,
+        el('button', { class: 'x', type: 'button', id: `font-x-${field}`, 'aria-label': `Clear the ${label.toLowerCase()} font`, title: 'Clear', onclick: () => setFont(field, '') }, '×'));
+    }).concat(varianceFader());
   },
   feel: () => {
     // Apply a preset: a one-time stamp. It sets every feel as the theme's own, and the theme
@@ -520,6 +524,47 @@ function varianceFader() {
 }
 
 const BROWSER_FONT = 'Browser default';
+
+// ---- Font menus: each row shows its name in its own font.
+let fontMenus = [];
+
+// The mono field lists the monospace fonts first.
+function fontGroups(field) {
+  const groups = fontChoices.groups.map((g) => ({
+    label: g.label,
+    items: g.fonts.map((f) => ({ value: f.family, note: g.label === 'Monospace' ? null : f.note, font: `"${PREVIEW_PREFIX}${f.family}", ${f.fallback}` })),
+  }));
+  if (field === 'monoFont') groups.sort((a, b) => (b.label === 'Monospace') - (a.label === 'Monospace'));
+  return [{ label: null, items: [{ value: BROWSER_FONT }] }, ...groups];
+}
+
+// The menu shows in the selected theme and the preview's mode, so it is a live sample of
+// the menu part too.
+function themeMenu(menu) {
+  menu.className = `tm-menu ${themeClass(state.selected)}`;
+  if (ui.mode === 'both') menu.removeAttribute('data-tm-mode');
+  else menu.setAttribute('data-tm-mode', ui.mode);
+}
+
+// Each group loads its fonts once, when it scrolls into view: one small request with only the
+// letters of the names (Google's text= subsets). They load under another name, so they never
+// stand in for the full fonts that a theme loads.
+const PREVIEW_PREFIX = 'Preview ';
+const previewsLoaded = new Set();
+async function loadFontPreviews(group) {
+  const families = group.items.map((i) => i.value).filter((f) => f !== BROWSER_FONT && !previewsLoaded.has(f));
+  if (!families.length) return;
+  families.forEach((f) => previewsLoaded.add(f));
+  const text = [...new Set(families.join(''))].join('');
+  const url = `https://fonts.googleapis.com/css2?${families.map((f) => `family=${encodeURIComponent(f).replace(/%20/g, '+')}`).join('&')}&text=${encodeURIComponent(text)}&display=swap`;
+  try {
+    const css = await (await fetch(url)).text();
+    document.head.append(el('style', { 'data-font-previews': group.label ?? '' }, css.replace(/font-family: '([^']+)'/g, `font-family: '${PREVIEW_PREFIX}$1'`)));
+  } catch {
+    // Offline: the rows keep their fallback fonts. Try again next time.
+    families.forEach((f) => previewsLoaded.delete(f));
+  }
+}
 
 // Empty clears the theme's own font. "Browser default" sets the browser's font on
 // purpose; on the root that is the same as empty.
