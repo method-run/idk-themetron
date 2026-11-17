@@ -259,6 +259,17 @@ export const TYPE_VARIANCE: FeelSpec;
 export const PRESETS: Record<PresetName, { label: string; feel: Partial<Record<FeelName, number>> }>;
 /** The root theme's name: "default". */
 export const ROOT: 'default';
+/** Child themes that most theme systems have, in the order to suggest them: the four status colors, then secondary and accent. */
+export const SEMANTIC_THEMES: ReadonlyArray<{
+  /** The theme name. */
+  name: string;
+  /** Other design systems' names for the same job. */
+  aliases: string[];
+  /** A suggested action color, as #rrggbb. */
+  color: string;
+  /** What the theme is for. */
+  use: string;
+}>;
 export const ROLES: Role[];
 export const INHERIT: 'inherit';
 export const ROOT_DEFAULTS: {

@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { FEELS, PRESETS, ROOT_DEFAULTS, InputError, feelWord, normalizeInputs, themeName, defaultLabel } from '../src/inputs.js';
+import { FEELS, PRESETS, ROOT_DEFAULTS, InputError, feelWord, normalizeInputs, themeName, defaultLabel, SEMANTIC_THEMES, THEME_NAME } from '../src/inputs.js';
+import { buildThemes } from '../src/tokens.js';
 
 test('no inputs give one root theme with every default', () => {
   const { order, resolved } = normalizeInputs({});
@@ -166,4 +167,17 @@ test('a font can name its own files, and each file is checked', () => {
   fails({ family: 'Inter', src: [{ url: '/a.woff2', weight: 1001 }] }, /weight/);
   fails({ family: 'Inter', src: [{ url: '/a.woff2', style: 'oblique' }] }, /style: use one of: normal, italic/);
   fails({ family: 'Inter', src: [{ url: '/a.woff2', format: 'woff2' }] }, /format: unknown field/);
+});
+
+test('the semantic theme names are valid, unique, and have colors', () => {
+  const names = SEMANTIC_THEMES.flatMap((s) => [s.name, ...s.aliases]);
+  assert.equal(new Set(names).size, names.length);
+  for (const s of SEMANTIC_THEMES) {
+    assert.match(s.name, THEME_NAME);
+    assert.match(s.color, /^#[0-9a-f]{6}$/);
+    assert.ok(s.use);
+  }
+  // Each one builds as a child of the root.
+  const themes = Object.fromEntries(SEMANTIC_THEMES.map((s) => [s.name, { parent: 'default', action: s.color }]));
+  assert.deepEqual(Object.keys(buildThemes({ themes }).themes).slice(1), SEMANTIC_THEMES.map((s) => s.name));
 });
