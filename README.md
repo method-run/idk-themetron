@@ -72,13 +72,15 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 <details>
 <summary>Publish a new version (for the maintainer)</summary>
 
-1. If the token contract changed, raise `CONTRACT_VERSION` and move the **Unreleased** changelog notes under it. See [Versions](./spec/consumers.md#versions "consumers").
-2. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
-3. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the README, and the license.
-4. If you changed a public function or the inputs, update `src/index.d.ts`. A test fails when `index.js` exports a name that `index.d.ts` does not declare.
-5. Run `npm version patch`, `npm version minor`, or `npm version major`. This changes the version in `package.json`, and makes a commit and a tag. The package version goes up whenever the contract version does, by at least as much.
-6. Run `npm publish --access public`. npm makes a scoped package private unless you ask, so use `--access public`. (`publishConfig` in `package.json` also sets it.) `prepublishOnly` runs the tests and the docs check first.
-7. Run `git push --follow-tags`.
+1. If the token contract changed, raise `CONTRACT_VERSION` and move the **Unreleased** notes of the [contract changelog](./spec/consumers.md#changelog "consumers") under it. See [Versions](./spec/consumers.md#versions "consumers").
+2. In [CHANGELOG.md](./CHANGELOG.md "changelog"), move the **Unreleased** notes under a heading for the new package version, such as `## 0.3.0`.
+3. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
+4. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the README, the changelog, and the license.
+5. If you changed a public function or the inputs, update `src/index.d.ts`. A test fails when `index.js` exports a name that `index.d.ts` does not declare.
+6. Run `npm version patch`, `npm version minor`, or `npm version major`. This changes the version in `package.json`, and makes a commit and a tag. The package version goes up whenever the contract version does, by at least as much.
+7. Run `npm publish --access public`. npm makes a scoped package private unless you ask, so use `--access public`. (`publishConfig` in `package.json` also sets it.) `prepublishOnly` runs the tests and the docs check first.
+8. Run `git push --follow-tags`.
+9. Make the GitHub release for the tag, with the changelog's notes for the version: `gh release create v0.3.0 --title v0.3.0 --notes "$(npm run -s release:notes)"`. `release:notes` prints the section of `CHANGELOG.md` for the version in `package.json`. For an alpha, add `--prerelease`.
 
 </details>
 
@@ -93,6 +95,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 - [Examples](./examples/README.md "examples"): A small theme tree, and the file that each pipeline level makes from it, up to a page that reads the tokens. Each level names its spec.
 - [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ● 100% (1/1)
 - [Playground](./demo/README.md "playground"): A web page where you change the inputs and see the components, palettes, tokens, and contrast audit change at once, in light and dark mode. ◐ 88% (8/9)
+- [Changelog](./CHANGELOG.md "changelog"): What changed in each version of the npm package. The token contract has its own changelog, in the consumers spec.
 <!-- idk-plans:children:end -->
 
 ## Tasks

@@ -253,12 +253,14 @@ To publish an alpha:
 1. If the contract changed since the last release or alpha, set `CONTRACT_VERSION` in `src/manifest.js` to the new alpha version, and run `npm run spec`.
 2. Run `npm version 0.2.0-alpha.0` for the first alpha of 0.2.0, and `npm version prerelease` for the next ones. It also runs `npm run spec:release`, which checks the versions and the stable tokens, but makes no copy.
 3. Push, and publish the package with `npm publish --tag next`.
+4. Make the GitHub release for the tag, with `--prerelease`. See "Publish a new version" in the [README](../README.md "idk-themetron").
 
 To release:
 
 1. If the contract changed, set `CONTRACT_VERSION` in `src/manifest.js` to the release version, such as `0.2.0` after `0.2.0-alpha.3`. Run `npm run spec`, and move the **Unreleased** notes under the new version.
 2. Run `npm version <patch|minor|major>`, or `npm version 0.2.0` after alphas. It also runs `npm run spec:release`, which copies the contract files to `spec/versions/<contract version>/`, and adds them to the version commit.
 3. Push, and publish the package.
+4. Make the GitHub release for the tag, with the notes from [CHANGELOG.md](../CHANGELOG.md "changelog"). See "Publish a new version" in the [README](../README.md "idk-themetron").
 
 `npm run spec:release` stops when:
 
@@ -267,6 +269,8 @@ To release:
 - The package is a release, and the contract is still an alpha.
 
 ## Changelog
+
+This is the changelog of the token contract. The npm package has its own: [CHANGELOG.md](../CHANGELOG.md "changelog").
 
 - **0.2.0:** icons and action gradients, in package 0.2.0. New experimental tokens `font-icon`, `icon-fill`, and `icon-weight`, for Material Symbols icons. A theme's new `icons` input sets them. The CSS loads the icon font with a second `@import`. New experimental tokens for the action gradient, which a theme's `action` input can now set: `action-angle`, the `-from` and `-to` ends of each `fill-action`, `fill-action-exact`, and `tint-action` state, and an `-image` for each. Without a gradient, the ends are the solid color. Themes with a gradient also have the ramps `action-from-*` and `action-to-*`. Action text, edges, and labels on tints have ends too: `fg-action-from` and `-to`, `border-action-from` and `-to`, and `on-tint-action-from` and `-to` for each state. `action-gradient` is `on` or `off`, for a style query.
 - **0.1.0:** the first contract, in package 0.1.0.
