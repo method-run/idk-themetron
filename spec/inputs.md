@@ -66,9 +66,9 @@ Most theme systems need the same few child themes. `SEMANTIC_THEMES` lists them,
 | `success` | positive | Things that went well, such as a saved form. |
 | `info` | information, informative | Neutral news and tips. |
 | `secondary` | | A second brand color, for parts that support the main one. |
-| `accent` | highlight | A few parts that stand out, such as a new feature. |
 
-- **Why these six.** The root theme is the main brand color. Nearly every design system names the four status colors: Bootstrap, MUI, Ant Design, daisyUI, Atlassian, Carbon, Polaris, Primer, and Spectrum. About half also have a secondary or an accent color. Six themes cover most sites. Fewer would leave out a status, and more would add names that few systems use.
+- **Why these five.** The root theme is the main brand color. Nearly every design system names the four status colors: Bootstrap, MUI, Ant Design, daisyUI, Atlassian, Carbon, Polaris, Primer, and Spectrum. Secondary comes last: in MUI and daisyUI, it is a second brand color, which a child theme can be. In Bootstrap and shadcn/ui, secondary is a quiet neutral, which every theme already has as its base tint and quiet button.
+- **No accent.** In Primer, Spectrum, and Radix, accent is the color that you act on: a theme's action color. In shadcn/ui, it is a faint hover background: the action tint. Only daisyUI has it as a third brand color. So every theme has an accent already.
 - **The framework exports** read the status themes by name: `danger` (or `error`), `warning`, `success`, and `info`. Their secondary and accent colors come from the root theme's tints, not from a theme.
 - **Another name for the same job.** When a theme already has a name from the "Other names" column, such as `error`, the playground does not suggest that job's name again.
 

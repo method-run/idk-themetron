@@ -62,7 +62,8 @@ export const ROOT = 'default';
 // Child themes that most theme systems have, in the order to suggest them. The root is the main
 // brand color, so these are the rest: the four status colors, which nearly every design system
 // names (Bootstrap, MUI, Ant, daisyUI, Atlassian, Carbon, Polaris, Primer, Spectrum), then
-// secondary and accent, which about half of them have. `aliases` are other systems' names for the
+// secondary, a second brand color, as in MUI and daisyUI. No accent: in most systems, accent is the
+// action color or its tint, which every theme has already. `aliases` are other systems' names for the
 // same job. `color` is a suggested action color to start from. The playground names a new child
 // with the first name that is not taken yet. The framework exports read the status themes by name
 // (see export.js): danger, warning, success, and info.
@@ -72,7 +73,6 @@ export const SEMANTIC_THEMES = [
   { name: 'success', aliases: ['positive'], color: '#2b8a3e', use: 'Things that went well, such as a saved form.' },
   { name: 'info', aliases: ['information', 'informative'], color: '#0b6bcb', use: 'Neutral news and tips.' },
   { name: 'secondary', aliases: [], color: '#6b5bd2', use: 'A second brand color, for parts that support the main one.' },
-  { name: 'accent', aliases: ['highlight'], color: '#0f9d8a', use: 'A few parts that stand out, such as a new feature.' },
 ];
 // A feel set to this takes the parent's value, even when the theme has a preset.
 export const INHERIT = 'inherit';
