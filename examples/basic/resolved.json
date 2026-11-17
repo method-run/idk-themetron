@@ -16,6 +16,7 @@
       "kind": "full",
       "base": "#6b7280",
       "action": "#2456e8",
+      "gradient": null,
       "font": {
         "family": "Figtree",
         "fallback": "sans-serif"
@@ -57,6 +58,7 @@
       "kind": "color",
       "base": "#1f8a3b",
       "action": "#1f8a3b",
+      "gradient": null,
       "font": {
         "family": "Figtree",
         "fallback": "sans-serif"
@@ -98,6 +100,7 @@
       "kind": "color",
       "base": "#e8890c",
       "action": "#e8890c",
+      "gradient": null,
       "font": {
         "family": "Figtree",
         "fallback": "sans-serif"
@@ -139,6 +142,7 @@
       "kind": "color",
       "base": "#d6336c",
       "action": "#d6336c",
+      "gradient": null,
       "font": {
         "family": "Figtree",
         "fallback": "sans-serif"
@@ -180,6 +184,7 @@
       "kind": "full",
       "base": "#6b7280",
       "action": "#8a4fff",
+      "gradient": null,
       "font": {
         "family": "Figtree",
         "fallback": "sans-serif"
@@ -221,6 +226,7 @@
       "kind": "color",
       "base": "#6b7280",
       "action": "#e8590c",
+      "gradient": null,
       "font": {
         "family": "Figtree",
         "fallback": "sans-serif"

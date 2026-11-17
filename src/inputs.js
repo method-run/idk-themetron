@@ -1,6 +1,6 @@
 // The human-friendly inputs: a tree of themes. Check them, fill in defaults, and
 // work out each theme's full settings from its parents.
-import { isHex, parseHex, toHex } from './color.js';
+import { isHex, mixOklch, parseHex, toHex } from './color.js';
 import { ICON_DEFAULTS, ICON_STYLES, ICON_WEIGHT } from './icons.js';
 
 // Each feel is a number from 0 to 1. A word from `stops` can stand for its number.
@@ -74,7 +74,7 @@ export const CONTRAST_LEVELS = ['standard', 'enhanced'];
 export const ROLES = ['base', 'action'];
 // Fields that change only colors. A theme that sets no other field is a color theme.
 // A label is only for people, so it does not make a theme a full theme either.
-const COLOR_FIELDS = ['parent', 'label', 'color', ...ROLES];
+const COLOR_FIELDS = ['parent', 'label', 'color', 'gradient', ...ROLES];
 // Old fields that the engine skips without a message.
 const IGNORED = ['fillLabel'];
 // Fields that version 2 does not have, and what to do instead.
@@ -161,7 +161,11 @@ export function normalizeInputs(raw = {}) {
       else fail(`${at}.label: use text, such as "Big Sale".`);
     }
     if ('color' in t) own.color = hexField(t.color, `${at}.color`, fail);
-    if ('action' in t) own.action = roleField(t.action, `${at}.action`, fail);
+    if ('action' in t) {
+      const gradient = actionGradient(t.action, `${at}.action`, fail);
+      if (gradient) Object.assign(own, { action: gradient.solidHex, gradient: gradient.gradient });
+      else own.action = roleField(t.action, `${at}.action`, fail, ['to', 'solid', 'angle']);
+    }
     if ('base' in t) own.base = roleField(t.base, `${at}.base`, fail);
     for (const field of FONT_FIELDS) if (field in t) own[field] = fontField(t[field], `${at}.${field}`, field, fail);
     if ('preset' in t) {
@@ -223,6 +227,9 @@ function resolveTheme(name, own, parent) {
     kind: parent && onlyColor ? 'color' : 'full',
     base: own.base ?? own.color ?? from.base,
     action: own.action ?? own.color ?? from.action,
+    // The action gradient comes with the action color: a theme that sets its own action color
+    // has its own gradient, or none.
+    gradient: own.action !== undefined || own.color !== undefined ? own.gradient ?? null : from.gradient ?? null,
     font: own.font ?? from.font,
     // The heading font follows the nearest theme that sets either font.
     headingFont: own.headingFont ?? own.font ?? from.headingFont,
@@ -255,17 +262,44 @@ function fromVersion1(themes) {
   }));
 }
 
-function roleField(value, at, fail) {
+// `also` names the other fields that the role takes, which another function checks.
+function roleField(value, at, fail, also = []) {
   if (typeof value === 'string') return hexField(value, at, fail);
   if (value && typeof value === 'object') {
     for (const key of Object.keys(value)) {
       if (key === 'white' || key === 'black') fail(`${at}.${key}: white and black limits are not ready yet. See the plan.`);
-      else if (key !== 'color') fail(`${at}.${key}: unknown field. Use "color".`);
+      else if (key !== 'color' && !also.includes(key)) fail(`${at}.${key}: unknown field. Use ${['color', ...also].map((k) => `"${k}"`).join(', ')}.`);
     }
     return value.color === undefined ? undefined : hexField(value.color, `${at}.color`, fail);
   }
   fail(`${at}: use a hex color, or { "color": "#808080" }.`);
   return undefined;
+}
+
+// The action gradient: { color, to, solid, angle }. `color` is the start and `to` the end. The
+// solid color, for every part without the gradient, is the OKLCH mix of the two at `solid`, from
+// 0 (the start, the default) to 1 (the end). `angle` is the CSS angle in degrees, 180 (top to
+// bottom) by default. Returns undefined when the value has no `to`: then it is a plain color.
+export const GRADIENT_DEFAULTS = { solid: 0, angle: 180 };
+function actionGradient(value, at, fail) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return undefined;
+  if (!('to' in value)) {
+    for (const key of ['solid', 'angle']) if (key in value) fail(`${at}.${key}: only a gradient has ${key === 'solid' ? 'a solid position' : 'an angle'}. Add "to", the end color.`);
+    return undefined;
+  }
+  if (!('color' in value)) fail(`${at}.to: a gradient needs "color", the start color, too.`);
+  const from = 'color' in value ? hexField(value.color, `${at}.color`, fail) : undefined;
+  const to = hexField(value.to, `${at}.to`, fail);
+  const solid = value.solid ?? GRADIENT_DEFAULTS.solid;
+  if (typeof solid !== 'number' || !(solid >= 0 && solid <= 1)) fail(`${at}.solid: use a number from 0 (the start color) to 1 (the end color).`);
+  const angle = value.angle ?? GRADIENT_DEFAULTS.angle;
+  if (typeof angle !== 'number' || !Number.isFinite(angle)) fail(`${at}.angle: use a number of degrees, such as 180 for top to bottom.`);
+  for (const key of Object.keys(value)) if (!['color', 'to', 'solid', 'angle'].includes(key)) fail(`${at}.${key}: unknown field. Use "color", "to", "solid", and "angle".`);
+  if (!from || !to || typeof solid !== 'number' || typeof angle !== 'number') return undefined;
+  return {
+    solidHex: toHex(mixOklch(parseHex(from), parseHex(to), solid)),
+    gradient: { from, to, solid, angle: ((angle % 360) + 360) % 360 },
+  };
 }
 
 // A font file: a URL with no spaces, quotes, or backslashes, whose path ends in a font extension.

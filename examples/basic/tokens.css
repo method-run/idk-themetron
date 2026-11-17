@@ -885,6 +885,7 @@
   --tm-action-95: #01005e;
   --tm-action-100: #000000;
   --tm-action-key: #2456e8;
+  --tm-action-angle: 180deg;
   --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-on-fill-action: light-dark(var(--tm-action-0), var(--tm-action-100));
   --tm-fill-action-hover: light-dark(var(--tm-action-55), var(--tm-action-35));
@@ -913,6 +914,18 @@
   --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
   --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
   --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
+  --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-tint-action-from: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-to: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-hover-from: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-hover-to: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-active-from: light-dark(var(--tm-action-25), var(--tm-action-75));
+  --tm-tint-action-active-to: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: light-dark(var(--tm-action-60), var(--tm-action-50));
   --tm-border-focus: light-dark(var(--tm-action-60), var(--tm-action-50));
@@ -926,6 +939,18 @@
   --tm-gloss-action-exact-top: light-dark(var(--tm-action-40), var(--tm-action-0));
   --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-80), var(--tm-action-20));
   --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-70), var(--tm-action-10));
+  --tm-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-0));
+  --tm-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-0));
+  --tm-on-fill-action-exact-from: light-dark(var(--tm-action-0), var(--tm-action-key));
+  --tm-on-fill-action-exact-to: light-dark(var(--tm-action-0), var(--tm-action-key));
+  --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-50), var(--tm-action-0));
+  --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-0), var(--tm-action-50));
+  --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-0), var(--tm-action-50));
+  --tm-fill-action-exact-active-from: light-dark(var(--tm-action-65), var(--tm-action-5));
+  --tm-fill-action-exact-active-to: light-dark(var(--tm-action-65), var(--tm-action-5));
+  --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-5), var(--tm-action-65));
+  --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-5), var(--tm-action-65));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-highlight-action: transparent;
   --tm-highlight-tint-action: transparent;
@@ -934,6 +959,15 @@
   --tm-text-shadow-action-exact: 0 0 #0000;
   --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
+  --tm-fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-from), var(--tm-fill-action-to));
+  --tm-fill-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-hover-from), var(--tm-fill-action-hover-to));
+  --tm-fill-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-active-from), var(--tm-fill-action-active-to));
+  --tm-fill-action-exact-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-from), var(--tm-fill-action-exact-to));
+  --tm-fill-action-exact-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-hover-from), var(--tm-fill-action-exact-hover-to));
+  --tm-fill-action-exact-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-active-from), var(--tm-fill-action-exact-active-to));
+  --tm-tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-from), var(--tm-tint-action-to));
+  --tm-tint-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-hover-from), var(--tm-tint-action-hover-to));
+  --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
 .theme-success {
@@ -959,6 +993,7 @@
   --tm-action-95: #001c05;
   --tm-action-100: #000000;
   --tm-action-key: #1f8a3b;
+  --tm-action-angle: 180deg;
   --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-on-fill-action: light-dark(var(--tm-action-0), var(--tm-action-100));
   --tm-fill-action-hover: light-dark(var(--tm-action-55), var(--tm-action-35));
@@ -987,6 +1022,18 @@
   --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
   --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
   --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
+  --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-tint-action-from: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-to: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-hover-from: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-hover-to: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-active-from: light-dark(var(--tm-action-25), var(--tm-action-75));
+  --tm-tint-action-active-to: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: var(--tm-action-50);
   --tm-border-focus: var(--tm-action-50);
@@ -1000,6 +1047,18 @@
   --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-30));
   --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-70));
   --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-60));
+  --tm-fill-action-exact-from: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-fill-action-exact-to: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-on-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-on-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-40), var(--tm-action-95));
+  --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-40), var(--tm-action-95));
+  --tm-fill-action-exact-active-from: light-dark(var(--tm-action-100), var(--tm-action-55));
+  --tm-fill-action-exact-active-to: light-dark(var(--tm-action-100), var(--tm-action-55));
+  --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-55), var(--tm-action-100));
+  --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-55), var(--tm-action-100));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-highlight-action: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1008,6 +1067,15 @@
   --tm-text-shadow-action-exact: 0 0 #0000;
   --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
+  --tm-fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-from), var(--tm-fill-action-to));
+  --tm-fill-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-hover-from), var(--tm-fill-action-hover-to));
+  --tm-fill-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-active-from), var(--tm-fill-action-active-to));
+  --tm-fill-action-exact-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-from), var(--tm-fill-action-exact-to));
+  --tm-fill-action-exact-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-hover-from), var(--tm-fill-action-exact-hover-to));
+  --tm-fill-action-exact-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-active-from), var(--tm-fill-action-exact-active-to));
+  --tm-tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-from), var(--tm-tint-action-to));
+  --tm-tint-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-hover-from), var(--tm-tint-action-hover-to));
+  --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
 .theme-warning {
@@ -1033,6 +1101,7 @@
   --tm-action-95: #261100;
   --tm-action-100: #000000;
   --tm-action-key: #e8890c;
+  --tm-action-angle: 180deg;
   --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-on-fill-action: light-dark(var(--tm-action-0), var(--tm-action-100));
   --tm-fill-action-hover: light-dark(var(--tm-action-55), var(--tm-action-35));
@@ -1061,6 +1130,18 @@
   --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
   --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
   --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
+  --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-tint-action-from: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-to: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-hover-from: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-hover-to: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-active-from: light-dark(var(--tm-action-25), var(--tm-action-75));
+  --tm-tint-action-active-to: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-30));
   --tm-border-action: light-dark(var(--tm-action-50), var(--tm-action-30));
   --tm-border-focus: light-dark(var(--tm-action-50), var(--tm-action-30));
@@ -1074,6 +1155,18 @@
   --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-10));
   --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-50));
   --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-fill-action-exact-from: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-fill-action-exact-to: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-on-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-on-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-95), var(--tm-action-25));
+  --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-95), var(--tm-action-25));
+  --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-25), var(--tm-action-95));
+  --tm-fill-action-exact-active-from: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-fill-action-exact-active-to: light-dark(var(--tm-action-100), var(--tm-action-40));
+  --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-40), var(--tm-action-100));
+  --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-40), var(--tm-action-100));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-highlight-action: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1082,6 +1175,15 @@
   --tm-text-shadow-action-exact: 0 0 #0000;
   --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
+  --tm-fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-from), var(--tm-fill-action-to));
+  --tm-fill-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-hover-from), var(--tm-fill-action-hover-to));
+  --tm-fill-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-active-from), var(--tm-fill-action-active-to));
+  --tm-fill-action-exact-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-from), var(--tm-fill-action-exact-to));
+  --tm-fill-action-exact-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-hover-from), var(--tm-fill-action-exact-hover-to));
+  --tm-fill-action-exact-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-active-from), var(--tm-fill-action-exact-active-to));
+  --tm-tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-from), var(--tm-tint-action-to));
+  --tm-tint-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-hover-from), var(--tm-tint-action-hover-to));
+  --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
 .theme-danger {
@@ -1107,6 +1209,7 @@
   --tm-action-95: #360013;
   --tm-action-100: #000000;
   --tm-action-key: #d6336c;
+  --tm-action-angle: 180deg;
   --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-on-fill-action: light-dark(var(--tm-action-0), var(--tm-action-100));
   --tm-fill-action-hover: light-dark(var(--tm-action-55), var(--tm-action-35));
@@ -1135,6 +1238,18 @@
   --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
   --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
   --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
+  --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-tint-action-from: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-to: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-hover-from: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-hover-to: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-active-from: light-dark(var(--tm-action-25), var(--tm-action-75));
+  --tm-tint-action-active-to: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: var(--tm-action-50);
   --tm-border-focus: var(--tm-action-50);
@@ -1148,6 +1263,18 @@
   --tm-gloss-action-exact-top: light-dark(var(--tm-action-30), var(--tm-action-0));
   --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-70), var(--tm-action-20));
   --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-60), var(--tm-action-10));
+  --tm-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-0));
+  --tm-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-0));
+  --tm-on-fill-action-exact-from: light-dark(var(--tm-action-0), var(--tm-action-key));
+  --tm-on-fill-action-exact-to: light-dark(var(--tm-action-0), var(--tm-action-key));
+  --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-45), var(--tm-action-0));
+  --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-45), var(--tm-action-0));
+  --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-0), var(--tm-action-45));
+  --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-0), var(--tm-action-45));
+  --tm-fill-action-exact-active-from: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-fill-action-exact-active-to: light-dark(var(--tm-action-60), var(--tm-action-5));
+  --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-5), var(--tm-action-60));
+  --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-5), var(--tm-action-60));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-highlight-action: transparent;
   --tm-highlight-tint-action: transparent;
@@ -1156,6 +1283,15 @@
   --tm-text-shadow-action-exact: 0 0 #0000;
   --tm-text-shadow-tint-action: 0 0 #0000;
   --tm-glow-tint-action: transparent;
+  --tm-fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-from), var(--tm-fill-action-to));
+  --tm-fill-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-hover-from), var(--tm-fill-action-hover-to));
+  --tm-fill-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-active-from), var(--tm-fill-action-active-to));
+  --tm-fill-action-exact-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-from), var(--tm-fill-action-exact-to));
+  --tm-fill-action-exact-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-hover-from), var(--tm-fill-action-exact-hover-to));
+  --tm-fill-action-exact-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-active-from), var(--tm-fill-action-exact-active-to));
+  --tm-tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-from), var(--tm-tint-action-to));
+  --tm-tint-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-hover-from), var(--tm-tint-action-hover-to));
+  --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
 .theme-promo {
@@ -1181,6 +1317,7 @@
   --tm-action-95: #20004b;
   --tm-action-100: #000000;
   --tm-action-key: #8a4fff;
+  --tm-action-angle: 180deg;
   --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-on-fill-action: light-dark(var(--tm-action-0), var(--tm-action-100));
   --tm-fill-action-hover: light-dark(var(--tm-action-55), var(--tm-action-35));
@@ -1209,6 +1346,18 @@
   --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
   --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
   --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
+  --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-tint-action-from: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-to: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-hover-from: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-hover-to: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-active-from: light-dark(var(--tm-action-25), var(--tm-action-75));
+  --tm-tint-action-active-to: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: var(--tm-action-50);
   --tm-border-focus: var(--tm-action-50);
@@ -1222,6 +1371,18 @@
   --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-30));
   --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-70));
   --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-60));
+  --tm-fill-action-exact-from: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-fill-action-exact-to: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-on-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-on-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-95), var(--tm-action-40));
+  --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-40), var(--tm-action-95));
+  --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-40), var(--tm-action-95));
+  --tm-fill-action-exact-active-from: light-dark(var(--tm-action-100), var(--tm-action-55));
+  --tm-fill-action-exact-active-to: light-dark(var(--tm-action-100), var(--tm-action-55));
+  --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-55), var(--tm-action-100));
+  --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-55), var(--tm-action-100));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-highlight-action: light-dark(color-mix(in oklch, var(--tm-gloss-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-rim) 16.5%, transparent));
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
@@ -1230,6 +1391,15 @@
   --tm-text-shadow-action-exact: -1px -1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-shadow) 16.5%, transparent), transparent), 1px 1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-action-exact-rim) 9.9%, transparent));
   --tm-text-shadow-tint-action: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-tint-action-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 9.9%, transparent), transparent);
   --tm-glow-tint-action: color-mix(in oklch, var(--tm-gloss-tint-action-rim) 6.6%, transparent);
+  --tm-fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-from), var(--tm-fill-action-to));
+  --tm-fill-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-hover-from), var(--tm-fill-action-hover-to));
+  --tm-fill-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-active-from), var(--tm-fill-action-active-to));
+  --tm-fill-action-exact-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-from), var(--tm-fill-action-exact-to));
+  --tm-fill-action-exact-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-hover-from), var(--tm-fill-action-exact-hover-to));
+  --tm-fill-action-exact-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-active-from), var(--tm-fill-action-exact-active-to));
+  --tm-tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-from), var(--tm-tint-action-to));
+  --tm-tint-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-hover-from), var(--tm-tint-action-hover-to));
+  --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
 .theme-sale {
@@ -1255,6 +1425,7 @@
   --tm-action-95: #2e0b00;
   --tm-action-100: #000000;
   --tm-action-key: #e8590c;
+  --tm-action-angle: 180deg;
   --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-on-fill-action: light-dark(var(--tm-action-0), var(--tm-action-100));
   --tm-fill-action-hover: light-dark(var(--tm-action-55), var(--tm-action-35));
@@ -1283,6 +1454,18 @@
   --tm-gloss-tint-action-active-top: light-dark(var(--tm-action-15), var(--tm-action-65));
   --tm-gloss-tint-action-active-shadow: light-dark(var(--tm-action-35), var(--tm-action-85));
   --tm-gloss-tint-action-active-bottom: light-dark(var(--tm-action-30), var(--tm-action-80));
+  --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+  --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+  --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
+  --tm-tint-action-from: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-to: light-dark(var(--tm-action-5), var(--tm-action-95));
+  --tm-tint-action-hover-from: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-hover-to: light-dark(var(--tm-action-15), var(--tm-action-85));
+  --tm-tint-action-active-from: light-dark(var(--tm-action-25), var(--tm-action-75));
+  --tm-tint-action-active-to: light-dark(var(--tm-action-25), var(--tm-action-75));
   --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
   --tm-border-action: light-dark(var(--tm-action-50), var(--tm-action-40));
   --tm-border-focus: light-dark(var(--tm-action-50), var(--tm-action-40));
@@ -1296,6 +1479,18 @@
   --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-20));
   --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-60));
   --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-50));
+  --tm-fill-action-exact-from: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-fill-action-exact-to: light-dark(var(--tm-action-100), var(--tm-action-key));
+  --tm-on-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-on-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-100));
+  --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-95), var(--tm-action-35));
+  --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-95), var(--tm-action-35));
+  --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-35), var(--tm-action-95));
+  --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-35), var(--tm-action-95));
+  --tm-fill-action-exact-active-from: light-dark(var(--tm-action-100), var(--tm-action-50));
+  --tm-fill-action-exact-active-to: light-dark(var(--tm-action-100), var(--tm-action-50));
+  --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-50), var(--tm-action-100));
+  --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-50), var(--tm-action-100));
   --tm-border-action-exact: var(--tm-action-key);
   --tm-highlight-action: light-dark(color-mix(in oklch, var(--tm-gloss-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-action-rim) 16.5%, transparent));
   --tm-highlight-tint-action: light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 33%, transparent), color-mix(in oklch, var(--tm-gloss-tint-action-rim) 16.5%, transparent));
@@ -1304,6 +1499,15 @@
   --tm-text-shadow-action-exact: -1px -1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-action-exact-shadow) 16.5%, transparent), transparent), 1px 1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-action-exact-rim) 9.9%, transparent));
   --tm-text-shadow-tint-action: -1px -1px 0 light-dark(transparent, color-mix(in oklch, var(--tm-gloss-tint-action-shadow) 16.5%, transparent)), 1px 1px 0 light-dark(color-mix(in oklch, var(--tm-gloss-tint-action-rim) 9.9%, transparent), transparent);
   --tm-glow-tint-action: color-mix(in oklch, var(--tm-gloss-tint-action-rim) 6.6%, transparent);
+  --tm-fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-from), var(--tm-fill-action-to));
+  --tm-fill-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-hover-from), var(--tm-fill-action-hover-to));
+  --tm-fill-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-active-from), var(--tm-fill-action-active-to));
+  --tm-fill-action-exact-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-from), var(--tm-fill-action-exact-to));
+  --tm-fill-action-exact-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-hover-from), var(--tm-fill-action-exact-hover-to));
+  --tm-fill-action-exact-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-fill-action-exact-active-from), var(--tm-fill-action-exact-active-to));
+  --tm-tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-from), var(--tm-tint-action-to));
+  --tm-tint-action-hover-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-hover-from), var(--tm-tint-action-hover-to));
+  --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
 .tm-invert { --tm-elevation-1: var(--tm-elevation-1-flipped); --tm-elevation-2: var(--tm-elevation-2-flipped); --tm-elevation-3: var(--tm-elevation-3-flipped); --tm-fill-alpha: var(--tm-fill-alpha-inverted); --tm-tint-alpha: var(--tm-tint-alpha-inverted); --tm-bg-panel: var(--tm-bg-panel-inverted); }
@@ -1344,6 +1548,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fill-action-from: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-to: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-85), var(--tm-action-25));
     --tm-fg-action: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-fill-action-exact: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-fill-action-exact: light-dark(var(--tm-action-0), var(--tm-action-100));
@@ -1355,6 +1565,18 @@
     --tm-gloss-action-exact-top: light-dark(var(--tm-action-60), var(--tm-action-5));
     --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
     --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-fill-action-exact-from: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-exact-to: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-on-fill-action-exact-from: light-dark(var(--tm-action-0), var(--tm-action-100));
+    --tm-on-fill-action-exact-to: light-dark(var(--tm-action-0), var(--tm-action-100));
+    --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-0), var(--tm-action-95));
+    --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-0), var(--tm-action-95));
+    --tm-fill-action-exact-active-from: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-fill-action-exact-active-to: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-5), var(--tm-action-100));
+    --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-5), var(--tm-action-100));
   }
   .theme-warning {
     --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1367,6 +1589,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fill-action-from: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-to: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-85), var(--tm-action-25));
     --tm-fg-action: light-dark(var(--tm-action-80), var(--tm-action-20));
   }
 }
@@ -1402,6 +1630,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fill-action-from: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-to: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-85), var(--tm-action-25));
     --tm-fg-action: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-fill-action-exact: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-fill-action-exact: light-dark(var(--tm-action-0), var(--tm-action-100));
@@ -1413,6 +1647,18 @@
     --tm-gloss-action-exact-top: light-dark(var(--tm-action-60), var(--tm-action-5));
     --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-95), var(--tm-action-40));
     --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-90), var(--tm-action-30));
+    --tm-fill-action-exact-from: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-exact-to: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-on-fill-action-exact-from: light-dark(var(--tm-action-0), var(--tm-action-100));
+    --tm-on-fill-action-exact-to: light-dark(var(--tm-action-0), var(--tm-action-100));
+    --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-0), var(--tm-action-95));
+    --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-0), var(--tm-action-95));
+    --tm-fill-action-exact-active-from: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-fill-action-exact-active-to: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-5), var(--tm-action-100));
+    --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-5), var(--tm-action-100));
   }
   :scope:is(.theme-warning), .theme-warning {
     --tm-fill-action: light-dark(var(--tm-action-80), var(--tm-action-20));
@@ -1425,6 +1671,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-90), var(--tm-action-10));
+    --tm-fill-action-from: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-to: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-75), var(--tm-action-15));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-85), var(--tm-action-25));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-85), var(--tm-action-25));
     --tm-fg-action: light-dark(var(--tm-action-80), var(--tm-action-20));
   }
 }
@@ -1460,6 +1712,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
     --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-fill-action-exact: light-dark(var(--tm-action-key), var(--tm-action-0));
     --tm-on-fill-action-exact: light-dark(var(--tm-action-0), var(--tm-action-key));
@@ -1471,6 +1729,18 @@
     --tm-gloss-action-exact-top: light-dark(var(--tm-action-40), var(--tm-action-0));
     --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-70), var(--tm-action-10));
+    --tm-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-0));
+    --tm-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-0));
+    --tm-on-fill-action-exact-from: light-dark(var(--tm-action-0), var(--tm-action-key));
+    --tm-on-fill-action-exact-to: light-dark(var(--tm-action-0), var(--tm-action-key));
+    --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-50), var(--tm-action-0));
+    --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-50), var(--tm-action-0));
+    --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-0), var(--tm-action-50));
+    --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-0), var(--tm-action-50));
+    --tm-fill-action-exact-active-from: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-fill-action-exact-active-to: light-dark(var(--tm-action-65), var(--tm-action-5));
+    --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-5), var(--tm-action-65));
+    --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-5), var(--tm-action-65));
   }
   :scope:is(.theme-success, .theme-promo), .theme-success, .theme-promo {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1483,6 +1753,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
     --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-fill-action-exact: light-dark(var(--tm-action-100), var(--tm-action-key));
     --tm-on-fill-action-exact: light-dark(var(--tm-action-key), var(--tm-action-100));
@@ -1494,6 +1770,18 @@
     --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-30));
     --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-70));
     --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-60));
+    --tm-fill-action-exact-from: light-dark(var(--tm-action-100), var(--tm-action-key));
+    --tm-fill-action-exact-to: light-dark(var(--tm-action-100), var(--tm-action-key));
+    --tm-on-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-100));
+    --tm-on-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-100));
+    --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-95), var(--tm-action-40));
+    --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-40), var(--tm-action-95));
+    --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-40), var(--tm-action-95));
+    --tm-fill-action-exact-active-from: light-dark(var(--tm-action-100), var(--tm-action-55));
+    --tm-fill-action-exact-active-to: light-dark(var(--tm-action-100), var(--tm-action-55));
+    --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-55), var(--tm-action-100));
+    --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-55), var(--tm-action-100));
   }
   :scope:is(.theme-warning), .theme-warning {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1506,6 +1794,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-30));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-20));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-10));
+    --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
     --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-30));
   }
   :scope:is(.theme-danger), .theme-danger {
@@ -1519,6 +1813,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
     --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-fill-action-exact: light-dark(var(--tm-action-key), var(--tm-action-0));
     --tm-on-fill-action-exact: light-dark(var(--tm-action-0), var(--tm-action-key));
@@ -1530,6 +1830,18 @@
     --tm-gloss-action-exact-top: light-dark(var(--tm-action-30), var(--tm-action-0));
     --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-70), var(--tm-action-20));
     --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-60), var(--tm-action-10));
+    --tm-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-0));
+    --tm-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-0));
+    --tm-on-fill-action-exact-from: light-dark(var(--tm-action-0), var(--tm-action-key));
+    --tm-on-fill-action-exact-to: light-dark(var(--tm-action-0), var(--tm-action-key));
+    --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-45), var(--tm-action-0));
+    --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-45), var(--tm-action-0));
+    --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-0), var(--tm-action-45));
+    --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-0), var(--tm-action-45));
+    --tm-fill-action-exact-active-from: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-fill-action-exact-active-to: light-dark(var(--tm-action-60), var(--tm-action-5));
+    --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-5), var(--tm-action-60));
+    --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-5), var(--tm-action-60));
   }
   :scope:is(.theme-sale), .theme-sale {
     --tm-fill-action: light-dark(var(--tm-action-60), var(--tm-action-40));
@@ -1542,6 +1854,12 @@
     --tm-on-tint-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-on-tint-action-hover: light-dark(var(--tm-action-70), var(--tm-action-30));
     --tm-on-tint-action-active: light-dark(var(--tm-action-80), var(--tm-action-20));
+    --tm-fill-action-from: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-to: light-dark(var(--tm-action-60), var(--tm-action-40));
+    --tm-fill-action-hover-from: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-hover-to: light-dark(var(--tm-action-55), var(--tm-action-35));
+    --tm-fill-action-active-from: light-dark(var(--tm-action-65), var(--tm-action-45));
+    --tm-fill-action-active-to: light-dark(var(--tm-action-65), var(--tm-action-45));
     --tm-fg-action: light-dark(var(--tm-action-60), var(--tm-action-40));
     --tm-fill-action-exact: light-dark(var(--tm-action-100), var(--tm-action-key));
     --tm-on-fill-action-exact: light-dark(var(--tm-action-key), var(--tm-action-100));
@@ -1553,5 +1871,17 @@
     --tm-gloss-action-exact-top: light-dark(var(--tm-action-80), var(--tm-action-20));
     --tm-gloss-action-exact-shadow: light-dark(var(--tm-action-100), var(--tm-action-60));
     --tm-gloss-action-exact-bottom: light-dark(var(--tm-action-100), var(--tm-action-50));
+    --tm-fill-action-exact-from: light-dark(var(--tm-action-100), var(--tm-action-key));
+    --tm-fill-action-exact-to: light-dark(var(--tm-action-100), var(--tm-action-key));
+    --tm-on-fill-action-exact-from: light-dark(var(--tm-action-key), var(--tm-action-100));
+    --tm-on-fill-action-exact-to: light-dark(var(--tm-action-key), var(--tm-action-100));
+    --tm-fill-action-exact-hover-from: light-dark(var(--tm-action-95), var(--tm-action-35));
+    --tm-fill-action-exact-hover-to: light-dark(var(--tm-action-95), var(--tm-action-35));
+    --tm-on-fill-action-exact-hover-from: light-dark(var(--tm-action-35), var(--tm-action-95));
+    --tm-on-fill-action-exact-hover-to: light-dark(var(--tm-action-35), var(--tm-action-95));
+    --tm-fill-action-exact-active-from: light-dark(var(--tm-action-100), var(--tm-action-50));
+    --tm-fill-action-exact-active-to: light-dark(var(--tm-action-100), var(--tm-action-50));
+    --tm-on-fill-action-exact-active-from: light-dark(var(--tm-action-50), var(--tm-action-100));
+    --tm-on-fill-action-exact-active-to: light-dark(var(--tm-action-50), var(--tm-action-100));
   }
 }

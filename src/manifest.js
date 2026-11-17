@@ -3,7 +3,7 @@
 // `npm run spec` writes them to spec/. A test fails when the files and the code differ.
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
-import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES } from './inputs.js';
+import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES, GRADIENT_DEFAULTS } from './inputs.js';
 import { ICON_DEFAULTS, ICON_STYLES, ICON_WEIGHT } from './icons.js';
 
 // The version of the token contract. It is not the package version.
@@ -69,6 +69,10 @@ const MEANING = {
   'border-action': 'The edges of parts that you act on, such as outline buttons. Passes the control contrast.',
   'fill-action': 'Solid fills that you act on, such as primary buttons, checked boxes, and switches.',
   'fill-action-hover': 'An action fill on hover: 5 grade numbers lighter, in both modes.',
+  'fill-action-from': 'The start of the action gradient on fill-action: the same grade from the start color\'s ramp. fill-action without a gradient. Each fill and tint state has -from and -to.',
+  'fill-action-to': 'The end of the action gradient on fill-action: the same grade from the end color\'s ramp. fill-action without a gradient.',
+  'fill-action-image': 'The action gradient on fill-action, opaque: linear-gradient(action-angle in oklch, fill-action-from, fill-action-to). Each fill and tint state has an -image.',
+  'action-angle': 'The direction of the action gradient: 90deg runs left to right.',
   'fill-action-active': 'An action fill while it is pressed: 5 grade numbers darker, in both modes.',
   'on-fill-action': 'Text and icons on fill-action.',
   'on-fill-action-hover': 'Text and icons on fill-action-hover: the label moved as far as the fill, so the contrast stays the same.',
@@ -238,7 +242,23 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
           parent: { type: 'string', description: `The name of the parent theme. Not allowed on "${ROOT}".` },
           label: { type: 'string', pattern: '\\S', description: 'The text that people see, such as "Big Sale". Any case, with spaces. The theme name is still the ID in classes and tokens. Not inherited.' },
           base: { $ref: '#/$defs/role', description: 'The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set.' },
-          action: { $ref: '#/$defs/role', description: 'The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set.' },
+          action: {
+            description: 'The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set. Or a gradient, for solid fills, soft buttons, and badges.',
+            anyOf: [
+              { $ref: '#/$defs/role' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                required: ['color', 'to'],
+                properties: {
+                  color: { $ref: '#/$defs/hex', description: 'The start color.' },
+                  to: { $ref: '#/$defs/hex', description: 'The end color.' },
+                  solid: { type: 'number', minimum: 0, maximum: 1, description: `Where the solid color sits, from 0 (the start) to 1 (the end). Parts without the gradient use it. Default: ${GRADIENT_DEFAULTS.solid}.` },
+                  angle: { type: 'number', description: `The CSS angle in degrees. Default: ${GRADIENT_DEFAULTS.angle}, top to bottom.` },
+                },
+              },
+            ],
+          },
           color: { $ref: '#/$defs/hex', description: 'Sets both base and action. base and action override it.' },
           fillLabel: { deprecated: true, description: 'Ignored. Every fill has light labels in light mode and dark labels in dark mode. To flip one part, put the class tm-invert on it.' },
           font: { $ref: '#/$defs/font' },
