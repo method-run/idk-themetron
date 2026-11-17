@@ -784,7 +784,15 @@
       "modes": false,
       "role": "action",
       "stability": "experimental",
-      "meaning": "The direction of the action gradient: 90deg runs left to right."
+      "meaning": "The direction of the action gradient: 180deg (the default) runs top to bottom."
+    },
+    "action-gradient": {
+      "tier": "primitive",
+      "type": "fontFamily",
+      "modes": false,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "\"on\" when the action color is a gradient, else \"off\". For a style query: @container style(--tm-action-gradient: on)."
     },
     "font-icon": {
       "tier": "primitive",
@@ -1409,92 +1417,6 @@
       "role": "action",
       "stability": "experimental"
     },
-    "fill-action-from": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental",
-      "meaning": "The start of the action gradient on fill-action: the same grade from the start color's ramp. fill-action without a gradient. Each fill and tint state has -from and -to."
-    },
-    "fill-action-to": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental",
-      "meaning": "The end of the action gradient on fill-action: the same grade from the end color's ramp. fill-action without a gradient."
-    },
-    "fill-action-hover-from": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "fill-action-hover-to": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "fill-action-active-from": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "fill-action-active-to": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "tint-action-from": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "tint-action-to": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "tint-action-hover-from": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "tint-action-hover-to": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "tint-action-active-from": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
-    "tint-action-active-to": {
-      "tier": "semantic",
-      "type": "color",
-      "modes": true,
-      "role": "action",
-      "stability": "experimental"
-    },
     "gloss-base-muted-rim": {
       "tier": "semantic",
       "type": "color",
@@ -1622,6 +1544,162 @@
       "role": "action",
       "stability": "stable",
       "meaning": "Focus rings. The same as border-action."
+    },
+    "fill-action-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The start of the action gradient on fill-action: the same grade from the start color's ramp. fill-action without a gradient. Each fill and tint state has -from and -to."
+    },
+    "fill-action-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental",
+      "meaning": "The end of the action gradient on fill-action: the same grade from the end color's ramp. fill-action without a gradient."
+    },
+    "fill-action-hover-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "fill-action-hover-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "fill-action-active-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "fill-action-active-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "on-tint-action-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "on-tint-action-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action-hover-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action-hover-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "on-tint-action-hover-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "on-tint-action-hover-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action-active-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "tint-action-active-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "on-tint-action-active-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "on-tint-action-active-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "fg-action-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "fg-action-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "border-action-from": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
+    },
+    "border-action-to": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "action",
+      "stability": "experimental"
     },
     "fill-action-exact": {
       "tier": "semantic",

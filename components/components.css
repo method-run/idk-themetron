@@ -147,7 +147,8 @@
   border-radius: var(--tm-radius-control);
   /* Fills and tints turn see-through at high clarity: --tm-fill-alpha for solid fills, and
      --tm-tint-alpha for tints. */
-  background-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+  --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+  background-image: var(--_fill-image);
   /* From the outer edge, so a see-through edge shows the gradient's own ends. */
   background-origin: border-box;
   /* A light frost: a quarter of the cards' blur, so see-through buttons stay see-through. */
@@ -228,9 +229,9 @@
 
 /* Soft and quiet buttons are page-like surfaces: their label is on the far side of the page, as
    on a card. So they fade with the tints, not with the solid fills. */
-.tm-button--soft { --_bg: var(--tm-tint-action); --_bg-from: var(--tm-tint-action-from); --_bg-to: var(--tm-tint-action-to); --_fg: var(--tm-on-tint-action); --_edge: transparent; --_alpha: var(--tm-tint-alpha); --_line: var(--tm-text-shadow-tint-action); --_halo-strength: var(--_tint-faded); --_shade-color: var(--tm-gloss-tint-action-shadow); --_shade-bottom: var(--tm-gloss-tint-action-bottom); }
-.tm-button--soft:hover { --_bg: var(--tm-tint-action-hover); --_bg-from: var(--tm-tint-action-hover-from); --_bg-to: var(--tm-tint-action-hover-to); --_fg: var(--tm-on-tint-action-hover); --_shade-color: var(--tm-gloss-tint-action-hover-shadow); --_shade-bottom: var(--tm-gloss-tint-action-hover-bottom); }
-.tm-button--soft:active { --_bg: var(--tm-tint-action-active); --_bg-from: var(--tm-tint-action-active-from); --_bg-to: var(--tm-tint-action-active-to); --_fg: var(--tm-on-tint-action-active); --_shade-color: var(--tm-gloss-tint-action-active-shadow); --_shade-bottom: var(--tm-gloss-tint-action-active-bottom); }
+.tm-button--soft { --_text-from: var(--tm-on-tint-action-from); --_text-to: var(--tm-on-tint-action-to); --_bg: var(--tm-tint-action); --_bg-from: var(--tm-tint-action-from); --_bg-to: var(--tm-tint-action-to); --_fg: var(--tm-on-tint-action); --_edge: transparent; --_alpha: var(--tm-tint-alpha); --_line: var(--tm-text-shadow-tint-action); --_halo-strength: var(--_tint-faded); --_shade-color: var(--tm-gloss-tint-action-shadow); --_shade-bottom: var(--tm-gloss-tint-action-bottom); }
+.tm-button--soft:hover { --_text-from: var(--tm-on-tint-action-hover-from); --_text-to: var(--tm-on-tint-action-hover-to); --_bg: var(--tm-tint-action-hover); --_bg-from: var(--tm-tint-action-hover-from); --_bg-to: var(--tm-tint-action-hover-to); --_fg: var(--tm-on-tint-action-hover); --_shade-color: var(--tm-gloss-tint-action-hover-shadow); --_shade-bottom: var(--tm-gloss-tint-action-hover-bottom); }
+.tm-button--soft:active { --_text-from: var(--tm-on-tint-action-active-from); --_text-to: var(--tm-on-tint-action-active-to); --_bg: var(--tm-tint-action-active); --_bg-from: var(--tm-tint-action-active-from); --_bg-to: var(--tm-tint-action-active-to); --_fg: var(--tm-on-tint-action-active); --_shade-color: var(--tm-gloss-tint-action-active-shadow); --_shade-bottom: var(--tm-gloss-tint-action-active-bottom); }
 .tm-button--quiet, .tm-button--quiet:hover, .tm-button--quiet:active { --_bg-from: var(--_bg); --_bg-to: var(--_bg); }
 .tm-button--quiet { --_bg: var(--tm-fill-quiet); --_fg: var(--tm-on-fill-quiet); --_edge: var(--tm-fill-quiet-active); --_alpha: var(--tm-tint-alpha); --_line: var(--tm-text-shadow-quiet); --_halo-strength: var(--_tint-faded); }
 .tm-button--quiet:hover { --_bg: var(--tm-fill-quiet-hover); --_fg: var(--tm-on-fill-quiet-hover); }
@@ -279,7 +280,7 @@
 }
 
 /* No fill, so no frost: their labels read like any text on the page. */
-.tm-button--outline, .tm-button--ghost { text-shadow: inherit; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; background-image: none; color: var(--tm-fg-action); box-shadow: none; }
+.tm-button--outline, .tm-button--ghost { --_text-from: var(--tm-fg-action-from); --_text-to: var(--tm-fg-action-to); text-shadow: inherit; -webkit-backdrop-filter: none; backdrop-filter: none; background-color: transparent; --_fill-image: none; color: var(--tm-fg-action); box-shadow: none; }
 /* The outline fades with the fill's opacity. The label identifies the button, so its edge can
    be fainter than 3:1 at high clarity. Hover and press tints fade like soft buttons. */
 .tm-button--outline { border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent); }
@@ -289,8 +290,8 @@
    shadow, no hover shadow, and no lift. */
 .tm-button--outline:hover, .tm-button--ghost:hover { transform: none; }
 /* Hover and press show the tint, as the action gradient's tint, like a soft button. */
-.tm-button--outline:hover, .tm-button--ghost:hover { --_tint-from: var(--tm-tint-action-hover-from); --_tint-to: var(--tm-tint-action-hover-to); background-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_tint-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--_tint-to) calc(var(--tm-tint-alpha) * 100%), transparent)); color: var(--tm-on-tint-action-hover); box-shadow: none; }
-.tm-button--outline:active, .tm-button--ghost:active { --_tint-from: var(--tm-tint-action-active-from); --_tint-to: var(--tm-tint-action-active-to); color: var(--tm-on-tint-action-active); }
+.tm-button--outline:hover, .tm-button--ghost:hover { --_text-from: var(--tm-on-tint-action-hover-from); --_text-to: var(--tm-on-tint-action-hover-to); --_tint-from: var(--tm-tint-action-hover-from); --_tint-to: var(--tm-tint-action-hover-to); --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_tint-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--_tint-to) calc(var(--tm-tint-alpha) * 100%), transparent)); color: var(--tm-on-tint-action-hover); box-shadow: none; }
+.tm-button--outline:active, .tm-button--ghost:active { --_text-from: var(--tm-on-tint-action-active-from); --_text-to: var(--tm-on-tint-action-active-to); --_tint-from: var(--tm-tint-action-active-from); --_tint-to: var(--tm-tint-action-active-to); color: var(--tm-on-tint-action-active); }
 
 .tm-button--sm { --_shine-height: var(--tm-control-height-sm); min-height: var(--tm-control-height-sm); border-radius: var(--tm-radius-control-sm); padding-block: 0; padding-inline: max(0px, calc(var(--tm-space-sm) - var(--tm-border-width))); font-size: var(--tm-font-size-sm); line-height: var(--tm-leading-tight-sm); }
 .tm-button--lg { --_shine-height: var(--tm-control-height-lg); min-height: var(--tm-control-height-lg); border-radius: var(--tm-radius-control-lg); padding-block: 0; padding-inline: calc(var(--tm-control-padding-x) + var(--tm-space-sm)); font-size: var(--tm-font-size-lg); line-height: var(--tm-leading-tight-lg); }
@@ -826,6 +827,105 @@
   pointer-events: none;
 }
 .tm-input-icon > .tm-input { padding-inline-start: calc(var(--_field-inset) + 1.25em + max(var(--tm-space-xs), var(--tm-space-sm) - 1.25em / 12)); }
+
+/* ---- Gradient text and edges. Only in a theme whose action color is a gradient: a style query
+   reads --tm-action-gradient from the parent, so solid themes keep their text shadows and plain
+   edges. Browsers without style queries for custom properties show the solid color.
+   Text: the gradient, clipped to the letters (icons are letters too), in place of the text
+   color. -webkit-text-fill-color keeps the color itself, so underlines and currentColor stay
+   solid. The gradient spans one line (1lh), so each line of wrapped text has all of it. A
+   text shadow would paint over gradient letters, so they have none.
+   Edges: a CSS border cannot be a gradient, so the part's border turns clear, and a ring on a
+   pseudo-element, cut out with a mask, draws it. It follows rounded corners, and the middle
+   stays see-through. Text fields have no pseudo-elements, so their edges stay solid. So do
+   alerts, focus rings, and parts whose height varies a lot. */
+@container style(--tm-action-gradient: on) {
+  .tm-link, .tm-field .tm-error, .tm-tabs button[aria-selected="true"] {
+    --_text-from: var(--tm-fg-action-from);
+    --_text-to: var(--tm-fg-action-to);
+    background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to));
+    background-origin: content-box;
+    background-size: 100% 1lh;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  /* A block of text shrinks to its words, so the gradient spans the text, not the empty line. */
+  .tm-field .tm-error { width: fit-content; }
+  /* Selected text shows in the solid color, as a selection paints over the gradient. */
+  :is(.tm-link, .tm-field .tm-error, .tm-tabs button[aria-selected="true"], .tm-button--soft, .tm-button--outline, .tm-button--ghost, .tm-badge:not(.tm-badge--solid)) ::selection,
+  :is(.tm-link, .tm-field .tm-error, .tm-tabs button[aria-selected="true"], .tm-button--soft, .tm-button--outline, .tm-button--ghost, .tm-badge:not(.tm-badge--solid))::selection { -webkit-text-fill-color: currentColor; }
+  /* The tab's underline: a border image, as it is one straight edge. */
+  .tm-tabs button[aria-selected="true"] { border-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-border-action-from), var(--tm-border-action-to)) 1; }
+
+  /* Button labels: the gradient is on the label's span and the icon, not on the button. The
+     button's shine and shade layers sit above its own background, so letters painted there would
+     be washed out. A label without a span stays solid. */
+  .tm-button:is(.tm-button--soft, .tm-button--outline, .tm-button--ghost) > :is(span, .tm-icon) {
+    background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to));
+    background-origin: content-box;
+    background-size: 100% 1lh;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    text-shadow: none;
+  }
+  .tm-badge:not(.tm-badge--solid) {
+    --_text-from: var(--tm-on-tint-action-from);
+    --_text-to: var(--tm-on-tint-action-to);
+    --_ring-width: var(--tm-border-width);
+    --_ring-from: var(--tm-border-action-from);
+    --_ring-to: var(--tm-border-action-to);
+    position: relative;
+    border-color: transparent;
+    background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to)), var(--tm-shine-image), var(--_tint-action-image);
+    -webkit-background-clip: text, border-box, border-box;
+    background-clip: text, border-box, border-box;
+    background-origin: content-box, border-box, border-box;
+    background-size: 100% 1lh, auto, auto;
+    background-position: center, 0 0, 0 0;
+    background-repeat: no-repeat, repeat, repeat;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+  }
+
+  /* Rings. The outline button's ring fades with the fill's opacity, as its border did. */
+  .tm-button--outline {
+    --_ring-width: max(1px, var(--tm-border-width));
+    --_ring-from: color-mix(in oklab, var(--tm-border-action-from) calc(var(--tm-fill-alpha) * 100%), transparent);
+    --_ring-to: color-mix(in oklab, var(--tm-border-action-to) calc(var(--tm-fill-alpha) * 100%), transparent);
+    border-color: transparent;
+  }
+  .tm-button--outline::before, .tm-badge:not(.tm-badge--solid)::before {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--_ring-width));
+    z-index: 0;
+    padding: var(--_ring-width);
+    border-radius: inherit;
+    opacity: 1;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    filter: none;
+    background: linear-gradient(var(--tm-action-angle) in oklch, var(--_ring-from), var(--_ring-to));
+    -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    -webkit-mask-clip: content-box, border-box;
+    mask-clip: content-box, border-box;
+    -webkit-mask-origin: content-box, border-box;
+    mask-origin: content-box, border-box;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* A checked check or radio drops its solid edge, so the fill's gradient reaches its rim. */
+  .tm-check:checked, .tm-radio:checked { border-color: transparent; background-origin: border-box; }
+}
 
 /* ---- Widths on the grid. Parts that shrink to their text round their width up to whole
    rhythm steps, so their right edges land on grid lines too. calc-size() is new (Chrome and
