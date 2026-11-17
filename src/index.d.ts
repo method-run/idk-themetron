@@ -10,7 +10,7 @@ export type FeelName = 'roundness' | 'spaciousness' | 'depth' | 'softness' | 'th
 export type PresetName = 'balanced' | 'flat' | 'material' | 'brutalist' | 'neumorphic' | 'glass' | 'glossy' | 'playful' | 'dense';
 export type ContrastMethod = 'wcag' | 'apca';
 export type ContrastLevel = 'standard' | 'enhanced';
-export type ContrastModel = 'oklch' | 'hsl';
+export type ContrastModel = 'oklch' | 'okhsl' | 'hsl';
 export type Purpose = 'text' | 'large' | 'ui';
 /** Text of a size in px and a weight, for APCA's font table. */
 export interface TextPurpose { size: number; weight: number }
@@ -321,6 +321,8 @@ export function turnOldFeels<T>(feel: T): T;
 export const GRADES: number[];
 export const COLOR_MODELS: Record<ContrastModel, {
   label: string;
+  /** False when grades far from the key color keep its full chroma. */
+  taper?: boolean;
   keyOf: (rgb: Rgb) => [number, number];
   at: (hue: number, chroma: number, luminance: number) => Rgb;
 }>;

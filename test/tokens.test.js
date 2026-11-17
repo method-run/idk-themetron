@@ -22,9 +22,9 @@ test('every required pair passes WCAG, for every preset and tricky colors', () =
   }
 });
 
-test('every required pair passes in the HSL color model too', () => {
+test('every required pair passes in the OKHSL and HSL color models too', () => {
   for (const colors of TRICKY) {
-    for (const model of ['hsl']) {
+    for (const model of ['okhsl', 'hsl']) {
       for (const method of ['wcag', 'apca']) {
         assert.deepEqual(failures(buildThemes(tree(colors, { preset: 'balanced', contrast: { method, model } }))), [], `${colors} ${model} ${method}`);
       }

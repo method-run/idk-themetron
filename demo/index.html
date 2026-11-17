@@ -326,6 +326,10 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .pal-head h3 { margin: 0; font-size: 15px; }
 .pal-head span { font-family: var(--mono); font-size: 12px; opacity: 0.7; }
 .swatches { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(30px, 1fr); gap: 3px; overflow-x: auto; }
+/* Debug mode (View menu): the color models side by side. */
+.model-compare { margin-top: 24px; padding: 12px; border: 2px dashed #e0a000; border-radius: 8px; }
+.model-strip { display: grid; grid-template-columns: 9em 1fr; align-items: center; gap: 8px; margin-top: 3px; font-size: 12px; }
+.model-strip .sw { height: 32px; }
 .sw { position: relative; height: 48px; min-width: 0; border: 0; border-radius: 6px; padding: 4px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; font: 11px/1.2 var(--mono); cursor: pointer; text-align: left; }
 .sw:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .sw b { font-size: 12px; font-weight: 500; }
@@ -432,6 +436,10 @@ td code { font-family: var(--mono); font-size: 12px; }
             <h3>Preview</h3>
             <div class="preview-bar" id="preview-bar" role="group" aria-label="Themes to show"></div>
             <p class="menu-note" id="preview-note" hidden>Themes, the grid, and the photo backdrop apply to the Preview tab.</p>
+          </section>
+          <section class="menu-section" id="menu-debug">
+            <h3>Debug</h3>
+            <div class="seg" id="debug" role="group" aria-label="Debug mode" title="Shows HSL in the Color model menu, and compares the color models on the Palettes tab."></div>
           </section>
         </div>
         <button class="small-btn" id="share" type="button" title="Copy a link that opens the playground with these themes">Copy share link</button>

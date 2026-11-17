@@ -37,7 +37,7 @@ Each theme has two ramps: one from its base color and one from its action color.
 <details>
 <summary>How a grade gets its color</summary>
 
-The engine keeps the key color's hue and chroma, in the theme's color model, and finds the lightness that gives the grade's luminance. In OKLCH this is a formula: the luminance is a cubic in the lightness. In HSL no formula exists, so a solver finds it exactly in one or two steps. If the chroma does not fit in the sRGB gamut at that lightness, a short search lowers it. Grades far from the key color get less chroma, so tints and shades look calm.
+The engine keeps the key color's hue and chroma, in the theme's color model, and finds the lightness that gives the grade's luminance. In OKLCH this is a formula: the luminance is a cubic in the lightness. In HSL no formula exists, so a solver finds it exactly in one or two steps. In OKHSL, the chroma is the key color's share of the most that fits, so a short search finds the lightness. If the chroma does not fit in the sRGB gamut at that lightness, a short search lowers it. Grades far from the key color get less chroma, so tints and shades look calm.
 
 </details>
 

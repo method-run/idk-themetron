@@ -1,5 +1,5 @@
 // Palettes with fixed-luminance grades, and the contrast checks that use them.
-import { apcaContrast, colorAtLuminance, hslAtLuminance, luminance, parseHex, srgbToHsl, srgbToOklch, toHex, wcagContrast } from './color.js';
+import { apcaContrast, colorAtLuminance, hslAtLuminance, okhslAtLuminance, srgbToOkhsl, luminance, parseHex, srgbToHsl, srgbToOklch, toHex, wcagContrast } from './color.js';
 
 export const GRADES = Array.from({ length: 21 }, (_, i) => i * 5);
 
@@ -22,10 +22,13 @@ function chromaTaper(grade, keyGrade) {
 }
 
 // The color models that a ramp can keep its hue in. For each: the key color's hue
-// and chroma (saturation for HSL), and the color at a target luminance.
+// and chroma (saturation for HSL and OKHSL), and the color at a target luminance.
+// OKHSL has no taper: every grade keeps the key color's share of the gamut, which already
+// shrinks toward white and black.
 export const COLOR_MODELS = {
   oklch: { label: 'OKLCH', keyOf: (rgb) => { const [, c, h] = srgbToOklch(rgb); return [h, c]; }, at: colorAtLuminance },
   hsl: { label: 'HSL', keyOf: (rgb) => { const [h, s] = srgbToHsl(rgb); return [h, s]; }, at: hslAtLuminance },
+  okhsl: { label: 'OKHSL', taper: false, keyOf: srgbToOkhsl, at: okhslAtLuminance },
 };
 
 const paletteCache = new Map();
@@ -36,13 +39,13 @@ export function makePalette(keyHex, model = 'oklch') {
   const key = toHex(parseHex(keyHex));
   const cacheKey = `${key} ${model}`;
   if (paletteCache.has(cacheKey)) return paletteCache.get(cacheKey);
-  const { keyOf, at } = COLOR_MODELS[model];
+  const { keyOf, at, taper = true } = COLOR_MODELS[model];
   const rgb = parseHex(key);
   const [hue, chroma] = keyOf(rgb);
   const steps = {};
   const keyGrade = gradeOfLuminance(luminance(rgb));
   for (const grade of GRADES) {
-    steps[grade] = toHex(at(hue, chroma * chromaTaper(grade, keyGrade), gradeLuminance(grade)));
+    steps[grade] = toHex(at(hue, chroma * (taper ? chromaTaper(grade, keyGrade) : 1), gradeLuminance(grade)));
   }
   const palette = { key, model, keyGrade: round1(keyGrade), hue: round1(hue), chroma: round3(chroma), steps };
   paletteCache.set(cacheKey, palette);

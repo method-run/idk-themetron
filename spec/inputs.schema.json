@@ -411,6 +411,7 @@
             "model": {
               "enum": [
                 "oklch",
+                "okhsl",
                 "hsl"
               ]
             },
