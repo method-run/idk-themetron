@@ -16,9 +16,14 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+## 0.2.2
+
+Contract 0.2.0, unchanged.
+
 - **Exports name their token contract.** Every export but MUI starts with a line such as `/* Made by themetron, token contract 0.2.0: <manifest URL> */`, so a tool can tell which contract made a theme. DTCG JSON has it in `$extensions.themetron`.
 - **New option: `set`.** The theme set's name, such as `"Admin app"`. The first line names it as `admin-app`, and it is the daisyUI theme's name unless `name` sets one. The CLI flag is `--set <name>`.
 - **New option: `icons: false`** for `toCss`, and `--no-icons` for the CLI. It leaves out the `@import` of the icon font, for pages without icons, or a site that loads the font itself. The icon tokens stay.
+- **New page: [Recipes for common parts](./spec/recipes.md "recipes").** CSS for buttons, badges, cards, fields, and other parts, so that a site takes the theme's feels and not only its colors.
 
 ## 0.2.1
 
