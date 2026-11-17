@@ -5,7 +5,7 @@ import componentsCss from '../components/components.css?raw';
 import { combobox } from './combobox.js';
 import { parseHex, toHex, srgbToOklch, oklchToSrgb } from '../src/color.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -338,12 +338,17 @@ function removeTheme(name) {
   update();
 }
 
+// A new child takes the first semantic theme name that is not taken yet, such as danger or
+// warning, with its suggested color, so a theme set grows toward the themes that most systems
+// need. When all of them are taken, it is child-1, child-2, and so on. Rename it at any time.
 const NEW_COLORS = ['#d6336c', '#0f9d8a', '#8a4fff', '#f2b705', '#2b8a3e', '#e8590c'];
 function addChild(parent) {
+  const taken = (n) => n in state.themes;
+  const semantic = SEMANTIC_THEMES.find((s) => !taken(s.name) && !s.aliases.some(taken));
   let i = 1;
-  while (state.themes[`child-${i}`]) i++;
-  const name = `child-${i}`;
-  state.themes[name] = { parent, action: NEW_COLORS[(i - 1) % NEW_COLORS.length] };
+  while (!semantic && taken(`child-${i}`)) i++;
+  const name = semantic?.name ?? `child-${i}`;
+  state.themes[name] = { parent, action: semantic?.color ?? NEW_COLORS[(i - 1) % NEW_COLORS.length] };
   state.selected = name;
   openCard = name;
   renderThemes();
