@@ -75,3 +75,17 @@ test('a wrong gradient says what to use', () => {
   assert.match(problems({ color: '#000', solid: 0.5 }), /action\.solid: only a gradient has a solid position. Add "to"/);
   assert.match(problems({ color: '#000', to: '#fff', stops: [] }), /action\.stops: unknown field/);
 });
+
+test('action text and edges have gradient ends that pass, and the CSS says when a gradient is on', () => {
+  const t = buildThemes({ themes: { default: { action: GRADIENT } } }).themes.default;
+  for (const mode of ['light', 'dark']) {
+    const tokens = t.modes[mode].tokens;
+    for (const name of ['fg.action', 'border.action', 'on-tint.action', 'on-tint.action-hover']) {
+      assert.equal(tokens[`${name}-from`].ref, `action-from.${tokens[name].grade}`);
+      assert.equal(tokens[`${name}-to`].ref, `action-to.${tokens[name].grade}`);
+    }
+    assert.ok(t.modes[mode].audit.some((a) => a.fg === "fg.action (the gradient's middle)" && a.bg === 'bg.canvas' && a.pass));
+  }
+  assert.match(toCss(buildThemes({ themes: { default: { action: GRADIENT } } })), /--tm-action-gradient: on;/);
+  assert.match(toCss(buildThemes({})), /--tm-action-gradient: off;/);
+});

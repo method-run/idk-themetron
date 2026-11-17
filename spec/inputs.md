@@ -128,7 +128,7 @@ The action color can be a gradient of two colors:
 | `solid` | `0` | Where the solid color sits, from 0 (the start) to 1 (the end). |
 | `angle` | `180` | The direction, as a CSS angle in degrees: 180 runs top to bottom, and 90 left to right. |
 
-- **Where the gradient shows:** solid fills (buttons, the exact button, checks, radios, switches, solid badges, avatars, progress bars, and the pressed segment), soft buttons, and badges.
+- **Where the gradient shows:** solid fills (buttons, the exact button, checks, radios, switches, solid badges, avatars, progress bars, and the pressed segment), soft buttons, badges, and the hover of outline and ghost buttons. As text: links, error messages, the selected tab, and the labels of soft, outline, and ghost buttons and of badges. As edges: outline buttons, badges, and the selected tab's underline. Text fields, alerts, and focus rings keep solid edges.
 - **The solid color:** the two colors mixed in OKLCH at `solid`. It is the action color for every part without the gradient: links, borders, focus rings, and `fill.action` itself. Its ramp makes every action token, as for a plain action color.
 - **The gradient's colors:** each end has a ramp. For each fill and tint token, the gradient takes the same grade from each end's ramp. A grade fixes luminance, so the label passes on each end as it does on the solid color. The blend between the ends can drift a little, so the engine also checks the middle, and fills choose a grade where the label passes there too.
 - **The exact button** shows the two colors exactly. Its label must pass on both, as on the one key color. Where it does not, the audit warns, and the more-contrast variant uses the normal button.

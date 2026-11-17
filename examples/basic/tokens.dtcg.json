@@ -811,6 +811,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.default.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.default.action.60}"
             }
           },
           "border": {
@@ -831,6 +839,14 @@
               "$value": "{themes.default.action.60}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.default.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.60}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.default.action.60}"
             },
@@ -917,6 +933,30 @@
               "$value": "{themes.default.action.70}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.default.action.80}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.default.action.60}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.70}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.default.action.70}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.80}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.default.action.80}"
             }
@@ -1096,6 +1136,18 @@
               "$type": "color",
               "$value": "{themes.default.action.65}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.default.base.15}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.default.base.10}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.default.base.20}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.default.action.60}"
@@ -1119,18 +1171,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.default.action.65}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.default.base.15}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.default.base.10}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.default.base.20}"
             },
             "action-exact": {
               "$type": "color",
@@ -1338,6 +1378,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.default.action.40}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.default.action.40}"
             }
           },
           "border": {
@@ -1358,6 +1406,14 @@
               "$value": "{themes.default.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.default.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.default.action.50}"
             },
@@ -1444,6 +1500,30 @@
               "$value": "{themes.default.action.30}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.default.action.20}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.default.action.40}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.30}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.default.action.30}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.default.action.20}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.default.action.20}"
             }
@@ -1623,6 +1703,18 @@
               "$type": "color",
               "$value": "{themes.default.action.45}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.default.base.80}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.default.base.75}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.default.base.85}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.default.action.40}"
@@ -1646,18 +1738,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.default.action.45}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.default.base.80}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.default.base.75}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.default.base.85}"
             },
             "action-exact": {
               "$type": "color",
@@ -1892,6 +1972,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.default.action.80}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.80}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.default.action.80}"
               }
             },
             "border": {
@@ -1912,6 +2000,14 @@
                 "$value": "{themes.default.action.60}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.default.action.60}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.60}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.default.action.60}"
               },
@@ -1998,6 +2094,30 @@
                 "$value": "{themes.default.action.80}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.default.action.90}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.70}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.default.action.70}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.80}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.default.action.80}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.90}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.default.action.90}"
               }
@@ -2177,6 +2297,18 @@
                 "$type": "color",
                 "$value": "{themes.default.action.85}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.default.base.15}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.default.base.10}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.default.base.20}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.default.action.80}"
@@ -2200,18 +2332,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.default.action.85}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.default.base.15}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.default.base.10}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.default.base.20}"
               },
               "action-exact": {
                 "$type": "color",
@@ -2419,6 +2539,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.default.action.20}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.20}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.default.action.20}"
               }
             },
             "border": {
@@ -2439,6 +2567,14 @@
                 "$value": "{themes.default.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.default.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.default.action.50}"
               },
@@ -2525,6 +2661,30 @@
                 "$value": "{themes.default.action.20}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.default.action.10}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.30}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.default.action.30}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.20}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.default.action.20}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.default.action.10}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.default.action.10}"
               }
@@ -2704,6 +2864,18 @@
                 "$type": "color",
                 "$value": "{themes.default.action.25}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.default.base.80}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.default.base.75}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.default.base.85}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.default.action.20}"
@@ -2727,18 +2899,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.default.action.25}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.default.base.80}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.default.base.75}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.default.base.85}"
               },
               "action-exact": {
                 "$type": "color",
@@ -3656,6 +3816,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.success.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.success.action.60}"
             }
           },
           "border": {
@@ -3676,6 +3844,14 @@
               "$value": "{themes.success.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.success.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.success.action.50}"
             },
@@ -3762,6 +3938,30 @@
               "$value": "{themes.success.action.70}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.success.action.80}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.success.action.60}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.70}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.success.action.70}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.80}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.success.action.80}"
             }
@@ -3941,6 +4141,18 @@
               "$type": "color",
               "$value": "{themes.success.action.65}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.success.base.15}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.success.base.10}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.success.base.20}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.success.action.60}"
@@ -3964,18 +4176,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.success.action.65}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.success.base.15}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.success.base.10}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.success.base.20}"
             },
             "action-exact": {
               "$type": "color",
@@ -4183,6 +4383,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.success.action.40}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.success.action.40}"
             }
           },
           "border": {
@@ -4203,6 +4411,14 @@
               "$value": "{themes.success.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.success.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.success.action.50}"
             },
@@ -4289,6 +4505,30 @@
               "$value": "{themes.success.action.30}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.success.action.20}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.success.action.40}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.30}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.success.action.30}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.success.action.20}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.success.action.20}"
             }
@@ -4468,6 +4708,18 @@
               "$type": "color",
               "$value": "{themes.success.action.45}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.success.base.80}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.success.base.75}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.success.base.85}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.success.action.40}"
@@ -4491,18 +4743,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.success.action.45}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.success.base.80}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.success.base.75}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.success.base.85}"
             },
             "action-exact": {
               "$type": "color",
@@ -4737,6 +4977,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.success.action.80}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.80}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.success.action.80}"
               }
             },
             "border": {
@@ -4757,6 +5005,14 @@
                 "$value": "{themes.success.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.success.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.success.action.50}"
               },
@@ -4843,6 +5099,30 @@
                 "$value": "{themes.success.action.80}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.success.action.90}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.70}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.success.action.70}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.80}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.success.action.80}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.90}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.success.action.90}"
               }
@@ -5022,6 +5302,18 @@
                 "$type": "color",
                 "$value": "{themes.success.action.85}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.success.base.15}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.success.base.10}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.success.base.20}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.success.action.80}"
@@ -5045,18 +5337,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.success.action.85}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.success.base.15}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.success.base.10}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.success.base.20}"
               },
               "action-exact": {
                 "$type": "color",
@@ -5264,6 +5544,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.success.action.20}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.20}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.success.action.20}"
               }
             },
             "border": {
@@ -5284,6 +5572,14 @@
                 "$value": "{themes.success.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.success.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.success.action.50}"
               },
@@ -5370,6 +5666,30 @@
                 "$value": "{themes.success.action.20}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.success.action.10}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.30}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.success.action.30}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.20}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.success.action.20}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.success.action.10}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.success.action.10}"
               }
@@ -5549,6 +5869,18 @@
                 "$type": "color",
                 "$value": "{themes.success.action.25}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.success.base.80}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.success.base.75}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.success.base.85}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.success.action.20}"
@@ -5572,18 +5904,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.success.action.25}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.success.base.80}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.success.base.75}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.success.base.85}"
               },
               "action-exact": {
                 "$type": "color",
@@ -6501,6 +6821,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.warning.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.warning.action.60}"
             }
           },
           "border": {
@@ -6521,6 +6849,14 @@
               "$value": "{themes.warning.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.warning.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.warning.action.50}"
             },
@@ -6607,6 +6943,30 @@
               "$value": "{themes.warning.action.70}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.warning.action.80}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.warning.action.60}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.70}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.warning.action.70}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.80}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.warning.action.80}"
             }
@@ -6786,6 +7146,18 @@
               "$type": "color",
               "$value": "{themes.warning.action.65}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.warning.base.15}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.warning.base.10}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.warning.base.20}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.warning.action.60}"
@@ -6809,18 +7181,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.warning.action.65}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.warning.base.15}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.warning.base.10}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.warning.base.20}"
             },
             "action-exact": {
               "$type": "color",
@@ -7028,6 +7388,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.warning.action.30}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.30}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.warning.action.30}"
             }
           },
           "border": {
@@ -7048,6 +7416,14 @@
               "$value": "{themes.warning.action.30}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.warning.action.30}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.30}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.warning.action.30}"
             },
@@ -7134,6 +7510,30 @@
               "$value": "{themes.warning.action.20}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.warning.action.10}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.30}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.warning.action.30}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.20}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.warning.action.20}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.warning.action.10}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.warning.action.10}"
             }
@@ -7313,6 +7713,18 @@
               "$type": "color",
               "$value": "{themes.warning.action.45}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.warning.base.80}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.warning.base.75}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.warning.base.85}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.warning.action.40}"
@@ -7336,18 +7748,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.warning.action.45}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.warning.base.80}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.warning.base.75}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.warning.base.85}"
             },
             "action-exact": {
               "$type": "color",
@@ -7582,6 +7982,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.warning.action.80}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.80}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.warning.action.80}"
               }
             },
             "border": {
@@ -7602,6 +8010,14 @@
                 "$value": "{themes.warning.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.warning.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.warning.action.50}"
               },
@@ -7688,6 +8104,30 @@
                 "$value": "{themes.warning.action.80}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.warning.action.90}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.70}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.warning.action.70}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.80}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.warning.action.80}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.90}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.warning.action.90}"
               }
@@ -7867,6 +8307,18 @@
                 "$type": "color",
                 "$value": "{themes.warning.action.85}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.warning.base.15}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.warning.base.10}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.warning.base.20}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.warning.action.80}"
@@ -7890,18 +8342,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.warning.action.85}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.warning.base.15}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.warning.base.10}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.warning.base.20}"
               },
               "action-exact": {
                 "$type": "color",
@@ -8109,6 +8549,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.warning.action.20}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.20}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.warning.action.20}"
               }
             },
             "border": {
@@ -8129,6 +8577,14 @@
                 "$value": "{themes.warning.action.30}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.warning.action.30}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.30}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.warning.action.30}"
               },
@@ -8215,6 +8671,30 @@
                 "$value": "{themes.warning.action.20}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.warning.action.10}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.30}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.warning.action.30}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.20}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.warning.action.20}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.warning.action.10}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.warning.action.10}"
               }
@@ -8394,6 +8874,18 @@
                 "$type": "color",
                 "$value": "{themes.warning.action.25}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.warning.base.80}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.warning.base.75}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.warning.base.85}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.warning.action.20}"
@@ -8417,18 +8909,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.warning.action.25}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.warning.base.80}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.warning.base.75}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.warning.base.85}"
               },
               "action-exact": {
                 "$type": "color",
@@ -9346,6 +9826,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.danger.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.danger.action.60}"
             }
           },
           "border": {
@@ -9366,6 +9854,14 @@
               "$value": "{themes.danger.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.danger.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.danger.action.50}"
             },
@@ -9452,6 +9948,30 @@
               "$value": "{themes.danger.action.70}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.danger.action.80}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.danger.action.60}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.70}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.danger.action.70}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.80}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.danger.action.80}"
             }
@@ -9631,6 +10151,18 @@
               "$type": "color",
               "$value": "{themes.danger.action.65}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.danger.base.15}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.danger.base.10}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.danger.base.20}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.danger.action.60}"
@@ -9654,18 +10186,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.danger.action.65}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.danger.base.15}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.danger.base.10}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.danger.base.20}"
             },
             "action-exact": {
               "$type": "color",
@@ -9873,6 +10393,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.danger.action.40}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.danger.action.40}"
             }
           },
           "border": {
@@ -9893,6 +10421,14 @@
               "$value": "{themes.danger.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.danger.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.danger.action.50}"
             },
@@ -9979,6 +10515,30 @@
               "$value": "{themes.danger.action.30}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.danger.action.20}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.danger.action.40}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.30}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.danger.action.30}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.danger.action.20}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.danger.action.20}"
             }
@@ -10158,6 +10718,18 @@
               "$type": "color",
               "$value": "{themes.danger.action.45}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.danger.base.80}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.danger.base.75}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.danger.base.85}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.danger.action.40}"
@@ -10181,18 +10753,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.danger.action.45}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.danger.base.80}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.danger.base.75}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.danger.base.85}"
             },
             "action-exact": {
               "$type": "color",
@@ -10427,6 +10987,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.danger.action.80}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.80}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.danger.action.80}"
               }
             },
             "border": {
@@ -10447,6 +11015,14 @@
                 "$value": "{themes.danger.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.danger.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.danger.action.50}"
               },
@@ -10533,6 +11109,30 @@
                 "$value": "{themes.danger.action.80}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.danger.action.90}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.70}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.danger.action.70}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.80}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.danger.action.80}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.90}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.danger.action.90}"
               }
@@ -10712,6 +11312,18 @@
                 "$type": "color",
                 "$value": "{themes.danger.action.85}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.danger.base.15}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.danger.base.10}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.danger.base.20}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.danger.action.80}"
@@ -10735,18 +11347,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.danger.action.85}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.danger.base.15}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.danger.base.10}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.danger.base.20}"
               },
               "action-exact": {
                 "$type": "color",
@@ -10954,6 +11554,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.danger.action.20}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.20}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.danger.action.20}"
               }
             },
             "border": {
@@ -10974,6 +11582,14 @@
                 "$value": "{themes.danger.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.danger.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.danger.action.50}"
               },
@@ -11060,6 +11676,30 @@
                 "$value": "{themes.danger.action.20}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.danger.action.10}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.30}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.danger.action.30}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.20}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.danger.action.20}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.danger.action.10}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.danger.action.10}"
               }
@@ -11239,6 +11879,18 @@
                 "$type": "color",
                 "$value": "{themes.danger.action.25}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.danger.base.80}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.danger.base.75}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.danger.base.85}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.danger.action.20}"
@@ -11262,18 +11914,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.danger.action.25}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.danger.base.80}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.danger.base.75}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.danger.base.85}"
               },
               "action-exact": {
                 "$type": "color",
@@ -12191,6 +12831,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.promo.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.promo.action.60}"
             }
           },
           "border": {
@@ -12211,6 +12859,14 @@
               "$value": "{themes.promo.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.promo.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.promo.action.50}"
             },
@@ -12297,6 +12953,30 @@
               "$value": "{themes.promo.action.70}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.promo.action.80}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.promo.action.60}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.70}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.promo.action.70}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.80}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.promo.action.80}"
             }
@@ -12476,6 +13156,18 @@
               "$type": "color",
               "$value": "{themes.promo.action.65}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.promo.base.15}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.promo.base.10}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.promo.base.20}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.promo.action.60}"
@@ -12499,18 +13191,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.promo.action.65}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.promo.base.15}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.promo.base.10}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.promo.base.20}"
             },
             "action-exact": {
               "$type": "color",
@@ -12718,6 +13398,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.promo.action.40}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.promo.action.40}"
             }
           },
           "border": {
@@ -12738,6 +13426,14 @@
               "$value": "{themes.promo.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.promo.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.promo.action.50}"
             },
@@ -12824,6 +13520,30 @@
               "$value": "{themes.promo.action.30}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.promo.action.20}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.promo.action.40}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.30}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.promo.action.30}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.promo.action.20}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.promo.action.20}"
             }
@@ -13003,6 +13723,18 @@
               "$type": "color",
               "$value": "{themes.promo.action.45}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.promo.base.80}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.promo.base.75}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.promo.base.85}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.promo.action.40}"
@@ -13026,18 +13758,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.promo.action.45}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.promo.base.80}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.promo.base.75}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.promo.base.85}"
             },
             "action-exact": {
               "$type": "color",
@@ -13272,6 +13992,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.promo.action.80}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.80}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.promo.action.80}"
               }
             },
             "border": {
@@ -13292,6 +14020,14 @@
                 "$value": "{themes.promo.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.promo.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.promo.action.50}"
               },
@@ -13378,6 +14114,30 @@
                 "$value": "{themes.promo.action.80}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.promo.action.90}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.70}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.promo.action.70}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.80}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.promo.action.80}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.90}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.promo.action.90}"
               }
@@ -13557,6 +14317,18 @@
                 "$type": "color",
                 "$value": "{themes.promo.action.85}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.promo.base.15}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.promo.base.10}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.promo.base.20}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.promo.action.80}"
@@ -13580,18 +14352,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.promo.action.85}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.promo.base.15}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.promo.base.10}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.promo.base.20}"
               },
               "action-exact": {
                 "$type": "color",
@@ -13799,6 +14559,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.promo.action.20}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.20}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.promo.action.20}"
               }
             },
             "border": {
@@ -13819,6 +14587,14 @@
                 "$value": "{themes.promo.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.promo.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.promo.action.50}"
               },
@@ -13905,6 +14681,30 @@
                 "$value": "{themes.promo.action.20}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.promo.action.10}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.30}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.promo.action.30}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.20}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.promo.action.20}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.promo.action.10}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.promo.action.10}"
               }
@@ -14084,6 +14884,18 @@
                 "$type": "color",
                 "$value": "{themes.promo.action.25}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.promo.base.80}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.promo.base.75}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.promo.base.85}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.promo.action.20}"
@@ -14107,18 +14919,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.promo.action.25}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.promo.base.80}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.promo.base.75}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.promo.base.85}"
               },
               "action-exact": {
                 "$type": "color",
@@ -15036,6 +15836,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.sale.action.60}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.sale.action.60}"
             }
           },
           "border": {
@@ -15056,6 +15864,14 @@
               "$value": "{themes.sale.action.50}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.sale.action.50}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.50}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.sale.action.50}"
             },
@@ -15142,6 +15958,30 @@
               "$value": "{themes.sale.action.70}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.sale.action.80}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.60}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.sale.action.60}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.70}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.sale.action.70}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.80}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.sale.action.80}"
             }
@@ -15321,6 +16161,18 @@
               "$type": "color",
               "$value": "{themes.sale.action.65}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.sale.base.15}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.sale.base.10}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.sale.base.20}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.sale.action.60}"
@@ -15344,18 +16196,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.sale.action.65}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.sale.base.15}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.sale.base.10}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.sale.base.20}"
             },
             "action-exact": {
               "$type": "color",
@@ -15563,6 +16403,14 @@
             "action": {
               "$type": "color",
               "$value": "{themes.sale.action.40}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.sale.action.40}"
             }
           },
           "border": {
@@ -15583,6 +16431,14 @@
               "$value": "{themes.sale.action.40}"
             },
             "focus": {
+              "$type": "color",
+              "$value": "{themes.sale.action.40}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.40}"
+            },
+            "action-to": {
               "$type": "color",
               "$value": "{themes.sale.action.40}"
             },
@@ -15669,6 +16525,30 @@
               "$value": "{themes.sale.action.30}"
             },
             "action-active": {
+              "$type": "color",
+              "$value": "{themes.sale.action.20}"
+            },
+            "action-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.40}"
+            },
+            "action-to": {
+              "$type": "color",
+              "$value": "{themes.sale.action.40}"
+            },
+            "action-hover-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.30}"
+            },
+            "action-hover-to": {
+              "$type": "color",
+              "$value": "{themes.sale.action.30}"
+            },
+            "action-active-from": {
+              "$type": "color",
+              "$value": "{themes.sale.action.20}"
+            },
+            "action-active-to": {
               "$type": "color",
               "$value": "{themes.sale.action.20}"
             }
@@ -15848,6 +16728,18 @@
               "$type": "color",
               "$value": "{themes.sale.action.45}"
             },
+            "quiet": {
+              "$type": "color",
+              "$value": "{themes.sale.base.80}"
+            },
+            "quiet-hover": {
+              "$type": "color",
+              "$value": "{themes.sale.base.75}"
+            },
+            "quiet-active": {
+              "$type": "color",
+              "$value": "{themes.sale.base.85}"
+            },
             "action-from": {
               "$type": "color",
               "$value": "{themes.sale.action.40}"
@@ -15871,18 +16763,6 @@
             "action-active-to": {
               "$type": "color",
               "$value": "{themes.sale.action.45}"
-            },
-            "quiet": {
-              "$type": "color",
-              "$value": "{themes.sale.base.80}"
-            },
-            "quiet-hover": {
-              "$type": "color",
-              "$value": "{themes.sale.base.75}"
-            },
-            "quiet-active": {
-              "$type": "color",
-              "$value": "{themes.sale.base.85}"
             },
             "action-exact": {
               "$type": "color",
@@ -16117,6 +16997,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.sale.action.80}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.80}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.sale.action.80}"
               }
             },
             "border": {
@@ -16137,6 +17025,14 @@
                 "$value": "{themes.sale.action.50}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.sale.action.50}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.50}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.sale.action.50}"
               },
@@ -16223,6 +17119,30 @@
                 "$value": "{themes.sale.action.80}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.sale.action.90}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.70}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.sale.action.70}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.80}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.sale.action.80}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.90}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.sale.action.90}"
               }
@@ -16402,6 +17322,18 @@
                 "$type": "color",
                 "$value": "{themes.sale.action.85}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.sale.base.15}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.sale.base.10}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.sale.base.20}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.sale.action.80}"
@@ -16425,18 +17357,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.sale.action.85}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.sale.base.15}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.sale.base.10}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.sale.base.20}"
               },
               "action-exact": {
                 "$type": "color",
@@ -16644,6 +17564,14 @@
               "action": {
                 "$type": "color",
                 "$value": "{themes.sale.action.20}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.20}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.sale.action.20}"
               }
             },
             "border": {
@@ -16664,6 +17592,14 @@
                 "$value": "{themes.sale.action.40}"
               },
               "focus": {
+                "$type": "color",
+                "$value": "{themes.sale.action.40}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.40}"
+              },
+              "action-to": {
                 "$type": "color",
                 "$value": "{themes.sale.action.40}"
               },
@@ -16750,6 +17686,30 @@
                 "$value": "{themes.sale.action.20}"
               },
               "action-active": {
+                "$type": "color",
+                "$value": "{themes.sale.action.10}"
+              },
+              "action-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.30}"
+              },
+              "action-to": {
+                "$type": "color",
+                "$value": "{themes.sale.action.30}"
+              },
+              "action-hover-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.20}"
+              },
+              "action-hover-to": {
+                "$type": "color",
+                "$value": "{themes.sale.action.20}"
+              },
+              "action-active-from": {
+                "$type": "color",
+                "$value": "{themes.sale.action.10}"
+              },
+              "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.sale.action.10}"
               }
@@ -16929,6 +17889,18 @@
                 "$type": "color",
                 "$value": "{themes.sale.action.25}"
               },
+              "quiet": {
+                "$type": "color",
+                "$value": "{themes.sale.base.80}"
+              },
+              "quiet-hover": {
+                "$type": "color",
+                "$value": "{themes.sale.base.75}"
+              },
+              "quiet-active": {
+                "$type": "color",
+                "$value": "{themes.sale.base.85}"
+              },
               "action-from": {
                 "$type": "color",
                 "$value": "{themes.sale.action.20}"
@@ -16952,18 +17924,6 @@
               "action-active-to": {
                 "$type": "color",
                 "$value": "{themes.sale.action.25}"
-              },
-              "quiet": {
-                "$type": "color",
-                "$value": "{themes.sale.base.80}"
-              },
-              "quiet-hover": {
-                "$type": "color",
-                "$value": "{themes.sale.base.75}"
-              },
-              "quiet-active": {
-                "$type": "color",
-                "$value": "{themes.sale.base.85}"
               },
               "action-exact": {
                 "$type": "color",

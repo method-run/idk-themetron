@@ -62,6 +62,10 @@
   --color-fg-action: var(--tm-fg-action);
   --color-border-action: var(--tm-border-action);
   --color-border-focus: var(--tm-border-focus);
+  --color-fg-action-from: var(--tm-fg-action-from);
+  --color-fg-action-to: var(--tm-fg-action-to);
+  --color-border-action-from: var(--tm-border-action-from);
+  --color-border-action-to: var(--tm-border-action-to);
   --color-border-action-exact: var(--tm-border-action-exact);
   --font-sans: var(--tm-font-body);
   --font-heading: var(--tm-font-heading);

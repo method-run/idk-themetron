@@ -160,6 +160,8 @@ export function buildPrimitives(settings, palettes, gaps, stops = null) {
     // The direction of the action gradient, in degrees. Every theme has one, so parts can always
     // draw the gradient: without one, its ends are the same color.
     gradientAngle: settings.gradient?.angle ?? GRADIENT_DEFAULTS.angle,
+    // Whether the action color is a gradient, so CSS can turn on what only a gradient needs.
+    gradient: Boolean(stops),
     gap: gaps,
     font: {
       family: font,
@@ -421,8 +423,6 @@ function buildMode(mode, settings, palettes, primitives, test, variant, stops = 
     audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
   }
 
-  gradientTokens();
-
   // Small solid parts in the base color, such as a switch's knob, are the muted text color.
   // Their shine is counted from it, like a fill's.
   {
@@ -461,6 +461,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant, stops = 
   check('fg.action', 'bg.canvas', 'text');
   check('fg.action', 'bg.surface', 'text');
   check('border.action', 'bg.surface', 'ui');
+  gradientTokens();
 
   // The exact button: the key color itself, with white or black from the action ramp, whichever
   // has more contrast with it. It has the same label polarity as every other fill: in light
@@ -537,20 +538,42 @@ function buildMode(mode, settings, palettes, primitives, test, variant, stops = 
   // with it (see labelFor), and the audit shows the rest. Without a gradient, both ends are the
   // solid token, so parts can always draw the gradient.
   function gradientTokens() {
+    const ends = (name) => {
+      const g = tokens[name].grade;
+      if (stops) {
+        set(`${name}-from`, stops.from, g);
+        set(`${name}-to`, stops.to, g);
+      } else {
+        tokens[`${name}-from`] = { ...tokens[name] };
+        tokens[`${name}-to`] = { ...tokens[name] };
+      }
+    };
     for (const kind of ['fill', 'tint']) {
       for (const state of STATES) {
-        const name = `${kind}.action${state}`;
-        const g = tokens[name].grade;
-        if (stops) {
-          set(`${name}-from`, stops.from, g);
-          set(`${name}-to`, stops.to, g);
-          checkGradient(`on-${kind}.action${state}`, name, state !== '-active');
-        } else {
-          tokens[`${name}-from`] = { ...tokens[name] };
-          tokens[`${name}-to`] = { ...tokens[name] };
-        }
+        ends(`${kind}.action${state}`);
+        // Labels on tints have ends too, for gradient text. Each pair is at the same grades as
+        // the solid pair, so the label passes on the tint's ends as it does on the solid tint.
+        if (kind === 'tint') ends(`on-tint.action${state}`);
+        if (stops) checkGradient(`on-${kind}.action${state}`, `${kind}.action${state}`, state !== '-active');
       }
     }
+    // Action text and edges: links, outline and ghost labels, selected tabs, and their edges.
+    // Each end, and the middle, is checked on the page's backgrounds.
+    ends('fg.action');
+    ends('border.action');
+    if (stops) {
+      for (const bg of ['bg.canvas', 'bg.surface']) checkGradientOn('fg.action', bg, 'text');
+      checkGradientOn('border.action', 'bg.surface', 'ui');
+      checkGradientOn('on-tint.action', 'tint.action', 'text');
+    }
+  }
+  // A gradient's ends, and its middle, on one solid background.
+  function checkGradientOn(fgName, bgName, purpose) {
+    check(`${fgName}-from`, bgName, purpose);
+    check(`${fgName}-to`, bgName, purpose);
+    const fg = toHex(mixOklch(parseHex(tokens[`${fgName}-from`].value), parseHex(tokens[`${fgName}-to`].value), 0.5));
+    const bg = tokens[bgName].value;
+    audit.push({ fg: `${fgName} (the gradient's middle)`, bg: bgName, fgValue: fg, bgValue: bg, purpose: purposeName(purpose), required: true, ...measure(fg, bg), pass: test(fg, bg, purpose) });
   }
   // A label on each end of a gradient, and on its middle. A failure that is not required warns.
   function checkGradient(fgName, bgName, required) {

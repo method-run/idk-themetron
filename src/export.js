@@ -37,6 +37,9 @@ export function primitiveEntries(p) {
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
   // The direction of the action gradient. See the fill-action-from and -to tokens.
   out.push(['action-angle', `${p.gradientAngle}deg`]);
+  // "on" when the action color is a gradient, else "off". Components read it with a style query,
+  // @container style(--tm-action-gradient: on), to paint gradient text and edges.
+  out.push(['action-gradient', p.gradient ? 'on' : 'off']);
   // The icon font, and its fill (0 or 1) and line weight (100 to 700), for font-variation-settings.
   out.push(['font-icon', `"${p.icon.family}"`], ['icon-fill', String(p.icon.fill)], ['icon-weight', String(p.icon.weight)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
