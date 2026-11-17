@@ -179,16 +179,18 @@ function renderThemes() {
     const t = state.themes[name];
     const root = name === ROOT;
     const open = name === openCard;
-    return el('div', { class: `card ${themeClass(name)} ${open ? 'open' : ''}`, style: `--depth: ${depthOf(name)}`, 'data-card': name },
-      el('div', { class: 'card-bar', draggable: !root && !open ? 'true' : null, ...dragHandlers(name), onclick: (e) => { if (e.target === e.currentTarget) toggleCard(name); } },
-        // The grip: six dots that show the card can be dragged. It sits in the card's indent.
-        !root && !open ? el('span', { class: 'tm-icon grip', 'aria-hidden': 'true' }, 'drag_indicator') : null,
-        el('button', { class: 'card-toggle', type: 'button', 'aria-expanded': String(open), 'aria-keyshortcuts': root ? null : 'Alt+ArrowUp Alt+ArrowDown', onclick: () => toggleCard(name), onkeydown: (e) => stepTheme(e, name) },
-          el('span', { class: 'chev', 'aria-hidden': 'true' }, '▸'),
+    return el('div', { class: `card ${themeClass(name)} ${open ? 'open' : ''} ${lifted === name ? 'lifted' : ''}`, style: `--depth: ${depthOf(name)}`, 'data-card': name },
+      el('div', { class: `card-bar ${root ? 'fixed' : ''}`, draggable: root ? null : 'true', ...dragHandlers(name), onclick: (e) => { if (e.target === e.currentTarget) toggleCard(name); } },
+        el('button', { class: 'card-toggle', type: 'button', 'aria-expanded': String(open), onclick: () => toggleCard(name) },
+          el('span', { class: 'chev', 'aria-hidden': 'true' }, caret()),
           el('span', { class: 'title' }, el('i', { class: 'dot', 'data-dot': name }), labelOf(name)),
           el('span', { class: 'color-meta', 'data-meta': name }),
         ),
-        root ? el('span') : el('button', { class: 'x', type: 'button', 'aria-label': `Remove the ${labelOf(name)} theme`, title: 'Remove theme', onclick: () => removeTheme(name) }, '×'),
+        // The grip: six dots, to drag the card, or to move it from the keyboard. Not a <button>:
+        // Firefox does not start a drag from a button. The root does not move, so it has no grip,
+        // and its toggle takes the whole bar.
+        root ? null : el('span', { class: 'grip', role: 'button', tabindex: '0', 'aria-label': `Move ${labelOf(name)}`, 'aria-describedby': 'move-help', title: 'Drag to move', onkeydown: (e) => gripKey(e, name) },
+          el('span', { class: 'tm-icon', 'aria-hidden': 'true' }, 'drag_indicator')),
       ),
       open ? cardBody(name) : null,
       el('button', { class: 'add-child', type: 'button', onclick: () => addChild(name) }, '+ Add a child of ', el('b', {}, labelOf(name))),
@@ -240,6 +242,12 @@ function cardBody(name) {
       ...missing.map(([key, label]) => el('button', { class: 'small-btn', type: 'button', onclick: () => addSection(name, key) }, `+ ${label}`))));
   }
   // A rule between sections.
+  // Delete is not a main action, so it is last, inside the open card.
+  if (!root) {
+    parts.push(el('div', { class: 'group card-delete' },
+      el('button', { class: 'small-btn', type: 'button', onclick: () => removeTheme(name) }, `Delete ${labelOf(name)}`),
+      el('div', { class: 'fader-hint' }, 'Its children move up to its parent.')));
+  }
   return el('div', { class: 'card-body' }, ...parts.flatMap((p, i) => (i ? [el('hr'), p] : [p])));
 }
 
@@ -340,7 +348,10 @@ function removeTheme(name) {
   update();
 }
 
-// ---- Moving themes. Drag a collapsed card onto another: onto the top quarter of its bar to put it
+// The caret on each card: right when closed, down when open.
+const caret = () => svg('svg', { width: 12, height: 12, viewBox: '0 0 16 16', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg('path', { d: 'M6 3.5 10.5 8 6 12.5' }));
+
+// ---- Moving themes. Drag a card by its bar or its grip onto another: onto the top quarter of its bar to put it
 // before that theme, onto the bottom quarter to put it after, and onto the middle to make it a
 // child. Its children move with it. A theme cannot go into itself or its own children, and the
 // root stays first. Sibling order is the order of the keys in state.themes, so a move rebuilds it.
@@ -382,7 +393,11 @@ const dragHandlers = (name) => ({
     dragging = name;
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', labelOf(name));
-    e.currentTarget.closest('.card').classList.add('dragging');
+    // The drag image is the bar, as the bar is what drags. The card itself folds while it moves,
+    // so an open card does not push the drop targets away. Not at once: a change to the dragged
+    // element during dragstart can cancel the drag.
+    const card = e.currentTarget.closest('.card');
+    setTimeout(() => card.classList.add('dragging'));
   },
   ondragend: (e) => { dragging = null; clearDrop(); e.currentTarget.closest('.card').classList.remove('dragging'); },
   ondragover: (e) => {
@@ -405,17 +420,66 @@ const dragHandlers = (name) => ({
   },
 });
 
-// From the keyboard: Alt+Up and Alt+Down move a theme past its sibling. The Parent field nests it.
-function stepTheme(e, name) {
-  if (!e.altKey || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') || name === ROOT) return;
-  e.preventDefault();
-  const siblings = treeOrder().filter((n) => n !== ROOT && state.themes[n].parent === state.themes[name].parent);
-  const i = siblings.indexOf(name);
-  const next = siblings[i + (e.key === 'ArrowUp' ? -1 : 1)];
-  if (!next) return;
-  moveTheme(name, next, e.key === 'ArrowUp' ? 'before' : 'after');
-  document.querySelector(`[data-card="${name}"] .card-toggle`)?.focus();
+// From the keyboard, on a grip, as in most sortable lists: Space or Enter lifts the theme, Up and
+// Down move it past its siblings, Right nests it in the theme above it, and Left moves it out, after
+// its parent. Space or Enter drops it, and Escape puts it back. A live region says each step. Tab,
+// or a click anywhere, drops it where it is.
+let lifted = null;
+let liftedFrom = null;
+const announce = (text) => { $('#move-status').textContent = text; };
+const siblingsOf = (name) => treeOrder().filter((n) => n !== ROOT && state.themes[n].parent === state.themes[name].parent);
+const placeOf = (name) => {
+  const siblings = siblingsOf(name);
+  return `${labelOf(name)} is ${siblings.indexOf(name) + 1} of ${siblings.length} in ${labelOf(state.themes[name].parent)}.`;
+};
+const focusGrip = (name) => document.querySelector(`[data-card="${name}"] .grip`)?.focus();
+function liftTheme(name) {
+  lifted = name;
+  liftedFrom = structuredClone(state.themes);
+  renderThemes();
+  focusGrip(name);
+  announce(`Lifted ${labelOf(name)}. ${placeOf(name)} Up and Down move it. Right puts it in the theme above, and Left moves it out. Space drops it, and Escape puts it back.`);
 }
+function dropTheme() {
+  const name = lifted;
+  lifted = null;
+  liftedFrom = null;
+  renderThemes();
+  focusGrip(name);
+  announce(`Dropped. ${placeOf(name)}`);
+}
+function cancelMove() {
+  const name = lifted;
+  state.themes = liftedFrom;
+  lifted = null;
+  liftedFrom = null;
+  renderThemes();
+  update();
+  focusGrip(name);
+  announce(`Moved back. ${placeOf(name)}`);
+}
+function gripKey(e, name) {
+  if (e.key === 'Tab') { if (lifted) dropTheme(); return; }
+  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (lifted === name) dropTheme(); else liftTheme(name); return; }
+  if (lifted !== name) return;
+  if (e.key === 'Escape') { e.preventDefault(); cancelMove(); return; }
+  const siblings = siblingsOf(name);
+  const i = siblings.indexOf(name);
+  const parent = state.themes[name].parent;
+  const move = {
+    ArrowUp: siblings[i - 1] && [siblings[i - 1], 'before'],
+    ArrowDown: siblings[i + 1] && [siblings[i + 1], 'after'],
+    ArrowRight: siblings[i - 1] && [siblings[i - 1], 'inside'],
+    ArrowLeft: parent !== ROOT && [parent, 'after'],
+  };
+  if (!(e.key in move)) return;
+  e.preventDefault();
+  if (!move[e.key]) { announce(`${labelOf(name)} cannot go that way. ${placeOf(name)}`); return; }
+  moveTheme(name, ...move[e.key]);
+  focusGrip(name);
+  announce(placeOf(name));
+}
+document.addEventListener('pointerdown', (e) => { if (lifted && !e.target.closest(`[data-card="${lifted}"] .grip`)) dropTheme(); });
 
 // A new child takes the first semantic theme name that is not taken yet, such as danger or
 // warning, with its suggested color, so a theme set grows toward the themes that most systems

@@ -87,17 +87,24 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* Dragging a theme: the card being moved fades, and the card under the pointer shows where it
    would go: a line above or below it, or an outline to nest it inside. */
 .card-bar[draggable="true"] { cursor: grab; }
-.card-bar[draggable="true"] { position: relative; }
-/* Only children drag, and a child's bar is indented at least one step, so the grip fits in the
-   indent, just left of the chevron, and the titles do not move. */
-.card-bar .grip { position: absolute; top: 50%; translate: 0 -50%; left: calc(var(--pad) - 6px + (var(--depth, 1) - 1) * 14px - 4px); font-size: 18px; color: var(--muted); }
-.card-bar[draggable="true"]:hover .grip { color: var(--ink); }
+.card-bar.fixed { grid-template-columns: minmax(0, 1fr); }
+/* The grip, at the right of the bar. A lifted card (from the keyboard) has an outline. */
+.grip { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 6px; color: var(--muted); cursor: grab; }
+.grip .tm-icon { font-size: 20px; }
+.grip:hover, .card.lifted .grip { background: var(--hover); color: var(--ink); }
+.grip:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+.card.lifted { outline: 2px solid var(--ink); outline-offset: -2px; }
+.card.lifted .grip { cursor: grabbing; }
+/* The card being dragged fades, and folds: its body and its add button hide. */
 .card.dragging { opacity: 0.4; }
+.card.dragging :is(.card-body, .add-child) { display: none; }
+.card-delete { display: grid; justify-items: start; gap: 6px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .card[data-drop="before"] { box-shadow: inset 0 2px 0 var(--ink); }
 .card[data-drop="after"] { box-shadow: inset 0 -2px 0 var(--ink); }
 .card[data-drop="inside"] { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: 6px; }
 .card-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-.card-toggle .chev { color: var(--muted); transition: transform 0.15s; }
+.card-toggle .chev { display: grid; place-items: center; color: var(--muted); transition: transform 0.15s; }
 .card.open .card-toggle .chev { transform: rotate(90deg); }
 .card-toggle .title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card-toggle .color-meta { grid-column: 2; margin: 2px 0 0; }
@@ -385,6 +392,8 @@ td code { font-family: var(--mono); font-size: 12px; }
       <div class="fader-hint">Sets are saved in this browser. Download a set from the Tokens view to keep it.</div>
     </div>
     <div class="theme-cards" id="themes"></div>
+    <p id="move-help" hidden>Drag to move. Or press Space to lift, the arrow keys to move, and Space to drop.</p>
+    <div class="sr-only" id="move-status" aria-live="assertive"></div>
     <div class="fader-hint">A child takes every setting that it does not override from its parent. A child that changes only its color is a color theme.</div>
   </aside>
   <div class="splitter" id="splitter" role="separator" tabindex="0" aria-orientation="vertical" aria-controls="controls" aria-label="Resize the inputs" aria-valuemin="260" aria-valuemax="640"></div>
