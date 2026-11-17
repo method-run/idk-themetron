@@ -87,6 +87,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* Dragging a theme: the card being moved fades, and the card under the pointer shows where it
    would go: a line above or below it, or an outline to nest it inside. */
 .card-bar[draggable="true"] { cursor: grab; }
+.card-bar[draggable="true"] { position: relative; }
+/* Only children drag, and a child's bar is indented at least one step, so the grip fits in the
+   indent, just left of the chevron, and the titles do not move. */
+.card-bar .grip { position: absolute; top: 50%; translate: 0 -50%; left: calc(var(--pad) - 6px + (var(--depth, 1) - 1) * 14px - 4px); font-size: 18px; color: var(--muted); }
+.card-bar[draggable="true"]:hover .grip { color: var(--ink); }
 .card.dragging { opacity: 0.4; }
 .card[data-drop="before"] { box-shadow: inset 0 2px 0 var(--ink); }
 .card[data-drop="after"] { box-shadow: inset 0 -2px 0 var(--ink); }

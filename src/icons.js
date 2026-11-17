@@ -8,7 +8,7 @@
 // fonts.google.com/icons.
 export const ICONS = [
   'add', 'arrow_back', 'arrow_forward', 'check', 'check_circle', 'chevron_left', 'chevron_right',
-  'close', 'content_copy', 'delete', 'edit', 'error', 'expand_less', 'expand_more', 'favorite',
+  'close', 'content_copy', 'delete', 'drag_indicator', 'edit', 'error', 'expand_less', 'expand_more', 'favorite',
   'info', 'menu', 'more_horiz', 'more_vert', 'photo_camera', 'remove', 'search', 'settings',
   'share', 'star', 'thumb_down', 'thumb_up', 'upload', 'upload_file', 'warning',
 ];
