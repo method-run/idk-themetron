@@ -180,8 +180,8 @@ function renderThemes() {
     const root = name === ROOT;
     const open = name === openCard;
     return el('div', { class: `card ${themeClass(name)} ${open ? 'open' : ''}`, style: `--depth: ${depthOf(name)}`, 'data-card': name },
-      el('div', { class: 'card-bar', onclick: (e) => { if (e.target === e.currentTarget) toggleCard(name); } },
-        el('button', { class: 'card-toggle', type: 'button', 'aria-expanded': String(open), onclick: () => toggleCard(name) },
+      el('div', { class: 'card-bar', draggable: !root && !open ? 'true' : null, ...dragHandlers(name), onclick: (e) => { if (e.target === e.currentTarget) toggleCard(name); } },
+        el('button', { class: 'card-toggle', type: 'button', 'aria-expanded': String(open), 'aria-keyshortcuts': root ? null : 'Alt+ArrowUp Alt+ArrowDown', onclick: () => toggleCard(name), onkeydown: (e) => stepTheme(e, name) },
           el('span', { class: 'chev', 'aria-hidden': 'true' }, '▸'),
           el('span', { class: 'title' }, el('i', { class: 'dot', 'data-dot': name }), labelOf(name)),
           el('span', { class: 'color-meta', 'data-meta': name }),
@@ -336,6 +336,83 @@ function removeTheme(name) {
   if (openCard === name) openCard = parent;
   renderThemes();
   update();
+}
+
+// ---- Moving themes. Drag a collapsed card onto another: onto the top quarter of its bar to put it
+// before that theme, onto the bottom quarter to put it after, and onto the middle to make it a
+// child. Its children move with it. A theme cannot go into itself or its own children, and the
+// root stays first. Sibling order is the order of the keys in state.themes, so a move rebuilds it.
+function moveTheme(name, target, where) {
+  if (!possibleParents(name).includes(target)) return;
+  const parent = where === 'inside' ? target : state.themes[target].parent;
+  if (!parent) return;
+  const t = { ...state.themes[name], parent };
+  const rest = Object.entries(state.themes).filter(([k]) => k !== name);
+  const at = where === 'inside' ? rest.length : rest.findIndex(([k]) => k === target) + (where === 'after' ? 1 : 0);
+  rest.splice(at, 0, [name, t]);
+  state.themes = Object.fromEntries(rest);
+  renderThemes();
+  update();
+}
+
+// Where a drop on a card's bar would put the theme: before, after, or inside. Only inside the root.
+const dropPlace = (e, target) => {
+  if (target === ROOT) return 'inside';
+  const r = e.currentTarget.getBoundingClientRect();
+  const y = (e.clientY - r.top) / r.height;
+  return y < 0.25 ? 'before' : y > 0.75 ? 'after' : 'inside';
+};
+const lastDescendant = (name) => {
+  const order = treeOrder();
+  let last = name;
+  for (const n of order.slice(order.indexOf(name) + 1)) {
+    let p = state.themes[n].parent;
+    while (p && p !== name) p = state.themes[p]?.parent;
+    if (p !== name) break;
+    last = n;
+  }
+  return last;
+};
+let dragging = null;
+const clearDrop = () => document.querySelectorAll('[data-drop]').forEach((n) => n.removeAttribute('data-drop'));
+const dragHandlers = (name) => ({
+  ondragstart: (e) => {
+    dragging = name;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', labelOf(name));
+    e.currentTarget.closest('.card').classList.add('dragging');
+  },
+  ondragend: (e) => { dragging = null; clearDrop(); e.currentTarget.closest('.card').classList.remove('dragging'); },
+  ondragover: (e) => {
+    if (!dragging || !possibleParents(dragging).includes(name)) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const place = dropPlace(e, name);
+    // A theme dropped after another goes after that theme's children too, so the line goes under
+    // the last of them.
+    const below = place === 'after' ? lastDescendant(name) : name;
+    const card = document.querySelector(`[data-card="${below}"]`);
+    if (card.dataset.drop !== place) { clearDrop(); card.dataset.drop = place; }
+  },
+  ondragleave: (e) => { if (!e.currentTarget.contains(e.relatedTarget)) clearDrop(); },
+  ondrop: (e) => {
+    e.preventDefault();
+    const from = dragging;
+    clearDrop();
+    if (from) moveTheme(from, name, dropPlace(e, name));
+  },
+});
+
+// From the keyboard: Alt+Up and Alt+Down move a theme past its sibling. The Parent field nests it.
+function stepTheme(e, name) {
+  if (!e.altKey || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') || name === ROOT) return;
+  e.preventDefault();
+  const siblings = treeOrder().filter((n) => n !== ROOT && state.themes[n].parent === state.themes[name].parent);
+  const i = siblings.indexOf(name);
+  const next = siblings[i + (e.key === 'ArrowUp' ? -1 : 1)];
+  if (!next) return;
+  moveTheme(name, next, e.key === 'ArrowUp' ? 'before' : 'after');
+  document.querySelector(`[data-card="${name}"] .card-toggle`)?.focus();
 }
 
 // A new child takes the first semantic theme name that is not taken yet, such as danger or
