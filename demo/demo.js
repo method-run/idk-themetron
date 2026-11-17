@@ -233,7 +233,7 @@ function cardBody(name) {
     const closed = pane.closedSections.includes(key);
     const head = el('div', { class: 'group-head' },
       el('button', { class: 'section-toggle', type: 'button', 'aria-expanded': String(!closed), onclick: () => toggleSection(key) },
-        el('span', { class: 'chev', 'aria-hidden': 'true' }, '▸'), el('h2', {}, label)),
+        el('span', { class: 'chev', 'aria-hidden': 'true' }, caret()), el('h2', {}, label)),
       root || key === 'color' ? null : el('button', { class: 'x', type: 'button', 'aria-label': `Stop overriding ${label.toLowerCase()}`, title: `Use the parent's ${label.toLowerCase()}`, onclick: () => removeSection(name, key) }, '×'));
     parts.push(el('section', { class: `group ${closed ? 'collapsed' : ''}`, 'data-section': key }, head, ...SECTION_CONTROLS[key]()));
   }
@@ -245,7 +245,7 @@ function cardBody(name) {
   // Delete is not a main action, so it is last, inside the open card.
   if (!root) {
     parts.push(el('div', { class: 'group card-delete' },
-      el('button', { class: 'small-btn', type: 'button', onclick: () => removeTheme(name) }, `Delete ${labelOf(name)}`),
+      el('button', { class: 'small-btn delete-btn', type: 'button', onclick: () => removeTheme(name) }, el('span', { class: 'tm-icon', 'aria-hidden': 'true' }, 'delete'), `Delete ${labelOf(name)}`),
       el('div', { class: 'fader-hint' }, 'Its children move up to its parent.')));
   }
   return el('div', { class: 'card-body' }, ...parts.flatMap((p, i) => (i ? [el('hr'), p] : [p])));
@@ -348,8 +348,11 @@ function removeTheme(name) {
   update();
 }
 
-// The caret on each card: right when closed, down when open.
-const caret = () => svg('svg', { width: 12, height: 12, viewBox: '0 0 16 16', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg('path', { d: 'M6 3.5 10.5 8 6 12.5' }));
+// The caret, the same everywhere: right on a closed card or section (CSS turns it down when it
+// opens), and down on a button that opens a menu. The preview's summaries draw the same shape in
+// CSS (see .theme-preview), and the View button has it in the HTML.
+const CARET_PATHS = { right: 'M6 3.5 10.5 8 6 12.5', down: 'M3.5 6 8 10.5 12.5 6' };
+const caret = (dir = 'right') => svg('svg', { class: 'caret', width: 12, height: 12, viewBox: '0 0 16 16', fill: 'none', stroke: 'currentColor', 'stroke-width': 2.2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, svg('path', { d: CARET_PATHS[dir] }));
 
 // ---- Moving themes. Drag a card by its bar or its grip onto another: onto the top quarter of its bar to put it
 // before that theme, onto the bottom quarter to put it after, and onto the middle to make it a
@@ -684,7 +687,7 @@ const SECTION_CONTROLS = {
     };
     return [
     el('details', { class: 'preset-menu', id: 'preset-menu' },
-      el('summary', { class: 'tm-button tm-button--outline tm-button--sm' }, 'Apply a preset ▾'),
+      el('summary', { class: 'tm-button tm-button--outline tm-button--sm' }, 'Apply a preset ', caret('down')),
       el('div', { class: 'preset-list', role: 'menu', 'aria-label': 'Presets' },
         ...Object.entries(PRESETS).map(([key, p]) => el('button', {
           type: 'button',
