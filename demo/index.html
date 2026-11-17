@@ -53,6 +53,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .group h2 { margin: 0; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 .small-btn { border: 1px solid var(--line); background: none; border-radius: 6px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
 .small-btn:hover { background: var(--hover); }
+.small-btn:disabled { opacity: 0.5; cursor: default; background: none; }
+.theme-sets { display: grid; gap: 8px; }
+.set-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 .small-btn:focus-visible, .chip:focus-visible, .seg button:focus-visible, .view-tabs button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -356,6 +359,18 @@ td code { font-family: var(--mono); font-size: 12px; }
     <div class="brand"><h1>idk-themetron</h1><span>playground</span></div>
     <p class="lede">Make a tree of themes from a few colors, fonts, and feels. Themetron makes accessible design tokens, and the components on the right use them.</p>
 
+    <div class="theme-sets" role="group" aria-label="Theme sets">
+      <div class="field"><label for="set-pick">Theme set</label>
+        <select id="set-pick"></select></div>
+      <div class="field"><label for="set-name">Set name</label>
+        <input id="set-name" spellcheck="false"></div>
+      <div class="set-actions">
+        <button class="small-btn" type="button" id="set-new">+ New set</button>
+        <button class="small-btn" type="button" id="set-copy">Copy this set</button>
+        <button class="small-btn" type="button" id="set-delete">Delete this set</button>
+      </div>
+      <div class="fader-hint">Sets are saved in this browser. Download a set from the Tokens view to keep it.</div>
+    </div>
     <div class="theme-cards" id="themes"></div>
     <div class="fader-hint">A child takes every setting that it does not override from its parent. A child that changes only its color is a color theme.</div>
   </aside>

@@ -40,20 +40,42 @@ const START = {
 };
 
 const STORE_KEY = 'themetron-playground-v2';
-let state = load(STORE_KEY) ?? structuredClone(START);
-if (!state.themes?.[ROOT]) state = structuredClone(START);
-if (!state.themes[state.selected]) state.selected = ROOT;
-// The playground keeps base and action apart. A saved state with `neutral` or `color` is from
-// version 1 of the inputs, where `color` was the action color only.
-toRoles(state.themes, 1);
-// Presets are a one-time stamp in the playground: a saved preset becomes the theme's own feels.
-expandPresets(state.themes);
-// CIE LCh is gone. Themes that used it go back to the default model.
-for (const t of Object.values(state.themes)) if (t.contrast?.model === 'lch') delete t.contrast.model;
-// "Both" is gone: APCA now keeps the WCAG 2 minimums as a floor.
-for (const t of Object.values(state.themes)) if (t.contrast?.method === 'both') t.contrast.method = 'apca';
-// The icon style "outlined" is now "standard": fill is a setting of its own.
-for (const t of Object.values(state.themes)) if (t.icons?.style === 'outlined') t.icons.style = 'standard';
+let state = tidy(load(STORE_KEY));
+
+// A saved state, made current: older saves get today's fields. Used at start, and for each saved
+// theme set that you open.
+function tidy(saved) {
+  let s = saved ?? structuredClone(START);
+  if (!s.themes?.[ROOT]) s = structuredClone(START);
+  if (!s.themes[s.selected]) s.selected = ROOT;
+  // The playground keeps base and action apart. A saved state with `neutral` or `color` is from
+  // version 1 of the inputs, where `color` was the action color only.
+  toRoles(s.themes, 1);
+  // Presets are a one-time stamp in the playground: a saved preset becomes the theme's own feels.
+  expandPresets(s.themes);
+  // CIE LCh is gone. Themes that used it go back to the default model.
+  for (const t of Object.values(s.themes)) if (t.contrast?.model === 'lch') delete t.contrast.model;
+  // "Both" is gone: APCA now keeps the WCAG 2 minimums as a floor.
+  for (const t of Object.values(s.themes)) if (t.contrast?.method === 'both') t.contrast.method = 'apca';
+  // The icon style "outlined" is now "standard": fill is a setting of its own.
+  for (const t of Object.values(s.themes)) if (t.icons?.style === 'outlined') t.icons.style = 'standard';
+  return s;
+}
+
+// Saved theme sets: each one is a whole tree of themes, with a name, so you can work on a few
+// before you download any. They are in this browser's localStorage: small JSON, read at once at
+// start. The open set is also under STORE_KEY, as before. Each change saves both.
+const SETS_KEY = 'themetron-playground-sets';
+let sets = load(SETS_KEY);
+if (!sets?.list?.[sets.current]) {
+  const id = newSetId();
+  sets = { current: id, list: { [id]: { name: 'My themes', state } } };
+}
+function newSetId() { return `set-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`; }
+function saveSets() {
+  sets.list[sets.current].state = state;
+  store(SETS_KEY, sets);
+}
 // ?preset=glass opens the playground with a preset on the root theme, for links and screenshots.
 const askedPreset = new URLSearchParams(location.search).get('preset');
 if (PRESETS[askedPreset]) { state.themes[ROOT].preset = askedPreset; delete state.themes[ROOT].feel; }
@@ -105,6 +127,7 @@ function update() {
       return;
     }
     store(STORE_KEY, state);
+    saveSets();
     $('#theme-css').textContent = withUploads(toCss(built, { root: false }));
     renderControlsState();
     renderView();
@@ -1539,7 +1562,14 @@ async function loadSharedLink() {
     const json = new TextDecoder().decode(await pipe(fromBase64Url(t), new DecompressionStream('deflate-raw')));
     // Links from before version 2 have no version.
     const next = JSON.parse(json);
-    loadInputs(next, next.version ?? 1);
+    // The link's themes open as a new set, so they do not replace the open one.
+    saveSets();
+    const was = sets.current;
+    const id = newSetId();
+    sets.list[id] = { name: freeSetName('Shared themes'), state };
+    sets.current = id;
+    try { loadInputs(next, next.version ?? 1); } catch (err) { delete sets.list[id]; sets.current = was; throw err; }
+    renderSets();
   } catch (err) {
     $('#error').textContent = `The link's themes could not load: ${loadMessage(err)}`;
     $('#error').hidden = false;
@@ -1656,6 +1686,56 @@ splitter.addEventListener('keydown', (e) => {
   applyPane();
 });
 
+// ---- Theme sets: open, add, copy, rename, and delete. The open set is saved before you leave it.
+
+function openSet(id) {
+  saveSets();
+  sets.current = id;
+  state = tidy(structuredClone(sets.list[id].state));
+  for (const k of Object.keys(added)) delete added[k];
+  saveSets();
+  renderSets();
+  renderAll();
+}
+function addSet(name, from) {
+  saveSets();
+  const id = newSetId();
+  sets.list[id] = { name, state: structuredClone(from ?? START) };
+  openSet(id);
+}
+// A name that no set has yet: "New themes", then "New themes 2", and so on.
+function freeSetName(base) {
+  const names = new Set(Object.values(sets.list).map((s) => s.name));
+  let name = base;
+  for (let i = 2; names.has(name); i++) name = `${base} ${i}`;
+  return name;
+}
+function renderSets() {
+  const ids = Object.keys(sets.list);
+  $('#set-pick').replaceChildren(...ids.map((id) => el('option', { value: id, selected: id === sets.current }, sets.list[id].name)));
+  if (document.activeElement !== $('#set-name')) $('#set-name').value = sets.list[sets.current].name;
+  $('#set-delete').disabled = ids.length < 2;
+}
+$('#set-pick').addEventListener('change', (e) => openSet(e.target.value));
+$('#set-new').addEventListener('click', () => addSet(freeSetName('New themes')));
+$('#set-copy').addEventListener('click', () => addSet(freeSetName(`${sets.list[sets.current].name} copy`), state));
+$('#set-name').addEventListener('change', (e) => {
+  const name = e.target.value.trim();
+  if (name) sets.list[sets.current].name = name;
+  saveSets();
+  renderSets();
+});
+$('#set-delete').addEventListener('click', () => {
+  const { name } = sets.list[sets.current];
+  if (Object.keys(sets.list).length < 2 || !confirm(`Delete the theme set "${name}"? This cannot be undone.`)) return;
+  delete sets.list[sets.current];
+  sets.current = Object.keys(sets.list)[0];
+  state = tidy(structuredClone(sets.list[sets.current].state));
+  saveSets();
+  renderSets();
+  renderAll();
+});
+
 function renderAll() {
   previewKey = '';
   built = null;
@@ -1665,6 +1745,7 @@ function renderAll() {
 }
 
 applyPane();
+renderSets();
 renderAll();
 loadUploads();
 loadSharedLink();
