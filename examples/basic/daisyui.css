@@ -1,7 +1,8 @@
+/* Made by themetron, token contract 0.2.0: https://method-run.github.io/idk-themetron/schema/0.2.0/tokens.manifest.json */
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* Add the themetron CSS too: these values point at its variables. Made by themetron. */
+/* Add the themetron CSS too: these values point at its variables. */
 @plugin "daisyui/theme" {
   name: "themetron";
   default: true;

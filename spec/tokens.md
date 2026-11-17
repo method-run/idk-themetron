@@ -31,7 +31,7 @@ Components should use semantic tokens for color, and primitives for everything e
 
 | Format | Function | Use |
 |---|---|---|
-| CSS custom properties | `toCss(built, { prefix, classPrefix, root })` | Any web page. Names start with `--tm-`. `root: false` leaves out `:root`. |
+| CSS custom properties | `toCss(built, { prefix, classPrefix, root, icons })` | Any web page. Names start with `--tm-`. `root: false` leaves out `:root`. `icons: false` leaves out the `@import` of the icon font. |
 | DTCG JSON | `toDtcg(built)` | Design tools and token pipelines, such as Style Dictionary. Follows the Design Tokens Community Group format. Each theme is a group. |
 | shadcn/ui | `toShadcn(built)` | Its theme variables, for `globals.css`: `--primary`, `--background`, `--radius`, and the rest, in `:root` and `.dark`. Each child theme is a class. |
 | Tailwind v4 | `toTailwind(built)` | A `@theme inline` block whose values point at the CSS variables, so theme classes and modes work in utilities too. Use it with the CSS. Grade 5 is Tailwind's 50, grade 10 is 100, and so on. |
@@ -41,6 +41,8 @@ Components should use semantic tokens for color, and primitives for everything e
 | Bootstrap 5.3 CSS | `toBootstrapCss(built)` | Its CSS variables: `--bs-primary`, `--bs-body-bg`, `--bs-border-radius`, and the rest, with their `-rgb` twins, in `:root` and `[data-bs-theme=dark]`. Each child theme is a class. Load it after `bootstrap.css`. It also sets the colors of the solid and outline buttons (`.btn-primary`, `.btn-outline-primary`, …) for primary, secondary, and each status with a theme. Bootstrap sets those from Sass, so its variables alone do not change them. Secondary buttons are quiet buttons. Other component colors that come from Sass, such as table rows, stay Bootstrap's. To change all of them, use the Sass export. |
 
 The framework exports take the status colors from the themes named `danger` (or `error`), `warning`, `success`, and `info`. When there is no such theme, MUI and Bootstrap CSS keep their own color, and daisyUI uses the action fill. MUI has one list of 25 shadows for both modes, so it gets the light-mode shadows: 1 and 2 are elevation 1, 3 to 8 are elevation 2, and 9 to 24 are elevation 3. In dark mode, MUI lightens surfaces instead, so a dark shadow shows little there.
+
+Every export but MUI starts with a line that names the token contract that made it, and the URL of that contract's manifest: `/* Made by themetron, token contract 0.2.0: https://method-run.github.io/idk-themetron/schema/0.2.0/tokens.manifest.json */`. A tool can read the version from it, to tell when a theme is older or newer than what the tool knows. DTCG JSON has it in `$extensions.themetron`, as `contract` and `manifest`. Each export also takes a `set` option, the theme set's name, such as `"Admin app"`. The line names the set as a name for code, `admin-app`, so it is safe in a comment. DTCG has it as `$extensions.themetron.set`, and it is the daisyUI theme's name, unless `name` sets one.
 
 A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and `themes.danger.mode.light.on-fill.action` in DTCG JSON.
 
@@ -243,6 +245,8 @@ These flags change the output. Each one is an option of the export function, and
 | `--no-root` | The root theme's rule leaves out `:root`, so only its class sets it. | `css`, `stylesheet` |
 | `--no-more` | Leave out the more-contrast rules. | `css`, `stylesheet` |
 | `--more` | Make the more-contrast version, which your app or page loads for readers who ask for more contrast. | `mui`, `bootstrap` |
+| `--no-icons` | Leave out the `@import` of the icon font, for pages without icons, or a site that loads the font itself. The icon tokens stay. | `css`, `stylesheet` |
+| `--set <name>` | The theme set's name. The file's first line names it, with the token contract. It is also the daisyUI theme's name. | all but `mui` |
 
 `stylesheet` takes no `--prefix`, because the components read `--tm-*` tokens.
 
