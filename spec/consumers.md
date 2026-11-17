@@ -15,7 +15,7 @@ aliases: [Using themetron in a site or library]
 ◐ 83% (5/6)
 <!-- idk-plans:progress:end -->
 
-> **Status:** contract 0.1.0, released with package 0.1.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
+> **Status:** contract 0.2.0, first released with package 0.2.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
 
 A **consumer** is a site, a doc generator, or a component library that reads a themetron stylesheet. This page says what a consumer can depend on, and what it must do. If a consumer follows it, every themetron theme set works with it, and you can change themes without changing the consumer.
 
@@ -32,7 +32,7 @@ From the package: `@method-run/idk-themetron/spec/tokens.manifest.json`, `@metho
 The site also publishes them at fixed URLs:
 
 - **Latest:** <https://method-run.github.io/idk-themetron/schema/tokens.manifest.json> and <https://method-run.github.io/idk-themetron/schema/inputs.schema.json>. These always hold the files from `main`.
-- **One released version:** put the contract version in the path, such as `https://method-run.github.io/idk-themetron/schema/0.1.0/inputs.schema.json`. Use this URL to pin a version. These files never change. A version gets its folder when it is released, so no version has one yet.
+- **One released version:** put the contract version in the path, such as `https://method-run.github.io/idk-themetron/schema/0.1.0/inputs.schema.json`. Use this URL to pin a version. These files never change. A version gets its folder when it is released. Contracts 0.1.0 and 0.2.0 have one.
 
 Each schema's URL is also its `$id`. The repository keeps each released version's files in `spec/versions/`.
 
@@ -180,6 +180,8 @@ The stylesheet defines one shine gradient, `--tm-shine-image`, on every element.
 - An element that sets no colors has a clear gradient. Children inherit the colors, so a nested part sets its own.
 - The reference buttons do not paint `shine-image`. They shade their top and bottom with filters that the `shine-backdrop-*`, `shine-filter-*`, and `shine-paint` tokens pick. See [Components](../components/README.md "components").
 
+For a whole part, such as a button, a badge, or a card, see [Recipes for common parts](./recipes.md "recipes"). They show how a part takes each feel, not only the colors.
+
 ## Fonts
 
 The theme stylesheet starts with an `@import` from Google Fonts when a theme names a web font. A font with its own `src` files gets `@font-face` rules instead. The functions `fontImport()` and `fontFaces()` give the same import URL and rules, if you write your own stylesheet. Read the fonts with `var(--tm-font-body)`, `var(--tm-font-heading)`, and `var(--tm-font-mono)`. Each one ends with a CSS generic family, so text shows before the font loads, and without it.
@@ -216,6 +218,8 @@ idk-plans makes doc sites with its own variables. This is a mapping that follows
 | `--todo` | `--tm-border-base-strong` | |
 
 For a dark sidebar beside light content, put `tm-invert` on the sidebar. In dark mode, the sidebar turns light, so a site that wants it dark in both modes uses `data-tm-mode="dark"` on the sidebar instead.
+
+This mapping gives the theme's colors and fonts. For its feels, such as roundness, depth, and clarity, the site's parts also follow the [recipes](./recipes.md "recipes").
 
 Map the variables with fallbacks, so the site still works without a theme:
 
