@@ -181,6 +181,8 @@ function renderThemes() {
     const open = name === openCard;
     return el('div', { class: `card ${themeClass(name)} ${open ? 'open' : ''}`, style: `--depth: ${depthOf(name)}`, 'data-card': name },
       el('div', { class: 'card-bar', draggable: !root && !open ? 'true' : null, ...dragHandlers(name), onclick: (e) => { if (e.target === e.currentTarget) toggleCard(name); } },
+        // The grip: six dots that show the card can be dragged. It sits in the card's indent.
+        !root && !open ? el('span', { class: 'tm-icon grip', 'aria-hidden': 'true' }, 'drag_indicator') : null,
         el('button', { class: 'card-toggle', type: 'button', 'aria-expanded': String(open), 'aria-keyshortcuts': root ? null : 'Alt+ArrowUp Alt+ArrowDown', onclick: () => toggleCard(name), onkeydown: (e) => stepTheme(e, name) },
           el('span', { class: 'chev', 'aria-hidden': 'true' }, '▸'),
           el('span', { class: 'title' }, el('i', { class: 'dot', 'data-dot': name }), labelOf(name)),
