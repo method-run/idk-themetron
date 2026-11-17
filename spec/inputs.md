@@ -11,7 +11,7 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 35% (5/14) · 1 deferred
+◐ 62% (5/8) · 5 deferred · 2 dropped
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
@@ -331,16 +331,16 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [x] Start with the browser's own fonts, and add a Google font only when you choose one
 - [x] Let a theme load its own font files, not only Google Fonts
 - [ ] Let a part override a feel, such as rounder buttons than cards. themetron-3 had this idea.
-- [ ] Add the "embossed" feel from themetron-3: text shadow on raised parts
-- [ ] Add a "vibrance" feel that sets the chroma of tints
+- [-] Add the "embossed" feel from themetron-3: text shadow on raised parts
+- [-] Add a "vibrance" feel that sets the chroma of tints
 - [ ] Suggest font pairs, and match the x-height of fallback fonts with `size-adjust`
-- [ ] Add Lightest and Darkest sliders that clamp the ramps. See [Plan: lightest and darkest limits](#base-and-action).
-- [ ] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
+- [>] Add Lightest and Darkest sliders that clamp the ramps. See [Plan: lightest and darkest limits](#base-and-action).
+- [>] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
 - [x] Let the action color be a two-color gradient, for solid fills, soft buttons, and badges
-- [ ] Add gradient fills and backgrounds, from the same blend as the tinted white and black
+- [>] Add gradient fills and backgrounds, from the same blend as the tinted white and black
 - [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. Material Symbols is the only set for now.
 - [>] Let a role take its color from another theme by name, such as `"action": "brand"`. Parked until themes have more than two roles. With two roles, the parent or a copy of the hex covers almost every case. The work is on the branch of [#5](https://github.com/method-run/idk-themetron/pull/5): the engine, the schema, and a playground menu that picks a theme's color.
-- [ ] Decide whether to add a third role, such as secondary. See [Other roles](#other-roles).
+- [>] Decide whether to add a third role, such as secondary. See [Other roles](#other-roles).
 
 ### Other roles
 
