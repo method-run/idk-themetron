@@ -216,7 +216,11 @@ export function buildTheme(settings: ResolvedTheme): Theme;
 
 // ---- export.js
 
-export interface CssOptions {
+/** The theme set's name, such as "Admin app". The export's first line names it as a name for code (admin-app), with the token contract version. */
+export interface SetOption {
+  set?: string;
+}
+export interface CssOptions extends SetOption {
   /** The token prefix. Default "tm". */
   prefix?: string;
   /** The theme class prefix. Default "theme-". */
@@ -225,22 +229,24 @@ export interface CssOptions {
   root?: boolean;
   /** Add the more-contrast variant. Default true. */
   more?: boolean;
+  /** @import the icon font. Default true. False keeps the icon tokens, for a site that loads the font itself or has no icons. */
+  icons?: boolean;
 }
 export function toCss(built: BuiltThemes, options?: CssOptions): string;
 /** Design Tokens Community Group JSON: one group for each theme. */
-export function toDtcg(built: BuiltThemes): Record<string, any>;
+export function toDtcg(built: BuiltThemes, options?: SetOption): Record<string, any>;
 /** A Tailwind CSS v4 `@theme inline` block. Use it with the output of toCss. */
-export function toTailwind(built: BuiltThemes, options?: { prefix?: string }): string;
+export function toTailwind(built: BuiltThemes, options?: { prefix?: string } & SetOption): string;
 /** shadcn/ui theme variables, for its globals.css. */
-export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string }): string;
+export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
 /** Bootstrap 5 Sass variables, to import before Bootstrap. The root theme's light values, with *-dark twins. */
-export function toBootstrapSass(built: BuiltThemes, options?: { more?: boolean }): string;
+export function toBootstrapSass(built: BuiltThemes, options?: { more?: boolean } & SetOption): string;
 /** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. */
-export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string }): string;
+export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
 /** A Material UI theme for createTheme(), with light and dark colorSchemes. */
 export function toMui(built: BuiltThemes, options?: { theme?: string; more?: boolean }): Record<string, any>;
 /** daisyUI 5 themes for a Tailwind CSS v4 stylesheet. Use it with the output of toCss. */
-export function toDaisyui(built: BuiltThemes, options?: { prefix?: string; classPrefix?: string; name?: string }): string;
+export function toDaisyui(built: BuiltThemes, options?: { prefix?: string; classPrefix?: string; /** The daisyUI theme name. Default: the set's name, or "themetron". */ name?: string } & SetOption): string;
 /** A Google Fonts URL for the named font families of all themes, or null. Families with their own files are not in it. */
 export function fontImport(built: BuiltThemes): string | null;
 /** The @font-face rules for the themes' own font files, or "". */

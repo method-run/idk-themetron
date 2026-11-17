@@ -1580,16 +1580,22 @@ const FORMAT_NOTES = {
   inputs: 'Your themes as inputs. Open this file again here, or build the tokens from it with the engine.',
 };
 
+// The open theme set's name. Exports name it in their first line, and downloads take it as the
+// file name, both as a name for code: "Admin app" is admin-app.
+const setName = () => sets.list[sets.current].name;
+const fileStem = () => themeName(setName()) || 'themetron';
+
 function tokenText() {
-  if (ui.format === 'stylesheet') return `${toCss(built)}\n/* ---- themetron components */\n\n${componentsCss}`;
-  if (ui.format === 'shadcn') return toShadcn(built);
-  if (ui.format === 'css') return toCss(built);
-  if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built), null, 2);
-  if (ui.format === 'tailwind') return toTailwind(built);
-  if (ui.format === 'bootstrap') return toBootstrapSass(built);
+  const set = setName();
+  if (ui.format === 'stylesheet') return `${toCss(built, { set })}\n/* ---- themetron components */\n\n${componentsCss}`;
+  if (ui.format === 'shadcn') return toShadcn(built, { set });
+  if (ui.format === 'css') return toCss(built, { set });
+  if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built, { set }), null, 2);
+  if (ui.format === 'tailwind') return toTailwind(built, { set });
+  if (ui.format === 'bootstrap') return toBootstrapSass(built, { set });
   if (ui.format === 'mui') return JSON.stringify(toMui(built), null, 2);
-  if (ui.format === 'daisyui') return toDaisyui(built);
-  if (ui.format === 'bootstrap-css') return toBootstrapCss(built);
+  if (ui.format === 'daisyui') return toDaisyui(built, { set });
+  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set });
   return JSON.stringify(inputsFile(), null, 2);
 }
 
@@ -1674,7 +1680,8 @@ const DOWNLOADS = {
   inputs: ['themetron-inputs.json', 'application/json'],
 };
 $('#download').addEventListener('click', () => {
-  const [name, type] = DOWNLOADS[ui.format];
+  const [file, type] = DOWNLOADS[ui.format];
+  const name = file.replace(/^themetron/, fileStem());
   const text = ui.format === 'inputs' ? $('#io-text').value : tokenText();
   const url = URL.createObjectURL(new Blob([text], { type }));
   const a = el('a', { href: url, download: name });

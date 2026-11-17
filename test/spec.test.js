@@ -250,7 +250,8 @@ test('a family with its own files gets @font-face rules, and no Google Fonts imp
   } });
   const css = toCss(built);
   assert.equal(fontImport(built), 'https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;700&display=swap');
-  assert.ok(css.startsWith(`@import url("${fontImport(built)}");`), '@import comes first');
+  // Only the header comment may come before it.
+  assert.ok(css.replace(/^\/\*[^\n]*\*\/\n+/, '').startsWith(`@import url("${fontImport(built)}");`), '@import comes first');
   assert.equal(fontFaces(built), [
     '@font-face {\n  font-family: "Inter";\n  src: url("/fonts/Inter.woff2?v=2") format("woff2");\n  font-weight: 100 900;\n  font-display: swap;\n}',
     '@font-face {\n  font-family: "Inter";\n  src: url("/fonts/Inter-Italic.otf") format("opentype");\n  font-style: italic;\n  font-display: swap;\n}\n',

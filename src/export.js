@@ -1,7 +1,15 @@
 // Write a set of themes in formats that other tools read.
 import { GRADES } from './palette.js';
-import { ROOT, ROLES, FONT_FIELDS } from './inputs.js';
+import { ROOT, ROLES, FONT_FIELDS, themeName } from './inputs.js';
 import { iconImport } from './icons.js';
+import { CONTRACT_VERSION, specUrl } from './manifest.js';
+
+// The line that says what made an export: themetron, the theme set, and the token contract, with
+// the URL of that contract's manifest. A tool can read the contract version from it, to tell
+// when a theme is older or newer than what the tool knows. `set` is the theme set's name, such
+// as "Admin app". It goes in as a name for code, admin-app, so it is safe in a comment.
+const setSlug = (set) => (set ? themeName(String(set)) : '');
+const madeBy = (set) => `Made by themetron${setSlug(set) ? ` for ${setSlug(set)}` : ''}, token contract ${CONTRACT_VERSION}: ${specUrl('tokens.manifest.json', CONTRACT_VERSION)}`;
 
 const px = (n) => `${n}px`;
 const ms = (n) => `${n}ms`;
@@ -222,7 +230,9 @@ const groupOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'actio
 // element and everything in it, and "base" turns them off. Scoped rules beat unscoped ones, and
 // the nearest scope wins, so the attribute beats the media query, and the nearest attribute wins.
 // `more: false` leaves the variant out.
-export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = true, more = true } = {}) {
+// `icons: false` leaves out the @import of the icon font, for a page with no icons, or a site
+// that loads the font itself. The icon tokens stay, so tm-icon still names the font.
+export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = true, more = true, icons = true, set } = {}) {
   const decl = (entries, indent = '  ') => entries.map(([k, v]) => `${indent}--${prefix}-${k}: ${v};`).join('\n');
   const selectorOf = (name) => `${name === ROOT && root ? ':root, ' : ''}.${classPrefix}${name}`;
   const entriesOf = (theme, level) => [...primitiveEntries(level.primitives), ...semanticEntries({ ...theme, ...level }, prefix)];
@@ -260,9 +270,11 @@ export function toCss(built, { prefix = 'tm', classPrefix = 'theme-', root = tru
   const fonts = fontImport(built);
   const faces = fontFaces(built);
   return [
+    // A comment may come before @import. Nothing else may.
+    `/* ${madeBy(set)} */\n`,
     // @import must come first in a stylesheet.
-    fonts ? `@import url("${fonts}");\n` : '',
-    `@import url("${iconImport(built)}");\n`,
+    ...(fonts ? [`@import url("${fonts}");\n`] : []),
+    ...(icons ? [`@import url("${iconImport(built)}");\n`] : []),
     ...(faces ? [faces] : []),
     // On a theme class, color-scheme would undo a forced mode around it, so it goes on :root only.
     root ? ':root { color-scheme: light dark; }' : '',
@@ -378,7 +390,7 @@ export function fontFaces(built) {
 
 // Design Tokens Community Group format. One group for each theme, with every token
 // resolved. Semantic tokens are aliases to the theme's own palettes, one group for each mode.
-export function toDtcg(built) {
+export function toDtcg(built, { set } = {}) {
   const tok = ($type, $value, extra) => ({ $type, $value, ...extra });
   const dims = (obj) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k, tok('dimension', { value: v, unit: 'px' })]));
   const themes = {};
@@ -454,7 +466,7 @@ export function toDtcg(built) {
   }
   return {
     $description: 'Made by themetron. In each theme, grades with the same number have the same luminance in every palette.',
-    $extensions: { themetron: { inputs: { themes: built.inputs.themes } } },
+    $extensions: { themetron: { contract: CONTRACT_VERSION, manifest: specUrl('tokens.manifest.json', CONTRACT_VERSION), ...(setSlug(set) ? { set: setSlug(set) } : {}), inputs: { themes: built.inputs.themes } } },
     themes,
   };
 }
@@ -469,7 +481,7 @@ function setPath(obj, path, value) {
 // A Tailwind CSS v4 `@theme inline` block. Every value points at a themetron CSS
 // variable, so the theme classes and the modes work in Tailwind utilities too.
 // Use it with the output of toCss. Grade 5 is Tailwind's 50, grade 10 is 100, and so on.
-export function toTailwind(built, { prefix = 'tm' } = {}) {
+export function toTailwind(built, { prefix = 'tm', set } = {}) {
   const theme = built.themes[ROOT];
   const p = theme.primitives;
   const v = (name) => `var(--${prefix}-${name})`;
@@ -486,7 +498,7 @@ export function toTailwind(built, { prefix = 'tm' } = {}) {
   for (const k of ['sm', 'md', 'lg', 'control']) lines.push(`--radius-${k}: ${v(`radius-${k}`)};`);
   for (const level of [1, 2, 3]) lines.push(`--shadow-${['sm', 'md', 'lg'][level - 1]}: ${v(`elevation-${level}`)};`);
   lines.push(`--ease-standard: ${v('ease-standard')};`, `--ease-enter: ${v('ease-enter')};`);
-  return `@import "tailwindcss";\n\n/* Add the themetron CSS too: these names point at its variables. */\n@theme inline {\n${lines.map((l) => '  ' + l).join('\n')}\n}\n`;
+  return `/* ${madeBy(set)} */\n@import "tailwindcss";\n\n/* Add the themetron CSS too: these names point at its variables. */\n@theme inline {\n${lines.map((l) => '  ' + l).join('\n')}\n}\n`;
 }
 
 // shadcn/ui theme variables, for its globals.css. :root and .dark hold the root theme's
@@ -510,7 +522,7 @@ const withMoreContrast = (pairs, block) => {
   ];
 };
 
-export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
+export function toShadcn(built, { classPrefix = 'theme-', set } = {}) {
   const vars = (theme, mode, more) => {
     const t = atLevel(theme, more).modes[mode].tokens;
     const v = (name) => t[name].value;
@@ -561,7 +573,7 @@ export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
       rule(`.dark .${classPrefix}${name}, .${classPrefix}${name}.dark`, built.themes[name], 'dark'),
     ]),
   ];
-  return ['/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. Made by themetron. */\n', ...withMoreContrast(pairs, block)].join('\n');
+  return [`/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)].join('\n');
 }
 
 // Bootstrap 5 Sass variables, to put before Bootstrap's own Sass. Sass variables are fixed when
@@ -572,7 +584,7 @@ export function toShadcn(built, { classPrefix = 'theme-' } = {}) {
 // More contrast: Sass cannot switch at run time, so `more: true` makes the variables for a second
 // build, which the page loads with media="(prefers-contrast: more)". The steps are in
 // spec/tokens.md, under "More contrast with Bootstrap Sass".
-export function toBootstrapSass(built, { more = false } = {}) {
+export function toBootstrapSass(built, { more = false, set } = {}) {
   const root = atLevel(built.themes[ROOT], more);
   const p = root.primitives;
   const size = (n) => `${round1(n)}px`;
@@ -652,7 +664,8 @@ export function toBootstrapSass(built, { more = false } = {}) {
   const decl = (entries) => entries.map(([k, v]) => `$${k}: ${v};`).join('\n');
   const font = fontImport(built);
   return [
-    '// Bootstrap 5 Sass variables. Made by themetron. Put this file before Bootstrap:',
+    `// Bootstrap 5 Sass variables. ${madeBy(set)}`,
+    '// Put this file before Bootstrap:',
     '// @import "themetron"; @import "bootstrap/scss/bootstrap";',
     '// Sass variables are fixed when Sass compiles, so these are the root theme\'s light-mode values.',
     '// The *-dark variables (Bootstrap 5.3) hold its dark-mode values, for data-bs-theme="dark".',
@@ -733,7 +746,7 @@ export function toMui(built, { theme: name = ROOT, more = false } = {}) {
 // value of a variable where it is set, so the child theme classes set the daisyUI colors again.
 // The status colors are the fills of the status themes in both modes. A status without a theme
 // gets the action fill, because daisyUI needs every color.
-export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', name = 'themetron' } = {}) {
+export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, name = setSlug(set) || 'themetron' } = {}) {
   const p = built.themes[ROOT].primitives;
   const v = (token) => `var(--${prefix}-${cssName(token)})`;
   const colors = {
@@ -774,9 +787,10 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', name =
   const own = colorEntries.filter(([, val]) => val.startsWith('var('));
   const children = built.order.slice(1).map((n) => `.${classPrefix}${n}`);
   return [
+    `/* ${madeBy(set)} */`,
     '@import "tailwindcss";',
     '@plugin "daisyui";\n',
-    '/* Add the themetron CSS too: these values point at its variables. Made by themetron. */',
+    '/* Add the themetron CSS too: these values point at its variables. */',
     plugin(name, 'light'),
     plugin(`${name}-dark`, 'dark'),
     ...(children.length ? ['/* Each theme class sets the colors again, from its own variables. */', `${children.join(', ')} {\n${decls(own)}\n}\n`] : []),
@@ -795,7 +809,7 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', name =
 // hover and press colors, and one rule for each button reads them, so a theme class or dark mode
 // changes the buttons inside it too. Primary and the statuses use the action fill, and
 // secondary uses the quiet button.
-export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
+export function toBootstrapCss(built, { classPrefix = 'theme-', set } = {}) {
   const statuses = statusThemes(built);
   const colors = (theme, mode, more) => {
     const out = {};
@@ -889,7 +903,7 @@ export function toBootstrapCss(built, { classPrefix = 'theme-' } = {}) {
       both(`[data-bs-theme=dark] .${classPrefix}${name}, .${classPrefix}${name}[data-bs-theme=dark]`, (more) => colors(built.themes[name], 'dark', more)),
     ]),
   ];
-  const out = ['/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. Made by themetron. */\n', ...withMoreContrast(pairs, block)];
+  const out = [`/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)];
   out.push('/* Buttons. Bootstrap sets their colors from Sass, so these rules set them again. */\n', ...roles.flatMap(buttons));
   return out.join('\n');
 }

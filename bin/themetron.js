@@ -15,6 +15,7 @@ import { checkCss, CONTRACT_VERSION } from '../src/manifest.js';
 const USAGE = `Usage:
   themetron build <inputs.json> [--format css] [--out <file>]
                   [--prefix tm] [--class-prefix theme-] [--no-root] [--no-more] [--more]
+                  [--no-icons] [--set <name>]
   themetron check <file.css>... [--strict] [--prefix tm]
 
 A flag that the command does not know stops it. A build flag that the format does not use, such
@@ -41,20 +42,27 @@ build flags:
   --no-root           The root theme's rule leaves out :root. For css and stylesheet.
   --no-more           Leave out the more-contrast rules. For css and stylesheet.
   --more              Make the more-contrast version, which your app or page loads for readers
-                      who ask for more contrast. For mui and bootstrap.`;
+                      who ask for more contrast. For mui and bootstrap.
+  --no-icons          Leave out the @import of the icon font, for pages without icons, or a
+                      site that loads the font itself. For css and stylesheet.
+  --set <name>        The theme set's name, such as "Admin app". The first line of the file
+                      names it, as admin-app, with the token contract version. It is also the
+                      daisyUI theme's name. For every format but mui.
+
+Every format but mui starts with a line that names the token contract that made it.`;
 
 // The same formats as the playground's download, except "inputs". `flags` lists the build flags
 // that each format uses. The components read --tm-* tokens, so stylesheet takes no --prefix.
 const FORMATS = {
-  css: { flags: ['prefix', 'class-prefix', 'no-root', 'no-more'], make: (built, o) => toCss(built, o) },
-  stylesheet: { flags: ['class-prefix', 'no-root', 'no-more'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron components */\n\n${await readFile(new URL('../components/components.css', import.meta.url), 'utf8')}` },
-  dtcg: { flags: [], make: (built) => `${JSON.stringify(toDtcg(built), null, 2)}\n` },
-  tailwind: { flags: ['prefix'], make: (built, o) => toTailwind(built, o) },
-  shadcn: { flags: ['class-prefix'], make: (built, o) => toShadcn(built, o) },
-  bootstrap: { flags: ['more'], make: (built, o) => toBootstrapSass(built, { more: o.variant }) },
-  'bootstrap-css': { flags: ['class-prefix'], make: (built, o) => toBootstrapCss(built, o) },
+  css: { flags: ['prefix', 'class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: (built, o) => toCss(built, o) },
+  stylesheet: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron components */\n\n${await readFile(new URL('../components/components.css', import.meta.url), 'utf8')}` },
+  dtcg: { flags: ['set'], make: (built, o) => `${JSON.stringify(toDtcg(built, o), null, 2)}\n` },
+  tailwind: { flags: ['prefix', 'set'], make: (built, o) => toTailwind(built, o) },
+  shadcn: { flags: ['class-prefix', 'set'], make: (built, o) => toShadcn(built, o) },
+  bootstrap: { flags: ['more', 'set'], make: (built, o) => toBootstrapSass(built, { more: o.variant, set: o.set }) },
+  'bootstrap-css': { flags: ['class-prefix', 'set'], make: (built, o) => toBootstrapCss(built, o) },
   mui: { flags: ['more'], make: (built, o) => `${JSON.stringify(toMui(built, { more: o.variant }), null, 2)}\n` },
-  daisyui: { flags: ['prefix', 'class-prefix'], make: (built, o) => toDaisyui(built, o) },
+  daisyui: { flags: ['prefix', 'class-prefix', 'set'], make: (built, o) => toDaisyui(built, o) },
 };
 const BUILD_FLAGS = {
   prefix: { type: 'string' },
@@ -62,6 +70,8 @@ const BUILD_FLAGS = {
   'no-root': { type: 'boolean' },
   'no-more': { type: 'boolean' },
   more: { type: 'boolean' },
+  'no-icons': { type: 'boolean' },
+  set: { type: 'string' },
 };
 
 // A problem that the user can fix: print the message and exit 1, without a stack trace.
@@ -103,6 +113,8 @@ async function build(args) {
     root: !(format.flags.includes('no-root') && values['no-root']),
     more: !(format.flags.includes('no-more') && values['no-more']),
     variant: format.flags.includes('more') && Boolean(values.more),
+    icons: !(format.flags.includes('no-icons') && values['no-icons']),
+    set: format.flags.includes('set') ? values.set : undefined,
   };
   const [file] = positionals;
   let inputs;
