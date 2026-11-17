@@ -134,8 +134,40 @@
           "description": "The base color: backgrounds, text, borders, and quiet controls. From the parent, or from color, if not set."
         },
         "action": {
-          "$ref": "#/$defs/role",
-          "description": "The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set."
+          "description": "The action color: links, buttons, checks, focus rings, and other parts that you act on. From the parent, or from color, if not set. Or a gradient, for solid fills, soft buttons, and badges.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/role"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "color",
+                "to"
+              ],
+              "properties": {
+                "color": {
+                  "$ref": "#/$defs/hex",
+                  "description": "The start color."
+                },
+                "to": {
+                  "$ref": "#/$defs/hex",
+                  "description": "The end color."
+                },
+                "solid": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1,
+                  "description": "Where the solid color sits, from 0 (the start) to 1 (the end). Parts without the gradient use it. Default: 0."
+                },
+                "angle": {
+                  "type": "number",
+                  "description": "The CSS angle in degrees. Default: 180, top to bottom."
+                }
+              }
+            }
+          ]
         },
         "color": {
           "$ref": "#/$defs/hex",

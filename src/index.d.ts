@@ -34,6 +34,24 @@ export type FontInput = string | { family?: string | null; fallback?: string; sr
 
 /** A hex color, or { color }. */
 export type RoleInput = Hex | { color?: Hex };
+/** The action color as a two-color gradient. */
+export interface GradientInput {
+  /** The start color. */
+  color: Hex;
+  /** The end color. */
+  to: Hex;
+  /** Where the solid color sits, from 0 (the start, the default) to 1 (the end). Parts without the gradient use it. */
+  solid?: number;
+  /** The CSS angle in degrees. Default 180: top to bottom. */
+  angle?: number;
+}
+/** A gradient, checked: the angle is from 0 to 360. */
+export interface Gradient {
+  from: Hex;
+  to: Hex;
+  solid: number;
+  angle: number;
+}
 
 export interface ThemeInput {
   /** The parent theme's name. Every theme but "default" needs one. */
@@ -43,7 +61,7 @@ export interface ThemeInput {
   /** Sets both roles: base and action. */
   color?: Hex;
   base?: RoleInput;
-  action?: RoleInput;
+  action?: RoleInput | GradientInput;
   font?: FontInput;
   headingFont?: FontInput;
   monoFont?: FontInput;
@@ -78,7 +96,9 @@ export interface ThemeOwnFields {
   label?: string;
   color?: Hex;
   base?: Hex;
+  /** With a gradient, the solid color: the mix of its ends at `solid`. */
   action?: Hex;
+  gradient?: Gradient;
   font?: Font;
   headingFont?: Font;
   monoFont?: Font;
@@ -98,6 +118,8 @@ export interface ResolvedTheme {
   kind: 'color' | 'full';
   base: Hex;
   action: Hex;
+  /** The action gradient, or null. A theme that sets its own action color has its own gradient, or none. */
+  gradient: Gradient | null;
   font: Font;
   headingFont: Font;
   monoFont: Font;
@@ -250,6 +272,8 @@ export const ROOT_DEFAULTS: {
   contrast: { method: ContrastMethod; level: ContrastLevel; model: ContrastModel };
 };
 export const THEME_FIELDS: (keyof ThemeInput)[];
+/** The defaults of a gradient's solid position and angle. */
+export const GRADIENT_DEFAULTS: { solid: number; angle: number };
 export const FONT_FIELDS: ('font' | 'headingFont' | 'monoFont')[];
 /** The pattern of a font file URL. */
 export const FONT_URL: RegExp;

@@ -1,7 +1,8 @@
 // Build the themes: for each theme, primitive tokens from its settings, then semantic tokens for each mode.
 import { GRADES, contrastTest, gradeGaps, makePalette, measure, purposeName } from './palette.js';
-import { normalizeInputs, ROLES } from './inputs.js';
+import { normalizeInputs, ROLES, GRADIENT_DEFAULTS } from './inputs.js';
 import { iconStyle } from './icons.js';
+import { mixOklch, parseHex, toHex } from './color.js';
 
 export const MODES = ['light', 'dark'];
 
@@ -18,21 +19,24 @@ export function buildTheme(settings) {
   // Copies, so the two stay apart when both roles have the same hex.
   const { model } = settings.contrast;
   const palettes = Object.fromEntries(ROLES.map((role) => [role, { ...makePalette(settings[role], model) }]));
+  // An action gradient has a ramp for each end, beside the solid action ramp. The gradient's
+  // tokens take the solid tokens' grades from these ramps. See gradientTokens.
+  const stops = settings.gradient && { from: { ...makePalette(settings.gradient.from, model) }, to: { ...makePalette(settings.gradient.to, model) } };
   // Every theme also ships a "more contrast" variant at the enhanced level, for readers who
   // ask for it. The ramps are the same; only the grades that the tokens pick can change. A
   // theme that is already at the enhanced level has no variant.
-  const more = settings.contrast.level === 'enhanced' ? null : buildLevel({ ...settings, contrast: { ...settings.contrast, level: 'enhanced' } }, palettes, true);
-  return { name: settings.name, parent: settings.parent, kind: settings.kind, settings, palettes, ...buildLevel(settings, palettes), more };
+  const more = settings.contrast.level === 'enhanced' ? null : buildLevel({ ...settings, contrast: { ...settings.contrast, level: 'enhanced' } }, palettes, stops, true);
+  return { name: settings.name, parent: settings.parent, kind: settings.kind, settings, palettes, stops, ...buildLevel(settings, palettes, stops), more };
 }
 
 // The tokens of one theme at one contrast setting: { settings, gaps, primitives, modes }.
 // `variant` is true for the more-contrast variant.
-function buildLevel(settings, palettes, variant = false) {
+function buildLevel(settings, palettes, stops, variant = false) {
   const test = contrastTest(settings.contrast);
   const gaps = gradeGaps(Object.values(palettes), test);
-  const primitives = buildPrimitives(settings, palettes, gaps);
+  const primitives = buildPrimitives(settings, palettes, gaps, stops);
   const modes = {};
-  for (const mode of MODES) modes[mode] = buildMode(mode, settings, palettes, primitives, test, variant);
+  for (const mode of MODES) modes[mode] = buildMode(mode, settings, palettes, primitives, test, variant, stops);
   return { settings, gaps, primitives, modes };
 }
 
@@ -72,7 +76,7 @@ const FLAT = { blur: 0, lift: 0 };
 // kinds swap: inverted fills can be see-through, and inverted cards and tints stay nearly opaque.
 const CLEAREST = { panel: 0.1, panelInverted: 0.95, fill: 0.5, fillInverted: 0.3, tint: 0.1, tintInverted: 0.95, field: 0.3 };
 
-export function buildPrimitives(settings, palettes, gaps) {
+export function buildPrimitives(settings, palettes, gaps, stops = null) {
   const { spaciousness: s, roundness: r, depth: d, shininess: sh, clarity } = settings.feel;
   // Clarity is how see-through parts are: each opacity goes from 1 at clarity 0 to its CLEAREST
   // at 1.
@@ -148,9 +152,14 @@ export function buildPrimitives(settings, palettes, gaps) {
   for (const [role, { family, fallback }] of Object.entries(fonts)) font[role] = [family, ...fallback.split(',').map((x) => x.trim())].filter(Boolean);
 
 
+  // The gradient's ramps are named after the action role: action-from and action-to.
+  const ramps = { ...palettes, ...gradientRamps(stops) };
   return {
-    color: Object.fromEntries(Object.entries(palettes).map(([name, p]) => [name, { ...p.steps }])),
-    keys: Object.fromEntries(Object.entries(palettes).map(([name, p]) => [name, { hex: p.key, grade: p.keyGrade }])),
+    color: Object.fromEntries(Object.entries(ramps).map(([name, p]) => [name, { ...p.steps }])),
+    keys: Object.fromEntries(Object.entries(ramps).map(([name, p]) => [name, { hex: p.key, grade: p.keyGrade }])),
+    // The direction of the action gradient, in degrees. Every theme has one, so parts can always
+    // draw the gradient: without one, its ends are the same color.
+    gradientAngle: settings.gradient?.angle ?? GRADIENT_DEFAULTS.angle,
     gap: gaps,
     font: {
       family: font,
@@ -196,15 +205,19 @@ export function buildPrimitives(settings, palettes, gaps) {
 
 // ---- Semantic tokens: values for one mode, chosen so that pairs pass the contrast setting.
 
-function buildMode(mode, settings, palettes, primitives, test, variant) {
+function buildMode(mode, settings, palettes, primitives, test, variant, stops = null) {
   const dark = mode === 'dark';
   const tokens = {};
   const audit = [];
   const base = palettes.base;
+  const ramps = { ...palettes, ...gradientRamps(stops) };
+  // The colors that a fill or tint grade of the action role shows: the solid color, and with a
+  // gradient, each end and the middle, where the blend's luminance can drift a little.
+  const gradientAt = (g) => (stops ? [stops.from.steps[g], stops.to.steps[g], toHex(mixOklch(parseHex(stops.from.steps[g]), parseHex(stops.to.steps[g]), 0.5))] : []);
   // Each token names its grade (ref, for the CSS and DTCG), and keeps it as a number (grade),
   // so the engine never reads a number out of a name.
   const set = (name, palette, grade) => {
-    tokens[name] = { ref: `${paletteName(palettes, palette)}.${grade}`, grade, value: palette.steps[grade] };
+    tokens[name] = { ref: `${paletteName(ramps, palette)}.${grade}`, grade, value: palette.steps[grade] };
     return palette.steps[grade];
   };
   // The label of a background that moved from `from` to `to`. It moves by the same distance,
@@ -341,7 +354,8 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     const label = dark ? 100 : 0;
     const extreme = STOPS.filter((g) => g !== 0 && g !== 100);
     if (dark) extreme.reverse();
-    const labelFor = (g) => (test(palette.steps[label], palette.steps[g], 'text') ? label : undefined);
+    // With a gradient, the label passes on both ends and the middle too.
+    const labelFor = (g) => ([palette.steps[g], ...gradientAt(g)].every((bg) => test(palette.steps[label], bg, 'text')) ? label : undefined);
 
     // A fill whose label passes, and that stands out from the canvas and surface (3:1), so a
     // button's shape shows.
@@ -407,6 +421,8 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
   }
 
+  gradientTokens();
+
   // Small solid parts in the base color, such as a switch's knob, are the muted text color.
   // Their shine is counted from it, like a fill's.
   {
@@ -470,6 +486,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
         tokens[`on-fill.action-exact${state}`] = { ...tokens[`on-fill.action${state}`] };
       }
       for (const part of Object.keys(SHINE)) tokens[`gloss.action-exact-${part}`] = { ...tokens[`gloss.action-${part}`] };
+      exactGradient(null);
     } else {
       const fill = dark ? lighter : darker;
       tokens['fill.action-exact'] = fill;
@@ -500,6 +517,7 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
       // grade, for the edge line of the label. They can reach white and black.
       const g = tokens['fill.action-exact'].grade;
       for (const [part, by] of Object.entries(SHINE)) set(`gloss.action-exact-${part}`, action, Math.min(100, Math.max(0, Math.round((g + by) / 5) * 5)));
+      exactGradient({ fill, key });
     }
     // The edge is the key color. When the key is the fill, it is paired with the base color
     // farther from it, so it always stands out from the canvas; when the key is the label, the
@@ -509,6 +527,72 @@ function buildMode(mode, settings, palettes, primitives, test, variant) {
     for (const state of STATES) {
       check(`on-fill.action-exact${state}`, `fill.action-exact${state}`, 'text', false);
       audit[audit.length - 1].warn = !audit[audit.length - 1].pass;
+    }
+  }
+
+  // The action gradient: for each fill and tint token of the action role, the same grade from
+  // the ramp of each end: fill.action-hover-from and fill.action-hover-to for fill.action-hover.
+  // Grades fix luminance, so the label passes on each end as it does on the solid color. The
+  // blend between them can drift a little, so its middle is checked too: fills choose their grade
+  // with it (see labelFor), and the audit shows the rest. Without a gradient, both ends are the
+  // solid token, so parts can always draw the gradient.
+  function gradientTokens() {
+    for (const kind of ['fill', 'tint']) {
+      for (const state of STATES) {
+        const name = `${kind}.action${state}`;
+        const g = tokens[name].grade;
+        if (stops) {
+          set(`${name}-from`, stops.from, g);
+          set(`${name}-to`, stops.to, g);
+          checkGradient(`on-${kind}.action${state}`, name, state !== '-active');
+        } else {
+          tokens[`${name}-from`] = { ...tokens[name] };
+          tokens[`${name}-to`] = { ...tokens[name] };
+        }
+      }
+    }
+  }
+  // A label on each end of a gradient, and on its middle. A failure that is not required warns.
+  function checkGradient(fgName, bgName, required) {
+    check(fgName, `${bgName}-from`, 'text', required);
+    check(fgName, `${bgName}-to`, 'text', required);
+    const fg = tokens[fgName].value;
+    const bg = toHex(mixOklch(parseHex(tokens[`${bgName}-from`].value), parseHex(tokens[`${bgName}-to`].value), 0.5));
+    audit.push({ fg: fgName, bg: `${bgName} (the gradient's middle)`, fgValue: fg, bgValue: bg, purpose: 'text', required, ...measure(fg, bg), pass: test(fg, bg, 'text') });
+    for (const a of audit.slice(-3)) if (!required) a.warn = !a.pass;
+  }
+  // The exact button's gradient. The key color is its fill in light mode, and its label in dark
+  // mode (for a dark key; a light key the other way round). That side gets the gradient: at rest,
+  // each end's own color, exactly, and on hover and press each end moves as far as the solid key
+  // moved, on its own ramp. The other side is white or black, so its ends are its solid color.
+  // So the label has ends too: an inverted button swaps its fill and label, and paints the
+  // label's ends as its fill, so it looks like the exact button of the other mode. `exact` is
+  // null when the exact button is the normal button (in the more-contrast variant).
+  function exactGradient(exact) {
+    const keySide = exact && stops ? (exact.fill === exact.key ? 'fill' : 'on-fill') : null;
+    for (const state of STATES) {
+      for (const side of ['fill', 'on-fill']) {
+        const name = `${side}.action-exact${state}`;
+        if (side !== keySide) {
+          // The normal button's fill has ends of its own; labels are always solid.
+          const source = (end) => (!exact && side === 'fill' ? `fill.action${state}-${end}` : name);
+          tokens[`${name}-from`] = { ...tokens[source('from')] };
+          tokens[`${name}-to`] = { ...tokens[source('to')] };
+          continue;
+        }
+        const by = tokens[name].grade - exact.key.grade;
+        for (const end of ['from', 'to']) {
+          const ramp = stops[end];
+          const key = { ref: `action-${end}.key`, grade: ramp.keyGrade, value: ramp.key };
+          const to = by ? shift(ramp.keyGrade, by) : ramp.keyGrade;
+          const stuck = by < 0 ? to >= ramp.keyGrade : to <= ramp.keyGrade;
+          if (!by || stuck) tokens[`${name}-${end}`] = key;
+          else set(`${name}-${end}`, ramp, to);
+        }
+      }
+    }
+    if (keySide === 'fill') {
+      for (const state of STATES) checkGradient(`on-fill.action-exact${state}`, `fill.action-exact${state}`, false);
     }
   }
 
@@ -703,6 +787,11 @@ function follow(label, from, to) {
 function step(grade, by) {
   const i = STOPS.indexOf(grade) + by;
   return STOPS[Math.min(STOPS.length - 2, Math.max(1, i))];
+}
+
+// The gradient's ramps, by the names that their tokens use.
+function gradientRamps(stops) {
+  return stops ? { 'action-from': stops.from, 'action-to': stops.to } : {};
 }
 
 function paletteName(palettes, palette) {

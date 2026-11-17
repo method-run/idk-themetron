@@ -3,8 +3,9 @@ import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
 import { combobox } from './combobox.js';
+import { parseHex, toHex, srgbToOklch, oklchToSrgb } from '../src/color.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS } from '../src/index.js';
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -423,6 +424,22 @@ const SECTION_CONTROLS = {
       el('span', { class: 'fader-hint', id: 'color-note' },
         el('span', { id: 'color-hex' }),
         el('button', { class: 'x', type: 'button', id: 'color-x', 'aria-label': "Use the parent's action color", title: "Use the parent's action color", onclick: () => { delete own().action; update(); } }, '×'))),
+    // The gradient picker: the two ends' chips above the bar, and below it the solid chip, which
+    // picks the one color for parts without the gradient. Shown when the action color is a gradient.
+    el('div', { class: 'gradient-picker', id: 'gradient-picker' },
+      el('div', { class: 'gp-ends' },
+        el('input', { type: 'color', id: 'grad-from', 'aria-label': 'Gradient start color', oninput: (e) => setGradient('color', e.target.value) }),
+        el('input', { type: 'color', id: 'grad-to', 'aria-label': 'Gradient end color', oninput: (e) => setGradient('to', e.target.value) })),
+      el('div', { class: 'gp-bar', id: 'gp-bar' }),
+      el('input', { type: 'range', class: 'gp-solid', id: 'grad-solid', min: 0, max: 100, step: 1, 'aria-label': 'Where the solid color sits on the gradient', oninput: (e) => setGradient('solid', Number(e.target.value) / 100) }),
+      el('div', { class: 'fader-hint' }, 'The chip below the bar picks the solid color: for links, borders, focus rings, and other parts without the gradient.'),
+      el('div', { class: 'fader', 'data-fader': 'gradientAngle' },
+        el('div', { class: 'fader-head' }, el('label', { for: 'grad-angle' }, 'Angle'),
+          el('span', { class: 'fader-right' }, el('output', { id: 'out-gradientAngle', for: 'grad-angle' }))),
+        el('input', { type: 'range', id: 'grad-angle', min: 0, max: 355, step: 5, oninput: (e) => setGradient('angle', Number(e.target.value)) }))),
+    el('div', { class: 'gradient-actions' },
+      el('button', { class: 'small-btn', type: 'button', id: 'grad-on', onclick: startGradient }, '+ Gradient'),
+      el('button', { class: 'small-btn', type: 'button', id: 'grad-off', onclick: () => { own().action = selected().settings.action; update(); } }, 'Make it solid')),
     el('div', { class: 'fader-hint' }, 'For links, buttons, checks, focus rings, and other parts that you act on, or that show their state.'),
     el('div', { class: 'fader-hint' }, 'Solid fills have light labels in light mode, and dark labels in dark mode, for every key color. To flip a part, give it the class tm-invert.'),
   ],
@@ -541,6 +558,21 @@ function unsetFeel(name) {
 
 // The icon styles from square to round, and the words that the slider shows.
 const ICON_CORNERS = ICON_STYLES.map((style) => [style, style]);
+// The action gradient. A change starts from what the theme shows, its own or its parent's.
+const gradientInput = () => {
+  const g = selected().settings.gradient;
+  return { color: g.from, to: g.to, solid: g.solid, angle: g.angle };
+};
+const setGradient = (key, value) => { own().action = { ...gradientInput(), [key]: value }; update(); };
+// A new gradient runs from the action color to the same color turned 60 degrees round the hue
+// circle, at the same lightness and chroma, so it starts as a gentle shift.
+function startGradient() {
+  const from = selected().settings.action;
+  const [L, C, h] = srgbToOklch(parseHex(from));
+  own().action = { color: from, to: toHex(oklchToSrgb([L, C, (h + 60) % 360])), ...GRADIENT_DEFAULTS };
+  update();
+}
+
 const ICON_WEIGHT_WORDS = { thin: 100, light: 300, regular: 400, bold: 700 };
 const setIcons = (key, value) => { own().icons = { ...own().icons, [key]: value }; update(); };
 
@@ -809,7 +841,7 @@ function renderControlsState() {
   for (const name of built.order) {
     const t = built.themes[name];
     const dot = document.querySelector(`[data-dot="${name}"]`);
-    if (dot) dot.style.background = t.settings.action;
+    if (dot) dot.style.background = t.settings.gradient ? `linear-gradient(${t.settings.gradient.angle}deg in oklch, ${t.settings.gradient.from}, ${t.settings.gradient.to})` : t.settings.action;
     const meta = document.querySelector(`[data-meta="${name}"]`);
     if (meta) {
       meta.replaceChildren(
@@ -843,6 +875,21 @@ function renderControlsState() {
 
   const color = $('#theme-color');
   if (color) {
+    const g = settings.gradient;
+    color.closest('.color-row').querySelector('input').hidden = Boolean(g);
+    $('#gradient-picker').hidden = !g;
+    $('#grad-on').hidden = Boolean(g);
+    $('#grad-off').hidden = !g;
+    if (g) {
+      const keep = (input, value) => { if (document.activeElement !== input) input.value = value; };
+      keep($('#grad-from'), g.from);
+      keep($('#grad-to'), g.to);
+      keep($('#grad-solid'), Math.round(g.solid * 100));
+      keep($('#grad-angle'), g.angle);
+      $('#gp-bar').style.background = `linear-gradient(90deg in oklch, ${g.from}, ${g.to})`;
+      $('#grad-solid').style.setProperty('--solid', settings.action);
+      $('#out-gradientAngle').textContent = `${g.angle}°`;
+    }
     if (document.activeElement !== color) color.value = settings.action;
     $('#color-hex').replaceChildren(el('span', { class: 'action' in mine ? 'own' : '' }, settings.action), 'action' in mine || isRoot() ? '' : fromParent);
     $('#color-x').hidden = isRoot() || !('action' in mine);

@@ -11,7 +11,7 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 30% (4/13) · 1 deferred
+◐ 35% (5/14) · 1 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
@@ -75,7 +75,7 @@ There are two kinds of child theme. The difference is only a name: the playgroun
 | `parent` | None | The name of the parent theme. Required on every theme but `default`. |
 | `label` | Made from the name | The text that people see. Not inherited. |
 | `base` | `#808080` | The base color: backgrounds, text, borders, and quiet controls. `{ "color": "#808080" }` is the same. |
-| `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. |
+| `action` | `#0000ee` | The action color: links, buttons, checks, switches, focus rings, and other parts that you act on, or that show their state. `{ "color": "#0000ee" }` is the same. Or a gradient: see [Action gradient](#action-gradient). |
 | `color` | None | Sets `base` and `action` to one color. `base` and `action` override it. |
 | `font` | The browser's default `sans-serif` font | The main font: `{ "family", "fallback", "src" }`. A string sets only `family`. See [Fonts](#fonts). |
 | `headingFont` | `font` | The font for headings. |
@@ -112,6 +112,28 @@ Two sliders in a theme, Lightest and Darkest, will clamp the ramps. The tokens t
 - **Later steps.** A tinted white and black: their luminance sets the limits, and their hue and chroma blend along the base ramp, so a warm white can sit at one end and a cool black at the other. Then gradients, with the same blend.
 
 </details>
+
+### Action gradient
+
+The action color can be a gradient of two colors:
+
+```json
+"action": { "color": "#7b2ff7", "to": "#f107a3", "solid": 0.5, "angle": 180 }
+```
+
+| Field | Default | What it does |
+|---|---|---|
+| `color` | Required | The start color. |
+| `to` | Required | The end color. |
+| `solid` | `0` | Where the solid color sits, from 0 (the start) to 1 (the end). |
+| `angle` | `180` | The direction, as a CSS angle in degrees: 180 runs top to bottom, and 90 left to right. |
+
+- **Where the gradient shows:** solid fills (buttons, the exact button, checks, radios, switches, solid badges, avatars, progress bars, and the pressed segment), soft buttons, and badges.
+- **The solid color:** the two colors mixed in OKLCH at `solid`. It is the action color for every part without the gradient: links, borders, focus rings, and `fill.action` itself. Its ramp makes every action token, as for a plain action color.
+- **The gradient's colors:** each end has a ramp. For each fill and tint token, the gradient takes the same grade from each end's ramp. A grade fixes luminance, so the label passes on each end as it does on the solid color. The blend between the ends can drift a little, so the engine also checks the middle, and fills choose a grade where the label passes there too.
+- **The exact button** shows the two colors exactly. Its label must pass on both, as on the one key color. Where it does not, the audit warns, and the more-contrast variant uses the normal button.
+- **APCA in dark mode:** dark-mode fills have black labels, and APCA needs a very light fill for black text. Near white, sRGB has little room for color, so both ends of a gradient are pale there. WCAG 2 allows darker, more vivid fills. The exact button shows the two colors as given, in both methods.
+- **Children:** a child that sets `action` or `color` has its own gradient, or none. A child that sets neither takes its parent's gradient.
 
 To add a color, add a child theme. Themetron adds no colors of its own, such as a red for danger. Apply a theme with the class `theme-<name>`. See [Tokens](./tokens.md "tokens").
 
@@ -297,6 +319,7 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [ ] Suggest font pairs, and match the x-height of fallback fonts with `size-adjust`
 - [ ] Add Lightest and Darkest sliders that clamp the ramps. See [Plan: lightest and darkest limits](#base-and-action).
 - [ ] Add a tinted white and black, as an advanced form of the Lightest and Darkest sliders
+- [x] Let the action color be a two-color gradient, for solid fills, soft buttons, and badges
 - [ ] Add gradient fills and backgrounds, from the same blend as the tinted white and black
 - [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. Material Symbols is the only set for now.
 - [>] Let a role take its color from another theme by name, such as `"action": "brand"`. Parked until themes have more than two roles. With two roles, the parent or a copy of the hex covers almost every case. The work is on the branch of [#5](https://github.com/method-run/idk-themetron/pull/5): the engine, the schema, and a playground menu that picks a theme's color.

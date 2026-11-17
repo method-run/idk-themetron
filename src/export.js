@@ -35,6 +35,8 @@ export function primitiveEntries(p) {
   // The shininess, from 0 to 1: the shared shine (see shineRules) scales its opacity by it.
   out.push(['shininess', String(p.shininess)]);
   out.push(['border-width', px(p.border.width)], ['focus-width', px(p.border.focus)]);
+  // The direction of the action gradient. See the fill-action-from and -to tokens.
+  out.push(['action-angle', `${p.gradientAngle}deg`]);
   // The icon font, and its fill (0 or 1) and line weight (100 to 700), for font-variation-settings.
   out.push(['font-icon', `"${p.icon.family}"`], ['icon-fill', String(p.icon.fill)], ['icon-weight', String(p.icon.weight)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
@@ -140,6 +142,15 @@ export function semanticEntries(theme, prefix = 'tm') {
   const halo = (share) => `color-mix(in oklch, var(--${prefix}-bg-canvas) ${share}%, transparent)`;
   out.push(['text-halo', `0 0 1px ${halo(70)}, 0 0 6px ${halo(60)}`]);
   for (const role of ROLES) out.push([`glow-tint-${role}`, glowing(`gloss-tint-${role}-rim`)]);
+  // The action gradient as an image, for each fill and tint of the action role and each state:
+  // its two ends, blended in OKLCH, along the theme's angle. Opaque: a part that fades with
+  // clarity draws its own, from the -from and -to tokens. Without a gradient, both ends are the
+  // solid color.
+  for (const name of ['fill-action', 'fill-action-exact', 'tint-action']) {
+    for (const state of ['', '-hover', '-active']) {
+      out.push([`${name}${state}-image`, `linear-gradient(var(--${prefix}-action-angle) in oklch, var(--${prefix}-${name}${state}-from), var(--${prefix}-${name}${state}-to))`]);
+    }
+  }
   return out;
 }
 
@@ -395,6 +406,7 @@ export function toDtcg(built) {
     group.radius = dims(p.radius);
     group.roundness = tok('number', p.roundness, { $description: 'The roundness, from 0 to 1. A part with height h rounds by roundness × h ÷ 2, a pill at 1.' });
     group.border = dims(p.border);
+    group.actionAngle = tok('number', p.gradientAngle, { $description: 'The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends.' });
     group.duration = Object.fromEntries(Object.entries(p.motion.duration).map(([k, v]) => [k, tok('duration', { value: v, unit: 'ms' })]));
     group.easing = Object.fromEntries(Object.entries(p.motion.easing).map(([k, v]) => [k, tok('cubicBezier', v)]));
     group.effect = {
