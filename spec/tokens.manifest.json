@@ -1,5 +1,5 @@
 {
-  "contract": "0.1.0",
+  "contract": "0.2.0",
   "prefix": "tm",
   "note": "Made by `npm run spec` from src/manifest.js. Do not edit. See spec/consumers.md.",
   "selectors": {

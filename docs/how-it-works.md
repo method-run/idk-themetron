@@ -32,7 +32,7 @@ The engine checks every field of every theme, and lists all problems at once. Th
 
 ## 2. Make the ramps
 
-Each theme has two ramps: one from its base color and one from its action color. A ramp has 21 [grades](../spec/grades.md "grades"), 5 apart, from 0 (white) to 100 (black). Each grade has a fixed luminance, so two grades a set distance apart always pass contrast, in any ramp.
+Each theme has two ramps: one from its base color and one from its action color. A ramp has 21 [grades](../spec/grades.md "grades"), 5 apart, from 0 (white) to 100 (black). Each grade has a fixed luminance, so two grades a set distance apart always pass contrast, in any ramp. When the action color is a gradient, each of its two colors has a ramp too. Each gradient token takes the grade of the matching solid token from both ramps, so its ends pass as the solid token does.
 
 <details>
 <summary>How a grade gets its color</summary>

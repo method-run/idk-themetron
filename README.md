@@ -4,11 +4,11 @@
 ◐ 66% (38/57) · 3 deferred
 <!-- idk-plans:progress:end -->
 
-idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color, fonts, icons, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
+idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color (one color, or a two-color gradient), fonts, icons, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
 
 - **For:** people who make a site and want a theme with character, without hand-tuning hundreds of tokens.
 - **For:** component libraries and theming tools. A library that reads the [Token spec](./spec/tokens.md "tokens") works with every theme that themetron makes. [Using themetron in a site or library](./spec/consumers.md "consumers") is the contract for sites and libraries.
-- **Status:** 0.1 draft. The input format and the token names can change.
+- **Status:** 0.2 draft. The input format and the token names can change.
 - **AI use:** this project was made with the help of an AI coding assistant (Claude). AI wrote much of the code and the docs. Themetron itself does not use AI.
 
 ```mermaid

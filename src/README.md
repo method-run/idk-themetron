@@ -34,8 +34,8 @@ flowchart LR
 | `hsl.js` | The HSL lightness for a target luminance, exact, in one or two Halley steps |
 | `color.js` | Hex, OKLCH, WCAG 2 luminance and contrast, APCA, and the search for a color with a target luminance |
 | `palette.js` | Grades, palettes, contrast thresholds, and grade gaps |
-| `inputs.js` | The feels, the type variance, their words, presets, the input checks, and the theme tree: each theme's settings from its parents |
-| `tokens.js` | `buildThemes`: for each theme, primitives, semantic tokens for each mode, and the audit |
+| `inputs.js` | The feels, the type variance, their words, presets, the input checks (the action gradient too), and the theme tree: each theme's settings from its parents |
+| `tokens.js` | `buildThemes`: for each theme, primitives, semantic tokens for each mode (with the gradient's ends), and the audit |
 | `export.js` | `toCss`, `toDtcg`, `toTailwind`, `toShadcn`, `toBootstrapSass`, `toMui`, `toDaisyui`, `toBootstrapCss`, and the Google Fonts URL |
 | `icons.js` | The Material Symbols icons that the CSS loads, the icon tokens from a theme's `icons` input, and their Google Fonts URL |
 | `manifest.js` | The token contract: the manifest, the inputs schema, and `checkCss` |
