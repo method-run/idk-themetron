@@ -188,6 +188,10 @@
    instead, which looks the same. The theme's tokens pick the way: --tm-shine-backdrop-*,
    --tm-shine-filter-*, and --tm-shine-paint. Inside an element with a backdrop filter of its own
    (a button in tm-over-media), the backdrop is only the button's fill. */
+/* A part's label and icon take the part's text shadow: its edge line and its halo. Without this,
+   a label in a <span> inside tm-over-media takes the page's halo instead, as that rule sets every
+   element there (see toCss). */
+:is(.tm-button, .tm-badge, .tm-avatar, .tm-segmented button[aria-pressed="true"]) * { text-shadow: inherit; }
 .tm-button::before, .tm-button::after {
   content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
   --_shine-keep: 0.6;
