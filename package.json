@@ -45,6 +45,7 @@
     "bin",
     "src",
     "components/components.css",
+    "CHANGELOG.md",
     "spec",
     "!spec/versions"
   ],
@@ -66,6 +67,7 @@
     "spec": "node scripts/spec.js",
     "fonts": "node scripts/font-choices.js",
     "spec:release": "node scripts/release-spec.js",
+    "release:notes": "node scripts/release-notes.js",
     "version": "npm run spec:release && git add spec/versions",
     "examples": "node scripts/examples.js",
     "docs:check": "idk-plans check",
