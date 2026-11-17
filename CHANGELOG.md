@@ -16,9 +16,15 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+Nothing yet.
+
+## 0.2.1
+
+Contract 0.2.0, unchanged.
+
+- **Fix: label text shadows over media.** In `tm-over-media`, a button label in a `<span>` took the page's halo instead of the button's own text shadow, so its edge line went away. Elements inside buttons, badges, avatars, and pressed segmented buttons now inherit the part's text shadow.
 - **New export: `SEMANTIC_THEMES`.** The child themes that most theme systems have, in the order to add them: `danger`, `warning`, `success`, `info`, and `secondary`. Each has other systems' names for the same job, a suggested color, and its use. See [Theme names to start with](./spec/inputs.md#theme-names-to-start-with "inputs").
 - **New icon: `drag_indicator`.** The six-dot grip joins the icons that the CSS loads.
-- **Fix: label text shadows over media.** In `tm-over-media`, a button label in a `<span>` took the page's halo instead of the button's own text shadow, so its edge line went away. Elements inside buttons, badges, avatars, and pressed segmented buttons now inherit the part's text shadow.
 
 ## 0.2.0
 
