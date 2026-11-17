@@ -876,7 +876,10 @@ function renderControlsState() {
   const color = $('#theme-color');
   if (color) {
     const g = settings.gradient;
-    color.closest('.color-row').querySelector('input').hidden = Boolean(g);
+    // With a gradient, the picker below takes the swatch's place, and the row keeps only its note
+    // and ×, in one column.
+    color.hidden = Boolean(g);
+    color.closest('.color-row').classList.toggle('gradient', Boolean(g));
     $('#gradient-picker').hidden = !g;
     $('#grad-on').hidden = Boolean(g);
     $('#grad-off').hidden = !g;
@@ -891,7 +894,7 @@ function renderControlsState() {
       $('#out-gradientAngle').textContent = `${g.angle}°`;
     }
     if (document.activeElement !== color) color.value = settings.action;
-    $('#color-hex').replaceChildren(el('span', { class: 'action' in mine ? 'own' : '' }, settings.action), 'action' in mine || isRoot() ? '' : fromParent);
+    $('#color-hex').replaceChildren(el('span', { class: 'action' in mine ? 'own' : '' }, g ? `${g.from} → ${g.to}` : settings.action), 'action' in mine || isRoot() ? '' : fromParent);
     $('#color-x').hidden = isRoot() || !('action' in mine);
   }
 

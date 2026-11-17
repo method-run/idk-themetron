@@ -71,6 +71,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .preset-list button[aria-current="true"]::after { content: " ✓"; color: var(--muted); }
 
 .color-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) 96px 26px; gap: 6px; align-items: center; }
+.color-row.gradient { grid-template-columns: minmax(0, 1fr); }
 /* One tile for each theme, edge to edge in the pane. The open tile edits that theme. */
 .theme-cards { display: flex; flex-direction: column; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))) -16px; border-top: 1px solid var(--line); }
 .card { --pad: 16px; border-bottom: 1px solid var(--line); }
