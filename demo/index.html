@@ -10,6 +10,8 @@
 <style>
 /* Layout: a mixing desk. Controls on the left, the themed result on the right. */
 :root {
+  /* The caret, as a mask, for summaries that draw it in CSS. The same shape as caret() in demo.js. */
+  --caret-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3.5 10.5 8 6 12.5'/%3E%3C/svg%3E");
   --paper: #eceef2;
   --panel: #ffffff;
   --ink: #1b1d22;
@@ -99,6 +101,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .card.dragging { opacity: 0.4; }
 .card.dragging :is(.card-body, .add-child) { display: none; }
 .card-delete { display: grid; justify-items: start; gap: 6px; }
+.delete-btn { display: inline-flex; align-items: center; gap: 4px; }
+.delete-btn .tm-icon { font-size: 16px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .card[data-drop="before"] { box-shadow: inset 0 2px 0 var(--ink); }
 .card[data-drop="after"] { box-shadow: inset 0 -2px 0 var(--ink); }
@@ -197,7 +201,10 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .fader-head label { font-weight: 500; }
 .fader-head output { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 .section-toggle { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; padding: 0; color: inherit; cursor: pointer; }
-.section-toggle .chev { color: var(--muted); font-size: 10px; transition: transform 0.15s; transform: rotate(90deg); }
+.section-toggle .chev { display: grid; place-items: center; color: var(--muted); transition: transform 0.15s; transform: rotate(90deg); }
+.section-toggle .chev .caret { width: 10px; height: 10px; }
+/* A caret in a button's text sits on the text's middle. */
+:is(.view-menu-btn, .preset-menu > summary) .caret { vertical-align: -1px; }
 .section-toggle[aria-expanded="false"] .chev { transform: none; }
 .section-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 4px; }
 .group.collapsed > :not(.group-head) { display: none; }
@@ -257,7 +264,7 @@ details.feels[open] > summary { margin-bottom: 12px; }
 /* One collapsible section for each theme that you show. */
 .theme-preview > summary { display: flex; gap: 10px; align-items: baseline; padding: 6px 2px; cursor: pointer; list-style: none; font-weight: 600; }
 .theme-preview > summary::-webkit-details-marker { display: none; }
-.theme-preview > summary::before { content: "▸"; color: var(--muted); transition: transform 0.15s; display: inline-block; }
+.theme-preview > summary::before { content: ""; align-self: center; width: 12px; height: 12px; background: var(--muted); -webkit-mask: var(--caret-right) center / contain no-repeat; mask: var(--caret-right) center / contain no-repeat; transition: transform 0.15s; }
 .theme-preview[open] > summary::before { transform: rotate(90deg); }
 .theme-preview > summary span { font: 12px var(--mono); color: var(--muted); font-weight: 400; }
 .stages { display: grid; gap: 16px; margin-top: 6px; }
@@ -410,7 +417,7 @@ td code { font-family: var(--mono); font-size: 12px; }
       </div>
       </div>
       <div class="right">
-        <button class="small-btn view-menu-btn" id="view-menu-btn" type="button" popovertarget="view-menu" aria-haspopup="dialog">View <span id="view-summary"></span> ▾</button>
+        <button class="small-btn view-menu-btn" id="view-menu-btn" type="button" popovertarget="view-menu" aria-haspopup="dialog">View <span id="view-summary"></span> <svg class="caret" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6 8 10.5 12.5 6"/></svg></button>
         <div class="view-menu" id="view-menu" popover role="dialog" aria-label="View controls">
           <section class="menu-section" id="menu-mode">
             <h3>Mode</h3>
