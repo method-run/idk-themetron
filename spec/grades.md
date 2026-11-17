@@ -12,7 +12,7 @@ tags: [system/tokens/grades]
 # Grades and contrast
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 83% (5/6) · 3 deferred
+● 100% (6/6) · 3 deferred
 <!-- idk-plans:progress:end -->
 
 Each key color becomes a palette of 21 grades, 5 apart: 0, 5, 10, 15, and so on to 100. Grade 0 is pure white and grade 100 is pure black. The grades between them keep the hue of the key color.
@@ -108,6 +108,7 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 - **Fixed luminance, not contrast against one background.** themetron-3 made each palette against its own background, so two palettes did not line up. With fixed luminance, one rule works for all palettes, and designers can mix colors freely. IBM Carbon and the US Web Design System use the same idea.
 - **An exponential scale.** With equal steps in luminance, the contrast between neighbors would be large at the dark end and small at the light end. The exponential scale gives each step of 10 the same contrast ratio, 1.36:1.
 - **OKLCH, not HSL.** A change of HSL lightness also changes the hue and the felt saturation, so blues turned purple. OKLCH keeps the hue.
+- **OKHSL, for an even saturation.** OKLCH keeps the key color's chroma, as an amount, and cuts it where it does not fit, near white and black. OKHSL keeps the key color's share of the most chroma that fits at each grade, with OKLCH's hue. So every grade is as muted or as vivid as the key color, relative to what fits. It has no taper, because the gamut already narrows toward white and black. It is close to Björn Ottosson's OKHSL, but not exact: his saturation bends toward a middle chroma, and this one is a straight share.
 - **Every 5 grades.** Most rules choose from the grades 10 apart, plus 5 and 95 near white and black. Hover and press states use all of them, so a tint at 5 has neighbors at 15 and 25, the same distance apart as in the middle of the scale.
 - **Grade numbers from 0 to 100.** The US Web Design System uses the same numbers and the same idea of a "magic number". Multiply by 10, and grades 5 to 95 match Tailwind's 50 to 950.
 
@@ -118,7 +119,7 @@ The formula is exact while the color is in the sRGB gamut. When the full chroma 
 - [x] Let a theme choose the color model of its ramps: OKLCH or HSL
 - [x] Drop the "both" contrast method: APCA keeps the WCAG 2 minimums as a floor
 - [x] Find an exact formula for the HSL lightness at a target luminance, or prove that there is none. There is none in general; see [HSL lightness](../docs/research/hsl-lightness.md "hsl-lightness").
-- [ ] Add OKHSL as a color model: true hues, and a saturation that always fits the gamut
+- [x] Add OKHSL as a color model: true hues, and a saturation that always fits the gamut
 - [>] Add HCT (Material 3) as a color model. It needs CAM16, or Google's library.
 - [>] Allow wider-gamut ramps in Display P3
 - [x] Use APCA's font-size and weight table, so that large text can use a smaller gap

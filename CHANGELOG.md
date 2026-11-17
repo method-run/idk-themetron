@@ -16,6 +16,8 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+- **New color model: `okhsl`.** Set `contrast.model` to `okhsl`, and each grade keeps the key color's share of the most color that fits, with true OKLCH hues. A muted key color gives a muted ramp from light to dark. Contrast does not change: each grade keeps its luminance. The playground shows OKLCH and OKHSL, and HSL only in debug mode or for a theme that uses it. See [Grades and contrast](./spec/grades.md "grades").
+
 ## 0.2.2
 
 Contract 0.2.0, unchanged.

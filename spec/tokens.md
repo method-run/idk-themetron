@@ -11,7 +11,7 @@ tags: [system/tokens]
 # Tokens
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 83% (10/12) · 3 deferred
+◐ 91% (11/12) · 3 deferred
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine makes these tokens.

@@ -81,7 +81,7 @@ export const FONT_FIELDS = ['font', 'headingFont', 'monoFont'];
 // APCA keeps the WCAG 2 minimums as a floor, so it is always at least as strict.
 export const CONTRAST_METHODS = ['wcag', 'apca'];
 // The color model that a ramp keeps its hue and chroma in.
-export const CONTRAST_MODELS = ['oklch', 'hsl'];
+export const CONTRAST_MODELS = ['oklch', 'okhsl', 'hsl'];
 export const CONTRAST_LEVELS = ['standard', 'enhanced'];
 
 // A theme has one color for each role. Base: backgrounds, text, borders, and quiet controls.

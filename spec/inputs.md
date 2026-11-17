@@ -296,7 +296,7 @@ A preset is a set of feels with a familiar name. A feel that a preset does not s
 
 ## Contrast
 
-`contrast.method` is `wcag` or `apca`. APCA keeps the WCAG 2 minimums as a floor. `contrast.model` is the color model of the ramps: `oklch` (the default) or `hsl`. The [Grades and contrast](./grades.md "grades") page gives the thresholds. A child theme can change the contrast setting. Then it is a full theme.
+`contrast.method` is `wcag` or `apca`. APCA keeps the WCAG 2 minimums as a floor. `contrast.model` is the color model of the ramps: `oklch` (the default), `okhsl`, or `hsl`. With `okhsl`, each grade keeps the key color's share of the most color that fits, so a muted key color gives a muted ramp from light to dark. The playground hides `hsl`, because `okhsl` does its job with true hues. The [Grades and contrast](./grades.md "grades") page gives the thresholds. A child theme can change the contrast setting. Then it is a full theme.
 
 Every theme ships both levels: the `standard` level, which readers get by default, and the `enhanced` level as a more-contrast variant, for readers who ask for more contrast. You do not choose a level: like dark mode, the variant comes with every theme. See [More contrast](./tokens.md "tokens"). Older inputs could set `contrast.level`. The engine now skips it, so those files still load, and the schema marks it deprecated.
 

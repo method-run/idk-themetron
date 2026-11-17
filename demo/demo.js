@@ -5,7 +5,13 @@ import componentsCss from '../components/components.css?raw';
 import { combobox } from './combobox.js';
 import { parseHex, toHex, srgbToOklch, oklchToSrgb } from '../src/color.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette } from '../src/index.js';
+
+// Debug mode, a switch in the View menu, shows tools for comparing color models: HSL in the
+// Color model menu, and every model side by side on the Palettes tab.
+const DEBUG_KEY = 'themetron-playground-debug';
+let debug = false;
+try { debug = localStorage.getItem(DEBUG_KEY) === '1'; } catch { /* storage is optional */ }
 
 const $ = (sel) => document.querySelector(sel);
 const el = (tag, attrs = {}, ...children) => {
@@ -55,6 +61,8 @@ function tidy(saved) {
   expandPresets(s.themes);
   // CIE LCh is gone. Themes that used it go back to the default model.
   for (const t of Object.values(s.themes)) if (t.contrast?.model === 'lch') delete t.contrast.model;
+  // The OKHSL previews were "okhsl" (with a taper) and "okhsl-flat". The flat one is now "okhsl".
+  for (const t of Object.values(s.themes)) if (t.contrast?.model === 'okhsl-flat') t.contrast.model = 'okhsl';
   // "Both" is gone: APCA now keeps the WCAG 2 minimums as a floor.
   for (const t of Object.values(s.themes)) if (t.contrast?.method === 'both') t.contrast.method = 'apca';
   // The icon style "outlined" is now "standard": fill is a setting of its own.
@@ -986,13 +994,20 @@ function renderSegs() {
   const contrast = built?.themes[state.selected] ? selected().settings.contrast : { method: 'wcag', level: 'standard', model: 'oklch' };
   const setContrast = (key, v) => { own().contrast = { ...own().contrast, [key]: v }; update(); };
   seg($('#method'), [['wcag', 'WCAG 2'], ['apca', 'APCA']], contrast.method, (v) => setContrast('method', v));
-  seg($('#model'), [['oklch', 'OKLCH'], ['hsl', 'HSL']], contrast.model, (v) => setContrast('model', v));
+  // HSL is hidden unless the theme uses it, or debug mode is on. OKHSL does its job better.
+  const models = [['oklch', 'OKLCH'], ['okhsl', 'OKHSL'], ...(debug || contrast.model === 'hsl' ? [['hsl', 'HSL']] : [])];
+  seg($('#model'), models, contrast.model, (v) => setContrast('model', v));
   const icons = built?.themes[state.selected] ? selected().settings.icons : null;
   if (icons) {
     seg($('#icon-fill'), [[false, 'Outline'], [true, 'Filled']], icons.fill, (v) => setIcons('fill', v));
   }
   seg($('#mode'), [['light', 'Light'], ['dark', 'Dark'], ['both', 'Both']], ui.mode, (v) => { ui.mode = v; renderSegs(); renderView(); });
   seg($('#contrast-view'), [['base', 'Base'], ['more', 'More contrast']], ui.contrast, (v) => { ui.contrast = v; renderSegs(); renderControlsState(); renderView(); });
+  seg($('#debug'), [[false, 'Off'], [true, 'On']], debug, (v) => {
+    debug = v;
+    try { localStorage.setItem(DEBUG_KEY, v ? '1' : '0'); } catch { /* storage is optional */ }
+    update();
+  });
   const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
   $('#view-summary').textContent = `· ${ui.view === 'tokens' ? 'Both modes' : modeLabel}${ui.contrast === 'more' && ui.view !== 'tokens' ? ' · More contrast' : ''}`;
   seg($('#format'), [['stylesheet', 'Stylesheet'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['mui', 'MUI'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
@@ -1001,6 +1016,7 @@ function renderSegs() {
 const MODEL_NOTES = {
   oklch: 'Ramps keep the hue in OKLCH, so blues stay blue. Grade lightness has an exact formula.',
   hsl: 'Ramps keep the hue and saturation in HSL, like themetron-3. Hues can shift, and mid grades can look dull or loud.',
+  okhsl: 'Ramps keep the hue in OKLCH, and the key color\'s share of the most color that fits at each grade. So a muted color stays muted, and a vivid one stays vivid, from light to dark.',
 };
 
 // True when the feels are a preset's feels with no changes.
@@ -1553,7 +1569,27 @@ function renderPalettes() {
           el('div', { class: 'swatches' }, ...GRADES.map((g) => swatch(row, g, usage(row, mode)))))));
     }),
     compare(),
+    debug ? modelComparison(rows) : null,
   );
+}
+
+// Debug: each ramp's key color in every model, one strip each, grades 0 to 100. Same grade, same
+// luminance, so only the hue and chroma differ.
+// After the theme's own ramps come a few sample hues whose gamut is lopsided.
+const SAMPLE_KEYS = ['#ffcc00', '#22aa44', '#00c2c2', '#7a5cff', '#e0115f'];
+function modelComparison(rows) {
+  const models = Object.keys(COLOR_MODELS);
+  const keys = [...rows.map((row) => [row.label, row.palette.key]), ...SAMPLE_KEYS.map((k) => ['Sample', k])];
+  return el('div', { class: 'model-compare' },
+    el('h3', {}, 'Debug: the same key colors in each color model'),
+    ...keys.map(([label, key]) => el('div', { class: 'pal' },
+      el('div', { class: 'pal-head' }, el('h3', {}, label), el('span', {}, `key ${key}`)),
+      ...models.map((m) => el('div', { class: 'model-strip' },
+        el('span', {}, COLOR_MODELS[m].label),
+        el('div', { class: 'swatches' }, ...GRADES.map((g) => {
+          const hex = makePalette(key, m).steps[g];
+          return el('div', { class: 'sw', title: `${m} ${g} ${hex}`, style: `background:${hex};color:${g >= 50 ? '#fff' : '#000'};cursor:default` }, el('b', {}, g));
+        })))))));
 }
 
 function passPill(purpose, fg, bg) {

@@ -200,3 +200,28 @@ export function hslAtLuminance(h, s, targetY) {
   if (targetY <= 0) return [0, 0, 0];
   return hslToSrgb([h, s, hslLightnessForLuminance(h, s, targetY)]);
 }
+
+// OKHSL-style. Saturation is a share of the most chroma that fits the sRGB gamut at each
+// lightness and hue, so a ramp keeps the same share all the way to white and black, where
+// OKLCH cuts its chroma. It keeps OKLCH's hue. Close to Ottosson's OKHSL, not exact: his
+// saturation bends toward a middle chroma, and this one is a straight share.
+export function srgbToOkhsl(rgb) {
+  const [L, C, h] = srgbToOklch(rgb);
+  const max = maxChroma(L, h);
+  return [h, max > 1e-6 ? Math.min(1, C / max) : 0];
+}
+
+// Luminance grows with lightness at a fixed share of the gamut, so a bisection on L finds it.
+export function okhslAtLuminance(h, s, targetY) {
+  if (targetY >= 1) return [1, 1, 1];
+  if (targetY <= 0) return [0, 0, 0];
+  const at = (L) => oklchToSrgb([L, s * maxChroma(L, h), h]).map(clamp01);
+  let lo = 0;
+  let hi = 1;
+  for (let i = 0; i < 30; i++) {
+    const mid = (lo + hi) / 2;
+    if (luminance(at(mid)) < targetY) lo = mid;
+    else hi = mid;
+  }
+  return at((lo + hi) / 2);
+}

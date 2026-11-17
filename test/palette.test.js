@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { luminance, parseHex, wcagContrast } from '../src/color.js';
+import { luminance, parseHex, srgbToOkhsl, wcagContrast } from '../src/color.js';
 import { COLOR_MODELS, GRADES, apcaMinLc, contrastTest, gradeGaps, gradeLuminance, makePalette, measure, minContrast, purposeName } from '../src/palette.js';
 
 const KEYS = ['#1e66f5', '#ff6b4a', '#2f9e44', '#ffd43b', '#00e5ff', '#7048e8', '#6b6b80', '#f8f9fa', '#111111'];
@@ -78,4 +78,17 @@ test('the key grade places the key color on the scale', () => {
   assert.equal(makePalette('#000000').keyGrade, 100);
   const p = makePalette('#767676');
   assert.ok(p.keyGrade > 45 && p.keyGrade < 55, String(p.keyGrade));
+});
+
+test('an OKHSL ramp keeps the key color\'s hue and share of the gamut at every grade', () => {
+  for (const key of ['#5d8cbb', '#22aa44', '#e0115f', '#7a5cff']) {
+    const p = makePalette(key, 'okhsl');
+    const [hue, share] = srgbToOkhsl(parseHex(key));
+    for (const g of GRADES.filter((g) => g >= 10 && g <= 90)) {
+      const [h, s] = srgbToOkhsl(parseHex(p.steps[g]));
+      const dh = Math.abs(((h - hue + 540) % 360) - 180);
+      assert.ok(dh < 4, `${key} grade ${g}: hue ${h} is not ${hue}`);
+      assert.ok(Math.abs(s - share) < 0.05, `${key} grade ${g}: share ${s} is not ${share}`);
+    }
+  }
 });
