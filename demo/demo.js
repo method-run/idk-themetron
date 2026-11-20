@@ -1728,7 +1728,86 @@ function tokenText() {
   return JSON.stringify(inputsFile(), null, 2);
 }
 
+// Previews: a format on its framework's own stock parts, in an iframe, so the framework's CSS
+// stays out of the playground. Each loads its framework's CSS when you first open it.
+const PREVIEWS = {
+  'bootstrap-css': {
+    label: 'Bootstrap 5.3',
+    css: () => import('bootstrap/dist/css/bootstrap.min.css?raw').then((m) => m.default),
+    page: bootstrapPage,
+  },
+};
+// One mode of the Bootstrap sample: stock Bootstrap markup, and a row for each child theme.
+function bootstrapSample(mode, children) {
+  return `<section data-bs-theme="${mode}" class="p-4 bg-body text-body">
+  <h2 class="h5 mb-3">${mode === 'light' ? 'Light' : 'Dark'}</h2>
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <button class="btn btn-primary">Primary</button><button class="btn btn-secondary">Secondary</button>
+    <button class="btn btn-success">Success</button><button class="btn btn-danger">Danger</button>
+    <button class="btn btn-warning">Warning</button><button class="btn btn-info">Info</button>
+    <button class="btn btn-outline-primary">Outline</button><button class="btn btn-link">Link</button>
+  </div>
+  <p>Body text with <a href="#">a link</a>, <strong>strong</strong> text, and <code>code</code>. <span class="text-body-secondary">Secondary text.</span></p>
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    <span class="badge text-bg-primary">Primary</span><span class="badge text-bg-success">Success</span>
+    <span class="badge text-bg-danger">Danger</span><span class="badge text-bg-warning">Warning</span>
+    <span class="badge rounded-pill text-bg-info">Info</span>
+  </div>
+  <div class="alert alert-primary">A primary alert, with <a href="#" class="alert-link">a link</a>.</div>
+  <div class="alert alert-danger">A danger alert.</div>
+  <div class="row g-3 mb-3">
+    <div class="col-sm-6">
+      <label class="form-label" for="e-${mode}">Email</label>
+      <input class="form-control" id="e-${mode}" placeholder="ada@example.org">
+      <div class="form-text">A hint under the field.</div>
+    </div>
+    <div class="col-sm-6">
+      <label class="form-label" for="s-${mode}">City</label>
+      <select class="form-select" id="s-${mode}"><option>Harbor</option><option>Tide</option></select>
+    </div>
+    <div class="col-12 d-flex flex-wrap gap-3">
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="c-${mode}" checked><label class="form-check-label" for="c-${mode}">Check</label></div>
+      <div class="form-check"><input class="form-check-input" type="radio" name="r-${mode}" id="r-${mode}" checked><label class="form-check-label" for="r-${mode}">Radio</label></div>
+      <div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="w-${mode}" checked><label class="form-check-label" for="w-${mode}">Switch</label></div>
+      <input type="range" class="form-range w-auto flex-grow-1">
+    </div>
+  </div>
+  <ul class="nav nav-tabs mb-3"><li class="nav-item"><a class="nav-link active" href="#">Active</a></li><li class="nav-item"><a class="nav-link" href="#">Tab</a></li><li class="nav-item"><a class="nav-link disabled">Disabled</a></li></ul>
+  <div class="row g-3 mb-3">
+    <div class="col-sm-6"><div class="card"><div class="card-header">Card</div><div class="card-body"><h3 class="card-title h6">Card title</h3><p class="card-text">Some text in a card.</p><a href="#" class="btn btn-primary btn-sm">Go</a></div></div></div>
+    <div class="col-sm-6"><ul class="list-group"><li class="list-group-item active">Active item</li><li class="list-group-item">Item</li><li class="list-group-item list-group-item-action">Action item</li></ul></div>
+  </div>
+  <div class="progress mb-3" role="progressbar" aria-label="Progress"><div class="progress-bar" style="width: 60%">60%</div></div>
+  <nav aria-label="Pages"><ul class="pagination"><li class="page-item"><a class="page-link" href="#">1</a></li><li class="page-item active"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li></ul></nav>
+  ${children.length ? `<h3 class="h6 mt-4">Child themes</h3>${children.map((name) => `<div class="theme-${name} d-flex flex-wrap align-items-center gap-2 mb-2"><button class="btn btn-primary btn-sm">${name}</button><span class="badge text-bg-primary">Badge</span><a href="#">A link</a></div>`).join('')}` : ''}
+</section>`;
+}
+function bootstrapPage(frameworkCss, exportCss) {
+  const children = built.order.filter((name) => name !== ROOT);
+  return `<!doctype html><meta charset="utf-8"><style>${frameworkCss}</style><style>${exportCss}</style>
+<style>body { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }</style>
+${bootstrapSample('light', children)}${bootstrapSample('dark', children)}`;
+}
+const frameworkCss = {};
+async function renderFormatPreview() {
+  const preview = PREVIEWS[ui.format];
+  const box = $('#format-preview');
+  box.hidden = !preview;
+  if (!preview) return;
+  $('#format-preview-label').textContent = `Preview on ${preview.label}`;
+  if (!box.open) return;
+  const format = ui.format;
+  frameworkCss[format] ??= await preview.css();
+  // The format can change while the framework's CSS loads.
+  if (ui.format !== format) return;
+  // Only when it changed: a new srcdoc loads the page again.
+  const page = preview.page(frameworkCss[format], tokenText());
+  if ($('#format-frame').srcdoc !== page) $('#format-frame').srcdoc = page;
+}
+$('#format-preview').addEventListener('toggle', renderFormatPreview);
+
 function renderTokens() {
+  renderFormatPreview();
   $('#format-note').textContent = FORMAT_NOTES[ui.format];
   const inputs = ui.format === 'inputs';
   $('#code').hidden = inputs;

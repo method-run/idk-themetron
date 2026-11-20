@@ -1,7 +1,7 @@
 # idk-themetron
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 60% (40/66) · 9 deferred · 3 dropped
+◐ 61% (41/67) · 9 deferred · 3 dropped
 <!-- idk-plans:progress:end -->
 
 idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color (one color, or a two-color gradient), fonts, icons, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
@@ -92,7 +92,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 - [How it works](./docs/how-it-works.md "how-it-works"): What themetron does with your inputs, step by step, from a tree of themes to CSS that components read. The engine is deterministic, and it uses no network.
 - [Inputs](./spec/inputs.md "inputs"): A theme set is a tree of themes. Each theme has a base color and an action color, and the root theme also has a font. Each child theme changes some fields of its parent and takes the rest from it. ◐ 62% (5/8) · 6 deferred · 2 dropped
 - [Tokens](./spec/tokens.md "tokens"): The design tokens that themetron makes, their names, and their formats. Each theme in the tree becomes one CSS rule. A component library that reads only these tokens works with every themetron theme. ◐ 91% (11/12) · 3 deferred
-- [Using themetron in a site or library](./spec/consumers.md "consumers"): The contract between themetron and the sites and libraries that use its stylesheets. Which tokens are stable, which color pairs pass, how theme classes and modes work, and how to check a stylesheet. Written so that a tool such as idk-plans can adopt themetron themes with little work. ◐ 37% (6/16) · 1 dropped
+- [Using themetron in a site or library](./spec/consumers.md "consumers"): The contract between themetron and the sites and libraries that use its stylesheets. Which tokens are stable, which color pairs pass, how theme classes and modes work, and how to check a stylesheet. Written so that a tool such as idk-plans can adopt themetron themes with little work. ◐ 41% (7/17) · 1 dropped
 - [Components](./components/README.md "components"): A small CSS component library that reads only themetron tokens. It shows how each feel changes real parts, such as buttons, fields, and cards. ◐ 37% (3/8)
 - [Examples](./examples/README.md "examples"): A small theme tree, and the file that each pipeline level makes from it, up to a page that reads the tokens. Each level names its spec.
 - [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ● 100% (1/1)
