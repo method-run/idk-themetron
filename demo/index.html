@@ -405,9 +405,11 @@ td code { font-family: var(--mono); font-size: 12px; }
       <div class="set-actions">
         <button class="small-btn" type="button" id="set-new">+ New set</button>
         <button class="small-btn" type="button" id="set-copy">Copy this set</button>
+        <button class="small-btn" type="button" id="set-import">Import a set…</button>
+        <input type="file" id="set-file" accept=".json,application/json" hidden>
         <button class="small-btn" type="button" id="set-delete">Delete this set</button>
       </div>
-      <div class="fader-hint">Sets are saved in this browser. Download a set from the Tokens view to keep it.</div>
+      <div class="fader-hint">Sets are saved in this browser. To keep a set, or move it to another browser, download its inputs from the Tokens view, and import the file here.</div>
     </div>
     <div class="theme-cards" id="themes"></div>
     <p id="move-help" hidden>Drag to move. Or press Space to lift, the arrow keys to move, and Space to drop.</p>

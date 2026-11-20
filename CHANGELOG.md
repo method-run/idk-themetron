@@ -22,6 +22,7 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 - **The components use the theme's motion.** Dialogs pop, drawers arrive with a spring, and the button press and the switch knob spring back. New helpers: `tm-pop`, `tm-toast`, `tm-stagger`, `tm-shake`, and `tm-tabs-indicator`.
 - **Fix: gradient text over photos.** In `tm-over-media`, links, field errors, and the selected tab of a theme with an action gradient showed the halo in place of their letters: pale in light mode, and dark in dark mode. Their halo is now a `drop-shadow()` filter, behind the letters.
 - **New color model: `okhsl`.** Set `contrast.model` to `okhsl`, and each grade keeps the key color's share of the most color that fits, with true OKLCH hues. A muted key color gives a muted ramp from light to dark. Contrast does not change: each grade keeps its luminance. The playground shows OKLCH and OKHSL, and HSL only in debug mode or for a theme that uses it. See [Grades and contrast](./spec/grades.md "grades").
+- **Playground: import a set.** "Import a set…", under the theme sets, opens an inputs file, such as a download from the Inputs view, as a new set. The open set stays. So a set can move to another browser.
 
 ## 0.2.2
 
