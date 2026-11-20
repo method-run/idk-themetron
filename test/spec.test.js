@@ -97,9 +97,11 @@ test('the pairs in the manifest pass, in every preset, mode, and contrast settin
   }
 });
 
-test('the components read no token outside the contract', async () => {
-  const css = await readFile(new URL('../components/components.css', import.meta.url), 'utf8');
-  assert.deepEqual(checkCss(css).unknown, []);
+test('the components and the looks read no token outside the contract', async () => {
+  for (const file of ['components.css', 'looks.css']) {
+    const css = await readFile(new URL(`../components/${file}`, import.meta.url), 'utf8');
+    assert.deepEqual(checkCss(css).unknown, [], file);
+  }
 });
 
 test('check skips token definitions, and finds unknown and experimental reads', () => {

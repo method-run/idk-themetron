@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
+import { withLooks } from '../src/looks.js';
 
 const bin = fileURLToPath(new URL('../bin/themetron.js', import.meta.url));
 const example = fileURLToPath(new URL('../examples/basic/', import.meta.url));
@@ -34,8 +35,17 @@ test('build --format stylesheet adds the components after the tokens', async () 
   const { code, stdout } = await run('build', join(example, 'inputs.json'), '--format', 'stylesheet');
   assert.equal(code, 0);
   const components = await readFile(new URL('../components/components.css', import.meta.url), 'utf8');
+  const looks = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
   assert.ok(stdout.startsWith(await readFile(join(example, 'tokens.css'), 'utf8')));
-  assert.ok(stdout.endsWith(components));
+  assert.ok(stdout.endsWith(withLooks(components, looks)));
+  assert.ok(!stdout.includes('@import "./looks.css"'), 'the looks are in the file, not imported');
+});
+
+test('build --format looks adds the looks after the tokens', async () => {
+  const { code, stdout } = await run('build', join(example, 'inputs.json'), '--format', 'looks');
+  assert.equal(code, 0);
+  assert.ok(stdout.startsWith(await readFile(join(example, 'tokens.css'), 'utf8')));
+  assert.ok(stdout.endsWith(await readFile(new URL('../components/looks.css', import.meta.url), 'utf8')));
 });
 
 test('build --out writes a file, and nothing to stdout', async () => {
@@ -75,7 +85,7 @@ test('build exits 1 for a missing file, bad JSON, or an unknown format', async (
     for (const [args, message] of [
       [[join(dir, 'missing.json')], /no such file/],
       [[bad], /bad\.json: .*JSON/],
-      [[join(example, 'inputs.json'), '--format', 'scss'], /--format: use one of css, stylesheet, dtcg, tailwind, shadcn, bootstrap/],
+      [[join(example, 'inputs.json'), '--format', 'scss'], /--format: use one of css, stylesheet, looks, dtcg, tailwind, shadcn, bootstrap/],
       [[], /build needs one inputs file/],
       [[join(example, 'inputs.json'), '--nope'], /--nope: unknown flag/],
       [[join(example, 'inputs.json'), '--out'], /--out needs a value/],

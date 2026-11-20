@@ -11,6 +11,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, InputError } from '../src/index.js';
 import { checkCss, CONTRACT_VERSION } from '../src/manifest.js';
+import { withLooks } from '../src/looks.js';
 
 const USAGE = `Usage:
   themetron build <inputs.json> [--format css] [--out <file>]
@@ -24,6 +25,8 @@ as --prefix with dtcg, prints a warning, and the build goes on without it.
 build formats:
   css         The tokens as CSS custom properties, one rule for each theme. The default.
   stylesheet  The tokens and the components in one file.
+  looks       The tokens and the looks in one file: the tm-look-* classes, which give any
+              element a themetron appearance.
   dtcg        Design Tokens Community Group JSON.
   tailwind    A Tailwind CSS v4 theme. Add the CSS tokens too.
   shadcn      Variables for shadcn/ui's globals.css.
@@ -52,10 +55,13 @@ build flags:
 Every format but mui starts with a line that names the token contract that made it.`;
 
 // The same formats as the playground's download, except "inputs". `flags` lists the build flags
-// that each format uses. The components read --tm-* tokens, so stylesheet takes no --prefix.
+// that each format uses. The components and looks read --tm-* tokens, so stylesheet and looks
+// take no --prefix.
+const file = (name) => readFile(new URL(`../components/${name}`, import.meta.url), 'utf8');
 const FORMATS = {
   css: { flags: ['prefix', 'class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: (built, o) => toCss(built, o) },
-  stylesheet: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron components */\n\n${await readFile(new URL('../components/components.css', import.meta.url), 'utf8')}` },
+  stylesheet: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron components */\n\n${withLooks(await file('components.css'), await file('looks.css'))}` },
+  looks: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron looks */\n\n${await file('looks.css')}` },
   dtcg: { flags: ['set'], make: (built, o) => `${JSON.stringify(toDtcg(built, o), null, 2)}\n` },
   tailwind: { flags: ['prefix', 'set'], make: (built, o) => toTailwind(built, o) },
   shadcn: { flags: ['class-prefix', 'set'], make: (built, o) => toShadcn(built, o) },
