@@ -10,7 +10,7 @@ tags: [system/consumers/plan-consumers]
 # Plan: make themes easier to use
 
 <!-- idk-plans:progress:start (generated) -->
-○ 0% (0/9)
+◐ 10% (1/10) · 1 dropped
 <!-- idk-plans:progress:end -->
 
 This plan is for discussion. It is not a design yet. It looks at four ideas:
@@ -20,7 +20,7 @@ This plan is for discussion. It is not a design yet. It looks at four ideas:
 3. **More packages:** split themetron into several npm packages. **Not yet.** Use subpath exports in one package now. Split only when a part needs its own dependencies.
 4. **Format previews:** show each export format on the stock parts of its framework, such as Bootstrap's buttons. **Recommended.** A Bootstrap preview is on the branch `plan/format-previews`, to try.
 
-The recipes page stays. It explains the looks, and it is the fallback for sites that cannot load another stylesheet.
+The recipes page stays. It explains the looks, and it is the fallback for sites that cannot load another stylesheet. The recipes are made from the same source as the looks, so they cannot drift.
 
 ## The problem
 
@@ -80,7 +80,17 @@ A **look** is a class that gives an element one appearance, with no layout and n
 
 Each look reads the theme's feels: shine, clarity, gradients, depth, roundness, and motion. Its states come from standard attributes and pseudo-classes, such as `:hover`, `:active`, `[aria-pressed="true"]`, and `[aria-selected="true"]`, so a site does not add state classes.
 
-The looks ship as a new export format, `looks`, and as a file in the package: `@method-run/idk-themetron/looks.css`. Then `components.css` uses the looks too, so the two cannot drift apart.
+A site applies a look in one of three ways. All three come from one source in the code, so they give the same result:
+
+```html
+<button class="my-btn tm-look-fill">Save</button>   <!-- a class, for any site -->
+```
+```css
+.my-btn { @apply tm-look-fill; }     /* Tailwind: an @utility for each look, in the Tailwind export */
+.my-btn { @include tm.look-fill; }   /* Sass: a mixin for each look, in the Bootstrap Sass export and the package */
+```
+
+The classes ship as a new export format, `looks`, and as a file in the package: `@method-run/idk-themetron/looks.css`. Then `components.css` uses the looks too, so the two cannot drift apart.
 
 <details>
 <summary>A first list of looks</summary>
@@ -112,13 +122,14 @@ A look sets colors, edges, radius, shadows, shine, and transitions. It does not 
 </details>
 
 <details>
-<summary>Open questions</summary>
+<summary>Decisions</summary>
 
-The name is decided: **look**. "Skin" read badly in code.
-
-- Do looks replace the recipes, or do the recipes become "what a look does, in plain CSS"?
-- Can a site apply a look to its own class names without changing its markup? CSS has no mixins yet. Options: a Sass mixin for each look, a Tailwind `@utility` for each look in the Tailwind export, or `@apply`.
-- Which looks are stable in the contract, and which are experimental?
+- The name is **look**. "Skin" read badly in code.
+- A look comes as a class, a Tailwind `@utility`, and a Sass mixin, all from one source.
+- The recipes stay, and explain the looks: each recipe is "what this look does, in plain CSS", made from the same source. They are the fallback for a site that cannot load `looks.css`.
+- Every look starts as experimental, like the motion tokens. A look becomes stable after idk-plans uses it for a release or two.
+- The first release has every look in the table, motion too.
+- Motion keeps its own prefix, `tm-enter-*`. Motion is how a part comes and goes, not how it looks, so a part can have one of each: `class="tm-look-surface tm-enter-pop"`.
 
 </details>
 
@@ -188,18 +199,20 @@ The fix: under the code of each framework format in the Tokens view, a collapsib
 | Bootstrap Sass | A Sass compile in the browser, or at build time | Medium. The CSS preview covers most of it. |
 | daisyUI | daisyUI's prebuilt CSS, and the theme as plain CSS variables | Medium |
 | Tailwind, shadcn | Tailwind's browser compiler; shadcn's markup, without React | Medium |
-| MUI | React and MUI in the iframe, from a separate bundle | Large |
+| MUI | React and MUI in the iframe, from a separate bundle | Large. **Not planned:** too much upkeep for one preview. |
 
 Each framework is a development dependency, bundled into the playground. The engine stays free of dependencies.
 
 ## Tasks
 
-- [ ] Agree on the look idea and the first list of looks
+- [x] Agree on the look idea and the first list of looks
 - [ ] Build `looks.css` and the `looks` export, and move `components.css` onto it
-- [ ] List the looks in the token manifest, with their states and tokens
+- [ ] Make a Tailwind `@utility` and a Sass mixin for each look, from the same source, with a test that the three match
+- [ ] List the looks in the token manifest, with their states and tokens, as experimental
+- [ ] Make each recipe from its look's source
 - [ ] Write the agent guide, `llms.txt`, from the manifest, with a test
 - [ ] Add subpath exports for the engine, the exporters, the contract, and the CSS
 - [ ] Decide whether to make a Vite or PostCSS plugin, as the first separate package
 - [ ] Preview the Bootstrap CSS format in the playground
 - [ ] Preview daisyUI, Tailwind, and shadcn
-- [ ] Decide whether an MUI preview is worth a React bundle
+- [-] Preview MUI. A React bundle costs too much build and upkeep for one preview. Look again if sites use the MUI export.
