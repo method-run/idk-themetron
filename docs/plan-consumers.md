@@ -1,7 +1,7 @@
 ---
 id: plan-consumers
 title: "Plan: make themes easier to use"
-summary: Ideas to help sites and libraries use a theme fully, not only its colors. Skin classes, an agent guide, a package layout, and previews of each export format.
+summary: Ideas to help sites and libraries use a theme fully, not only its colors. Look classes, an agent guide, a package layout, and previews of each export format.
 parent: consumers
 kind: plan
 aliases: ["Plan: make themes easier to use"]
@@ -15,12 +15,12 @@ tags: [system/consumers/plan-consumers]
 
 This plan is for discussion. It is not a design yet. It looks at four ideas:
 
-1. **Skin classes:** a standard stylesheet of classes that give any element a themetron look: fills, tints, surfaces, gradient text, shine, and motion. **Recommended.** This is the biggest gap.
+1. **Look classes:** a standard stylesheet of classes that give any element a themetron look: fills, tints, surfaces, gradient text, shine, and motion. **Recommended.** This is the biggest gap.
 2. **An agent guide:** one file that tells a person or an AI agent how to theme a site. **Recommended.** It is cheap.
 3. **More packages:** split themetron into several npm packages. **Not yet.** Use subpath exports in one package now. Split only when a part needs its own dependencies.
 4. **Format previews:** show each export format on the stock parts of its framework, such as Bootstrap's buttons. **Recommended.** A Bootstrap preview is on the branch `plan/format-previews`, to try.
 
-The recipes page stays. It explains the skins, and it is the fallback for sites that cannot load another stylesheet.
+The recipes page stays. It explains the looks, and it is the fallback for sites that cannot load another stylesheet.
 
 ## The problem
 
@@ -36,7 +36,7 @@ A site with its own parts and class names cannot use those classes. So it builds
 <details>
 <summary>What happened with idk-plans</summary>
 
-idk-plans skins its doc site with a themetron theme. It loads the `css` export, which has the tokens only. Its own `site.css` then grew by about 600 lines to rebuild themetron's buttons, tints, and fields from the tokens: shine filters, gloss grades, fill and tint opacities, and gradient images. An AI agent wrote it, and it took several rounds of review to match the playground.
+idk-plans themes its doc site with a themetron theme. It loads the `css` export, which has the tokens only. Its own `site.css` then grew by about 600 lines to rebuild themetron's buttons, tints, and fields from the tokens: shine filters, gloss grades, fill and tint opacities, and gradient images. An AI agent wrote it, and it took several rounds of review to match the playground.
 
 The tokens were all there. What was missing was a way to say "this element looks like a themetron soft button" without copying the component's CSS.
 
@@ -67,57 +67,58 @@ Zoom in: [Inputs](../spec/inputs.md "inputs") · [Engine](../src/README.md "engi
 | [Recipes](../spec/recipes.md "recipes") | CSS to copy for common parts | Copies drift from the components when the components change |
 | [Consumer contract](../spec/consumers.md "consumers") | Rules, stable tokens, pairs that pass | It is long. An agent must read all of it to start. |
 
-## 1. Skin classes
+## 1. Look classes
 
-A **skin** is a class that gives an element one look, with no layout and no structure. The element keeps its own size, padding, and markup. For example:
+A **look** is a class that gives an element one appearance, with no layout and no structure. The element keeps its own size, padding, and markup. For example:
 
 ```html
-<button class="my-btn tm-skin-fill">Save</button>
-<a class="nav-link tm-skin-gradient-text" href="/docs">Docs</a>
-<div class="sidebar tm-skin-surface">…</div>
-<dialog class="modal tm-skin-surface tm-enter-pop">…</dialog>
+<button class="my-btn tm-look-fill">Save</button>
+<a class="nav-link tm-look-gradient-text" href="/docs">Docs</a>
+<div class="sidebar tm-look-surface">…</div>
+<dialog class="modal tm-look-surface tm-enter-pop">…</dialog>
 ```
 
-Each skin reads the theme's feels: shine, clarity, gradients, depth, roundness, and motion. Its states come from standard attributes and pseudo-classes, such as `:hover`, `:active`, `[aria-pressed="true"]`, and `[aria-selected="true"]`, so a site does not add state classes.
+Each look reads the theme's feels: shine, clarity, gradients, depth, roundness, and motion. Its states come from standard attributes and pseudo-classes, such as `:hover`, `:active`, `[aria-pressed="true"]`, and `[aria-selected="true"]`, so a site does not add state classes.
 
-The skins ship as a new export format, `skins`, and as a file in the package: `@method-run/idk-themetron/skins.css`. Then `components.css` uses the skins too, so the two cannot drift apart.
+The looks ship as a new export format, `looks`, and as a file in the package: `@method-run/idk-themetron/looks.css`. Then `components.css` uses the looks too, so the two cannot drift apart.
 
 <details>
-<summary>A first list of skins</summary>
+<summary>A first list of looks</summary>
 
-| Skin | Look | From |
+| Look | What it gives | From |
 |---|---|---|
-| `tm-skin-fill` | A solid action fill: the primary button | `.tm-button` |
-| `tm-skin-tint` | A soft action tint: a soft button, a selected item | `.tm-button--soft` |
-| `tm-skin-quiet` | A quiet base tint: a secondary button | `.tm-button--quiet` |
-| `tm-skin-outline` | An edge in the action color, with a tint on hover | `.tm-button--outline` |
-| `tm-skin-ghost` | Action text, with a tint on hover | `.tm-button--ghost` |
-| `tm-skin-surface` | A card or panel: surface, edge, elevation, radius, clarity | `.tm-card` |
-| `tm-skin-field` | A text field: field background, edge, focus ring | `.tm-input` |
-| `tm-skin-gradient-text` | Action text, with the gradient when there is one | `.tm-link` |
-| `tm-skin-ring` | A gradient edge that follows rounded corners | the ring rules |
+| `tm-look-fill` | A solid action fill: the primary button | `.tm-button` |
+| `tm-look-tint` | A soft action tint: a soft button, a selected item | `.tm-button--soft` |
+| `tm-look-quiet` | A quiet base tint: a secondary button | `.tm-button--quiet` |
+| `tm-look-outline` | An edge in the action color, with a tint on hover | `.tm-button--outline` |
+| `tm-look-ghost` | Action text, with a tint on hover | `.tm-button--ghost` |
+| `tm-look-surface` | A card or panel: surface, edge, elevation, radius, clarity | `.tm-card` |
+| `tm-look-field` | A text field: field background, edge, focus ring | `.tm-input` |
+| `tm-look-gradient-text` | Action text, with the gradient when there is one | `.tm-link` |
+| `tm-look-ring` | A gradient edge that follows rounded corners | the ring rules |
 | `tm-enter-pop`, `tm-enter-arrive`, `tm-enter-fade` | Motion for parts that come and go | the motion helpers: `tm-pop`, `tm-toast`, `tm-stagger` |
 
-A skin sets colors, edges, radius, shadows, shine, and transitions. It does not set padding, size, display, or font size. Sizes stay the site's.
+A look sets colors, edges, radius, shadows, shine, and transitions. It does not set padding, size, display, or font size. Sizes stay the site's.
 
 </details>
 
 <details>
-<summary>How a skin stays out of the site's way</summary>
+<summary>How a look stays out of the site's way</summary>
 
 - **Low specificity.** Every rule is in `@layer themetron` and inside `:where()`. Any rule of the site wins.
-- **Hooks, not overrides.** A skin reads private custom properties, such as `--_bg`, so a site can change one part of the look: `.my-btn { --tm-skin-radius: 0 }`.
-- **Machine-readable.** The token manifest lists each skin: its class, the states that it reacts to, the tokens that it reads, and a short markup example. A tool or an agent can map a site's parts to skins from the manifest.
+- **Hooks, not overrides.** A look reads private custom properties, such as `--_bg`, so a site can change one part of the look: `.my-btn { --tm-look-radius: 0 }`.
+- **Machine-readable.** The token manifest lists each look: its class, the states that it reacts to, the tokens that it reads, and a short markup example. A tool or an agent can map a site's parts to looks from the manifest.
 
 </details>
 
 <details>
 <summary>Open questions</summary>
 
-- The name: skin, look, or trait?
-- Do skins replace the recipes, or do the recipes become "what a skin does, in plain CSS"?
-- Can a site apply a skin to its own class names without changing its markup? CSS has no mixins yet. Options: a Sass mixin for each skin, a Tailwind `@utility` for each skin in the Tailwind export, or `@apply`.
-- Which skins are stable in the contract, and which are experimental?
+The name is decided: **look**. "Skin" read badly in code.
+
+- Do looks replace the recipes, or do the recipes become "what a look does, in plain CSS"?
+- Can a site apply a look to its own class names without changing its markup? CSS has no mixins yet. Options: a Sass mixin for each look, a Tailwind `@utility` for each look in the Tailwind export, or `@apply`.
+- Which looks are stable in the contract, and which are experimental?
 
 </details>
 
@@ -129,10 +130,10 @@ It says:
 
 1. Which export to use, by kind of site.
 2. The rules from the consumer contract, short.
-3. Which skin or recipe to use for each kind of part.
+3. Which look or recipe to use for each kind of part.
 4. How to check the result: `themetron check`, and the pairs that pass.
 
-The code can make most of it from the manifest, so it stays current. A test can check that it names only real tokens and skins.
+The code can make most of it from the manifest, so it stays current. A test can check that it names only real tokens and looks.
 
 ## 3. More packages
 
@@ -148,7 +149,7 @@ The code can make most of it from the manifest, so it stays current. A test can 
 | Exporters | `export.js` | Build tools that turn themes into files |
 | Contract | `manifest.js`, `spec/` | Consumers and linters, such as `themetron check` |
 | CLI | `bin/themetron.js` | Build scripts |
-| CSS | `components.css`, then `skins.css` | Sites. They want CSS only, with no JavaScript. |
+| CSS | `components.css`, then `looks.css` | Sites. They want CSS only, with no JavaScript. |
 | Playground | `demo/` | Not published |
 
 The CSS is the one layer that a site wants alone. It is already a separate file in the package, and a CDN can serve it: `https://cdn.jsdelivr.net/npm/@method-run/idk-themetron/components.css`.
@@ -158,7 +159,7 @@ The CSS is the one layer that a site wants alone. It is already a separate file 
 <details>
 <summary>Steps that help now, without a split</summary>
 
-- **Subpath exports:** `@method-run/idk-themetron/engine`, `/export`, `/contract`, `/skins.css`. A consumer imports only what it needs, and the names say what each part does.
+- **Subpath exports:** `@method-run/idk-themetron/engine`, `/export`, `/contract`, `/looks.css`. A consumer imports only what it needs, and the names say what each part does.
 - **Inputs as the source:** a site keeps its inputs file, not an exported CSS file, and its build makes the CSS. The CLI does this today: `themetron build inputs.json`. A Vite or PostCSS plugin would do it in the build, so a change to the inputs shows at once.
 
 </details>
@@ -193,9 +194,9 @@ Each framework is a development dependency, bundled into the playground. The eng
 
 ## Tasks
 
-- [ ] Agree on the skin idea, its name, and the first list of skins
-- [ ] Build `skins.css` and the `skins` export, and move `components.css` onto it
-- [ ] List the skins in the token manifest, with their states and tokens
+- [ ] Agree on the look idea and the first list of looks
+- [ ] Build `looks.css` and the `looks` export, and move `components.css` onto it
+- [ ] List the looks in the token manifest, with their states and tokens
 - [ ] Write the agent guide, `llms.txt`, from the manifest, with a test
 - [ ] Add subpath exports for the engine, the exporters, the contract, and the CSS
 - [ ] Decide whether to make a Vite or PostCSS plugin, as the first separate package
