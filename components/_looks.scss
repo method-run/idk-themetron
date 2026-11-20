@@ -1,0 +1,902 @@
+/* themetron looks, as Sass mixins. Made from components/looks.css by npm run looks: do not edit.
+   Each look reads only the --tm-* tokens of the nearest theme, so load a themetron theme too. */
+
+@property --_paint-from { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --_paint-to { syntax: '<color>'; inherits: true; initial-value: transparent; }
+.tm-invert { --_halo-fill-on: 0; --_halo-tint-on: 1; }
+.tm-invert * { --_halo-fill-on: 1; --_halo-tint-on: 0; }
+
+@mixin look-fill {
+  --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
+  --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+  --_halo-color: var(--_halo-fill, transparent);
+  --_halo-alpha: calc(var(--_halo-strength, 0) * 100%);
+  --_fill-halo: 0 0 2px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent), 0 0 5px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent);
+  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / (1 - var(--tm-fill-alpha-clearest)), 1));
+  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / (1 - var(--tm-tint-alpha-inverted-clearest)), 1));
+  --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
+  --_fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-fill-action-from) calc(var(--tm-fill-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-fill-action-to) calc(var(--tm-fill-alpha) * 100%), transparent));
+  --_tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-tint-action-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-tint-action-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    --_bg: var(--tm-fill-action);
+    --_fg: var(--tm-on-fill-action);
+    --_edge: var(--tm-fill-action-active);
+    --_alpha: var(--tm-fill-alpha);
+    --_line: var(--tm-text-shadow-action);
+    --_halo-strength: var(--_fill-faded);
+    --_fade: 1;
+    --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
+    --_paint-bg: var(--_bg);
+    --_paint-fg: var(--_fg);
+    --_bg-from: var(--tm-fill-action-from);
+    --_bg-to: var(--tm-fill-action-to);
+    --_paint-from: var(--_bg-from);
+    --_paint-to: var(--_bg-to);
+    --_paint-edge: var(--_edge);
+    --_paint-line: var(--_line);
+    --_halo-fill: var(--_paint-bg);
+    --_shine-height: var(--tm-control-height);
+    --_shine-color: transparent;
+    --_glow-color: transparent;
+    position: relative;
+    isolation: isolate;
+    border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
+    border-radius: var(--tm-radius-control);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+    background-image: var(--_fill-image);
+    background-origin: border-box;
+    -webkit-backdrop-filter: var(--tm-backdrop-control);
+    backdrop-filter: var(--tm-backdrop-control);
+    color: var(--_paint-fg);
+    text-shadow: var(--_paint-line), var(--_fill-halo);
+    box-shadow: var(--tm-elevation-1);
+    transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), --_paint-from var(--tm-duration-fast) var(--tm-ease-standard), --_paint-to var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard), box-shadow var(--tm-duration-base) var(--tm-ease-standard), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+  }
+  &:hover {
+    --_bg: var(--tm-fill-action-hover);
+    --_bg-from: var(--tm-fill-action-hover-from);
+    --_bg-to: var(--tm-fill-action-hover-to);
+    --_fg: var(--tm-on-fill-action-hover);
+    transform: translateY(calc(-1 * var(--tm-lift)));
+    box-shadow: var(--tm-elevation-2);
+  }
+  &:active {
+    --_bg: var(--tm-fill-action-active);
+    --_bg-from: var(--tm-fill-action-active-from);
+    --_bg-to: var(--tm-fill-action-active-to);
+    --_fg: var(--tm-on-fill-action-active);
+    transform: translateY(0) scale(var(--tm-motion-press));
+    box-shadow: var(--tm-elevation-inset);
+    transition-duration: var(--tm-duration-fast);
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+  & * {
+    text-shadow: inherit;
+  }
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    --_shine-keep: 0.6;
+    opacity: calc(var(--_opacity) + (1 - var(--_opacity)) * var(--_shine-keep));
+    background-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--tm-shine-paint) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--tm-shine-paint) * 100%), transparent));
+    background-origin: border-box;
+  }
+  &::before {
+    -webkit-backdrop-filter: var(--tm-shine-backdrop-top);
+    backdrop-filter: var(--tm-shine-backdrop-top);
+    filter: var(--tm-shine-filter-top);
+    padding: var(--_shine-band) 0 0 calc(var(--_shine-band) / 2);
+    -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    -webkit-mask-clip: border-box, content-box, border-box;
+    mask-clip: border-box, content-box, border-box;
+    -webkit-mask-origin: border-box, content-box, border-box;
+    mask-origin: border-box, content-box, border-box;
+    -webkit-mask-composite: source-over, xor;
+    mask-composite: add, exclude;
+  }
+  &::after {
+    -webkit-backdrop-filter: var(--tm-shine-backdrop-bottom);
+    backdrop-filter: var(--tm-shine-backdrop-bottom);
+    filter: var(--tm-shine-filter-bottom);
+    --_shade-mask: oklch(from var(--_paint-bg) 0 0 0 / calc(1 - 1.2 * max(0, l - 0.5)));
+    --_shade-mask-half: oklch(from var(--_paint-bg) 0 0 0 / calc((1 - 1.2 * max(0, l - 0.5)) / 2));
+    -webkit-mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+    mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+  }
+  &.tm-invert {
+    color-scheme: inherit;
+    --tm-elevation-1: var(--tm-elevation-1-normal);
+    --tm-elevation-2: var(--tm-elevation-2-normal);
+    --tm-elevation-3: var(--tm-elevation-3-normal);
+    --tm-fill-alpha: var(--tm-fill-alpha-normal);
+    --tm-tint-alpha: var(--tm-tint-alpha-normal);
+    --_paint-bg: var(--_fg);
+    --_paint-from: var(--_fg-from, var(--_fg));
+    --_paint-to: var(--_fg-to, var(--_fg));
+    --_paint-fg: var(--_bg);
+    --_paint-edge: var(--_edge-inverted, var(--_bg));
+    --_paint-line: var(--tm-text-shadow-tint-action);
+    --_alpha: var(--tm-tint-alpha);
+    --_edge-alpha: var(--_edge-alpha-inverted, 1);
+    --_halo-strength: 0;
+  }
+}
+
+@mixin look-tint {
+  --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
+  --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+  --_halo-color: var(--_halo-fill, transparent);
+  --_halo-alpha: calc(var(--_halo-strength, 0) * 100%);
+  --_fill-halo: 0 0 2px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent), 0 0 5px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent);
+  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / (1 - var(--tm-fill-alpha-clearest)), 1));
+  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / (1 - var(--tm-tint-alpha-inverted-clearest)), 1));
+  --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
+  --_fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-fill-action-from) calc(var(--tm-fill-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-fill-action-to) calc(var(--tm-fill-alpha) * 100%), transparent));
+  --_tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-tint-action-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-tint-action-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    --_bg: var(--tm-fill-action);
+    --_fg: var(--tm-on-fill-action);
+    --_edge: var(--tm-fill-action-active);
+    --_alpha: var(--tm-fill-alpha);
+    --_line: var(--tm-text-shadow-action);
+    --_halo-strength: var(--_fill-faded);
+    --_fade: 1;
+    --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
+    --_paint-bg: var(--_bg);
+    --_paint-fg: var(--_fg);
+    --_bg-from: var(--tm-fill-action-from);
+    --_bg-to: var(--tm-fill-action-to);
+    --_paint-from: var(--_bg-from);
+    --_paint-to: var(--_bg-to);
+    --_paint-edge: var(--_edge);
+    --_paint-line: var(--_line);
+    --_halo-fill: var(--_paint-bg);
+    --_shine-height: var(--tm-control-height);
+    --_shine-color: transparent;
+    --_glow-color: transparent;
+    position: relative;
+    isolation: isolate;
+    border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
+    border-radius: var(--tm-radius-control);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+    background-image: var(--_fill-image);
+    background-origin: border-box;
+    -webkit-backdrop-filter: var(--tm-backdrop-control);
+    backdrop-filter: var(--tm-backdrop-control);
+    color: var(--_paint-fg);
+    text-shadow: var(--_paint-line), var(--_fill-halo);
+    box-shadow: var(--tm-elevation-1);
+    transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), --_paint-from var(--tm-duration-fast) var(--tm-ease-standard), --_paint-to var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard), box-shadow var(--tm-duration-base) var(--tm-ease-standard), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+  }
+  &:hover {
+    --_bg: var(--tm-fill-action-hover);
+    --_bg-from: var(--tm-fill-action-hover-from);
+    --_bg-to: var(--tm-fill-action-hover-to);
+    --_fg: var(--tm-on-fill-action-hover);
+    transform: translateY(calc(-1 * var(--tm-lift)));
+    box-shadow: var(--tm-elevation-2);
+  }
+  &:active {
+    --_bg: var(--tm-fill-action-active);
+    --_bg-from: var(--tm-fill-action-active-from);
+    --_bg-to: var(--tm-fill-action-active-to);
+    --_fg: var(--tm-on-fill-action-active);
+    transform: translateY(0) scale(var(--tm-motion-press));
+    box-shadow: var(--tm-elevation-inset);
+    transition-duration: var(--tm-duration-fast);
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+  & * {
+    text-shadow: inherit;
+  }
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    --_shine-keep: 0.6;
+    opacity: calc(var(--_opacity) + (1 - var(--_opacity)) * var(--_shine-keep));
+    background-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--tm-shine-paint) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--tm-shine-paint) * 100%), transparent));
+    background-origin: border-box;
+  }
+  &::before {
+    -webkit-backdrop-filter: var(--tm-shine-backdrop-top);
+    backdrop-filter: var(--tm-shine-backdrop-top);
+    filter: var(--tm-shine-filter-top);
+    padding: var(--_shine-band) 0 0 calc(var(--_shine-band) / 2);
+    -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    -webkit-mask-clip: border-box, content-box, border-box;
+    mask-clip: border-box, content-box, border-box;
+    -webkit-mask-origin: border-box, content-box, border-box;
+    mask-origin: border-box, content-box, border-box;
+    -webkit-mask-composite: source-over, xor;
+    mask-composite: add, exclude;
+  }
+  &::after {
+    -webkit-backdrop-filter: var(--tm-shine-backdrop-bottom);
+    backdrop-filter: var(--tm-shine-backdrop-bottom);
+    filter: var(--tm-shine-filter-bottom);
+    --_shade-mask: oklch(from var(--_paint-bg) 0 0 0 / calc(1 - 1.2 * max(0, l - 0.5)));
+    --_shade-mask-half: oklch(from var(--_paint-bg) 0 0 0 / calc((1 - 1.2 * max(0, l - 0.5)) / 2));
+    -webkit-mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+    mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+  }
+  & {
+    --_text-from: var(--tm-on-tint-action-from);
+    --_text-to: var(--tm-on-tint-action-to);
+    --_bg: var(--tm-tint-action);
+    --_bg-from: var(--tm-tint-action-from);
+    --_bg-to: var(--tm-tint-action-to);
+    --_fg: var(--tm-on-tint-action);
+    --_edge: transparent;
+    --_alpha: var(--tm-tint-alpha);
+    --_line: var(--tm-text-shadow-tint-action);
+    --_halo-strength: var(--_tint-faded);
+    --_shade-color: var(--tm-gloss-tint-action-shadow);
+    --_shade-bottom: var(--tm-gloss-tint-action-bottom);
+  }
+  &:hover {
+    --_text-from: var(--tm-on-tint-action-hover-from);
+    --_text-to: var(--tm-on-tint-action-hover-to);
+    --_bg: var(--tm-tint-action-hover);
+    --_bg-from: var(--tm-tint-action-hover-from);
+    --_bg-to: var(--tm-tint-action-hover-to);
+    --_fg: var(--tm-on-tint-action-hover);
+    --_shade-color: var(--tm-gloss-tint-action-hover-shadow);
+    --_shade-bottom: var(--tm-gloss-tint-action-hover-bottom);
+  }
+  &:active {
+    --_text-from: var(--tm-on-tint-action-active-from);
+    --_text-to: var(--tm-on-tint-action-active-to);
+    --_bg: var(--tm-tint-action-active);
+    --_bg-from: var(--tm-tint-action-active-from);
+    --_bg-to: var(--tm-tint-action-active-to);
+    --_fg: var(--tm-on-tint-action-active);
+    --_shade-color: var(--tm-gloss-tint-action-active-shadow);
+    --_shade-bottom: var(--tm-gloss-tint-action-active-bottom);
+  }
+  &::after {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    filter: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    --_shade: calc(var(--tm-shininess, 0) * 50%);
+    background: linear-gradient(180deg in oklch, transparent 50%, color-mix(in oklch, var(--_shade-color) var(--_shade), transparent) 80%, color-mix(in oklch, var(--_shade-bottom) calc(var(--_shade) * 0.5), transparent) 100%);
+  }
+  &.tm-invert {
+    color-scheme: inherit;
+    --tm-elevation-1: var(--tm-elevation-1-normal);
+    --tm-elevation-2: var(--tm-elevation-2-normal);
+    --tm-elevation-3: var(--tm-elevation-3-normal);
+    --tm-fill-alpha: var(--tm-fill-alpha-normal);
+    --tm-tint-alpha: var(--tm-tint-alpha-normal);
+    --_paint-bg: var(--_fg);
+    --_paint-from: var(--_fg-from, var(--_fg));
+    --_paint-to: var(--_fg-to, var(--_fg));
+    --_paint-fg: var(--_bg);
+    --_paint-edge: var(--_edge-inverted, var(--_bg));
+    --_paint-line: var(--tm-text-shadow-tint-action);
+    --_alpha: var(--tm-tint-alpha);
+    --_edge-alpha: var(--_edge-alpha-inverted, 1);
+    --_halo-strength: 0;
+  }
+  @container style(--tm-action-gradient: on) {
+    & ::selection, &::selection {
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    & > :is(span, .tm-icon) {
+      background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to));
+      background-origin: content-box;
+      background-size: 100% 1lh;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      text-shadow: none;
+    }
+  }
+}
+
+@mixin look-quiet {
+  --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
+  --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+  --_halo-color: var(--_halo-fill, transparent);
+  --_halo-alpha: calc(var(--_halo-strength, 0) * 100%);
+  --_fill-halo: 0 0 2px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent), 0 0 5px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent);
+  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / (1 - var(--tm-fill-alpha-clearest)), 1));
+  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / (1 - var(--tm-tint-alpha-inverted-clearest)), 1));
+  --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
+  --_fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-fill-action-from) calc(var(--tm-fill-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-fill-action-to) calc(var(--tm-fill-alpha) * 100%), transparent));
+  --_tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-tint-action-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-tint-action-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    --_bg: var(--tm-fill-action);
+    --_fg: var(--tm-on-fill-action);
+    --_edge: var(--tm-fill-action-active);
+    --_alpha: var(--tm-fill-alpha);
+    --_line: var(--tm-text-shadow-action);
+    --_halo-strength: var(--_fill-faded);
+    --_fade: 1;
+    --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
+    --_paint-bg: var(--_bg);
+    --_paint-fg: var(--_fg);
+    --_bg-from: var(--tm-fill-action-from);
+    --_bg-to: var(--tm-fill-action-to);
+    --_paint-from: var(--_bg-from);
+    --_paint-to: var(--_bg-to);
+    --_paint-edge: var(--_edge);
+    --_paint-line: var(--_line);
+    --_halo-fill: var(--_paint-bg);
+    --_shine-height: var(--tm-control-height);
+    --_shine-color: transparent;
+    --_glow-color: transparent;
+    position: relative;
+    isolation: isolate;
+    border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
+    border-radius: var(--tm-radius-control);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+    background-image: var(--_fill-image);
+    background-origin: border-box;
+    -webkit-backdrop-filter: var(--tm-backdrop-control);
+    backdrop-filter: var(--tm-backdrop-control);
+    color: var(--_paint-fg);
+    text-shadow: var(--_paint-line), var(--_fill-halo);
+    box-shadow: var(--tm-elevation-1);
+    transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), --_paint-from var(--tm-duration-fast) var(--tm-ease-standard), --_paint-to var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard), box-shadow var(--tm-duration-base) var(--tm-ease-standard), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+  }
+  &:hover {
+    --_bg: var(--tm-fill-action-hover);
+    --_bg-from: var(--tm-fill-action-hover-from);
+    --_bg-to: var(--tm-fill-action-hover-to);
+    --_fg: var(--tm-on-fill-action-hover);
+    transform: translateY(calc(-1 * var(--tm-lift)));
+    box-shadow: var(--tm-elevation-2);
+  }
+  &:active {
+    --_bg: var(--tm-fill-action-active);
+    --_bg-from: var(--tm-fill-action-active-from);
+    --_bg-to: var(--tm-fill-action-active-to);
+    --_fg: var(--tm-on-fill-action-active);
+    transform: translateY(0) scale(var(--tm-motion-press));
+    box-shadow: var(--tm-elevation-inset);
+    transition-duration: var(--tm-duration-fast);
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+  & * {
+    text-shadow: inherit;
+  }
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    --_shine-keep: 0.6;
+    opacity: calc(var(--_opacity) + (1 - var(--_opacity)) * var(--_shine-keep));
+    background-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--tm-shine-paint) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--tm-shine-paint) * 100%), transparent));
+    background-origin: border-box;
+  }
+  &::before {
+    -webkit-backdrop-filter: var(--tm-shine-backdrop-top);
+    backdrop-filter: var(--tm-shine-backdrop-top);
+    filter: var(--tm-shine-filter-top);
+    padding: var(--_shine-band) 0 0 calc(var(--_shine-band) / 2);
+    -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / 0.6), transparent 50%), linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    -webkit-mask-clip: border-box, content-box, border-box;
+    mask-clip: border-box, content-box, border-box;
+    -webkit-mask-origin: border-box, content-box, border-box;
+    mask-origin: border-box, content-box, border-box;
+    -webkit-mask-composite: source-over, xor;
+    mask-composite: add, exclude;
+  }
+  &::after {
+    -webkit-backdrop-filter: var(--tm-shine-backdrop-bottom);
+    backdrop-filter: var(--tm-shine-backdrop-bottom);
+    filter: var(--tm-shine-filter-bottom);
+    --_shade-mask: oklch(from var(--_paint-bg) 0 0 0 / calc(1 - 1.2 * max(0, l - 0.5)));
+    --_shade-mask-half: oklch(from var(--_paint-bg) 0 0 0 / calc((1 - 1.2 * max(0, l - 0.5)) / 2));
+    -webkit-mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+    mask-image: linear-gradient(to bottom, transparent 50%, var(--_shade-mask) 80%, var(--_shade-mask-half) 100%);
+  }
+  &, &:hover, &:active {
+    --_bg-from: var(--_bg);
+    --_bg-to: var(--_bg);
+  }
+  & {
+    --_bg: var(--tm-fill-quiet);
+    --_fg: var(--tm-on-fill-quiet);
+    --_edge: var(--tm-fill-quiet-active);
+    --_alpha: var(--tm-tint-alpha);
+    --_line: var(--tm-text-shadow-quiet);
+    --_halo-strength: var(--_tint-faded);
+  }
+  &:hover {
+    --_bg: var(--tm-fill-quiet-hover);
+    --_fg: var(--tm-on-fill-quiet-hover);
+  }
+  &:active {
+    --_bg: var(--tm-fill-quiet-active);
+    --_fg: var(--tm-on-fill-quiet-active);
+  }
+  &.tm-invert {
+    color-scheme: inherit;
+    --tm-elevation-1: var(--tm-elevation-1-normal);
+    --tm-elevation-2: var(--tm-elevation-2-normal);
+    --tm-elevation-3: var(--tm-elevation-3-normal);
+    --tm-fill-alpha: var(--tm-fill-alpha-normal);
+    --tm-tint-alpha: var(--tm-tint-alpha-normal);
+    --_paint-bg: var(--_fg);
+    --_paint-from: var(--_fg-from, var(--_fg));
+    --_paint-to: var(--_fg-to, var(--_fg));
+    --_paint-fg: var(--_bg);
+    --_paint-edge: var(--_edge-inverted, var(--_bg));
+    --_paint-line: var(--tm-text-shadow-tint-action);
+    --_alpha: var(--tm-tint-alpha);
+    --_edge-alpha: var(--_edge-alpha-inverted, 1);
+    --_halo-strength: 0;
+  }
+}
+
+@mixin look-outline {
+  --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
+  --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+  --_halo-color: var(--_halo-fill, transparent);
+  --_halo-alpha: calc(var(--_halo-strength, 0) * 100%);
+  --_fill-halo: 0 0 2px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent), 0 0 5px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent);
+  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / (1 - var(--tm-fill-alpha-clearest)), 1));
+  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / (1 - var(--tm-tint-alpha-inverted-clearest)), 1));
+  --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
+  --_fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-fill-action-from) calc(var(--tm-fill-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-fill-action-to) calc(var(--tm-fill-alpha) * 100%), transparent));
+  --_tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-tint-action-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-tint-action-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    --_bg: var(--tm-fill-action);
+    --_fg: var(--tm-on-fill-action);
+    --_edge: var(--tm-fill-action-active);
+    --_alpha: var(--tm-fill-alpha);
+    --_line: var(--tm-text-shadow-action);
+    --_halo-strength: var(--_fill-faded);
+    --_fade: 1;
+    --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
+    --_paint-bg: var(--_bg);
+    --_paint-fg: var(--_fg);
+    --_bg-from: var(--tm-fill-action-from);
+    --_bg-to: var(--tm-fill-action-to);
+    --_paint-from: var(--_bg-from);
+    --_paint-to: var(--_bg-to);
+    --_paint-edge: var(--_edge);
+    --_paint-line: var(--_line);
+    --_halo-fill: var(--_paint-bg);
+    --_shine-height: var(--tm-control-height);
+    --_shine-color: transparent;
+    --_glow-color: transparent;
+    position: relative;
+    isolation: isolate;
+    border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
+    border-radius: var(--tm-radius-control);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+    background-image: var(--_fill-image);
+    background-origin: border-box;
+    -webkit-backdrop-filter: var(--tm-backdrop-control);
+    backdrop-filter: var(--tm-backdrop-control);
+    color: var(--_paint-fg);
+    text-shadow: var(--_paint-line), var(--_fill-halo);
+    box-shadow: var(--tm-elevation-1);
+    transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), --_paint-from var(--tm-duration-fast) var(--tm-ease-standard), --_paint-to var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard), box-shadow var(--tm-duration-base) var(--tm-ease-standard), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+  }
+  &:hover {
+    --_bg: var(--tm-fill-action-hover);
+    --_bg-from: var(--tm-fill-action-hover-from);
+    --_bg-to: var(--tm-fill-action-hover-to);
+    --_fg: var(--tm-on-fill-action-hover);
+    transform: translateY(calc(-1 * var(--tm-lift)));
+    box-shadow: var(--tm-elevation-2);
+  }
+  &:active {
+    --_bg: var(--tm-fill-action-active);
+    --_bg-from: var(--tm-fill-action-active-from);
+    --_bg-to: var(--tm-fill-action-active-to);
+    --_fg: var(--tm-on-fill-action-active);
+    transform: translateY(0) scale(var(--tm-motion-press));
+    box-shadow: var(--tm-elevation-inset);
+    transition-duration: var(--tm-duration-fast);
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+  & * {
+    text-shadow: inherit;
+  }
+  &.tm-invert {
+    color-scheme: inherit;
+    --tm-elevation-1: var(--tm-elevation-1-normal);
+    --tm-elevation-2: var(--tm-elevation-2-normal);
+    --tm-elevation-3: var(--tm-elevation-3-normal);
+    --tm-fill-alpha: var(--tm-fill-alpha-normal);
+    --tm-tint-alpha: var(--tm-tint-alpha-normal);
+    --_paint-bg: var(--_fg);
+    --_paint-from: var(--_fg-from, var(--_fg));
+    --_paint-to: var(--_fg-to, var(--_fg));
+    --_paint-fg: var(--_bg);
+    --_paint-edge: var(--_edge-inverted, var(--_bg));
+    --_paint-line: var(--tm-text-shadow-tint-action);
+    --_alpha: var(--tm-tint-alpha);
+    --_edge-alpha: var(--_edge-alpha-inverted, 1);
+    --_halo-strength: 0;
+  }
+  & {
+    --_text-from: var(--tm-fg-action-from);
+    --_text-to: var(--tm-fg-action-to);
+    text-shadow: inherit;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: transparent;
+    --_fill-image: none;
+    color: var(--tm-fg-action);
+    box-shadow: none;
+  }
+  & {
+    border: max(1px, var(--tm-border-width)) solid color-mix(in oklab, var(--tm-border-action) calc(var(--tm-fill-alpha) * 100%), transparent);
+  }
+  &:hover {
+    transform: none;
+  }
+  &:hover {
+    --_text-from: var(--tm-on-tint-action-hover-from);
+    --_text-to: var(--tm-on-tint-action-hover-to);
+    --_tint-from: var(--tm-tint-action-hover-from);
+    --_tint-to: var(--tm-tint-action-hover-to);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_tint-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--_tint-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+    color: var(--tm-on-tint-action-hover);
+    box-shadow: none;
+  }
+  &:active {
+    --_text-from: var(--tm-on-tint-action-active-from);
+    --_text-to: var(--tm-on-tint-action-active-to);
+    --_tint-from: var(--tm-tint-action-active-from);
+    --_tint-to: var(--tm-tint-action-active-to);
+    color: var(--tm-on-tint-action-active);
+  }
+  @container style(--tm-action-gradient: on) {
+    & ::selection, &::selection {
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    & > :is(span, .tm-icon) {
+      background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to));
+      background-origin: content-box;
+      background-size: 100% 1lh;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      text-shadow: none;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    & {
+      --_ring-width: max(1px, var(--tm-border-width));
+      --_ring-from: color-mix(in oklab, var(--tm-border-action-from) calc(var(--tm-fill-alpha) * 100%), transparent);
+      --_ring-to: color-mix(in oklab, var(--tm-border-action-to) calc(var(--tm-fill-alpha) * 100%), transparent);
+      border-color: transparent;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    &::before {
+      content: "";
+      position: absolute;
+      inset: calc(-1 * var(--_ring-width));
+      z-index: 0;
+      padding: var(--_ring-width);
+      border-radius: inherit;
+      opacity: 1;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      filter: none;
+      background: linear-gradient(var(--tm-action-angle) in oklch, var(--_ring-from), var(--_ring-to));
+      -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+      mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+      -webkit-mask-clip: content-box, border-box;
+      mask-clip: content-box, border-box;
+      -webkit-mask-origin: content-box, border-box;
+      mask-origin: content-box, border-box;
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+  }
+}
+
+@mixin look-ghost {
+  --_shine-band: max(1px, round(calc(var(--_shine-height, 0px) / 21), 1px));
+  --_shine: inset 0 calc(var(--_shine-height, 0px) * 0.35) calc(var(--_shine-height, 0px) * 0.2) var(--_glow-color, transparent), inset calc(var(--_shine-band) / 2) var(--_shine-band) 0 var(--_shine-color, transparent);
+  --_halo-color: var(--_halo-fill, transparent);
+  --_halo-alpha: calc(var(--_halo-strength, 0) * 100%);
+  --_fill-halo: 0 0 2px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent), 0 0 5px color-mix(in oklab, var(--_halo-color) var(--_halo-alpha), transparent);
+  --_fill-faded: calc(var(--_halo-fill-on, 1) * clamp(0, (1 - var(--tm-fill-alpha)) / (1 - var(--tm-fill-alpha-clearest)), 1));
+  --_tint-faded: calc(var(--_halo-tint-on, 0) * clamp(0, (1 - var(--tm-tint-alpha)) / (1 - var(--tm-tint-alpha-inverted-clearest)), 1));
+  --_shine-transition: --tm-shine-rim var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-top var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-shadow var(--tm-duration-fast) var(--tm-ease-standard), --tm-shine-bottom var(--tm-duration-fast) var(--tm-ease-standard);
+  --_fill-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-fill-action-from) calc(var(--tm-fill-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-fill-action-to) calc(var(--tm-fill-alpha) * 100%), transparent));
+  --_tint-action-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--tm-tint-action-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--tm-tint-action-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    --_bg: var(--tm-fill-action);
+    --_fg: var(--tm-on-fill-action);
+    --_edge: var(--tm-fill-action-active);
+    --_alpha: var(--tm-fill-alpha);
+    --_line: var(--tm-text-shadow-action);
+    --_halo-strength: var(--_fill-faded);
+    --_fade: 1;
+    --_opacity: calc(1 - (1 - var(--_alpha)) * var(--_fade));
+    --_paint-bg: var(--_bg);
+    --_paint-fg: var(--_fg);
+    --_bg-from: var(--tm-fill-action-from);
+    --_bg-to: var(--tm-fill-action-to);
+    --_paint-from: var(--_bg-from);
+    --_paint-to: var(--_bg-to);
+    --_paint-edge: var(--_edge);
+    --_paint-line: var(--_line);
+    --_halo-fill: var(--_paint-bg);
+    --_shine-height: var(--tm-control-height);
+    --_shine-color: transparent;
+    --_glow-color: transparent;
+    position: relative;
+    isolation: isolate;
+    border: var(--tm-border-width) solid color-mix(in oklab, var(--_paint-edge) calc(var(--_edge-alpha, var(--_opacity)) * var(--tm-edge-alpha, 1) * 100%), transparent);
+    border-radius: var(--tm-radius-control);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
+    background-image: var(--_fill-image);
+    background-origin: border-box;
+    -webkit-backdrop-filter: var(--tm-backdrop-control);
+    backdrop-filter: var(--tm-backdrop-control);
+    color: var(--_paint-fg);
+    text-shadow: var(--_paint-line), var(--_fill-halo);
+    box-shadow: var(--tm-elevation-1);
+    transition: background-color var(--tm-duration-fast) var(--tm-ease-standard), --_paint-from var(--tm-duration-fast) var(--tm-ease-standard), --_paint-to var(--tm-duration-fast) var(--tm-ease-standard), color var(--tm-duration-fast) var(--tm-ease-standard), box-shadow var(--tm-duration-base) var(--tm-ease-standard), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+  }
+  &:hover {
+    --_bg: var(--tm-fill-action-hover);
+    --_bg-from: var(--tm-fill-action-hover-from);
+    --_bg-to: var(--tm-fill-action-hover-to);
+    --_fg: var(--tm-on-fill-action-hover);
+    transform: translateY(calc(-1 * var(--tm-lift)));
+    box-shadow: var(--tm-elevation-2);
+  }
+  &:active {
+    --_bg: var(--tm-fill-action-active);
+    --_bg-from: var(--tm-fill-action-active-from);
+    --_bg-to: var(--tm-fill-action-active-to);
+    --_fg: var(--tm-on-fill-action-active);
+    transform: translateY(0) scale(var(--tm-motion-press));
+    box-shadow: var(--tm-elevation-inset);
+    transition-duration: var(--tm-duration-fast);
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+  }
+  & * {
+    text-shadow: inherit;
+  }
+  &.tm-invert {
+    color-scheme: inherit;
+    --tm-elevation-1: var(--tm-elevation-1-normal);
+    --tm-elevation-2: var(--tm-elevation-2-normal);
+    --tm-elevation-3: var(--tm-elevation-3-normal);
+    --tm-fill-alpha: var(--tm-fill-alpha-normal);
+    --tm-tint-alpha: var(--tm-tint-alpha-normal);
+    --_paint-bg: var(--_fg);
+    --_paint-from: var(--_fg-from, var(--_fg));
+    --_paint-to: var(--_fg-to, var(--_fg));
+    --_paint-fg: var(--_bg);
+    --_paint-edge: var(--_edge-inverted, var(--_bg));
+    --_paint-line: var(--tm-text-shadow-tint-action);
+    --_alpha: var(--tm-tint-alpha);
+    --_edge-alpha: var(--_edge-alpha-inverted, 1);
+    --_halo-strength: 0;
+  }
+  & {
+    --_text-from: var(--tm-fg-action-from);
+    --_text-to: var(--tm-fg-action-to);
+    text-shadow: inherit;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: transparent;
+    --_fill-image: none;
+    color: var(--tm-fg-action);
+    box-shadow: none;
+  }
+  & {
+    border-color: transparent;
+  }
+  &:hover {
+    transform: none;
+  }
+  &:hover {
+    --_text-from: var(--tm-on-tint-action-hover-from);
+    --_text-to: var(--tm-on-tint-action-hover-to);
+    --_tint-from: var(--tm-tint-action-hover-from);
+    --_tint-to: var(--tm-tint-action-hover-to);
+    --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_tint-from) calc(var(--tm-tint-alpha) * 100%), transparent), color-mix(in oklab, var(--_tint-to) calc(var(--tm-tint-alpha) * 100%), transparent));
+    color: var(--tm-on-tint-action-hover);
+    box-shadow: none;
+  }
+  &:active {
+    --_text-from: var(--tm-on-tint-action-active-from);
+    --_text-to: var(--tm-on-tint-action-active-to);
+    --_tint-from: var(--tm-tint-action-active-from);
+    --_tint-to: var(--tm-tint-action-active-to);
+    color: var(--tm-on-tint-action-active);
+  }
+  @container style(--tm-action-gradient: on) {
+    & ::selection, &::selection {
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    & > :is(span, .tm-icon) {
+      background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to));
+      background-origin: content-box;
+      background-size: 100% 1lh;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      text-shadow: none;
+    }
+  }
+}
+
+@mixin look-surface {
+  border: var(--tm-panel-border-width) solid color-mix(in oklab, var(--tm-panel-border) calc(var(--tm-edge-alpha, 1) * 100%), transparent);
+  border-radius: var(--tm-radius-lg);
+  background: var(--tm-bg-panel);
+  -webkit-backdrop-filter: var(--tm-backdrop);
+  backdrop-filter: var(--tm-backdrop);
+  box-shadow: var(--tm-elevation-2);
+}
+
+@mixin look-field {
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-field);
+    border-radius: min(var(--tm-radius-control), var(--tm-radius-lg));
+    background-color: color-mix(in oklab, var(--tm-bg-field) calc(var(--tm-field-alpha) * 100%), transparent);
+    color: var(--tm-fg-base);
+    box-shadow: var(--tm-elevation-field);
+    transition: border-color var(--tm-duration-fast) var(--tm-ease-standard);
+  }
+  &::placeholder {
+    color: var(--tm-fg-base-subtle);
+  }
+  &:hover {
+    border-color: var(--tm-fg-base-muted);
+  }
+  &[aria-invalid="true"] {
+    border-color: var(--tm-border-action);
+  }
+}
+
+@mixin look-gradient-text {
+  &:focus-visible {
+    outline: var(--tm-focus-width) solid var(--tm-border-focus);
+    outline-offset: 2px;
+  }
+  & {
+    color: var(--tm-fg-action);
+  }
+  @container style(--tm-action-gradient: on) {
+    & {
+      --_text-from: var(--tm-fg-action-from);
+      --_text-to: var(--tm-fg-action-to);
+      background-image: linear-gradient(var(--tm-action-angle) in oklch, var(--_text-from), var(--_text-to));
+      background-origin: content-box;
+      background-size: 100% 1lh;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      text-shadow: none;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    :where(.tm-over-media) & {
+      filter: drop-shadow(0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent)) drop-shadow(0 0 3px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent));
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    & ::selection, &::selection {
+      -webkit-text-fill-color: currentColor;
+    }
+  }
+}
+
+@mixin look-ring {
+  border: max(1px, var(--tm-border-width)) solid var(--tm-border-action);
+  @container style(--tm-action-gradient: on) {
+    & {
+      --_ring-width: max(1px, var(--tm-border-width));
+      --_ring-from: var(--tm-border-action-from);
+      --_ring-to: var(--tm-border-action-to);
+      position: relative;
+      border-color: transparent;
+    }
+  }
+  @container style(--tm-action-gradient: on) {
+    &::before {
+      content: "";
+      position: absolute;
+      inset: calc(-1 * var(--_ring-width));
+      z-index: 0;
+      padding: var(--_ring-width);
+      border-radius: inherit;
+      opacity: 1;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      filter: none;
+      background: linear-gradient(var(--tm-action-angle) in oklch, var(--_ring-from), var(--_ring-to));
+      -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+      mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+      -webkit-mask-clip: content-box, border-box;
+      mask-clip: content-box, border-box;
+      -webkit-mask-origin: content-box, border-box;
+      mask-origin: content-box, border-box;
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+  }
+}

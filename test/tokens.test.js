@@ -63,10 +63,10 @@ test('headings are checked at their size at regular weight, and with APCA the la
   for (const s of ['lg', '2xl', '3xl']) assert.ok(grade(apca, `fg.base-heading-${s}`) >= grade(wcag, `fg.base-heading-${s}`), s);
 });
 
-test('the components use only tokens that the CSS defines', async () => {
+test('the components and the looks use only tokens that the CSS defines', async () => {
   const css = toCss(buildThemes({}));
   const defined = new Set([...css.matchAll(/--(tm-[a-z0-9-]+):/g)].map((m) => m[1]));
-  const components = await readFile(new URL('../components/components.css', import.meta.url), 'utf8');
+  const components = (await Promise.all(['components.css', 'looks.css'].map((f) => readFile(new URL(`../components/${f}`, import.meta.url), 'utf8')))).join('\n');
   const used = new Set([...components.matchAll(/var\(--(tm-[a-z0-9-]+)/g)].map((m) => m[1]));
   const missing = [...used].filter((name) => !defined.has(name));
   assert.deepEqual(missing, []);

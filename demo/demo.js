@@ -2,10 +2,11 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
+import looksCss from '../components/looks.css?raw';
 import { combobox } from './combobox.js';
 import { parseHex, toHex, srgbToOklch, oklchToSrgb } from '../src/color.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette, withLooks } from '../src/index.js';
 
 // Debug mode, a switch in the View menu, shows tools for comparing color models: HSL in the
 // Color model menu, and every model side by side on the Palettes tab.
@@ -1029,7 +1030,7 @@ function renderSegs() {
   });
   const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
   $('#view-summary').textContent = `· ${ui.view === 'tokens' ? 'Both modes' : modeLabel}${ui.contrast === 'more' && ui.view !== 'tokens' ? ' · More contrast' : ''}`;
-  seg($('#format'), [['stylesheet', 'Stylesheet'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['mui', 'MUI'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
+  seg($('#format'), [['stylesheet', 'Stylesheet'], ['looks', 'Looks'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['mui', 'MUI'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
 }
 
 const MODEL_NOTES = {
@@ -1698,6 +1699,7 @@ const nearestGrade = (g) => GRADES.reduce((best, x) => (Math.abs(x - g) < Math.a
 // Each format, and a line that says how to use it.
 const FORMAT_NOTES = {
   stylesheet: 'Ready to use: the tokens and the components in one file. Link it, then use class="tm-button", class="theme-danger", and the other classes.',
+  looks: 'The tokens and the looks in one file. Add a look to your own elements, such as class="my-button tm-look-fill", for the theme\'s fill, shine, gradients, and states without its layout.',
   css: 'The tokens as CSS custom properties, one rule for each theme. Use them with your own CSS.',
   dtcg: 'The tokens as Design Tokens Community Group JSON, for design tools and token pipelines such as Style Dictionary.',
   tailwind: 'A Tailwind CSS v4 theme. Add the CSS tokens too: these names point at them.',
@@ -1716,7 +1718,8 @@ const fileStem = () => themeName(setName()) || 'themetron';
 
 function tokenText() {
   const set = setName();
-  if (ui.format === 'stylesheet') return `${toCss(built, { set })}\n/* ---- themetron components */\n\n${componentsCss}`;
+  if (ui.format === 'stylesheet') return `${toCss(built, { set })}\n/* ---- themetron components */\n\n${withLooks(componentsCss, looksCss)}`;
+  if (ui.format === 'looks') return `${toCss(built, { set })}\n/* ---- themetron looks */\n\n${looksCss}`;
   if (ui.format === 'shadcn') return toShadcn(built, { set });
   if (ui.format === 'css') return toCss(built, { set });
   if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built, { set }), null, 2);
@@ -1877,6 +1880,7 @@ $('#io-file').addEventListener('change', async (e) => {
 // Download the format on screen as a file.
 const DOWNLOADS = {
   stylesheet: ['themetron.bundle.css', 'text/css'],
+  looks: ['themetron.looks.css', 'text/css'],
   shadcn: ['themetron.shadcn.css', 'text/css'],
   css: ['themetron.css', 'text/css'],
   dtcg: ['themetron.tokens.json', 'application/json'],

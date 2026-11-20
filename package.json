@@ -35,6 +35,9 @@
       "default": "./src/index.js"
     },
     "./components.css": "./components/components.css",
+    "./looks.css": "./components/looks.css",
+    "./looks.scss": "./components/_looks.scss",
+    "./looks.tailwind.css": "./components/looks.tailwind.css",
     "./spec/*": "./spec/*",
     "./package.json": "./package.json"
   },
@@ -45,6 +48,9 @@
     "bin",
     "src",
     "components/components.css",
+    "components/looks.css",
+    "components/_looks.scss",
+    "components/looks.tailwind.css",
     "CHANGELOG.md",
     "spec",
     "!spec/versions"
@@ -70,6 +76,7 @@
     "release:notes": "node scripts/release-notes.js",
     "version": "npm run spec:release && git add spec/versions",
     "examples": "node scripts/examples.js",
+    "looks": "node scripts/looks.js",
     "docs:check": "idk-plans check",
     "docs:fix": "idk-plans fix",
     "prepublishOnly": "npm test && npm run docs:check"

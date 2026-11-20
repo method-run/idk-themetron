@@ -17,10 +17,10 @@ test('index.d.ts declares every export of index.js', async () => {
 test('the package holds the engine, its types, the components, the spec, the CLI, and the changelog, and nothing else', async () => {
   const [{ files }] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
   const paths = files.map((f) => f.path);
-  for (const file of ['package.json', 'README.md', 'CHANGELOG.md', 'LICENSE', 'src/index.js', 'src/index.d.ts', 'bin/themetron.js', 'components/components.css', 'spec/tokens.manifest.json', 'spec/inputs.schema.json']) {
+  for (const file of ['package.json', 'README.md', 'CHANGELOG.md', 'LICENSE', 'src/index.js', 'src/index.d.ts', 'bin/themetron.js', 'components/components.css', 'components/looks.css', 'components/_looks.scss', 'components/looks.tailwind.css', 'spec/tokens.manifest.json', 'spec/inputs.schema.json']) {
     assert.ok(paths.includes(file), `${file} is not in the package.`);
   }
-  const allowed = /^(package\.json|README\.md|CHANGELOG\.md|LICENSE|src\/[^/]+|bin\/[^/]+|components\/components\.css|spec\/[^/]+)$/;
+  const allowed = /^(package\.json|README\.md|CHANGELOG\.md|LICENSE|src\/[^/]+|bin\/[^/]+|components\/(components\.css|looks\.css|_looks\.scss|looks\.tailwind\.css)|spec\/[^/]+)$/;
   assert.deepEqual(paths.filter((p) => !allowed.test(p)), []);
 
   // Every path that package.json points at is in the package.

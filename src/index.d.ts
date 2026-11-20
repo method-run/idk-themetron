@@ -370,6 +370,28 @@ export function motionFor(feel: { energy: number; playfulness: number }, animati
 /** A spring from a perceived duration T (s) and a bounce (0 to 1), with mass 1. */
 export function spring(T: number, bounce: number, velocity?: number): Spring;
 
+// ---- looks.js
+
+export type LookName = 'fill' | 'tint' | 'quiet' | 'outline' | 'ghost' | 'surface' | 'field' | 'gradient-text' | 'ring';
+export interface Look {
+  /** What the look gives. */
+  summary: string;
+  /** The component classes that wear the look, such as tm-button--soft. */
+  components: string[];
+  /** The states and parts that the look reacts to, such as :hover or [aria-invalid="true"]. */
+  states: string[];
+  /** A short example of markup. */
+  example: string;
+}
+/** The looks, by name. Each is a class tm-look-<name> in components/looks.css. */
+export const LOOKS: Record<LookName, Look>;
+/** The looks as Sass mixins, look-<name>, from the text of looks.css. */
+export function looksScss(looksCss: string): string;
+/** The looks as Tailwind CSS v4 utilities, tm-look-<name>, from the text of looks.css. */
+export function looksTailwind(looksCss: string): string;
+/** components.css with looks.css in place of its @import, as one stylesheet. */
+export function withLooks(componentsCss: string, looksCss: string): string;
+
 // ---- palette.js
 
 /** The grades: 0, 5, 10, ... 100. */
