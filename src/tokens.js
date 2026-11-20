@@ -2,6 +2,7 @@
 import { GRADES, contrastTest, gradeGaps, makePalette, measure, purposeName } from './palette.js';
 import { normalizeInputs, ROLES, GRADIENT_DEFAULTS } from './inputs.js';
 import { iconStyle } from './icons.js';
+import { motionFor } from './motion.js';
 import { mixOklch, parseHex, toHex } from './color.js';
 
 export const MODES = ['light', 'dark'];
@@ -42,15 +43,9 @@ function buildLevel(settings, palettes, stops, variant = false) {
 
 // ---- Primitives: values that do not change with the mode.
 
-// Fixed values for the parts that the removed feels (bounciness, snappiness) used to set. The
-// tokens stay, so components still work: no blur outside tm-over-media, and calm motion with no
-// overshoot.
+// Fixed values for the parts that no feel sets: no blur outside tm-over-media.
 // The grid square, in px.
 const GRID = 4;
-const MOTION = {
-  duration: { fast: 130, base: 220, slow: 370 },
-  easing: { standard: [0.3, 0, 0.45, 1], enter: [0.25, 1, 0.64, 1], exit: [0.4, 0, 1, 1] },
-};
 // How far hover moves a fill or a tint, in grade numbers. Press moves twice as far. The label
 // moves with it, so the pair keeps its contrast.
 const STATE_GRADES = 10;
@@ -181,11 +176,12 @@ export function buildPrimitives(settings, palettes, gaps, stops = null) {
     border: { width: borderWidth, focus: Math.max(2, borderWidth + 1) },
     // Material Symbols, from the theme's icons input. See icons.js.
     icon: iconStyle(settings.icons),
-    motion: MOTION,
+    motion: motionFor(settings.feel, settings.animation),
     effect: {
       ...FLAT,
-      // Buttons rise on hover: up to 1 px, with depth. More is distracting.
-      lift: round(d * 1, 1),
+      // Buttons rise on hover: up to 1 px, with depth. More is distracting. Less playful themes
+      // move less, so their buttons rise less, and not at all at sober.
+      lift: round(d * Math.min(1, 2 * motionFor(settings.feel, settings.animation).amount), 1),
       // The edges of buttons and cards fade to half over the top tenth of softness (0.9 to 1), for
       // a neumorphic look, where shadows shape the parts. Thinness takes them away altogether.
       edgeAlpha: round(1 - 0.5 * Math.min(1, Math.max(0, (settings.feel.softness - 0.9) / 0.1))),

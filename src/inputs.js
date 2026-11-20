@@ -13,6 +13,9 @@ export const FEELS = {
   thinness: { label: 'Thin', default: 0.8, stops: { chunky: 0, heavy: 0.25, regular: 0.5, hairline: 0.8, none: 1 } },
   shininess: { label: 'Shine', default: 0, stops: { matte: 0, satin: 0.33, plastic: 0.67, glassy: 1 } },
   clarity: { label: 'Clear', default: 0, stops: { solid: 0, tinted: 0.33, frosted: 0.67, clear: 1 } },
+  // Motion. See motion.js. The middle of both is the average of the modern web.
+  playfulness: { label: 'Play', default: 0.5, stops: { sober: 0, calm: 0.25, casual: 0.5, fun: 0.75, giddy: 1 } },
+  energy: { label: 'Energy', default: 0.5, stops: { slow: 0, relaxed: 0.25, brisk: 0.5, snappy: 0.75, zippy: 1 } },
 };
 // Old feels that came back the other way round: solidity is now clarity, and thickness is now
 // thinness. Old inputs that set them still load: the value turns over (1 - value), and the old
@@ -44,17 +47,22 @@ export const TYPE_VARIANCE = { label: 'Type variance', default: 0.5, stops: { fl
 // Feels that are gone for now. Old inputs that set them still load: the engine skips them.
 export const REMOVED_FEELS = ['bounciness', 'snappiness', 'tone'];
 
-// A preset is a set of feels with a familiar name. A theme's own feels override it.
+// How parts come and go: not at all, by fading, or by moving. Fade keeps the timing, but parts
+// do not travel or grow. The feels tune the motion that is left.
+export const ANIMATIONS = ['none', 'fade', 'move'];
+
+// A preset is a set of feels with a familiar name, and sometimes an animation. A theme's own
+// feels and animation override it.
 export const PRESETS = {
   balanced: { label: 'Balanced', feel: {} },
-  flat: { label: 'Flat', feel: { thinness: 0.8, roundness: 0.2, depth: 0, softness: 0.5, shininess: 0 } },
-  material: { label: 'Material', feel: { thinness: 1, roundness: 0.25, depth: 0.5, softness: 0.7, shininess: 0 } },
-  brutalist: { label: 'Brutalist', feel: { thinness: 0.25, spaciousness: 0.4, roundness: 0, depth: 0.5, softness: 0, shininess: 0 } },
-  neumorphic: { label: 'Neumorphic', feel: { thinness: 1, roundness: 0.6, depth: 0.7, softness: 1, shininess: 0, clarity: 0.7 } },
-  glass: { label: 'Glass', feel: { thinness: 0.8, roundness: 0.6, depth: 1, softness: 0.85, shininess: 1, clarity: 1 } },
-  glossy: { label: 'Glossy', feel: { thinness: 0.8, roundness: 1, depth: 0.5, softness: 0.6, shininess: 1 } },
-  playful: { label: 'Playful', feel: { thinness: 0.6, spaciousness: 0.65, roundness: 0.9, depth: 0.45, softness: 0.3 } },
-  dense: { label: 'Dense', feel: { thinness: 0.8, spaciousness: 0, roundness: 0.15, depth: 0.15, softness: 0.5 } },
+  flat: { label: 'Flat', feel: { thinness: 0.8, roundness: 0.2, depth: 0, softness: 0.5, shininess: 0, playfulness: 0.25, energy: 0.65 } },
+  material: { label: 'Material', feel: { thinness: 1, roundness: 0.25, depth: 0.5, softness: 0.7, shininess: 0, playfulness: 0.55, energy: 0.55 } },
+  brutalist: { label: 'Brutalist', feel: { thinness: 0.25, spaciousness: 0.4, roundness: 0, depth: 0.5, softness: 0, shininess: 0, playfulness: 0, energy: 1 }, animation: 'none' },
+  neumorphic: { label: 'Neumorphic', feel: { thinness: 1, roundness: 0.6, depth: 0.7, softness: 1, shininess: 0, clarity: 0.7, playfulness: 0.25, energy: 0.3 }, animation: 'fade' },
+  glass: { label: 'Glass', feel: { thinness: 0.8, roundness: 0.6, depth: 1, softness: 0.85, shininess: 1, clarity: 1, playfulness: 0.6, energy: 0.4 } },
+  glossy: { label: 'Glossy', feel: { thinness: 0.8, roundness: 1, depth: 0.5, softness: 0.6, shininess: 1, playfulness: 0.75, energy: 0.5 } },
+  playful: { label: 'Playful', feel: { thinness: 0.6, spaciousness: 0.65, roundness: 0.9, depth: 0.45, softness: 0.3, playfulness: 0.95, energy: 0.65 } },
+  dense: { label: 'Dense', feel: { thinness: 0.8, spaciousness: 0, roundness: 0.15, depth: 0.15, softness: 0.5, playfulness: 0.15, energy: 0.8 } },
 };
 
 export const ROOT = 'default';
@@ -76,7 +84,7 @@ export const SEMANTIC_THEMES = [
 ];
 // A feel set to this takes the parent's value, even when the theme has a preset.
 export const INHERIT = 'inherit';
-export const THEME_FIELDS = ['parent', 'label', 'base', 'action', 'color', 'font', 'headingFont', 'monoFont', 'typeVariance', 'icons', 'preset', 'feel', 'contrast'];
+export const THEME_FIELDS = ['parent', 'label', 'base', 'action', 'color', 'font', 'headingFont', 'monoFont', 'typeVariance', 'icons', 'animation', 'preset', 'feel', 'contrast'];
 export const FONT_FIELDS = ['font', 'headingFont', 'monoFont'];
 // APCA keeps the WCAG 2 minimums as a floor, so it is always at least as strict.
 export const CONTRAST_METHODS = ['wcag', 'apca'];
@@ -107,6 +115,7 @@ export const ROOT_DEFAULTS = {
   monoFont: { family: null, fallback: 'monospace' },
   typeVariance: TYPE_VARIANCE.default,
   icons: ICON_DEFAULTS,
+  animation: 'move',
   preset: 'balanced',
   contrast: { method: 'wcag', level: 'standard', model: 'oklch' },
 };
@@ -192,6 +201,10 @@ export function normalizeInputs(raw = {}) {
     // Type variance was a feel for a short while. A saved playground can still have it there.
     else if (t.feel?.variance !== undefined && t.feel.variance !== INHERIT) own.typeVariance = varianceField(t.feel.variance, `${at}.feel.variance`, fail);
     if ('icons' in t) own.icons = iconsField(t.icons, `${at}.icons`, fail);
+    if ('animation' in t) {
+      if (ANIMATIONS.includes(t.animation)) own.animation = t.animation;
+      else fail(`${at}.animation: use one of: ${ANIMATIONS.join(', ')}.`);
+    }
     if ('feel' in t) own.feel = feelField(t.feel, `${at}.feel`, fail);
     if ('contrast' in t) own.contrast = contrastField(t.contrast, `${at}.contrast`, fail);
     themes[name] = own;
@@ -234,6 +247,9 @@ function resolveTheme(name, own, parent) {
     const mine = own.feel?.[k];
     feel[k] = mine === INHERIT ? inherited[k] : mine ?? fromPreset[k];
   }
+  // The animation: the theme's own, else its own preset's, else the parent's. The root's preset
+  // counts as its own.
+  const presetAnimation = PRESETS[own.preset ?? (parent ? null : preset)]?.animation;
   const onlyColor = Object.keys(own).every((k) => COLOR_FIELDS.includes(k));
   return {
     name,
@@ -253,6 +269,7 @@ function resolveTheme(name, own, parent) {
     typeVariance: own.typeVariance ?? from.typeVariance,
     // Each icon setting on its own: a child can change the fill and keep its parent's style.
     icons: { ...from.icons, ...own.icons },
+    animation: own.animation ?? presetAnimation ?? from.animation,
     preset,
     feel,
     contrast: { ...from.contrast, ...own.contrast },

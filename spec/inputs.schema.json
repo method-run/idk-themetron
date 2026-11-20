@@ -230,6 +230,14 @@
             }
           }
         },
+        "animation": {
+          "enum": [
+            "none",
+            "fade",
+            "move"
+          ],
+          "description": "How parts come and go: \"none\" (no motion), \"fade\" (they fade, and do not travel or grow), or \"move\". The playfulness and energy feels tune the motion. From the preset, else the parent, if not set. Default: \"move\"."
+        },
         "preset": {
           "enum": [
             "balanced",
@@ -242,7 +250,7 @@
             "playful",
             "dense"
           ],
-          "description": "A set of feels. The theme's own feels override it."
+          "description": "A set of feels, and sometimes an animation. The theme's own feels and animation override it."
         },
         "feel": {
           "type": "object",
@@ -379,6 +387,46 @@
                     "tinted",
                     "frosted",
                     "clear",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "playfulness": {
+              "description": "Play: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "sober",
+                    "calm",
+                    "casual",
+                    "fun",
+                    "giddy",
+                    "inherit"
+                  ]
+                }
+              ]
+            },
+            "energy": {
+              "description": "Energy: a number from 0 to 1, a word for one, or \"inherit\" for the parent's value.",
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                {
+                  "enum": [
+                    "slow",
+                    "relaxed",
+                    "brisk",
+                    "snappy",
+                    "zippy",
                     "inherit"
                   ]
                 }

@@ -815,6 +815,30 @@
       "stability": "experimental",
       "meaning": "The line weight of icons, from 100 to 700, from icons.weight. The wght axis of the icon font."
     },
+    "duration-xs": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-sm": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-md": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-lg": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
     "duration-fast": {
       "tier": "primitive",
       "type": "duration",
@@ -849,6 +873,114 @@
     "ease-exit": {
       "tier": "primitive",
       "type": "cubicBezier",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "ease-fade": {
+      "tier": "primitive",
+      "type": "cubicBezier",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "ease-pop": {
+      "tier": "primitive",
+      "type": "easing",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-pop-xs": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-pop-sm": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-pop-md": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-pop-lg": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "ease-arrive": {
+      "tier": "primitive",
+      "type": "easing",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-arrive-xs": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-arrive-sm": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-arrive-md": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "duration-arrive-lg": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-distance": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-scale": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-press": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-stagger": {
+      "tier": "primitive",
+      "type": "duration",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-shake": {
+      "tier": "primitive",
+      "type": "dimension",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-weight": {
+      "tier": "primitive",
+      "type": "number",
+      "modes": false,
+      "stability": "experimental"
+    },
+    "motion-travel": {
+      "tier": "primitive",
+      "type": "number",
       "modes": false,
       "stability": "experimental"
     },

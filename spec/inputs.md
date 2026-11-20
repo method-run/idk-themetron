@@ -11,7 +11,7 @@ tags: [system/inputs]
 # Inputs
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 62% (5/8) · 5 deferred · 2 dropped
+◐ 62% (5/8) · 6 deferred · 2 dropped
 <!-- idk-plans:progress:end -->
 
 > **Status:** 0.1 draft. The engine and the playground use these inputs. The [tasks](#tasks) at the end of this page list what is left.
@@ -99,7 +99,8 @@ Most theme systems need the same few child themes. `SEMANTIC_THEMES` lists them,
 | `monoFont` | The browser's default `monospace` font | The font for code. |
 | `typeVariance` | `0.5` (`classic`) | How fast text grows above body size, from 0 to 1, or a word: `flat`, `gentle`, `classic`, `bold`, `dramatic`. Small and body text barely move. Not a feel: presets do not set it. See [Type sizes](#type-sizes). |
 | `icons` | `{ "style": "standard", "fill": false, "weight": 400 }` | The icons: Material Symbols. `style` is `sharp`, `standard`, or `rounded`: the corners, from square to round. `standard` is the font Google calls Outlined. `fill` is `true` for filled icons. `weight` is the line weight, from 100 to 700. Each field comes from the parent if not set. Not a feel: presets do not set it, so filled icons can go with thin borders, and sharp icons with round buttons. |
-| `preset` | `balanced` | A set of feels. See [Presets](#presets). |
+| `animation` | `move` | How parts come and go: `none` (nothing animates), `fade` (parts fade in place, and do not travel or grow), or `move` (a drawer slides in, a dialog pops). The `playfulness` and `energy` feels tune the motion that is left. A preset can set it. See [Motion](#motion). |
+| `preset` | `balanced` | A set of feels, and sometimes an animation. See [Presets](#presets). |
 | `feel` | The preset's values | The feels. See [Feels](#feels). |
 | `contrast` | `{ "method": "wcag" }` | The contrast standard. See [Contrast](#contrast). |
 
@@ -215,10 +216,12 @@ A feel is a number from 0 to 1. A word can stand for a number: the words are the
 | `thinness` (Thin) | Chunky | chunky, heavy, regular, hairline, none | No edges | How wide edges are: `round((1 − thinness) × 4)` px: 4 px at chunky (0), 3 px at heavy (0.25), 2 px at regular (0.5), 1 px at hairline (0.8, the default), and 0 at none (1). Fields, checks, radios, switches, segmented controls, outline buttons, dividers, tabs, and links keep at least 1 px. |
 | `shininess` (Shine) | Matte | matte, satin, plastic, glassy | Glass | The shine on filled parts, from the part's own ramp. Buttons get a brighter top and a darker bottom. Other parts get a gradient, an edge band, and a glow. Labels get a 1 px line that sets them into the surface. |
 | `clarity` (Clear) | Solid | solid, tinted, frosted, clear | Clear | How see-through parts are. The default is 0. At 0, everything is opaque. At 1, cards, tints, and quiet buttons are 10% opaque, fields 30%, and solid fills 50%; inverted fills 30%, and inverted cards, tints, and quiet buttons 95%. |
+| `playfulness` (Play) | Sober | sober, calm, casual, fun, giddy | Giddy | How much moves, how far, and how much it bounces. The default is 0.5 (casual), like the average of the modern web. Sober parts move a little and settle without a bounce. Giddy parts travel far, grow from small, overshoot, and stagger. See [Motion](#motion). |
+| `energy` (Energy) | Slow | slow, relaxed, brisk, snappy, zippy | Zippy | How quick motion is, and how hard it starts and stops. The default is 0.5 (brisk): a medium part takes about 225 ms. Slow takes about twice as long, and zippy about half. See [Motion](#motion). |
 
 Clarity replaces `solidity`, and is its inverse: clarity = 1 − solidity. Thinness replaces `thickness` the same way: thinness = 1 − thickness. Inputs that set `solidity` or `thickness` still load. The engine turns the value over, and the old words still work. If a theme sets both the old and the new feel, the new feel wins.
 
-The other feels (`bounciness`, `snappiness`, and `tone`) are removed for now. They can come back one at a time. Inputs that set them still load: the engine skips them, and the schema marks them deprecated. Until they come back, motion is the same in every theme, with no overshoot.
+The old feels `bounciness`, `snappiness`, and `tone` are removed. `playfulness` and `energy` do the job of the first two. Inputs that set them still load: the engine skips them, and the schema marks them deprecated.
 
 Each feel of a theme comes from the first of these that has it:
 
@@ -277,22 +280,43 @@ The type variance `v` sets every text size. Small text is `round(13 − 2v)` px:
 
 Every line height is still a whole number of grid squares, so the grid holds at every size. Small text stays at 11 px or more, and body text at 16 px or more. At 16 px, body text can meet APCA's font table, which asks Lc 100 at 15 px: more than most color pairs can reach. Fields also use text of at least 16 px, because iOS zooms the page in when you tap a field with smaller text.
 
+## Motion
+
+Each part keeps its own kind of motion: a drawer slides in from the edge, a dialog pops in place, and a menu grows from its button. The theme sets only how much, how fast, and how bouncy. `animation` turns motion off, or keeps only fades. The two motion feels tune the rest:
+
+- **Energy** sets the pace. Higher energy is quicker, and its curves start and stop harder.
+- **Playfulness** sets the character. Higher playfulness moves parts farther, grows them from smaller, adds a bounce, and staggers lists. Buttons squeeze when pressed, and fields shake when a value is not valid.
+- **Size** slows a part down a little. A big part, such as a drawer, takes longer than a small one, such as a menu, but much less than in proportion. Sober themes feel heavier, so size matters more.
+
+<details>
+<summary>How the motion is computed</summary>
+
+The engine code is in `src/motion.js`.
+
+- **Durations:** the medium step is `450 × 4^(−energy) × lerp(1.15, 0.85, playfulness)` ms. Each size step is `md × (size ÷ 400 px)^weight`, with the sizes xs 25, sm 100, md 400, and lg 1600 px. The weight goes from 0.45 (sober) to 0.22 (giddy).
+- **Curves:** one ease-in-out curve of power `2 + 2 × energy`. Its halves are the enter curve (ease-out: the part arrives at speed, from a longer trip that started out of view) and the exit curve (ease-in: the part brakes out of view).
+- **Springs:** the bounce is `0.6 × ((playfulness − 0.25) ÷ 0.75)^1.5`, so there is none up to calm. The pop spring starts at rest, for parts that appear in place. The arrive spring starts at speed, for parts that come from out of view. Both are CSS `linear()` curves, with their own durations: the time they take to settle. A bouncy spring takes at least 260 ms × (bounce ÷ 0.6), so the bounce stays visible.
+- **Amounts:** distance `4 + 44 × playfulness²` px, starting scale `1 − (0.02 + 0.28 × playfulness²)`, press scale `1 − 0.08 × playfulness^1.5`, stagger `90 × playfulness^1.3` ms, and shake `8 × playfulness²` px.
+- **Animation:** with `fade`, distance is 0, scale is 1, and `motion-travel` is 0, so drawers and toasts fade where they are. Durations, the press, and the shake stay. With `none`, every duration and amount is 0.
+
+</details>
+
 ## Presets
 
-A preset is a set of feels with a familiar name. A feel that a preset does not set takes its default. No preset sets the type variance. With only seven feels for now, some presets look alike. Their names stay, so inputs that use them still load.
+A preset is a set of feels with a familiar name. A feel that a preset does not set takes its default. Some presets also set the animation: `brutalist` has none, and `neumorphic` fades. No preset sets the type variance. With only seven feels for now, some presets look alike. Their names stay, so inputs that use them still load.
 
-| Preset | Roundness | Spaciousness | Depth | Softness | Thinness | Shininess | Clarity |
-|---|---|---|---|---|---|---|---|
-| Default | 0.35 | 0.5 | 0.3 | 0.5 | 0.8 | 0 | 0 |
-| `balanced` | default | default | default | default | default | default | default |
-| `flat` | 0.2 | default | 0 | 0.5 | 0.8 | 0 | default |
-| `material` | 0.25 | default | 0.5 | 0.7 | 1 | 0 | default |
-| `brutalist` | 0 | 0.4 | 0.5 | 0 | 0.25 | 0 | default |
-| `neumorphic` | 0.6 | default | 0.7 | 1 | 1 | 0 | 0.7 |
-| `glass` | 0.6 | default | 1 | 0.85 | 0.8 | 1 | 1 |
-| `glossy` | 1 | default | 0.5 | 0.6 | 0.8 | 1 | default |
-| `playful` | 0.9 | 0.65 | 0.45 | 0.3 | 0.6 | default | default |
-| `dense` | 0.15 | 0 | 0.15 | 0.5 | 0.8 | default | default |
+| Preset | Roundness | Spaciousness | Depth | Softness | Thinness | Shininess | Clarity | Playfulness | Energy | Animation |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Default | 0.35 | 0.5 | 0.3 | 0.5 | 0.8 | 0 | 0 | 0.5 | 0.5 | move |
+| `balanced` | default | default | default | default | default | default | default | default | default | default |
+| `flat` | 0.2 | default | 0 | 0.5 | 0.8 | 0 | default | 0.25 | 0.65 | default |
+| `material` | 0.25 | default | 0.5 | 0.7 | 1 | 0 | default | 0.55 | 0.55 | default |
+| `brutalist` | 0 | 0.4 | 0.5 | 0 | 0.25 | 0 | default | 0 | 1 | none |
+| `neumorphic` | 0.6 | default | 0.7 | 1 | 1 | 0 | 0.7 | 0.25 | 0.3 | fade |
+| `glass` | 0.6 | default | 1 | 0.85 | 0.8 | 1 | 1 | 0.6 | 0.4 | default |
+| `glossy` | 1 | default | 0.5 | 0.6 | 0.8 | 1 | default | 0.75 | 0.5 | default |
+| `playful` | 0.9 | 0.65 | 0.45 | 0.3 | 0.6 | default | default | 0.95 | 0.65 | default |
+| `dense` | 0.15 | 0 | 0.15 | 0.5 | 0.8 | default | default | 0.15 | 0.8 | default |
 
 ## Contrast
 
@@ -341,6 +365,7 @@ The engine checks all inputs before it makes a theme set. It reports every probl
 - [ ] Let a theme choose an icon set, such as Lucide, Phosphor, or Material Symbols. A child takes its parent's set. Material Symbols is the only set for now.
 - [>] Let a role take its color from another theme by name, such as `"action": "brand"`. Parked until themes have more than two roles. With two roles, the parent or a copy of the hex covers almost every case. The work is on the branch of [#5](https://github.com/method-run/idk-themetron/pull/5): the engine, the schema, and a playground menu that picks a theme's color.
 - [>] Decide whether to add a third role, such as secondary. See [Other roles](#other-roles).
+- [>] Explore animation thresholds for each kind of part. See [Animation thresholds](#animation-thresholds).
 
 ### Other roles
 
@@ -356,3 +381,25 @@ These are not roles:
 - **Data visualization colors** are a set of series colors. That is a different system.
 
 We decided against two names: "neutral" for base, and "accent" for action. The reasons are under "Why a tree, and why two colors for each theme", near the top of this page.
+
+### Animation thresholds
+
+An area to explore, not a plan. It is not ready to build.
+
+Today the theme's `animation` applies to every part the same way. But parts differ in what feels natural. A sidebar that fades in looks odd, because sliding is how sidebars arrive. A dialog that slides in is unusual, because dialogs usually fade or pop in place.
+
+The idea: none, fade, and move are steps on the playfulness scale, and each kind of part graduates from one step to the next at its own threshold.
+
+- A more playful theme moves more, so more parts graduate to motion.
+- A sidebar graduates to movement early. It slides unless playfulness is quite low.
+- A dialog graduates late. It fades even with `move`, unless playfulness is high.
+
+<details>
+<summary>Open questions</summary>
+
+- Is `animation` then a cap on the steps (no part goes past it), a shift of every threshold, or something else?
+- Which parts need their own thresholds? Likely candidates: drawers and sheets, dialogs, menus and popovers, toasts, and list items.
+- Do the thresholds live in the engine, as tokens per part, or only in the components?
+- Can a component author set a threshold for their own part?
+
+</details>
