@@ -10,7 +10,7 @@ tags: [system/consumers/plan-consumers]
 # Plan: make themes easier to use
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 10% (1/10) · 1 dropped
+◐ 18% (2/11) · 1 dropped
 <!-- idk-plans:progress:end -->
 
 This plan looks at four ideas. We talked them through on 2026-11-20, and each section has the decisions:
@@ -214,6 +214,8 @@ The fix: under the code of each framework format in the Tokens view, a collapsib
 
 Each framework is a development dependency, bundled into the playground. The engine stays free of dependencies.
 
+The Bootstrap preview found a gap at once: the active item of a list group keeps Bootstrap's own blue, because the export does not map it.
+
 ## Tasks
 
 - [x] Agree on the look idea and the first list of looks
@@ -224,6 +226,7 @@ Each framework is a development dependency, bundled into the playground. The eng
 - [ ] Write the agent guide, `llms.txt`, from the manifest, with a test
 - [ ] Add subpath exports for the engine, the exporters, the contract, and the CSS
 - [ ] Decide whether to make a Vite or PostCSS plugin, as the first separate package
-- [ ] Preview the Bootstrap CSS format in the playground
+- [x] Preview the Bootstrap CSS format in the playground
+- [ ] Map the Bootstrap parts that the preview shows in stock colors, such as the active list-group item
 - [ ] Preview daisyUI, Tailwind, and shadcn
 - [-] Preview MUI. A React bundle costs too much build and upkeep for one preview. Look again if sites use the MUI export.

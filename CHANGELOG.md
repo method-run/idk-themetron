@@ -16,6 +16,8 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+- **Playground: preview the Bootstrap CSS export.** In the Tokens view, "Preview on Bootstrap 5.3" shows Bootstrap's stock parts with the export, in both modes.
+
 ## 0.3.0
 
 Contract 0.3.0.
