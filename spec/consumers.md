@@ -12,7 +12,7 @@ aliases: [Using themetron in a site or library]
 # Using themetron in a site or library
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 83% (5/6)
+◐ 33% (5/15)
 <!-- idk-plans:progress:end -->
 
 > **Status:** contract 0.2.0, first released with package 0.2.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
@@ -219,7 +219,7 @@ idk-plans makes doc sites with its own variables. This is a mapping that follows
 
 For a dark sidebar beside light content, put `tm-invert` on the sidebar. In dark mode, the sidebar turns light, so a site that wants it dark in both modes uses `data-tm-mode="dark"` on the sidebar instead.
 
-This mapping gives the theme's colors and fonts. For its feels, such as roundness, depth, and clarity, the site's parts also follow the [recipes](./recipes.md "recipes").
+This mapping gives the theme's colors and fonts. For its feels, such as roundness, depth, and clarity, the site's parts also follow the [recipes](./recipes.md "recipes"). To make this easier, see [Plan: make themes easier to use](../docs/plan-consumers.md "plan-consumers").
 
 Map the variables with fallbacks, so the site still works without a theme:
 
