@@ -96,7 +96,7 @@ The skins ship as a new export format, `skins`, and as a file in the package: `@
 | `tm-skin-field` | A text field: field background, edge, focus ring | `.tm-input` |
 | `tm-skin-gradient-text` | Action text, with the gradient when there is one | `.tm-link` |
 | `tm-skin-ring` | A gradient edge that follows rounded corners | the ring rules |
-| `tm-enter-pop`, `tm-enter-arrive`, `tm-enter-fade` | Motion for parts that come and go | motion helpers (after the motion release) |
+| `tm-enter-pop`, `tm-enter-arrive`, `tm-enter-fade` | Motion for parts that come and go | the motion helpers: `tm-pop`, `tm-toast`, `tm-stagger` |
 
 A skin sets colors, edges, radius, shadows, shine, and transitions. It does not set padding, size, display, or font size. Sizes stay the site's.
 
@@ -136,7 +136,7 @@ The code can make most of it from the manifest, so it stays current. A test can 
 
 ## 3. More packages
 
-**Recommendation: one package for now, with clearer entry points.** The package is small (133 kB packed, 24 files) and has no dependencies. A split adds versions to keep in step, and more places for a consumer to look. It helps when parts need different dependencies, and today none do.
+**Recommendation: one package for now, with clearer entry points.** The package is small (143 kB packed, 25 files) and has no dependencies. A split adds versions to keep in step, and more places for a consumer to look. It helps when parts need different dependencies, and today none do.
 
 <details>
 <summary>The layers, and where a cut could go</summary>

@@ -1,7 +1,7 @@
 # idk-themetron
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 66% (39/59) · 9 deferred · 2 dropped
+◐ 60% (39/65) · 9 deferred · 2 dropped
 <!-- idk-plans:progress:end -->
 
 idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color (one color, or a two-color gradient), fonts, icons, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
@@ -72,6 +72,8 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 <details>
 <summary>Publish a new version (for the maintainer)</summary>
 
+[Plan: release from CI](./docs/plan-releases.md "plan-releases") will replace these steps with a release pull request.
+
 1. If the token contract changed, raise `CONTRACT_VERSION` and move the **Unreleased** notes of the [contract changelog](./spec/consumers.md#changelog "consumers") under it. See [Versions](./spec/consumers.md#versions "consumers").
 2. In [CHANGELOG.md](./CHANGELOG.md "changelog"), move the **Unreleased** notes under a heading for the new package version, such as `## 0.3.0`.
 3. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
@@ -96,6 +98,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 - [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ● 100% (1/1)
 - [Playground](./demo/README.md "playground"): A web page where you change the inputs and see the components, palettes, tokens, and contrast audit change at once, in light and dark mode. ◐ 88% (8/9)
 - [Changelog](./CHANGELOG.md "changelog"): What changed in each version of the npm package. The token contract has its own changelog, in the consumers spec.
+- [Plan: release from CI](./docs/plan-releases.md "plan-releases"): Release a new version by merging a pull request. Then GitHub Actions tests the package, publishes it to npm, and makes the tag and the GitHub release. ○ 0% (0/6)
 <!-- idk-plans:children:end -->
 
 ## Tasks
