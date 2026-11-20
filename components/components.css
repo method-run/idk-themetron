@@ -855,6 +855,12 @@
     -webkit-text-fill-color: transparent;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
+    text-shadow: none;
+  }
+  /* Over a photo, the halo is a filter instead: a filter paints behind the letters, and a text
+     shadow would paint over them, in the page's color. */
+  :where(.tm-over-media) :is(.tm-link, .tm-field .tm-error, .tm-tabs button[aria-selected="true"]) {
+    filter: drop-shadow(0 0 1px color-mix(in oklch, var(--tm-bg-canvas) 70%, transparent)) drop-shadow(0 0 3px color-mix(in oklch, var(--tm-bg-canvas) 60%, transparent));
   }
   /* A block of text shrinks to its words, so the gradient spans the text, not the empty line. */
   .tm-field .tm-error { width: fit-content; }
