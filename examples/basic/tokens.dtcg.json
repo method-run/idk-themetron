@@ -2,8 +2,8 @@
   "$description": "Made by themetron. In each theme, grades with the same number have the same luminance in every palette.",
   "$extensions": {
     "themetron": {
-      "contract": "0.2.0",
-      "manifest": "https://method-run.github.io/idk-themetron/schema/0.2.0/tokens.manifest.json",
+      "contract": "0.3.0",
+      "manifest": "https://method-run.github.io/idk-themetron/schema/0.3.0/tokens.manifest.json",
       "inputs": {
         "themes": {
           "default": {

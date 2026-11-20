@@ -16,6 +16,10 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+## 0.3.0
+
+Contract 0.3.0.
+
 - **Motion now comes from the theme.** Two new feels set it: `playfulness` (Play: sober, calm, casual, fun, giddy) and `energy` (Energy: slow, relaxed, brisk, snappy, zippy). The defaults, casual and brisk, are like the average of the modern web. Bigger parts take a little longer. Playful themes travel farther, grow from smaller, bounce, and stagger lists. See [Motion](./spec/inputs.md#motion "inputs").
 - **New input: `animation`.** `none` turns motion off, `fade` keeps fades only, and `move` (the default) lets parts travel. Presets can set it: `brutalist` has none, and `neumorphic` fades. The playground has an Animation section between Icons and Feel.
 - **New motion tokens.** Durations by size (`duration-xs` to `duration-lg`; `fast`, `base`, and `slow` stay), a `fade` curve, two springs as CSS `linear()` curves (`ease-pop` and `ease-arrive`, with their own durations), and `motion-distance`, `motion-scale`, `motion-press`, `motion-stagger`, `motion-shake`, `motion-weight`, and `motion-travel`. In DTCG, the springs' terms are in `$extensions.themetron`. See [Tokens](./spec/tokens.md "tokens").
