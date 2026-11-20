@@ -13,12 +13,12 @@ tags: [system/consumers/plan-consumers]
 ◐ 10% (1/10) · 1 dropped
 <!-- idk-plans:progress:end -->
 
-This plan is for discussion. It is not a design yet. It looks at four ideas:
+This plan looks at four ideas. We talked them through on 2026-11-20, and each section has the decisions:
 
-1. **Look classes:** a standard stylesheet of classes that give any element a themetron look: fills, tints, surfaces, gradient text, shine, and motion. **Recommended.** This is the biggest gap.
-2. **An agent guide:** one file that tells a person or an AI agent how to theme a site. **Recommended.** It is cheap.
-3. **More packages:** split themetron into several npm packages. **Not yet (decided).** Use subpath exports in one package now. Split only when a part needs its own dependencies.
-4. **Format previews:** show each export format on the stock parts of its framework, such as Bootstrap's buttons. **Recommended.** A Bootstrap preview is on the branch `plan/format-previews`, to try.
+1. **Look classes:** a standard stylesheet of classes that give any element a themetron look: fills, tints, surfaces, gradient text, shine, and motion. **Yes.** This is the biggest gap.
+2. **An agent guide:** one file that tells a person or an AI agent how to theme a site. **Yes.** It is cheap.
+3. **More packages:** split themetron into several npm packages. **Not yet.** Use subpath exports in one package now. Split only when a part needs its own dependencies.
+4. **Format previews:** show each export format on the stock parts of its framework, such as Bootstrap's buttons. **Yes**, without MUI. A Bootstrap preview is on the branch `plan/format-previews`, to try.
 
 The recipes page stays. It explains the looks, and it is the fallback for sites that cannot load another stylesheet. The recipes are made from the same source as the looks, so they cannot drift.
 
