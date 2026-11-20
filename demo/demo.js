@@ -24,6 +24,11 @@ const el = (tag, attrs = {}, ...children) => {
   return node;
 };
 
+const ANIMATION_NOTES = {
+  none: 'Nothing animates. Parts appear and go at once.',
+  fade: 'Parts fade in and out where they are. Buttons and fields still give feedback.',
+  move: 'Parts move in and out: a drawer slides, a dialog pops.',
+};
 const FEEL_HINTS = {
   roundness: 'Corners, as a share of the most a part can round.',
   spaciousness: 'Padding, gaps, and line height.',
@@ -32,6 +37,8 @@ const FEEL_HINTS = {
   thinness: 'How thick edges are: 4 px at the left, a hairline at the default, none at the right. Fields, checks, outline buttons, and focus rings keep a hairline.',
   shininess: 'Gloss on buttons, thumbs, and bars.',
   clarity: 'How see-through cards, tints, fields, and fills are.',
+  playfulness: 'How much moves, how far, and how much it bounces.',
+  energy: 'How quick motion is, and how hard it starts and stops.',
 };
 
 // The Google fonts that the font menus suggest, in groups. npm run fonts writes the file
@@ -172,6 +179,7 @@ const SECTIONS = [
   ['color', 'Action color', ['action']],
   ['fonts', 'Typography', ['font', 'headingFont', 'monoFont', 'typeVariance']],
   ['icons', 'Icons', ['icons']],
+  ['animation', 'Animation', ['animation']],
   ['feel', 'Feel', ['preset', 'feel']],
 ];
 // Sections that the playground does not show for now. Their values still load and apply.
@@ -682,14 +690,21 @@ const SECTION_CONTROLS = {
         type: 'button', style: `left: ${((value - ICON_WEIGHT.min) / (ICON_WEIGHT.max - ICON_WEIGHT.min)) * 100}%`, 'data-word': word, onclick: () => setIcons('weight', value),
       }, word)))),
   ],
+  // How parts come and go. The Play and Energy feels tune it.
+  animation: () => [
+    el('div', { class: 'model-row' }, el('span', { class: 'font-label' }, 'Parts'),
+      el('div', { class: 'tm-segmented tm-segmented--sm', id: 'animation', role: 'group', 'aria-label': 'Animation' })),
+    el('div', { class: 'fader-hint', id: 'animation-note' }),
+  ],
   feel: () => {
     // Apply a preset: a one-time stamp. It sets every feel as the theme's own, and the theme
     // keeps no link to the preset. Then each feel can be changed or removed on its own.
-    const stamp = (valueOf) => {
+    const stamp = (valueOf, animation) => {
       // Removed feels stay, so they come back on a branch that has them.
       const kept = Object.fromEntries(Object.entries(own().feel ?? {}).filter(([k]) => !FEELS[k]));
       own().feel = { ...kept, ...Object.fromEntries(Object.entries(FEELS).map(([k, spec]) => [k, valueOf(k, spec)])) };
       delete own().preset;
+      if (animation) own().animation = animation;
       $('#preset-menu').open = false;
       update();
     };
@@ -701,7 +716,7 @@ const SECTION_CONTROLS = {
           type: 'button',
           role: 'menuitem',
           'data-preset': key,
-          onclick: () => stamp((k, spec) => p.feel[k] ?? spec.default),
+          onclick: () => stamp((k, spec) => p.feel[k] ?? spec.default, p.animation ?? 'move'),
         }, p.label)),
         // Every feel at random, in the sliders' steps of 0.01. A playground stamp only: the
         // engine has no random preset, so a saved theme always builds the same.
@@ -1001,6 +1016,10 @@ function renderSegs() {
   if (icons) {
     seg($('#icon-fill'), [[false, 'Outline'], [true, 'Filled']], icons.fill, (v) => setIcons('fill', v));
   }
+  const animation = built?.themes[state.selected] ? selected().settings.animation : 'move';
+  seg($('#animation'), [['none', 'None'], ['fade', 'Fade'], ['move', 'Move']], animation, (v) => { own().animation = v; update(); });
+  const note = $('#animation-note');
+  if (note) note.textContent = ANIMATION_NOTES[animation];
   seg($('#mode'), [['light', 'Light'], ['dark', 'Dark'], ['both', 'Both']], ui.mode, (v) => { ui.mode = v; renderSegs(); renderView(); });
   seg($('#contrast-view'), [['base', 'Base'], ['more', 'More contrast']], ui.contrast, (v) => { ui.contrast = v; renderSegs(); renderControlsState(); renderView(); });
   seg($('#debug'), [[false, 'Off'], [true, 'On']], debug, (v) => {
@@ -1433,6 +1452,7 @@ function stageFor(name, mode) {
   const stage = el('div', { class: `stage tm-theme ${themeClass(name)}`, 'data-tm-mode': mode, 'data-tm-contrast': ui.contrast, 'data-stage-theme': name });
   stage.innerHTML = `<span class="stage-label">${escapeHtml(labelOf(name))} · ${mode}</span>${html}`;
   for (const play of stage.querySelectorAll('[data-play]')) play.addEventListener('click', () => stage.querySelector('[data-track]').classList.toggle('on'));
+  wireMotion(stage);
   // Every theme's button on this stage's background: the normal button, then the exact one.
   // Each theme class sets every token, so each button has its own theme's shape.
   // The buttons of this theme's descendants, in tree order, on this stage's background. A theme
@@ -1487,15 +1507,88 @@ function openDialog(dialog) {
   requestAnimationFrame(() => requestAnimationFrame(() => dialog.classList.add('is-open')));
 }
 
+// The motion examples: a toast, a menu that pops from its button, tabs with a sliding underline,
+// a list that staggers in, and a field that shakes.
+function wireMotion(stage) {
+  // The toast is a popover, so it is fixed to the window. It shows for 2.5 s, then moves out, and
+  // leaves the top layer when the move ends.
+  const toast = stage.querySelector('[data-toast-el]');
+  let toastTimer;
+  const hideToast = () => {
+    toast.classList.remove('is-open');
+    const done = () => { clearTimeout(fallback); toast.removeEventListener('transitionend', onEnd); if (!toast.classList.contains('is-open') && toast.matches(':popover-open')) toast.hidePopover(); };
+    const onEnd = (e) => { if (e.target === toast && OUT.includes(e.propertyName)) done(); };
+    const fallback = setTimeout(done, 1500);
+    toast.addEventListener('transitionend', onEnd);
+    if (!moving(toast)) done();
+  };
+  stage.querySelector('[data-toast]')?.addEventListener('click', () => {
+    if (!toast.matches(':popover-open')) toast.showPopover();
+    requestAnimationFrame(() => requestAnimationFrame(() => toast.classList.add('is-open')));
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, 2500);
+  });
+  const menuButton = stage.querySelector('[data-menu]');
+  const menu = menuButton && stage.querySelector(`#${menuButton.getAttribute('aria-controls')}`);
+  const setMenu = (open) => { menu.classList.toggle('is-open', open); menuButton.setAttribute('aria-expanded', String(open)); };
+  menuButton?.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
+  menu?.addEventListener('click', () => setMenu(false));
+  // The underline moves to the chosen tab. --distance is how far it goes, so a far tab takes longer.
+  const tabs = stage.querySelector('[data-tabs]');
+  if (tabs) {
+    const bar = tabs.querySelector('.tm-tabs-indicator');
+    const place = (tab) => {
+      const x = tab.offsetLeft;
+      bar.style.setProperty('--distance', Math.abs(x - (parseFloat(bar.style.getPropertyValue('--x')) || 0)));
+      bar.style.setProperty('--x', x);
+      bar.style.setProperty('--w', tab.offsetWidth);
+    };
+    for (const tab of tabs.querySelectorAll('[role="tab"]')) {
+      tab.addEventListener('click', () => {
+        for (const t of tabs.querySelectorAll('[role="tab"]')) t.setAttribute('aria-selected', String(t === tab));
+        place(tab);
+      });
+    }
+    requestAnimationFrame(() => place(tabs.querySelector('[aria-selected="true"]')));
+  }
+  const list = stage.querySelector('[data-list]');
+  // Play: the items leave together, quickly, then arrive one after another.
+  let replay;
+  stage.querySelector('[data-stagger]')?.addEventListener('click', () => {
+    clearTimeout(replay);
+    list.classList.remove('is-in');
+    const out = parseFloat(getComputedStyle(list).getPropertyValue('--tm-duration-sm')) * 0.8 || 150;
+    replay = setTimeout(() => list.classList.add('is-in'), out + 60);
+  });
+  requestAnimationFrame(() => list?.classList.add('is-in'));
+  const field = stage.querySelector('[data-shake-field]');
+  stage.querySelector('[data-shake]')?.addEventListener('click', () => {
+    const bad = !/^\d{4}$/.test(field.value);
+    field.setAttribute('aria-invalid', String(bad));
+    stage.querySelector('[data-shake-error]').hidden = !bad;
+    if (!bad) return;
+    field.classList.remove('tm-shake');
+    field.offsetWidth;
+    field.classList.add('tm-shake');
+  });
+  field?.addEventListener('animationend', () => field.classList.remove('tm-shake'));
+}
+
 // Close: move it out, then close it when the move ends (or after a time limit).
 function closeDialog(dialog) {
   if (!dialog.open) return;
   dialog.classList.remove('is-open');
   const done = () => { clearTimeout(timer); dialog.removeEventListener('transitionend', onEnd); dialog.close(); };
-  const onEnd = (e) => { if (e.target === dialog && e.propertyName === 'transform') done(); };
+  const onEnd = (e) => { if (e.target === dialog && OUT.includes(e.propertyName)) done(); };
   const timer = setTimeout(done, 1500);
   dialog.addEventListener('transitionend', onEnd);
+  // A theme with no animation has nothing to wait for.
+  if (!moving(dialog)) done();
 }
+// The transitions of a part that leaves: a move, a fade, or both. They end together.
+const OUT = ['transform', 'opacity'];
+// True when a part is still leaving.
+const moving = (part) => part.getAnimations().some((a) => OUT.includes(a.transitionProperty));
 
 function renderPalettes() {
   const view = $('#view-palettes');

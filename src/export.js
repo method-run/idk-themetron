@@ -52,6 +52,18 @@ export function primitiveEntries(p) {
   out.push(['font-icon', `"${p.icon.family}"`], ['icon-fill', String(p.icon.fill)], ['icon-weight', String(p.icon.weight)]);
   for (const [k, v] of Object.entries(p.motion.duration)) out.push([`duration-${k}`, ms(v)]);
   for (const [k, v] of Object.entries(p.motion.easing)) out.push([`ease-${k}`, bezier(v)]);
+  // The springs, as CSS linear() curves, for position and scale only. Pop starts at rest (a part
+  // that appears in place); arrive starts at speed (a part that comes in from out of view). Each
+  // size step has its own duration: the time the spring takes to settle.
+  for (const kind of ['pop', 'arrive']) {
+    out.push([`ease-${kind}`, p.motion.spring[kind].css]);
+    for (const [k, v] of Object.entries(p.motion.spring[kind].duration)) out.push([`duration-${kind}-${k}`, ms(v)]);
+  }
+  // How much moves: how far an arriving part travels (px), the scale it grows from, the scale of
+  // a pressed button, the delay between items of a list (ms), and how far a field shakes (px).
+  // Sober themes move little, and do none of the extras.
+  out.push(['motion-distance', px(p.motion.distance)], ['motion-scale', String(p.motion.scale)], ['motion-press', String(p.motion.press)]);
+  out.push(['motion-stagger', ms(p.motion.stagger)], ['motion-shake', px(p.motion.shake)], ['motion-weight', String(p.motion.weight)], ['motion-travel', String(p.motion.travel)]);
   out.push(['panel-blur', px(p.effect.blur)], ['lift', px(p.effect.lift)]);
   // The whole backdrop-filter value, for cards and for controls (a quarter of the blur). It is
   // "none" when there is no blur: even blur(0px) makes a browser give the part its own layer
@@ -424,6 +436,26 @@ export function toDtcg(built, { set } = {}) {
     group.actionAngle = tok('number', p.gradientAngle, { $description: 'The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends.' });
     group.duration = Object.fromEntries(Object.entries(p.motion.duration).map(([k, v]) => [k, tok('duration', { value: v, unit: 'ms' })]));
     group.easing = Object.fromEntries(Object.entries(p.motion.easing).map(([k, v]) => [k, tok('cubicBezier', v)]));
+    // DTCG has no spring type. Each spring's curve is the enter curve, and the spring itself is
+    // in $extensions: the CSS curve and durations, and the medium pop in the terms of SwiftUI
+    // (duration, bounce), Motion, Compose, and React Spring.
+    const { css: _css, settle: _settle, ...md } = p.motion.spring.md;
+    for (const kind of ['pop', 'arrive']) {
+      const { css, duration } = p.motion.spring[kind];
+      group.easing[kind] = tok('cubicBezier', p.motion.easing.enter, {
+        $description: kind === 'pop' ? 'A spring from rest, for parts that appear in place. Position and scale only.' : 'A spring that starts at speed, for parts that arrive from out of view. Position and scale only.',
+        $extensions: { themetron: { css, duration: Object.fromEntries(Object.entries(duration).map(([k, v]) => [k, { value: v, unit: 'ms' }])), ...(kind === 'pop' ? { spring: { ...md, mass: 1 } } : {}) } },
+      });
+    }
+    group.motion = {
+      distance: tok('dimension', { value: p.motion.distance, unit: 'px' }, { $description: 'How far an arriving part travels.' }),
+      scale: tok('number', p.motion.scale, { $description: 'The scale that an arriving part grows from.' }),
+      press: tok('number', p.motion.press, { $description: 'The scale of a pressed button.' }),
+      stagger: tok('duration', { value: p.motion.stagger, unit: 'ms' }, { $description: 'The delay between the items of a list that arrives.' }),
+      shake: tok('dimension', { value: p.motion.shake, unit: 'px' }, { $description: 'How far a field shakes when its value is not valid. 0: no shake.' }),
+      weight: tok('number', p.motion.weight, { $description: 'How much size slows a part: duration = md × (size ÷ 400 px) ^ weight.' }),
+      travel: tok('number', p.motion.travel, { $description: 'From the theme\'s animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade.' }),
+    };
     group.effect = {
       panelBlur: tok('dimension', { value: p.effect.blur, unit: 'px' }),
       fillAlpha: tok('number', p.effect.fillAlpha),

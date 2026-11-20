@@ -6,7 +6,9 @@
 /** A hex color, such as "#1e66f5" or "#fff". */
 export type Hex = string;
 
-export type FeelName = 'roundness' | 'spaciousness' | 'depth' | 'softness' | 'thinness' | 'shininess' | 'clarity';
+export type FeelName = 'roundness' | 'spaciousness' | 'depth' | 'softness' | 'thinness' | 'shininess' | 'clarity' | 'playfulness' | 'energy';
+/** How parts come and go: no motion, fades only, or moves. */
+export type AnimationName = 'none' | 'fade' | 'move';
 export type PresetName = 'balanced' | 'flat' | 'material' | 'brutalist' | 'neumorphic' | 'glass' | 'glossy' | 'playful' | 'dense';
 export type ContrastMethod = 'wcag' | 'apca';
 export type ContrastLevel = 'standard' | 'enhanced';
@@ -68,6 +70,7 @@ export interface ThemeInput {
   /** How fast text grows above body size: 0 to 1, or a word such as "classic". */
   typeVariance?: number | string;
   icons?: Partial<Icons>;
+  animation?: AnimationName;
   preset?: PresetName;
   feel?: Partial<Record<FeelName, FeelValue>>;
   contrast?: { method?: ContrastMethod; model?: ContrastModel };
@@ -104,6 +107,7 @@ export interface ThemeOwnFields {
   monoFont?: Font;
   typeVariance?: number;
   icons?: Partial<Icons>;
+  animation?: AnimationName;
   preset?: PresetName;
   feel?: Partial<Record<FeelName, number | 'inherit'>>;
   contrast?: { method?: ContrastMethod; model?: ContrastModel };
@@ -125,6 +129,7 @@ export interface ResolvedTheme {
   monoFont: Font;
   typeVariance: number;
   icons: Icons;
+  animation: AnimationName;
   preset: PresetName;
   feel: Record<FeelName, number>;
   contrast: { method: ContrastMethod; level: ContrastLevel; model: ContrastModel };
@@ -262,7 +267,8 @@ export interface FeelSpec {
 export const FEELS: Record<FeelName, FeelSpec>;
 export const REMOVED_FEELS: string[];
 export const TYPE_VARIANCE: FeelSpec;
-export const PRESETS: Record<PresetName, { label: string; feel: Partial<Record<FeelName, number>> }>;
+export const PRESETS: Record<PresetName, { label: string; feel: Partial<Record<FeelName, number>>; animation?: AnimationName }>;
+export const ANIMATIONS: AnimationName[];
 /** The root theme's name: "default". */
 export const ROOT: 'default';
 /** Child themes that most theme systems have, in the order to suggest them: the four status colors, then secondary. */
@@ -314,6 +320,55 @@ export function normalizeInputs(inputs?: Inputs): NormalizedInputs;
 export function feelWord(name: FeelName | 'typeVariance', value: number): string;
 /** A feel object with old feels (solidity, thickness) moved to their new names. */
 export function turnOldFeels<T>(feel: T): T;
+
+// ---- motion.js
+
+export interface Spring {
+  /** The CSS linear() curve. */
+  css: string;
+  /** The time it takes to settle, as a share of the duration. */
+  settle: number;
+  /** The speed it starts with, as a share of its own speed: 0 at rest. */
+  velocity: number;
+  /** The perceived duration, in ms (SwiftUI's duration). */
+  duration: number;
+  bounce: number;
+  stiffness: number;
+  damping: number;
+  dampingRatio: number;
+}
+export interface Motion {
+  duration: Record<'xs' | 'sm' | 'md' | 'lg' | 'fast' | 'base' | 'slow', number>;
+  easing: Record<'standard' | 'enter' | 'exit' | 'fade', [number, number, number, number]>;
+  spring: {
+    pop: { css: string; duration: Record<'xs' | 'sm' | 'md' | 'lg', number> };
+    arrive: { css: string; duration: Record<'xs' | 'sm' | 'md' | 'lg', number> };
+    bounce: number;
+    md: Spring;
+  };
+  /** How far an arriving part travels, in px. */
+  distance: number;
+  /** The scale that an arriving part grows from. */
+  scale: number;
+  /** The scale of a pressed button. */
+  press: number;
+  /** The delay between items of a list, in ms. */
+  stagger: number;
+  /** How far a field shakes, in px. */
+  shake: number;
+  /** How much size slows a part: duration = md × (size ÷ 400 px) ^ weight. */
+  weight: number;
+  /** The playfulness, from 0 to 1. */
+  amount: number;
+  /** 1 when parts travel in and out of view; 0 when they only fade (or do not move). */
+  travel: 0 | 1;
+}
+/** The size steps, in px: the larger of a part's longest side and how far it moves. */
+export const MOTION_SIZES: Record<'xs' | 'sm' | 'md' | 'lg', number>;
+/** The motion of a theme, from its energy and playfulness feels (0 to 1), and its animation. */
+export function motionFor(feel: { energy: number; playfulness: number }, animation?: AnimationName): Motion;
+/** A spring from a perceived duration T (s) and a bounce (0 to 1), with mass 1. */
+export function spring(T: number, bounce: number, velocity?: number): Spring;
 
 // ---- palette.js
 

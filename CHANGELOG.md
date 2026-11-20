@@ -16,6 +16,10 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+- **Motion now comes from the theme.** Two new feels set it: `playfulness` (Play: sober, calm, casual, fun, giddy) and `energy` (Energy: slow, relaxed, brisk, snappy, zippy). The defaults, casual and brisk, are like the average of the modern web. Bigger parts take a little longer. Playful themes travel farther, grow from smaller, bounce, and stagger lists. See [Motion](./spec/inputs.md#motion "inputs").
+- **New input: `animation`.** `none` turns motion off, `fade` keeps fades only, and `move` (the default) lets parts travel. Presets can set it: `brutalist` has none, and `neumorphic` fades. The playground has an Animation section between Icons and Feel.
+- **New motion tokens.** Durations by size (`duration-xs` to `duration-lg`; `fast`, `base`, and `slow` stay), a `fade` curve, two springs as CSS `linear()` curves (`ease-pop` and `ease-arrive`, with their own durations), and `motion-distance`, `motion-scale`, `motion-press`, `motion-stagger`, `motion-shake`, `motion-weight`, and `motion-travel`. In DTCG, the springs' terms are in `$extensions.themetron`. See [Tokens](./spec/tokens.md "tokens").
+- **The components use the theme's motion.** Dialogs pop, drawers arrive with a spring, and the button press and the switch knob spring back. New helpers: `tm-pop`, `tm-toast`, `tm-stagger`, `tm-shake`, and `tm-tabs-indicator`.
 - **Fix: gradient text over photos.** In `tm-over-media`, links, field errors, and the selected tab of a theme with an action gradient showed the halo in place of their letters: pale in light mode, and dark in dark mode. Their halo is now a `drop-shadow()` filter, behind the letters.
 - **New color model: `okhsl`.** Set `contrast.model` to `okhsl`, and each grade keeps the key color's share of the most color that fits, with true OKLCH hues. A muted key color gives a muted ramp from light to dark. Contrast does not change: each grade keeps its luminance. The playground shows OKLCH and OKHSL, and HSL only in debug mode or for a theme that uses it. See [Grades and contrast](./spec/grades.md "grades").
 

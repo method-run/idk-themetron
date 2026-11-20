@@ -3,7 +3,7 @@
 // `npm run spec` writes them to spec/. A test fails when the files and the code differ.
 import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
-import { FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES, GRADIENT_DEFAULTS } from './inputs.js';
+import { ANIMATIONS, FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES, GRADIENT_DEFAULTS } from './inputs.js';
 import { ICON_DEFAULTS, ICON_STYLES, ICON_WEIGHT } from './icons.js';
 
 // The version of the token contract. It is not the package version.
@@ -125,6 +125,7 @@ function typeOf(value) {
   if (/^-?[\d.]+px$/.test(value)) return 'dimension';
   if (/^[\d.]+ms$/.test(value)) return 'duration';
   if (/^cubic-bezier\(/.test(value)) return 'cubicBezier';
+  if (/^linear\(/.test(value)) return 'easing';
   if (/^-?[\d.]+$/.test(value)) return 'number';
   if (/gradient\(/.test(value) || value === 'none') return 'gradient';
   if (/^(#|light-dark\(|var\(|rgba?\()/.test(value)) return 'color';
@@ -279,7 +280,8 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
               weight: { type: 'integer', minimum: ICON_WEIGHT.min, maximum: ICON_WEIGHT.max, description: `The line weight, like a font weight. Default: ${ICON_DEFAULTS.weight}.` },
             },
           },
-          preset: { ...enumOf(Object.keys(PRESETS)), description: 'A set of feels. The theme\'s own feels override it.' },
+          animation: { ...enumOf(ANIMATIONS), description: 'How parts come and go: "none" (no motion), "fade" (they fade, and do not travel or grow), or "move". The playfulness and energy feels tune the motion. From the preset, else the parent, if not set. Default: "move".' },
+          preset: { ...enumOf(Object.keys(PRESETS)), description: 'A set of feels, and sometimes an animation. The theme\'s own feels and animation override it.' },
           feel: {
             type: 'object',
             additionalProperties: false,

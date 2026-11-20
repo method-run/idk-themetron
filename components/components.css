@@ -171,10 +171,11 @@
     --_paint-to var(--tm-duration-fast) var(--tm-ease-standard),
     color var(--tm-duration-fast) var(--tm-ease-standard),
     box-shadow var(--tm-duration-base) var(--tm-ease-standard),
-    transform var(--tm-duration-base) var(--tm-ease-enter);
+    /* The lift and the press spring back: with a bounce in playful themes. */
+    transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
 }
 .tm-button:hover { --_bg: var(--tm-fill-action-hover); --_bg-from: var(--tm-fill-action-hover-from); --_bg-to: var(--tm-fill-action-hover-to); --_fg: var(--tm-on-fill-action-hover); transform: translateY(calc(-1 * var(--tm-lift))); box-shadow: var(--tm-elevation-2); }
-.tm-button:active { --_bg: var(--tm-fill-action-active); --_bg-from: var(--tm-fill-action-active-from); --_bg-to: var(--tm-fill-action-active-to); --_fg: var(--tm-on-fill-action-active); transform: translateY(0) scale(0.97); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
+.tm-button:active { --_bg: var(--tm-fill-action-active); --_bg-from: var(--tm-fill-action-active-from); --_bg-to: var(--tm-fill-action-active-to); --_fg: var(--tm-on-fill-action-active); transform: translateY(0) scale(var(--tm-motion-press)); box-shadow: var(--tm-elevation-inset); transition-duration: var(--tm-duration-fast); }
 .tm-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* The shine: two layers that brighten the top and darken the bottom of the button, as much as the
@@ -487,7 +488,8 @@
   --_shine-color: var(--tm-highlight-base-muted);
   --_glow-color: var(--tm-glow-base-muted);
   box-shadow: var(--_shine), var(--tm-elevation-1);
-  transition: transform var(--tm-duration-slow) var(--tm-ease-enter), background-color var(--tm-duration-base) var(--tm-ease-standard), var(--_shine-transition);
+  /* The knob pops across with the theme's spring: it overshoots in playful themes. */
+  transition: transform var(--tm-duration-pop-xs) var(--tm-ease-pop), background-color var(--tm-duration-base) var(--tm-ease-standard), var(--_shine-transition);
 }
 .tm-switch:checked { background-color: transparent; background-image: var(--tm-shine-image), var(--_fill-action-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); border-color: var(--tm-fill-action-active); box-shadow: var(--tm-elevation-inset); }
 /* The knob of a switch that is on is the label color, with no shine. */
@@ -629,6 +631,25 @@
 }
 .tm-tabs button:hover { color: var(--tm-fg-base); }
 .tm-tabs button[aria-selected="true"] { color: var(--tm-fg-action); border-bottom-color: var(--tm-border-action); }
+/* An underline that slides from tab to tab. Put a .tm-tabs-indicator in the tabs, and set its
+   --x and --w (px) to the selected tab's. The tabs then draw no underline of their own. A move
+   within the page eases in and out. Set --distance (px) to how far it moves, and a longer move
+   takes longer: duration = md × (distance ÷ 400 px) ^ weight. */
+.tm-tabs:has(.tm-tabs-indicator) { position: relative; }
+.tm-tabs:has(.tm-tabs-indicator) button[aria-selected="true"] { border-bottom-color: transparent; }
+.tm-tabs-indicator {
+  position: absolute;
+  bottom: calc(-1 * max(1px, var(--tm-border-width)));
+  left: 0;
+  width: calc(var(--w, 0) * 1px);
+  height: max(2px, var(--tm-border-width));
+  background: var(--tm-border-action);
+  transform: translateX(calc(var(--x, 0) * 1px));
+  pointer-events: none;
+  transition-property: transform, width;
+  transition-timing-function: var(--tm-ease-standard);
+  transition-duration: calc(var(--tm-duration-md) * pow(max(var(--distance, 400), 25) / 400, var(--tm-motion-weight)));
+}
 
 /* ---- Segmented control: buttons joined in one box, for a choice of a few options. The
    pressed button (aria-pressed="true") has the fill. The box, borders included, is one
@@ -696,16 +717,24 @@
   font-family: var(--tm-font-body);
   box-shadow: var(--tm-elevation-3);
   opacity: 0;
-  /* Leaving uses the exit curve; arriving (below) uses the enter curve. */
-  transition: opacity var(--tm-duration-base) var(--tm-ease-exit), transform var(--tm-duration-base) var(--tm-ease-exit);
+  /* Leaving: it speeds up as it goes, and brakes out of view (the exit curve), a little quicker
+     than it arrived, because the eye has moved on. */
+  transition: opacity calc(var(--tm-duration-md) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-md) * 0.8) var(--tm-ease-exit);
 }
 .tm-dialog::backdrop, .tm-drawer::backdrop { background: rgb(0 0 0 / 0); transition: background var(--tm-duration-base) var(--tm-ease-standard); }
 .tm-dialog.is-open::backdrop, .tm-drawer.is-open::backdrop { background: rgb(0 0 0 / 0.35); }
-.tm-dialog.is-open, .tm-drawer.is-open {
-  opacity: 1;
-  transform: none;
-  transition-timing-function: var(--tm-ease-enter);
-  transition-duration: var(--tm-duration-slow);
+
+.tm-dialog.is-open, .tm-drawer.is-open { opacity: 1; transform: none; }
+/* A dialog pops in place: it comes toward you from a little way off, with the theme's pop
+   spring, which bounces only in playful themes. It is solid before it settles: the fade takes two
+   thirds of the medium step and never overshoots. */
+.tm-dialog.is-open {
+  transition: opacity calc(var(--tm-duration-md) * 0.67) var(--tm-ease-fade), transform var(--tm-duration-pop-md) var(--tm-ease-pop);
+}
+/* A drawer comes in from beyond the edge, so it is already at speed: the arrive spring. With no
+   bounce, it only brakes. In playful themes it overshoots and settles back. */
+.tm-drawer.is-open {
+  transition: opacity calc(var(--tm-duration-lg) * 0.5) var(--tm-ease-fade), transform var(--tm-duration-arrive-lg) var(--tm-ease-arrive);
 }
 
 .tm-dialog {
@@ -715,7 +744,8 @@
   /* On a short screen, such as a phone with its keyboard open, the dialog scrolls inside. */
   max-height: calc(100dvh - 2 * var(--tm-space-md));
   border-radius: var(--tm-radius-lg);
-  transform: translateY(12px) scale(0.9);
+  /* How far it comes from, and how small it starts, are the theme's: little when sober. */
+  transform: translateY(var(--tm-motion-distance)) scale(var(--tm-motion-scale));
 }
 
 .tm-drawer {
@@ -723,7 +753,15 @@
   width: min(85vw, 22rem);
   height: 100%;
   border-radius: var(--tm-radius-lg) 0 0 var(--tm-radius-lg);
-  transform: translateX(100%);
+  /* Beyond the edge. In a theme that fades, it stays in place. */
+  transform: translateX(calc(100% * var(--tm-motion-travel)));
+  /* It sits against the screen's edge, so it has no edge of its own there. */
+  border-right: 0;
+  /* When it overshoots in a playful theme, the screen's edge must not show. So it continues past
+     the edge: a copy of its surface, as wide as it is, starts at its right side (behind its
+     rounded corners), above its shadow. */
+  box-shadow: calc(min(85vw, 22rem) - var(--tm-radius-lg)) 0 0 0 var(--tm-bg-surface), var(--tm-elevation-3);
+  transition: opacity calc(var(--tm-duration-lg) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-lg) * 0.8) var(--tm-ease-exit);
 }
 
 /* ---- Menu: a panel of choices, such as the list of a combobox. role="listbox" with
@@ -942,6 +980,92 @@
    Edge 129+), so other browsers keep the natural width. */
 @supports (width: calc-size(fit-content, size)) {
   .tm-button, .tm-badge, .tm-tabs button, .tm-segmented { width: calc-size(fit-content, round(up, size, var(--tm-rhythm))); }
+}
+
+/* ---- Motion helpers: parts that pop in place, a toast, a list that arrives item by item, and a
+   field that shakes. Each reads the theme's motion: a sober theme moves little and does none
+   of the extras, and a giddy one bounces. In a theme that fades, parts come and go in place. */
+
+/* A part that pops in place, such as a menu: it grows out of where it comes from. Set
+   transform-origin toward its trigger. Toggle .is-open: closed, it is display: none, after its
+   exit. */
+.tm-pop {
+  transform-origin: top left;
+  transition:
+    opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    display calc(var(--tm-duration-sm) * 0.8) allow-discrete,
+    overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+  display: none;
+  opacity: 0;
+  transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale));
+}
+.tm-pop.is-open {
+  display: block;
+  opacity: 1;
+  transform: none;
+  transition: opacity calc(var(--tm-duration-sm) * 0.67) var(--tm-ease-fade), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+}
+@starting-style { .tm-pop.is-open { opacity: 0; transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale)); } }
+
+/* A toast: a short message in a corner of the window. It comes in from below the edge with the
+   arrive spring, and leaves with the exit curve. Make it a popover="manual", so it sits in the
+   top layer, fixed to the window wherever it is in the page: call showPopover(), then add
+   .is-open; to hide it, take .is-open off, and call hidePopover() when the move ends. It is
+   usually in the other mode from the page, so it stands out: add tm-invert. It is opaque, so
+   tm-invert gives exactly the other mode's colors. */
+.tm-toast {
+  position: fixed;
+  inset: auto var(--tm-space-lg) var(--tm-space-lg) auto;
+  margin: 0;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  gap: var(--tm-space-sm);
+  max-width: min(24rem, calc(100vw - 2 * var(--tm-space-lg)));
+  padding: var(--tm-space-sm) var(--tm-space-md);
+  border: var(--tm-panel-border-width) solid var(--tm-panel-border);
+  border-radius: var(--tm-radius-md);
+  background: var(--tm-bg-surface);
+  color: var(--tm-fg-base);
+  font-family: var(--tm-font-body);
+  box-shadow: var(--tm-elevation-3);
+  opacity: 0;
+  /* Below the edge. In a theme that fades, it stays in place. */
+  transform: translateY(calc((100% + var(--tm-space-lg)) * var(--tm-motion-travel)));
+  pointer-events: none;
+  transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit);
+}
+.tm-toast.is-open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition: opacity calc(var(--tm-duration-sm) * 0.5) var(--tm-ease-fade), transform var(--tm-duration-arrive-sm) var(--tm-ease-arrive);
+}
+
+/* A list whose items arrive one after another. Give each item --i: 0, 1, 2, and so on. Add
+   .is-in to the list to play it; take it off, and the items leave together, quickly. A sober
+   theme brings them all at once. */
+.tm-stagger > * {
+  opacity: 0;
+  transform: translateY(calc(max(8px, var(--tm-motion-distance)) * var(--tm-motion-travel)));
+  transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit);
+}
+.tm-stagger.is-in > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--tm-duration-md) var(--tm-ease-fade), transform var(--tm-duration-pop-md) var(--tm-ease-pop);
+  transition-delay: calc(var(--i, 0) * var(--tm-motion-stagger));
+}
+
+/* A field that shakes when its value is not valid. Add .tm-shake for one shake, and take it off
+   on animationend. A sober theme does not shake: its edge color says enough. */
+.tm-shake { animation: tm-shake calc(var(--tm-duration-sm) * 2.5) var(--tm-ease-standard); }
+@keyframes tm-shake {
+  15% { transform: translateX(calc(var(--tm-motion-shake) * -1)); }
+  35% { transform: translateX(var(--tm-motion-shake)); }
+  55% { transform: translateX(calc(var(--tm-motion-shake) * -0.6)); }
+  75% { transform: translateX(calc(var(--tm-motion-shake) * 0.3)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

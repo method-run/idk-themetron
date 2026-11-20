@@ -311,7 +311,14 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .spec .tm-card { display: flex; flex-direction: column; gap: var(--tm-space-md); }
 .icon-search { max-width: 20rem; }
 .track { position: relative; height: calc(var(--tm-rhythm) * 8); border-radius: var(--tm-radius-control); background: var(--tm-bg-sunken); box-shadow: var(--tm-elevation-inset); border: var(--tm-border-width) solid var(--tm-border-base); }
-.track .dot { position: absolute; top: 50%; left: 6px; width: 22px; height: 22px; margin-top: -11px; border-radius: calc(var(--tm-radius-control) * 0.6 + 2px); background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); box-shadow: var(--tm-elevation-1); transition: left var(--tm-duration-slow) var(--tm-ease-enter); }
+.motion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: var(--tm-space-lg); margin-top: var(--tm-space-lg); }
+.motion-grid .wide { grid-column: 1 / -1; }
+.motion-grid .tm-tabs button { white-space: nowrap; }
+.pop-anchor { position: relative; }
+.pop-anchor .tm-menu { position: absolute; top: calc(100% + var(--tm-space-xs)); left: 0; z-index: 5; }
+.motion-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--tm-space-xs); }
+.motion-list li { padding: var(--tm-space-xs) var(--tm-space-sm); border-radius: var(--tm-radius-sm); background: var(--tm-bg-sunken); }
+.track .dot { position: absolute; top: 50%; left: 6px; width: 22px; height: 22px; margin-top: -11px; border-radius: calc(var(--tm-radius-control) * 0.6 + 2px); background: var(--tm-fill-action); background-image: var(--tm-shine-image); --tm-shine-rim: var(--tm-gloss-action-rim); --tm-shine-top: var(--tm-gloss-action-top); --tm-shine-shadow: var(--tm-gloss-action-shadow); --tm-shine-bottom: var(--tm-gloss-action-bottom); box-shadow: var(--tm-elevation-1); transition: left var(--tm-duration-md) var(--tm-ease-standard); }
 .track.on .dot { left: calc(100% - 28px); }
 
 /* Palettes */
@@ -602,17 +609,69 @@ td code { font-family: var(--mono); font-size: 12px; }
 
     <section class="spec" aria-label="Motion">
       <h2 class="spec-label">Motion</h2>
-      <p class="tm-text tm-muted">Motion is fixed for now: parts arrive with the enter curve and leave with the exit curve.</p>
+      <p class="tm-text tm-muted">Play and Energy set the motion. A dialog pops in place with the theme's spring. A sidebar slides in from the edge, already at speed, and brakes.</p>
       <div class="tm-row">
         <button class="tm-button" type="button" data-open="dialog-NAME">Open a dialog</button>
         <button class="tm-button tm-button--soft" type="button" data-open="drawer-NAME">Open a sidebar</button>
         <button class="tm-button tm-button--ghost" type="button" data-play>Slide the dot</button>
       </div>
       <div class="track" data-track><span class="dot"></span></div>
+      <div class="motion-grid">
+        <div class="tm-stack">
+          <h3 class="tm-h3">Toast</h3>
+          <div class="tm-row"><button class="tm-button tm-button--outline" type="button" data-toast>Show a toast</button></div>
+          <div class="tm-toast tm-invert" popover="manual" role="status" data-toast-el><span class="tm-icon" aria-hidden="true">check_circle</span> {{theme}} saved.</div>
+        </div>
+        <div class="tm-stack">
+          <h3 class="tm-h3">Menu</h3>
+          <div class="pop-anchor">
+            <button class="tm-button tm-button--outline" type="button" data-menu aria-expanded="false" aria-controls="menu-NAME">Open a menu</button>
+            <div class="tm-menu tm-pop" id="menu-NAME" role="menu" aria-label="Actions">
+              <div class="tm-menu-item" role="menuitem">Rename</div>
+              <div class="tm-menu-item" role="menuitem">Duplicate</div>
+              <div class="tm-menu-item" role="menuitem">Delete</div>
+            </div>
+          </div>
+        </div>
+        <div class="tm-stack wide">
+          <h3 class="tm-h3">Tabs</h3>
+          <div class="tm-tabs" role="tablist" aria-label="Sections" data-tabs>
+            <button type="button" role="tab" aria-selected="true">Overview</button>
+            <button type="button" role="tab" aria-selected="false">Activity</button>
+            <button type="button" role="tab" aria-selected="false">Settings</button>
+            <button type="button" role="tab" aria-selected="false">A long tab name</button>
+            <span class="tm-tabs-indicator" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="tm-stack">
+          <h3 class="tm-h3">Switch</h3>
+          <label class="tm-choice"><input type="checkbox" role="switch" class="tm-switch"> Flip me</label>
+        </div>
+        <div class="tm-stack">
+          <h3 class="tm-h3">List</h3>
+          <div class="tm-row"><button class="tm-button tm-button--outline" type="button" data-stagger>Play the list</button></div>
+          <ul class="tm-stagger motion-list" data-list>
+            <li style="--i: 0">First item</li>
+            <li style="--i: 1">Second item</li>
+            <li style="--i: 2">Third item</li>
+            <li style="--i: 3">Fourth item</li>
+            <li style="--i: 4">Fifth item</li>
+          </ul>
+        </div>
+        <div class="tm-stack">
+          <h3 class="tm-h3">Field check</h3>
+          <div class="tm-field">
+            <label for="code-NAME">Code</label>
+            <input class="tm-input" id="code-NAME" value="12" data-shake-field aria-describedby="code-error-NAME">
+            <span class="tm-error" id="code-error-NAME" data-shake-error hidden>Use 4 digits.</span>
+          </div>
+          <div class="tm-row"><button class="tm-button tm-button--outline" type="button" data-shake>Check it</button></div>
+        </div>
+      </div>
       <dialog class="tm-dialog" id="dialog-NAME" aria-labelledby="dialog-title-NAME">
         <div class="tm-stack">
           <h3 class="tm-h3" id="dialog-title-NAME">{{theme}} dialog</h3>
-          <p class="tm-text tm-muted">It pops in with the enter curve, and leaves with the exit curve.</p>
+          <p class="tm-text tm-muted">It pops in with the theme's spring, and leaves with the exit curve.</p>
           <div class="tm-row"><button class="tm-button" type="button" data-close>Done</button><button class="tm-button tm-button--ghost" type="button" data-close>Cancel</button></div>
         </div>
       </dialog>

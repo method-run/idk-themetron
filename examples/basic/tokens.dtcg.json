@@ -647,24 +647,52 @@
         "$description": "The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends."
       },
       "duration": {
+        "xs": {
+          "$type": "duration",
+          "$value": {
+            "value": 89,
+            "unit": "ms"
+          }
+        },
+        "sm": {
+          "$type": "duration",
+          "$value": {
+            "value": 141,
+            "unit": "ms"
+          }
+        },
+        "md": {
+          "$type": "duration",
+          "$value": {
+            "value": 225,
+            "unit": "ms"
+          }
+        },
+        "lg": {
+          "$type": "duration",
+          "$value": {
+            "value": 358,
+            "unit": "ms"
+          }
+        },
         "fast": {
           "$type": "duration",
           "$value": {
-            "value": 130,
+            "value": 141,
             "unit": "ms"
           }
         },
         "base": {
           "$type": "duration",
           "$value": {
-            "value": 220,
+            "value": 225,
             "unit": "ms"
           }
         },
         "slow": {
           "$type": "duration",
           "$value": {
-            "value": 370,
+            "value": 358,
             "unit": "ms"
           }
         }
@@ -673,29 +701,159 @@
         "standard": {
           "$type": "cubicBezier",
           "$value": [
-            0.3,
+            0.65,
             0,
-            0.45,
+            0.35,
             1
           ]
         },
         "enter": {
           "$type": "cubicBezier",
           "$value": [
-            0.25,
+            0.33,
             1,
-            0.64,
+            0.68,
             1
           ]
         },
         "exit": {
           "$type": "cubicBezier",
           "$value": [
-            0.4,
+            0.32,
             0,
-            1,
+            0.67,
+            0
+          ]
+        },
+        "fade": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.2,
+            0,
+            0,
             1
           ]
+        },
+        "pop": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring from rest, for parts that appear in place. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.015, 0.053, 0.107, 0.171, 0.241, 0.312, 0.384, 0.453, 0.518, 0.579, 0.635, 0.686, 0.731, 0.772, 0.808, 0.839, 0.867, 0.89, 0.91, 0.928, 0.942, 0.954, 0.964, 0.973, 0.979, 0.985, 0.989, 0.993, 0.996, 0.998, 0.999, 1.001, 1.001, 1.002, 1.002, 1.003, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 123,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 195,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 311,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 494,
+                  "unit": "ms"
+                }
+              },
+              "spring": {
+                "duration": 225,
+                "bounce": 0.12,
+                "velocity": 0,
+                "stiffness": 779.8,
+                "damping": 49.4,
+                "dampingRatio": 0.88,
+                "mass": 1
+              }
+            }
+          }
+        },
+        "arrive": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring that starts at speed, for parts that arrive from out of view. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.124, 0.238, 0.34, 0.432, 0.514, 0.587, 0.651, 0.707, 0.755, 0.797, 0.834, 0.865, 0.891, 0.913, 0.932, 0.948, 0.96, 0.971, 0.98, 0.987, 0.992, 0.996, 1, 1.002, 1.004, 1.005, 1.006, 1.007, 1.007, 1.007, 1.007, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 110,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 175,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 279,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 444,
+                  "unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "distance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "How far an arriving part travels."
+        },
+        "scale": {
+          "$type": "number",
+          "$value": 0.91,
+          "$description": "The scale that an arriving part grows from."
+        },
+        "press": {
+          "$type": "number",
+          "$value": 0.972,
+          "$description": "The scale of a pressed button."
+        },
+        "stagger": {
+          "$type": "duration",
+          "$value": {
+            "value": 37,
+            "unit": "ms"
+          },
+          "$description": "The delay between the items of a list that arrives."
+        },
+        "shake": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "How far a field shakes when its value is not valid. 0: no shake."
+        },
+        "weight": {
+          "$type": "number",
+          "$value": 0.34,
+          "$description": "How much size slows a part: duration = md × (size ÷ 400 px) ^ weight."
+        },
+        "travel": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "From the theme's animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade."
         }
       },
       "effect": {
@@ -3652,24 +3810,52 @@
         "$description": "The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends."
       },
       "duration": {
+        "xs": {
+          "$type": "duration",
+          "$value": {
+            "value": 89,
+            "unit": "ms"
+          }
+        },
+        "sm": {
+          "$type": "duration",
+          "$value": {
+            "value": 141,
+            "unit": "ms"
+          }
+        },
+        "md": {
+          "$type": "duration",
+          "$value": {
+            "value": 225,
+            "unit": "ms"
+          }
+        },
+        "lg": {
+          "$type": "duration",
+          "$value": {
+            "value": 358,
+            "unit": "ms"
+          }
+        },
         "fast": {
           "$type": "duration",
           "$value": {
-            "value": 130,
+            "value": 141,
             "unit": "ms"
           }
         },
         "base": {
           "$type": "duration",
           "$value": {
-            "value": 220,
+            "value": 225,
             "unit": "ms"
           }
         },
         "slow": {
           "$type": "duration",
           "$value": {
-            "value": 370,
+            "value": 358,
             "unit": "ms"
           }
         }
@@ -3678,29 +3864,159 @@
         "standard": {
           "$type": "cubicBezier",
           "$value": [
-            0.3,
+            0.65,
             0,
-            0.45,
+            0.35,
             1
           ]
         },
         "enter": {
           "$type": "cubicBezier",
           "$value": [
-            0.25,
+            0.33,
             1,
-            0.64,
+            0.68,
             1
           ]
         },
         "exit": {
           "$type": "cubicBezier",
           "$value": [
-            0.4,
+            0.32,
             0,
-            1,
+            0.67,
+            0
+          ]
+        },
+        "fade": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.2,
+            0,
+            0,
             1
           ]
+        },
+        "pop": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring from rest, for parts that appear in place. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.015, 0.053, 0.107, 0.171, 0.241, 0.312, 0.384, 0.453, 0.518, 0.579, 0.635, 0.686, 0.731, 0.772, 0.808, 0.839, 0.867, 0.89, 0.91, 0.928, 0.942, 0.954, 0.964, 0.973, 0.979, 0.985, 0.989, 0.993, 0.996, 0.998, 0.999, 1.001, 1.001, 1.002, 1.002, 1.003, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 123,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 195,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 311,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 494,
+                  "unit": "ms"
+                }
+              },
+              "spring": {
+                "duration": 225,
+                "bounce": 0.12,
+                "velocity": 0,
+                "stiffness": 779.8,
+                "damping": 49.4,
+                "dampingRatio": 0.88,
+                "mass": 1
+              }
+            }
+          }
+        },
+        "arrive": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring that starts at speed, for parts that arrive from out of view. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.124, 0.238, 0.34, 0.432, 0.514, 0.587, 0.651, 0.707, 0.755, 0.797, 0.834, 0.865, 0.891, 0.913, 0.932, 0.948, 0.96, 0.971, 0.98, 0.987, 0.992, 0.996, 1, 1.002, 1.004, 1.005, 1.006, 1.007, 1.007, 1.007, 1.007, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 110,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 175,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 279,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 444,
+                  "unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "distance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "How far an arriving part travels."
+        },
+        "scale": {
+          "$type": "number",
+          "$value": 0.91,
+          "$description": "The scale that an arriving part grows from."
+        },
+        "press": {
+          "$type": "number",
+          "$value": 0.972,
+          "$description": "The scale of a pressed button."
+        },
+        "stagger": {
+          "$type": "duration",
+          "$value": {
+            "value": 37,
+            "unit": "ms"
+          },
+          "$description": "The delay between the items of a list that arrives."
+        },
+        "shake": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "How far a field shakes when its value is not valid. 0: no shake."
+        },
+        "weight": {
+          "$type": "number",
+          "$value": 0.34,
+          "$description": "How much size slows a part: duration = md × (size ÷ 400 px) ^ weight."
+        },
+        "travel": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "From the theme's animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade."
         }
       },
       "effect": {
@@ -6657,24 +6973,52 @@
         "$description": "The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends."
       },
       "duration": {
+        "xs": {
+          "$type": "duration",
+          "$value": {
+            "value": 89,
+            "unit": "ms"
+          }
+        },
+        "sm": {
+          "$type": "duration",
+          "$value": {
+            "value": 141,
+            "unit": "ms"
+          }
+        },
+        "md": {
+          "$type": "duration",
+          "$value": {
+            "value": 225,
+            "unit": "ms"
+          }
+        },
+        "lg": {
+          "$type": "duration",
+          "$value": {
+            "value": 358,
+            "unit": "ms"
+          }
+        },
         "fast": {
           "$type": "duration",
           "$value": {
-            "value": 130,
+            "value": 141,
             "unit": "ms"
           }
         },
         "base": {
           "$type": "duration",
           "$value": {
-            "value": 220,
+            "value": 225,
             "unit": "ms"
           }
         },
         "slow": {
           "$type": "duration",
           "$value": {
-            "value": 370,
+            "value": 358,
             "unit": "ms"
           }
         }
@@ -6683,29 +7027,159 @@
         "standard": {
           "$type": "cubicBezier",
           "$value": [
-            0.3,
+            0.65,
             0,
-            0.45,
+            0.35,
             1
           ]
         },
         "enter": {
           "$type": "cubicBezier",
           "$value": [
-            0.25,
+            0.33,
             1,
-            0.64,
+            0.68,
             1
           ]
         },
         "exit": {
           "$type": "cubicBezier",
           "$value": [
-            0.4,
+            0.32,
             0,
-            1,
+            0.67,
+            0
+          ]
+        },
+        "fade": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.2,
+            0,
+            0,
             1
           ]
+        },
+        "pop": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring from rest, for parts that appear in place. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.015, 0.053, 0.107, 0.171, 0.241, 0.312, 0.384, 0.453, 0.518, 0.579, 0.635, 0.686, 0.731, 0.772, 0.808, 0.839, 0.867, 0.89, 0.91, 0.928, 0.942, 0.954, 0.964, 0.973, 0.979, 0.985, 0.989, 0.993, 0.996, 0.998, 0.999, 1.001, 1.001, 1.002, 1.002, 1.003, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 123,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 195,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 311,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 494,
+                  "unit": "ms"
+                }
+              },
+              "spring": {
+                "duration": 225,
+                "bounce": 0.12,
+                "velocity": 0,
+                "stiffness": 779.8,
+                "damping": 49.4,
+                "dampingRatio": 0.88,
+                "mass": 1
+              }
+            }
+          }
+        },
+        "arrive": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring that starts at speed, for parts that arrive from out of view. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.124, 0.238, 0.34, 0.432, 0.514, 0.587, 0.651, 0.707, 0.755, 0.797, 0.834, 0.865, 0.891, 0.913, 0.932, 0.948, 0.96, 0.971, 0.98, 0.987, 0.992, 0.996, 1, 1.002, 1.004, 1.005, 1.006, 1.007, 1.007, 1.007, 1.007, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 110,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 175,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 279,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 444,
+                  "unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "distance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "How far an arriving part travels."
+        },
+        "scale": {
+          "$type": "number",
+          "$value": 0.91,
+          "$description": "The scale that an arriving part grows from."
+        },
+        "press": {
+          "$type": "number",
+          "$value": 0.972,
+          "$description": "The scale of a pressed button."
+        },
+        "stagger": {
+          "$type": "duration",
+          "$value": {
+            "value": 37,
+            "unit": "ms"
+          },
+          "$description": "The delay between the items of a list that arrives."
+        },
+        "shake": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "How far a field shakes when its value is not valid. 0: no shake."
+        },
+        "weight": {
+          "$type": "number",
+          "$value": 0.34,
+          "$description": "How much size slows a part: duration = md × (size ÷ 400 px) ^ weight."
+        },
+        "travel": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "From the theme's animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade."
         }
       },
       "effect": {
@@ -9662,24 +10136,52 @@
         "$description": "The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends."
       },
       "duration": {
+        "xs": {
+          "$type": "duration",
+          "$value": {
+            "value": 89,
+            "unit": "ms"
+          }
+        },
+        "sm": {
+          "$type": "duration",
+          "$value": {
+            "value": 141,
+            "unit": "ms"
+          }
+        },
+        "md": {
+          "$type": "duration",
+          "$value": {
+            "value": 225,
+            "unit": "ms"
+          }
+        },
+        "lg": {
+          "$type": "duration",
+          "$value": {
+            "value": 358,
+            "unit": "ms"
+          }
+        },
         "fast": {
           "$type": "duration",
           "$value": {
-            "value": 130,
+            "value": 141,
             "unit": "ms"
           }
         },
         "base": {
           "$type": "duration",
           "$value": {
-            "value": 220,
+            "value": 225,
             "unit": "ms"
           }
         },
         "slow": {
           "$type": "duration",
           "$value": {
-            "value": 370,
+            "value": 358,
             "unit": "ms"
           }
         }
@@ -9688,29 +10190,159 @@
         "standard": {
           "$type": "cubicBezier",
           "$value": [
-            0.3,
+            0.65,
             0,
-            0.45,
+            0.35,
             1
           ]
         },
         "enter": {
           "$type": "cubicBezier",
           "$value": [
-            0.25,
+            0.33,
             1,
-            0.64,
+            0.68,
             1
           ]
         },
         "exit": {
           "$type": "cubicBezier",
           "$value": [
-            0.4,
+            0.32,
             0,
-            1,
+            0.67,
+            0
+          ]
+        },
+        "fade": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.2,
+            0,
+            0,
             1
           ]
+        },
+        "pop": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring from rest, for parts that appear in place. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.015, 0.053, 0.107, 0.171, 0.241, 0.312, 0.384, 0.453, 0.518, 0.579, 0.635, 0.686, 0.731, 0.772, 0.808, 0.839, 0.867, 0.89, 0.91, 0.928, 0.942, 0.954, 0.964, 0.973, 0.979, 0.985, 0.989, 0.993, 0.996, 0.998, 0.999, 1.001, 1.001, 1.002, 1.002, 1.003, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 123,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 195,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 311,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 494,
+                  "unit": "ms"
+                }
+              },
+              "spring": {
+                "duration": 225,
+                "bounce": 0.12,
+                "velocity": 0,
+                "stiffness": 779.8,
+                "damping": 49.4,
+                "dampingRatio": 0.88,
+                "mass": 1
+              }
+            }
+          }
+        },
+        "arrive": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring that starts at speed, for parts that arrive from out of view. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.124, 0.238, 0.34, 0.432, 0.514, 0.587, 0.651, 0.707, 0.755, 0.797, 0.834, 0.865, 0.891, 0.913, 0.932, 0.948, 0.96, 0.971, 0.98, 0.987, 0.992, 0.996, 1, 1.002, 1.004, 1.005, 1.006, 1.007, 1.007, 1.007, 1.007, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 110,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 175,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 279,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 444,
+                  "unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "distance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "How far an arriving part travels."
+        },
+        "scale": {
+          "$type": "number",
+          "$value": 0.91,
+          "$description": "The scale that an arriving part grows from."
+        },
+        "press": {
+          "$type": "number",
+          "$value": 0.972,
+          "$description": "The scale of a pressed button."
+        },
+        "stagger": {
+          "$type": "duration",
+          "$value": {
+            "value": 37,
+            "unit": "ms"
+          },
+          "$description": "The delay between the items of a list that arrives."
+        },
+        "shake": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "How far a field shakes when its value is not valid. 0: no shake."
+        },
+        "weight": {
+          "$type": "number",
+          "$value": 0.34,
+          "$description": "How much size slows a part: duration = md × (size ÷ 400 px) ^ weight."
+        },
+        "travel": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "From the theme's animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade."
         }
       },
       "effect": {
@@ -12667,24 +13299,52 @@
         "$description": "The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends."
       },
       "duration": {
+        "xs": {
+          "$type": "duration",
+          "$value": {
+            "value": 89,
+            "unit": "ms"
+          }
+        },
+        "sm": {
+          "$type": "duration",
+          "$value": {
+            "value": 141,
+            "unit": "ms"
+          }
+        },
+        "md": {
+          "$type": "duration",
+          "$value": {
+            "value": 225,
+            "unit": "ms"
+          }
+        },
+        "lg": {
+          "$type": "duration",
+          "$value": {
+            "value": 358,
+            "unit": "ms"
+          }
+        },
         "fast": {
           "$type": "duration",
           "$value": {
-            "value": 130,
+            "value": 141,
             "unit": "ms"
           }
         },
         "base": {
           "$type": "duration",
           "$value": {
-            "value": 220,
+            "value": 225,
             "unit": "ms"
           }
         },
         "slow": {
           "$type": "duration",
           "$value": {
-            "value": 370,
+            "value": 358,
             "unit": "ms"
           }
         }
@@ -12693,29 +13353,159 @@
         "standard": {
           "$type": "cubicBezier",
           "$value": [
-            0.3,
+            0.65,
             0,
-            0.45,
+            0.35,
             1
           ]
         },
         "enter": {
           "$type": "cubicBezier",
           "$value": [
-            0.25,
+            0.33,
             1,
-            0.64,
+            0.68,
             1
           ]
         },
         "exit": {
           "$type": "cubicBezier",
           "$value": [
-            0.4,
+            0.32,
             0,
-            1,
+            0.67,
+            0
+          ]
+        },
+        "fade": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.2,
+            0,
+            0,
             1
           ]
+        },
+        "pop": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring from rest, for parts that appear in place. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.015, 0.053, 0.107, 0.171, 0.241, 0.312, 0.384, 0.453, 0.518, 0.579, 0.635, 0.686, 0.731, 0.772, 0.808, 0.839, 0.867, 0.89, 0.91, 0.928, 0.942, 0.954, 0.964, 0.973, 0.979, 0.985, 0.989, 0.993, 0.996, 0.998, 0.999, 1.001, 1.001, 1.002, 1.002, 1.003, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 123,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 195,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 311,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 494,
+                  "unit": "ms"
+                }
+              },
+              "spring": {
+                "duration": 225,
+                "bounce": 0.12,
+                "velocity": 0,
+                "stiffness": 779.8,
+                "damping": 49.4,
+                "dampingRatio": 0.88,
+                "mass": 1
+              }
+            }
+          }
+        },
+        "arrive": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring that starts at speed, for parts that arrive from out of view. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.124, 0.238, 0.34, 0.432, 0.514, 0.587, 0.651, 0.707, 0.755, 0.797, 0.834, 0.865, 0.891, 0.913, 0.932, 0.948, 0.96, 0.971, 0.98, 0.987, 0.992, 0.996, 1, 1.002, 1.004, 1.005, 1.006, 1.007, 1.007, 1.007, 1.007, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 110,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 175,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 279,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 444,
+                  "unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "distance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "How far an arriving part travels."
+        },
+        "scale": {
+          "$type": "number",
+          "$value": 0.91,
+          "$description": "The scale that an arriving part grows from."
+        },
+        "press": {
+          "$type": "number",
+          "$value": 0.972,
+          "$description": "The scale of a pressed button."
+        },
+        "stagger": {
+          "$type": "duration",
+          "$value": {
+            "value": 37,
+            "unit": "ms"
+          },
+          "$description": "The delay between the items of a list that arrives."
+        },
+        "shake": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "How far a field shakes when its value is not valid. 0: no shake."
+        },
+        "weight": {
+          "$type": "number",
+          "$value": 0.34,
+          "$description": "How much size slows a part: duration = md × (size ÷ 400 px) ^ weight."
+        },
+        "travel": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "From the theme's animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade."
         }
       },
       "effect": {
@@ -15672,24 +16462,52 @@
         "$description": "The direction of the action gradient, in degrees: 180 (the default) runs top to bottom, and 90 left to right. The -from and -to color tokens are its ends."
       },
       "duration": {
+        "xs": {
+          "$type": "duration",
+          "$value": {
+            "value": 89,
+            "unit": "ms"
+          }
+        },
+        "sm": {
+          "$type": "duration",
+          "$value": {
+            "value": 141,
+            "unit": "ms"
+          }
+        },
+        "md": {
+          "$type": "duration",
+          "$value": {
+            "value": 225,
+            "unit": "ms"
+          }
+        },
+        "lg": {
+          "$type": "duration",
+          "$value": {
+            "value": 358,
+            "unit": "ms"
+          }
+        },
         "fast": {
           "$type": "duration",
           "$value": {
-            "value": 130,
+            "value": 141,
             "unit": "ms"
           }
         },
         "base": {
           "$type": "duration",
           "$value": {
-            "value": 220,
+            "value": 225,
             "unit": "ms"
           }
         },
         "slow": {
           "$type": "duration",
           "$value": {
-            "value": 370,
+            "value": 358,
             "unit": "ms"
           }
         }
@@ -15698,29 +16516,159 @@
         "standard": {
           "$type": "cubicBezier",
           "$value": [
-            0.3,
+            0.65,
             0,
-            0.45,
+            0.35,
             1
           ]
         },
         "enter": {
           "$type": "cubicBezier",
           "$value": [
-            0.25,
+            0.33,
             1,
-            0.64,
+            0.68,
             1
           ]
         },
         "exit": {
           "$type": "cubicBezier",
           "$value": [
-            0.4,
+            0.32,
             0,
-            1,
+            0.67,
+            0
+          ]
+        },
+        "fade": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.2,
+            0,
+            0,
             1
           ]
+        },
+        "pop": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring from rest, for parts that appear in place. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.015, 0.053, 0.107, 0.171, 0.241, 0.312, 0.384, 0.453, 0.518, 0.579, 0.635, 0.686, 0.731, 0.772, 0.808, 0.839, 0.867, 0.89, 0.91, 0.928, 0.942, 0.954, 0.964, 0.973, 0.979, 0.985, 0.989, 0.993, 0.996, 0.998, 0.999, 1.001, 1.001, 1.002, 1.002, 1.003, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 123,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 195,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 311,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 494,
+                  "unit": "ms"
+                }
+              },
+              "spring": {
+                "duration": 225,
+                "bounce": 0.12,
+                "velocity": 0,
+                "stiffness": 779.8,
+                "damping": 49.4,
+                "dampingRatio": 0.88,
+                "mass": 1
+              }
+            }
+          }
+        },
+        "arrive": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.33,
+            1,
+            0.68,
+            1
+          ],
+          "$description": "A spring that starts at speed, for parts that arrive from out of view. Position and scale only.",
+          "$extensions": {
+            "themetron": {
+              "css": "linear(0, 0.124, 0.238, 0.34, 0.432, 0.514, 0.587, 0.651, 0.707, 0.755, 0.797, 0.834, 0.865, 0.891, 0.913, 0.932, 0.948, 0.96, 0.971, 0.98, 0.987, 0.992, 0.996, 1, 1.002, 1.004, 1.005, 1.006, 1.007, 1.007, 1.007, 1.007, 1.006, 1.006, 1.006, 1.005, 1.005, 1.004, 1.004, 1.004, 1.003, 1.003, 1.002, 1.002, 1.002, 1.002, 1.001, 1.001, 1)",
+              "duration": {
+                "xs": {
+                  "value": 110,
+                  "unit": "ms"
+                },
+                "sm": {
+                  "value": 175,
+                  "unit": "ms"
+                },
+                "md": {
+                  "value": 279,
+                  "unit": "ms"
+                },
+                "lg": {
+                  "value": 444,
+                  "unit": "ms"
+                }
+              }
+            }
+          }
+        }
+      },
+      "motion": {
+        "distance": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "How far an arriving part travels."
+        },
+        "scale": {
+          "$type": "number",
+          "$value": 0.91,
+          "$description": "The scale that an arriving part grows from."
+        },
+        "press": {
+          "$type": "number",
+          "$value": 0.972,
+          "$description": "The scale of a pressed button."
+        },
+        "stagger": {
+          "$type": "duration",
+          "$value": {
+            "value": 37,
+            "unit": "ms"
+          },
+          "$description": "The delay between the items of a list that arrives."
+        },
+        "shake": {
+          "$type": "dimension",
+          "$value": {
+            "value": 2,
+            "unit": "px"
+          },
+          "$description": "How far a field shakes when its value is not valid. 0: no shake."
+        },
+        "weight": {
+          "$type": "number",
+          "$value": 0.34,
+          "$description": "How much size slows a part: duration = md × (size ÷ 400 px) ^ weight."
+        },
+        "travel": {
+          "$type": "number",
+          "$value": 1,
+          "$description": "From the theme's animation: 1 when parts travel in and out of view, such as a drawer; 0 when they only fade."
         }
       },
       "effect": {
