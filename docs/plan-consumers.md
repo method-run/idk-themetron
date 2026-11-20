@@ -17,7 +17,7 @@ This plan is for discussion. It is not a design yet. It looks at four ideas:
 
 1. **Look classes:** a standard stylesheet of classes that give any element a themetron look: fills, tints, surfaces, gradient text, shine, and motion. **Recommended.** This is the biggest gap.
 2. **An agent guide:** one file that tells a person or an AI agent how to theme a site. **Recommended.** It is cheap.
-3. **More packages:** split themetron into several npm packages. **Not yet.** Use subpath exports in one package now. Split only when a part needs its own dependencies.
+3. **More packages:** split themetron into several npm packages. **Not yet (decided).** Use subpath exports in one package now. Split only when a part needs its own dependencies.
 4. **Format previews:** show each export format on the stock parts of its framework, such as Bootstrap's buttons. **Recommended.** A Bootstrap preview is on the branch `plan/format-previews`, to try.
 
 The recipes page stays. It explains the looks, and it is the fallback for sites that cannot load another stylesheet. The recipes are made from the same source as the looks, so they cannot drift.
@@ -148,7 +148,7 @@ The code can make most of it from the manifest, so it stays current. A test can 
 
 ## 3. More packages
 
-**Recommendation: one package for now, with clearer entry points.** The package is small (143 kB packed, 25 files) and has no dependencies. A split adds versions to keep in step, and more places for a consumer to look. It helps when parts need different dependencies, and today none do.
+**Decided: one package for now, with clearer entry points.** The looks fit in it: they are CSS and text that the engine makes, with no new dependencies. So the package gains `/looks.css`, a Sass file of mixins, and the Tailwind utilities. The package is small (143 kB packed, 25 files) and has no dependencies. A split adds versions to keep in step, and more places for a consumer to look. It helps when parts need different dependencies, and today none do.
 
 <details>
 <summary>The layers, and where a cut could go</summary>
