@@ -1845,6 +1845,18 @@ $('#share').addEventListener('click', async (e) => {
   setTimeout(() => { button.textContent = 'Copy share link'; }, 1800);
 });
 
+// Open inputs as a new set, so they do not replace the open one. Throws if they are not valid,
+// and then the open set stays.
+function openNewSet(next, name, version) {
+  saveSets();
+  const was = sets.current;
+  const id = newSetId();
+  sets.list[id] = { name: freeSetName(name), state };
+  sets.current = id;
+  try { loadInputs(next, version); } catch (err) { delete sets.list[id]; sets.current = was; throw err; }
+  renderSets();
+}
+
 async function loadSharedLink() {
   const t = new URLSearchParams(location.search).get('t');
   if (!t) return;
@@ -1853,13 +1865,7 @@ async function loadSharedLink() {
     // Links from before version 2 have no version.
     const next = JSON.parse(json);
     // The link's themes open as a new set, so they do not replace the open one.
-    saveSets();
-    const was = sets.current;
-    const id = newSetId();
-    sets.list[id] = { name: freeSetName('Shared themes'), state };
-    sets.current = id;
-    try { loadInputs(next, next.version ?? 1); } catch (err) { delete sets.list[id]; sets.current = was; throw err; }
-    renderSets();
+    openNewSet(next, 'Shared themes', next.version ?? 1);
   } catch (err) {
     $('#error').textContent = `The link's themes could not load: ${loadMessage(err)}`;
     $('#error').hidden = false;
@@ -2014,6 +2020,22 @@ $('#set-name').addEventListener('change', (e) => {
   if (name) sets.list[sets.current].name = name;
   saveSets();
   renderSets();
+});
+// Import an inputs file, such as a download from the Inputs view, as a new set. The set takes
+// its name from the file: new-themes-inputs.json is "New themes".
+$('#set-import').addEventListener('click', () => $('#set-file').click());
+$('#set-file').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const name = defaultLabel(themeName(file.name.replace(/(-inputs)?\.json$/i, '')) || 'imported-themes');
+  try {
+    openNewSet(JSON.parse(await file.text()), name);
+    $('#error').hidden = true;
+  } catch (err) {
+    $('#error').textContent = `${file.name} could not load: ${loadMessage(err)}`;
+    $('#error').hidden = false;
+  }
 });
 $('#set-delete').addEventListener('click', () => {
   const { name } = sets.list[sets.current];
