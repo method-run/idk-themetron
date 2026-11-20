@@ -90,7 +90,20 @@ A site applies a look in one of three ways. All three come from one source in th
 .my-btn { @include tm.look-fill; }   /* Sass: a mixin for each look, in the Bootstrap Sass export and the package */
 ```
 
-The classes ship as a new export format, `looks`, and as a file in the package: `@method-run/idk-themetron/looks.css`. Then `components.css` uses the looks too, so the two cannot drift apart.
+The classes ship as a new export format, `looks`, and as a file in the package: `@method-run/idk-themetron/looks.css`. `components.css` imports it, so the two cannot drift apart:
+
+```css
+/* looks.css: the one source. Each rule names the look and the components that wear it. */
+@layer themetron {
+  .tm-look-tint, .tm-button--soft { --_bg: var(--tm-tint-action); }
+}
+
+/* components.css: layout only, such as size and padding. */
+@import "./looks.css";
+.tm-button { display: inline-flex; }
+```
+
+So markup that uses `tm-button` today keeps working. The Sass and Tailwind forms are made from `looks.css`, without the component names.
 
 <details>
 <summary>A first list of looks</summary>
@@ -115,7 +128,7 @@ A look sets colors, edges, radius, shadows, shine, and transitions. It does not 
 <details>
 <summary>How a look stays out of the site's way</summary>
 
-- **Low specificity.** Every rule is in `@layer themetron` and inside `:where()`. Any rule of the site wins.
+- **A layer, not low specificity.** Every rule is in `@layer themetron`. A rule outside a layer wins over a rule in one, whatever its specificity, so any rule of the site wins. The selectors are plain lists, not `:where()`: browsers sort plain class selectors into fast lookups.
 - **Hooks, not overrides.** A look reads private custom properties, such as `--_bg`, so a site can change one part of the look: `.my-btn { --tm-look-radius: 0 }`.
 - **Machine-readable.** The token manifest lists each look: its class, the states that it reacts to, the tokens that it reads, and a short markup example. A tool or an agent can map a site's parts to looks from the manifest.
 
@@ -125,7 +138,7 @@ A look sets colors, edges, radius, shadows, shine, and transitions. It does not 
 <summary>Decisions</summary>
 
 - The name is **look**. "Skin" read badly in code.
-- A look comes as a class, a Tailwind `@utility`, and a Sass mixin, all from one source.
+- A look comes as a class, a Tailwind `@utility`, and a Sass mixin, all from one source: `looks.css`. `components.css` imports it, and its rules name the components too, so markup does not change.
 - The recipes stay, and explain the looks: each recipe is "what this look does, in plain CSS", made from the same source. They are the fallback for a site that cannot load `looks.css`.
 - Every look starts as experimental, like the motion tokens. A look becomes stable after idk-plans uses it for a release or two.
 - The first release has every look in the table, motion too.
