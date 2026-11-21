@@ -77,13 +77,22 @@
     "version": "npm run spec:release && git add spec/versions",
     "examples": "node scripts/examples.js",
     "looks": "node scripts/looks.js",
+    "looks:check": "node scripts/looks-check.js",
     "docs:check": "idk-plans check",
     "docs:fix": "idk-plans fix",
     "prepublishOnly": "npm test && npm run docs:check"
   },
   "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@method-run/idk-plans": "^0.2.0",
+    "@mui/material": "^9.5.0",
     "bootstrap": "^5.3.3",
+    "daisyui": "^5.8.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sass": "^1.108.2",
+    "tailwindcss": "^4.3.5",
     "vite": "^8.3.5"
   }
 }

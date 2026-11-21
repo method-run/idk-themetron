@@ -110,6 +110,9 @@
      --tm-tint-alpha for tints. */
   --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
   background-image: var(--_fill-image);
+  /* Only the image paints. So a see-through fill shows the page behind it, not the browser's or
+     a framework's own button color. */
+  background-color: transparent;
   /* From the outer edge, so a see-through edge shows the gradient's own ends. */
   background-origin: border-box;
   /* A light frost: a quarter of the cards' blur, so see-through buttons stay see-through. */
@@ -271,7 +274,9 @@
 
 .tm-look-field, .tm-input, .tm-select, .tm-textarea {
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-field);
-  border-radius: min(var(--tm-radius-control), var(--tm-radius-lg));
+  /* A pill's radius is full, so the field rounds to half its height at most: a text area stays a
+     rounded box. */
+  border-radius: min(var(--tm-radius-control), var(--tm-radius-lg), var(--tm-control-height) / 2);
   background-color: color-mix(in oklab, var(--tm-bg-field) calc(var(--tm-field-alpha) * 100%), transparent);
   color: var(--tm-fg-base);
   box-shadow: var(--tm-elevation-field);
@@ -302,6 +307,13 @@
    pseudo-element, cut out with a mask, draws it. It follows rounded corners, and the middle
    stays see-through. Text fields have no pseudo-elements, so their edges stay solid. So do
    alerts, focus rings, and parts whose height varies a lot. */
+
+/* Whether a part draws its edge as a gradient ring: off, unless the part's parent is in a gradient
+   theme (below). The ring on ::before follows the part's choice. A pseudo-element's style query
+   reads the part itself, not its parent, so a part that wears a solid theme of its own, such as
+   a status outline in a gradient page, would clear its border and draw no ring. */
+.tm-look-ring, .tm-look-outline, .tm-button--outline, .tm-badge:not(.tm-badge--solid) { --_ring-drawn: off; }
+
 @container style(--tm-action-gradient: on) {
   .tm-look-gradient-text, .tm-link, .tm-field .tm-error, .tm-tabs button[aria-selected="true"] {
     --_text-from: var(--tm-fg-action-from);
@@ -342,6 +354,7 @@
 
   /* Rings. The outline's ring fades with the fill's opacity, as its border did. */
   .tm-look-ring {
+    --_ring-drawn: on;
     --_ring-width: max(1px, var(--tm-border-width));
     --_ring-from: var(--tm-border-action-from);
     --_ring-to: var(--tm-border-action-to);
@@ -349,11 +362,16 @@
     border-color: transparent;
   }
   .tm-look-outline, .tm-button--outline {
+    --_ring-drawn: on;
     --_ring-width: max(1px, var(--tm-border-width));
     --_ring-from: color-mix(in oklab, var(--tm-border-action-from) calc(var(--tm-fill-alpha) * 100%), transparent);
     --_ring-to: color-mix(in oklab, var(--tm-border-action-to) calc(var(--tm-fill-alpha) * 100%), transparent);
     border-color: transparent;
   }
+}
+
+/* The ring, on the parts that draw one. */
+@container style(--_ring-drawn: on) {
   .tm-look-ring::before, .tm-look-outline::before, .tm-button--outline::before, .tm-badge:not(.tm-badge--solid)::before {
     content: "";
     position: absolute;

@@ -249,7 +249,11 @@ export function looksOn(css, targets) {
   const keep = (selector) => [...selector.matchAll(LOOK_CLASS)].every(target)
     && !/\.tm-(?!invert(?![a-z0-9_-]))/.test(selector.replace(LOOK_CLASS, ''));
   const list = (selectors) => selectors.map((s) => eachInnerList(s, list)).filter((s) => s !== null && keep(s));
-  const swap = (selector) => selector.replace(LOOK_CLASS, (...match) => (splitList(target(match)).length > 1 ? `:is(${target(match)})` : target(match)));
+  // The focus ring's :where() list of looks becomes :is(). looks.css keeps the ring weak, so a
+  // site's own focus style wins, but a framework's parts must win over the framework's own focus
+  // style, such as Bootstrap's .btn:focus-visible { outline: 0 }.
+  const strong = (selector) => selector.replace(/:where\(([^()]*)\)(?=:focus-visible)/g, (whole, inner) => (new RegExp(LOOK_CLASS.source).test(inner) ? `:is(${inner})` : whole));
+  const swap = (selector) => strong(selector).replace(LOOK_CLASS, (...match) => (splitList(target(match)).length > 1 ? `:is(${target(match)})` : target(match)));
   const out = [];
   let open = [];
   for (const rule of readRules(css)) {

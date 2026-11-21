@@ -70,6 +70,8 @@ Each name has the prefix `--tm-` in CSS. The font size, leading, and space scale
 
 Experimental tokens include the action set (`fg-action`, `border-action`, the `fill`, `tint`, `on-fill`, and `on-tint` tokens of both roles, the exact button's tokens, and `base-key` and `action-key`), the heading colors (`fg-base-heading-*`), motion (`duration-*`, `ease-*`), `line-height-*`, the gloss, `highlight-*`, `glow-*`, `text-shadow-*`, and `shine-*` tokens, `text-halo`, the panel tokens, `lift`, and the opacity tokens (`fill-alpha`, `tint-alpha`, `field-alpha`, and their twins). The reference components use some of them, because they ship with themetron and change with it.
 
+The looks are stable too, under `looks` in the manifest: within a major version, each look keeps its class, Sass mixin, Tailwind utility, what it gives, and its states. A look reads experimental tokens, but it ships with them, so a site that uses a look does not read them itself. See [Looks](../components/README.md#looks "components").
+
 <details>
 <summary>Why the fills and tints are experimental</summary>
 
@@ -277,7 +279,7 @@ To release:
 
 This is the changelog of the token contract. The npm package has its own: [CHANGELOG.md](../CHANGELOG.md "changelog").
 
-- **Unreleased (0.4.0):** the manifest lists the looks under `looks`: each look's class, what it gives, its states, the components that wear it, its Sass mixin and Tailwind utility, and the tokens it reads. All are experimental. Additions only, so a minor version.
+- **Unreleased (0.4.0):** the manifest lists the looks under `looks`: each look's class, what it gives, its states, the components that wear it, its Sass mixin and Tailwind utility, and the tokens it reads. The looks are stable: within a major version, each look keeps its class, Sass mixin, Tailwind utility, what it gives, and its states. The tokens that a look reads, and its exact values, can change. At full roundness, the control radii are now `full` (9999px), so a control of any height is a pill. Below full roundness, they are the same. Additions and new values, so a minor version.
 - **0.3.0:** a new color model, `okhsl`, for `contrast.model` in the inputs. New inputs: the `playfulness` and `energy` feels, and `animation` (`none`, `fade`, or `move`). New experimental motion tokens: `duration-xs`, `-sm`, `-md`, and `-lg`, `ease-fade`, the springs `ease-pop` and `ease-arrive` (CSS `linear()` curves) with `duration-pop-*` and `duration-arrive-*`, and `motion-distance`, `-scale`, `-press`, `-stagger`, `-shake`, `-weight`, and `-travel`. Durations and curves now change with the theme. Additions only, so a minor version.
 - **0.2.0:** icons and action gradients, in package 0.2.0. New experimental tokens `font-icon`, `icon-fill`, and `icon-weight`, for Material Symbols icons. A theme's new `icons` input sets them. The CSS loads the icon font with a second `@import`. New experimental tokens for the action gradient, which a theme's `action` input can now set: `action-angle`, the `-from` and `-to` ends of each `fill-action`, `fill-action-exact`, and `tint-action` state, and an `-image` for each. Without a gradient, the ends are the solid color. Themes with a gradient also have the ramps `action-from-*` and `action-to-*`. Action text, edges, and labels on tints have ends too: `fg-action-from` and `-to`, `border-action-from` and `-to`, and `on-tint-action-from` and `-to` for each state. `action-gradient` is `on` or `off`, for a style query.
 - **0.1.0:** the first contract, in package 0.1.0.

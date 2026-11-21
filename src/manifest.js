@@ -180,14 +180,16 @@ export function tokenManifest({ looksCss } = {}) {
 }
 
 // The looks, by class: what each gives, the states and components, the Sass mixin and Tailwind
-// utility of the same look, and the tokens that it reads. All are experimental for now.
+// utility of the same look, and the tokens that it reads. The looks are stable: within a major
+// version, each keeps its class, mixin, utility, summary, and states. The tokens it reads can
+// change, as they ship with it.
 function lookEntries(looksCss) {
   const rules = looksCss ? parseLooks(looksCss).looks : {};
   return Object.fromEntries(Object.entries(LOOKS).map(([name, look]) => {
     const css = (rules[name] ?? []).flatMap((r) => r.decls).join(';');
     const reads = [...new Set([...css.matchAll(/var\(--tm-([a-z0-9-]+)/g)].map((m) => m[1]))].sort();
     return [lookClass(name), {
-      stability: 'experimental',
+      stability: 'stable',
       summary: look.summary,
       states: look.states,
       components: look.components,

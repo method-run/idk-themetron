@@ -639,9 +639,9 @@
   --tm-radius-sm: 4px;
   --tm-radius-md: 16px;
   --tm-radius-lg: 24px;
-  --tm-radius-control: 18px;
-  --tm-radius-control-sm: 14px;
-  --tm-radius-control-lg: 22px;
+  --tm-radius-control: 9999px;
+  --tm-radius-control-sm: 9999px;
+  --tm-radius-control-lg: 9999px;
   --tm-radius-full: 9999px;
   --tm-roundness: 1;
   --tm-edge-alpha: 1;

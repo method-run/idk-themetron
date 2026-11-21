@@ -8,8 +8,8 @@
           "contrastText": "#ffffff"
         },
         "secondary": {
-          "main": "#e6eeff",
-          "contrastText": "#2152e4"
+          "main": "#c9ced9",
+          "contrastText": "#20242c"
         },
         "error": {
           "main": "#bb1758",
@@ -43,8 +43,8 @@
           "contrastText": "#000000"
         },
         "secondary": {
-          "main": "#01005e",
-          "contrastText": "#5386ff"
+          "main": "#353a44",
+          "contrastText": "#eaeef6"
         },
         "error": {
           "main": "#f05283",
@@ -73,6 +73,28 @@
   },
   "shape": {
     "borderRadius": 5.6
+  },
+  "components": {
+    "MuiButton": {
+      "styleOverrides": {
+        "root": {
+          "borderRadius": 6.3
+        },
+        "sizeSmall": {
+          "borderRadius": 4.9
+        },
+        "sizeLarge": {
+          "borderRadius": 7.7
+        }
+      }
+    },
+    "MuiOutlinedInput": {
+      "styleOverrides": {
+        "root": {
+          "borderRadius": 6.3
+        }
+      }
+    }
   },
   "shadows": [
     "none",

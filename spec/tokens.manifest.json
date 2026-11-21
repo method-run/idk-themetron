@@ -2260,7 +2260,7 @@
   },
   "looks": {
     "tm-look-fill": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "A solid action fill, with the theme's shine and lift: a primary button.",
       "states": [
         ":hover",
@@ -2327,7 +2327,7 @@
       ]
     },
     "tm-look-tint": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "A soft tint of the action color: a secondary button, or a selected item.",
       "states": [
         ":hover",
@@ -2416,7 +2416,7 @@
       ]
     },
     "tm-look-quiet": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "A quiet fill in the base color, for parts that are not the main action.",
       "states": [
         ":hover",
@@ -2489,7 +2489,7 @@
       ]
     },
     "tm-look-outline": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "An edge in the action color, with a tint on hover. In a gradient theme, the edge is the gradient.",
       "states": [
         ":hover",
@@ -2566,7 +2566,7 @@
       ]
     },
     "tm-look-ghost": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "Action text with no edge, and a tint on hover.",
       "states": [
         ":hover",
@@ -2640,7 +2640,7 @@
       ]
     },
     "tm-look-surface": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "A card or a panel: the panel color, edge, radius, elevation, and frost.",
       "states": [],
       "components": [
@@ -2660,7 +2660,7 @@
       ]
     },
     "tm-look-field": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "A text field: the field color, edge, radius, and inset shadow.",
       "states": [
         ":hover",
@@ -2682,6 +2682,7 @@
         "border-base-field",
         "border-focus",
         "border-width",
+        "control-height",
         "duration-fast",
         "ease-standard",
         "elevation-field",
@@ -2695,7 +2696,7 @@
       ]
     },
     "tm-look-gradient-text": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "Action text, such as a link. In a gradient theme, the letters wear the gradient.",
       "states": [
         ":focus-visible"
@@ -2717,7 +2718,7 @@
       ]
     },
     "tm-look-ring": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "An edge in the action color. In a gradient theme, the edge is the gradient, and follows rounded corners.",
       "states": [],
       "components": [],
@@ -2733,7 +2734,7 @@
       ]
     },
     "tm-enter-pop": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "Motion: the part pops in place as it appears, and shrinks away as it goes, such as a menu or a popover.",
       "states": [
         "[hidden]",
@@ -2757,7 +2758,7 @@
       ]
     },
     "tm-enter-arrive": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "Motion: the part comes in from below the edge with a spring, and drops away as it goes, such as a toast.",
       "states": [
         "[hidden]",
@@ -2781,7 +2782,7 @@
       ]
     },
     "tm-enter-fade": {
-      "stability": "experimental",
+      "stability": "stable",
       "summary": "Motion: the part fades in and out in place, such as a tooltip.",
       "states": [
         "[hidden]",

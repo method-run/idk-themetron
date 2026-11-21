@@ -225,6 +225,10 @@ export function buildTheme(settings: ResolvedTheme): Theme;
 export interface SetOption {
   set?: string;
 }
+/** `looksCss`: the text of components/looks.css. With it, a framework export also gets themetron's tokens, and its looks on the framework's parts. The looks read --tm-* tokens, so use the default prefix. */
+export interface LooksOption {
+  looksCss?: string;
+}
 export interface CssOptions extends SetOption {
   /** The token prefix. Default "tm". */
   prefix?: string;
@@ -240,18 +244,22 @@ export interface CssOptions extends SetOption {
 export function toCss(built: BuiltThemes, options?: CssOptions): string;
 /** Design Tokens Community Group JSON: one group for each theme. */
 export function toDtcg(built: BuiltThemes, options?: SetOption): Record<string, any>;
-/** A Tailwind CSS v4 `@theme inline` block. Use it with the output of toCss. */
-export function toTailwind(built: BuiltThemes, options?: { prefix?: string } & SetOption): string;
-/** shadcn/ui theme variables, for its globals.css. */
-export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
+/** A Tailwind CSS v4 `@theme inline` block. Use it with the output of toCss. `looksCss`, the text of components/looks.css, also adds the tokens, and the looks as utilities. */
+export function toTailwind(built: BuiltThemes, options?: { prefix?: string } & LooksOption & SetOption): string;
+/** shadcn/ui theme variables, for its globals.css. `looksCss` also gives shadcn/ui's buttons, cards, and fields themetron's looks. */
+export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string } & LooksOption & SetOption): string;
 /** Bootstrap 5 Sass variables, to import before Bootstrap. The root theme's light values, with *-dark twins. */
 export function toBootstrapSass(built: BuiltThemes, options?: { more?: boolean } & SetOption): string;
 /** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. `looksCss`, the text of components/looks.css, also gives Bootstrap's buttons, cards, and fields themetron's looks. */
-export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string; looksCss?: string } & SetOption): string;
+export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string } & LooksOption & SetOption): string;
+/** Themetron's tokens and looks on Bootstrap's buttons, cards, and fields, as CSS to load after Bootstrap. For a Bootstrap built from Sass. */
+export function toBootstrapLooks(built: BuiltThemes, options: { classPrefix?: string; looksCss: string } & SetOption): string;
 /** A Material UI theme for createTheme(), with light and dark colorSchemes. */
 export function toMui(built: BuiltThemes, options?: { theme?: string; more?: boolean }): Record<string, any>;
+/** Themetron's tokens and looks on MUI's buttons and cards, as CSS to load next to the MUI theme. */
+export function toMuiLooks(built: BuiltThemes, options: { classPrefix?: string; looksCss: string } & SetOption): string;
 /** daisyUI 5 themes for a Tailwind CSS v4 stylesheet. Use it with the output of toCss. */
-export function toDaisyui(built: BuiltThemes, options?: { prefix?: string; classPrefix?: string; /** The daisyUI theme name. Default: the set's name, or "themetron". */ name?: string } & SetOption): string;
+export function toDaisyui(built: BuiltThemes, options?: { prefix?: string; classPrefix?: string; /** The daisyUI theme name. Default: the set's name, or "themetron". */ name?: string } & LooksOption & SetOption): string;
 /** A Google Fonts URL for the named font families of all themes, or null. Families with their own files are not in it. */
 export function fontImport(built: BuiltThemes): string | null;
 /** The @font-face rules for the themes' own font files, or "". */

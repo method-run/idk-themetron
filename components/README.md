@@ -68,7 +68,9 @@ Each look also comes as a Sass mixin and a Tailwind CSS v4 utility of the same n
 .my-button { @apply tm-look-fill; }
 ```
 
-On Bootstrap, the `bootstrap-css` export can put the looks on Bootstrap's own classes, so you don't change your markup. Build it with `--looks`, or pick **Themetron looks** in the playground.
+Each framework export can put the looks on the framework's own parts, so you don't change your markup. Build it with `--looks`, or pick **Themetron looks** next to the format in the playground. The playground's preview shows the framework's stock parts with or without the looks. Each status button wears its status theme, when the theme set has one.
+
+**Bootstrap** (`bootstrap-css`, or `bootstrap` for a Bootstrap built from Sass):
 
 | Bootstrap class | Look |
 |---|---|
@@ -79,14 +81,54 @@ On Bootstrap, the `bootstrap-css` export can put the looks on Bootstrap's own cl
 | `.card` | `surface` |
 | `.form-control`, `.form-select` | `field` |
 
+**shadcn/ui** (`shadcn`), by each part's `data-slot` and `data-variant`:
+
+| Part | Look |
+|---|---|
+| Button, `default` | `fill` |
+| Button, `destructive` | `fill`, in the danger theme's colors |
+| Button, `secondary` | `quiet` |
+| Button, `outline` | `outline` |
+| Button, `ghost` | `ghost` |
+| Button, `link` | `gradient-text` |
+| Card | `surface` |
+| Input, Textarea, Select | `field` |
+
+**daisyUI** (`daisyui`):
+
+| Class | Look |
+|---|---|
+| `.btn-primary`, and each status color | `fill` |
+| `.btn-soft` | `tint` |
+| `.btn-secondary`, and `.btn` with no color or style | `quiet` |
+| `.btn-outline`, `.btn-dash` | `outline` |
+| `.btn-ghost` | `ghost` |
+| `.btn-link`, `.link` | `gradient-text` |
+| `.card` | `surface` |
+| `.input`, `.select`, `.textarea` | `field` |
+
+**Material UI** (`mui`): a CSS file to load next to the MUI theme. Each button target has three classes, so it wins over MUI's own state styles.
+
+| Part | Look |
+|---|---|
+| Button, `contained`, primary and each status color | `fill` |
+| Button, `contained`, secondary | `quiet` |
+| Button, `outlined` | `outline` |
+| Button, `text` | `ghost` |
+| Card | `surface` |
+
+**Tailwind CSS** (`tailwind`) has no parts of its own. The export adds the tokens and the looks as utilities, so you write `class="tm-look-fill"` or `@apply tm-look-fill`.
+
 <details>
 <summary>How looks work</summary>
 
 - `components/looks.css` is the one source. `components.css` imports it, and each look's rules also name the components that wear it, such as `.tm-look-tint, .tm-button--soft`. So the components and the looks cannot drift apart.
 - `npm run looks` makes `components/_looks.scss` and `components/looks.tailwind.css` from `looks.css`. They name no components. A test fails when they are out of date. In a browser, the three forms of each look give the same computed styles, at rest, on hover, and on press.
 - A look's rules have the specificity of one class, as a component's do. A class of your site that comes later wins, and an element rule, such as a reset of `button`, does not. The looks are not in a cascade layer: a site's unlayered reset of `button` would win over a layer, and wipe the looks.
-- The token manifest lists each look under `looks`: what it gives, its states, the components that wear it, its Sass and Tailwind names, and the tokens it reads. All looks are experimental for now.
-- `looksOn(looksCss, targets)` puts other classes in place of the looks, such as `{ fill: '.btn-primary' }`, with the same order and specificity. The Bootstrap export uses it. It also adds the tokens, with each status theme's rules naming its buttons, and makes the mode follow `data-bs-theme`, not the system setting.
+- The token manifest lists each look under `looks`: what it gives, its states, the components that wear it, its Sass and Tailwind names, and the tokens it reads. The looks are stable: within a major version of the contract, each look keeps its class, Sass mixin, Tailwind utility, what it gives, and its states. The tokens that a look reads, and its exact values, can change.
+- `looksOn(looksCss, targets)` puts other classes in place of the looks, such as `{ fill: '.btn-primary' }`, with the same order and specificity. The framework exports use it. They also add the tokens, with each status theme's rules naming its parts. On Bootstrap and MUI, the buttons and fields have the specificity of three classes, because those frameworks' own state rules have up to three, such as Bootstrap's `:not(.btn-check)+.btn:active`. The focus ring takes the specificity of the framework's part, so it wins over the framework's own focus style. `npm run looks:check` checks this in headless Chrome, and CI runs it on each pull request: each part's colors, edges, radius, shadows, shine, and focus ring match plain looks in every state, at rest, on hover, on press, and on focus. It also fails when a part is missing, or an outline has no edge. The mode follows the framework's own switch: `data-bs-theme` for Bootstrap, the `.dark` class for shadcn/ui, and daisyUI's themes. For MUI and Tailwind, it follows the system setting or `data-tm-mode`.
+- Secondary is always the quiet look, the second button next to the main one. daisyUI's `.btn-soft` keeps the tint. The colors-only exports follow it: MUI's and daisyUI's secondary color is `fill-quiet`.
+- In a gradient theme, a part decides from its parent's theme whether its edge is a gradient ring, and sets `--_ring-drawn`. Its `::before` draws the ring from that, because a pseudo-element's style query reads the part itself. So a status outline in a gradient page, such as `.btn-outline-danger`, keeps its edge.
 - The shine of a fill is sized for a control. A taller part can set `--_shine-height` to its own height.
 
 </details>

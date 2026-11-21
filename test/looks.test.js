@@ -60,12 +60,13 @@ test('each form has every look, and the shared rules that the looks need', async
   }
 });
 
-test('looksOn puts other classes in place of the looks, and keeps the order and specificity', () => {
+test('looksOn puts other classes in place of the looks, and keeps the order and specificity, but the focus ring takes the parts\' own', () => {
   const css = `@property --_x { syntax: '<color>'; inherits: true; initial-value: transparent; }
 :where(.tm-look-fill, .tm-look-tint, .tm-button) { --_a: 1; }
 .tm-look-fill, .tm-look-tint, .tm-button { color: red; }
 .tm-look-fill:hover, .tm-button:hover { color: blue; }
 .tm-card { color: green; }
+:where(.tm-look-fill, .tm-button):focus-visible { outline: 2px solid; }
 .tm-look-fill.tm-invert { color: black; }
 @container style(--tm-action-gradient: on) {
   .tm-look-fill::before { content: ""; }
@@ -75,6 +76,7 @@ test('looksOn puts other classes in place of the looks, and keeps the order and 
 :where(:is(.btn-a, .btn-b)) { --_a: 1; }
 :is(.btn-a, .btn-b) { color: red; }
 :is(.btn-a, .btn-b):hover { color: blue; }
+:is(:is(.btn-a, .btn-b)):focus-visible { outline: 2px solid; }
 :is(.btn-a, .btn-b).tm-invert { color: black; }
 @container style(--tm-action-gradient: on) {
 :is(.btn-a, .btn-b)::before { content: ""; }

@@ -62,7 +62,7 @@ A token path such as `on-fill.action` becomes `--tm-on-fill-action` in CSS, and 
 | `rhythm` | `rhythm` = 4px | The grid: 4 px squares in every theme. Space steps, line heights, and the heights of parts are whole multiples of it. |
 | `space.<step>` | `space.md` | `xs` to `3xl`. |
 | `control.height`, `control.heightSm`, `control.heightLg`, `control.paddingX`, `control.paddingY` | | For buttons, fields, and avatars. Heights are whole rhythm steps. |
-| `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `controlSm`, `controlLg`, `full`. Each control radius is a pill at full roundness, for its own control size. `sm`, `md`, and `lg` round as far as the padding of the parts that use them. |
+| `radius.<step>` | `radius.control` | `sm`, `md`, `lg`, `control`, `controlSm`, `controlLg`, `full`. At full roundness, each control radius is `full`, so a control of any height is a pill. Below it, a control radius is `roundness × h ÷ 2` for its own control size. `sm`, `md`, and `lg` round as far as the padding of the parts that use them. |
 | `roundness` | `roundness` | The roundness feel, from 0 to 1. A part of height `h` that has no radius token of its own rounds by `roundness × h ÷ 2`, so it is a pill at 1. The components use it for badges, switches, and progress bars. Experimental. |
 | `border.width`, `border.focus` | | The edge width, from thinness: `round((1 − thinness) × 4)` px, so 4 px at 0, 1 px at the default (0.8), and 0 at thinness 1. CSS: `border-width` and `panel-border-width`. The focus width is `max(2, width + 1)` px. |
 | `icon.family`, `icon.fill`, `icon.weight` | | The icons: Material Symbols. From the theme's `icons` input: the style's font, the fill (1 or 0), and the line weight (100 to 700). CSS: `font-icon`, `icon-fill`, `icon-weight`. |
@@ -233,9 +233,11 @@ npx themetron --help
 | `tailwind` | A Tailwind CSS v4 theme. It reads the CSS tokens, so add them too. |
 | `shadcn` | Variables for shadcn/ui's `globals.css`. |
 | `bootstrap` | Bootstrap 5 Sass variables. Import the file before Bootstrap. |
-| `bootstrap-css` | Bootstrap 5.3 CSS variables. Load the file after `bootstrap.css`. With `--looks`, Bootstrap's buttons, cards, and fields also get themetron's looks. |
+| `bootstrap-css` | Bootstrap 5.3 CSS variables. Load the file after `bootstrap.css`. |
 | `mui` | A Material UI theme for the root theme, as JSON. Pass it to `createTheme()`. |
 | `daisyui` | Two daisyUI 5 themes, light and dark. They read the CSS tokens, so add them too. |
+
+With `--looks`, each framework format also gets the tokens and themetron's looks on the framework's own parts. For `bootstrap` and `mui`, `--looks` makes a CSS file of its own instead: load it after Bootstrap, or next to the MUI theme. See [Looks](../components/README.md#looks "components").
 
 If the inputs have problems, the command prints one line for each problem and exits with code 1. It writes no tokens. The [Inputs spec](./inputs.md "inputs") describes the inputs file.
 
@@ -249,7 +251,7 @@ These flags change the output. Each one is an option of the export function, and
 | `--no-more` | Leave out the more-contrast rules. | `css`, `stylesheet` |
 | `--more` | Make the more-contrast version, which your app or page loads for readers who ask for more contrast. | `mui`, `bootstrap` |
 | `--no-icons` | Leave out the `@import` of the icon font, for pages without icons, or a site that loads the font itself. The icon tokens stay. | `css`, `stylesheet` |
-| `--looks` | Add the tokens and themetron's looks on Bootstrap's buttons, cards, and fields. See [Looks](../components/README.md#looks "components"). | `bootstrap-css` |
+| `--looks` | Add the tokens and themetron's looks on the framework's buttons, cards, and fields. It takes no `--prefix`, because the looks read `--tm-*` tokens. See [Looks](../components/README.md#looks "components"). | `tailwind`, `shadcn`, `daisyui`, `bootstrap`, `bootstrap-css`, `mui` |
 | `--set <name>` | The theme set's name. The file's first line names it, with the token contract. It is also the daisyUI theme's name. | all but `mui` |
 
 `stylesheet` takes no `--prefix`, because the components read `--tm-*` tokens.
