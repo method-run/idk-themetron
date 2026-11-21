@@ -377,3 +377,69 @@
     pointer-events: none;
   }
 }
+
+/* ---- Motion: parts that come and go. Each reads the theme's motion: a sober theme moves little,
+   and a giddy one bounces. In a theme that fades, parts come and go in place, and in a theme with
+   no animation they appear and disappear at once. A part comes in when it appears: when it is
+   added to the page, or loses [hidden], or a dialog or popover opens. It leaves when it gets
+   [hidden], or the dialog or popover closes. No script is needed. */
+
+/* Pop: a part that pops in place, such as a menu or a popover. It grows out of where it comes
+   from: set transform-origin toward its trigger. tm-pop does the same with .is-open. */
+.tm-enter-pop, .tm-pop.is-open {
+  opacity: 1;
+  transform: none;
+  transition: opacity calc(var(--tm-duration-sm) * 0.67) var(--tm-ease-fade), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+}
+.tm-enter-pop:is([hidden], dialog:not([open]), [popover]:not(:popover-open)), .tm-pop {
+  transition:
+    opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    display calc(var(--tm-duration-sm) * 0.8) allow-discrete,
+    overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+  opacity: 0;
+  transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale));
+}
+@starting-style { .tm-enter-pop, .tm-pop.is-open { opacity: 0; transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale)); } }
+
+/* Arrive: a part that comes in from below the edge, such as a toast or a sheet, already at speed:
+   the arrive spring. It leaves with the exit curve. tm-toast does the same with .is-open. */
+.tm-enter-arrive, .tm-toast.is-open {
+  opacity: 1;
+  transform: none;
+  transition: opacity calc(var(--tm-duration-sm) * 0.5) var(--tm-ease-fade), transform var(--tm-duration-arrive-sm) var(--tm-ease-arrive);
+}
+.tm-enter-arrive:is([hidden], dialog:not([open]), [popover]:not(:popover-open)), .tm-toast {
+  opacity: 0;
+  /* Below the edge, by its own height. In a theme that fades, it stays in place. */
+  transform: translateY(calc((100% + var(--tm-space-lg)) * var(--tm-motion-travel)));
+  transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit);
+}
+/* It stays shown while it leaves. (tm-toast stays shown until its script hides it.) */
+.tm-enter-arrive:is([hidden], dialog:not([open]), [popover]:not(:popover-open)) {
+  transition:
+    opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    display calc(var(--tm-duration-sm) * 0.8) allow-discrete,
+    overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+}
+@starting-style { .tm-enter-arrive { opacity: 0; transform: translateY(calc((100% + var(--tm-space-lg)) * var(--tm-motion-travel))); } }
+
+/* Fade: a part that fades in and out in place, such as a tooltip or a note. */
+.tm-enter-fade {
+  opacity: 1;
+  transition: opacity calc(var(--tm-duration-sm) * 0.67) var(--tm-ease-fade);
+}
+.tm-enter-fade:is([hidden], dialog:not([open]), [popover]:not(:popover-open)) {
+  opacity: 0;
+  transition:
+    opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
+    display calc(var(--tm-duration-sm) * 0.8) allow-discrete,
+    overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+}
+@starting-style { .tm-enter-fade { opacity: 0; } }
+
+/* Readers who ask for less motion get none: every change is at once. */
+@media (prefers-reduced-motion: reduce) {
+  .tm-look-fill, .tm-look-tint, .tm-look-quiet, .tm-look-outline, .tm-look-ghost, .tm-look-field, .tm-look-gradient-text, .tm-enter-pop, .tm-enter-arrive, .tm-enter-fade { transition-duration: 0s !important; }
+}

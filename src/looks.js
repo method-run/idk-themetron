@@ -15,7 +15,13 @@ export const LOOKS = {
   field: { summary: 'A text field: the field color, edge, radius, and inset shadow.', components: ['tm-input', 'tm-select', 'tm-textarea'], states: [':hover', ':focus-visible', '[aria-invalid="true"]', '::placeholder'], example: '<input class="search tm-look-field">' },
   'gradient-text': { summary: 'Action text, such as a link. In a gradient theme, the letters wear the gradient.', components: ['tm-link'], states: [':focus-visible'], example: '<a class="nav-link tm-look-gradient-text" href="/docs">Docs</a>' },
   ring: { summary: 'An edge in the action color. In a gradient theme, the edge is the gradient, and follows rounded corners.', components: [], states: [], example: '<div class="avatar tm-look-ring">…</div>' },
+  'enter-pop': { summary: 'Motion: the part pops in place as it appears, and shrinks away as it goes, such as a menu or a popover.', components: ['tm-pop'], states: ['[hidden]', 'dialog:not([open])', '[popover]:not(:popover-open)'], example: '<div class="menu tm-enter-pop" popover>…</div>' },
+  'enter-arrive': { summary: 'Motion: the part comes in from below the edge with a spring, and drops away as it goes, such as a toast.', components: ['tm-toast'], states: ['[hidden]', 'dialog:not([open])', '[popover]:not(:popover-open)'], example: '<div class="toast tm-enter-arrive" popover="manual">Saved.</div>' },
+  'enter-fade': { summary: 'Motion: the part fades in and out in place, such as a tooltip.', components: [], states: ['[hidden]', 'dialog:not([open])', '[popover]:not(:popover-open)'], example: '<p class="note tm-enter-fade" hidden>Copied.</p>' },
 };
+
+// The class of a look: tm-look-<name>, or tm-enter-<kind> for the motion looks.
+export const lookClass = (name) => (name.startsWith('enter-') ? `tm-${name}` : `tm-look-${name}`);
 
 // ---- A small CSS reader, for the plain CSS of looks.css: comments, at-rules with or without a
 // block, and style rules. No nesting inside style rules.
@@ -82,13 +88,16 @@ const declarations = (body) => {
   return decls.map((d) => d.replace(/\s+/g, ' ').trim()).filter(Boolean);
 };
 
+// The look's name from a match of its class: fill, or enter-pop.
+const lookName = ([, kind, name]) => (kind === 'enter' ? `enter-${name}` : name);
+
 // Where a selector names a look: the look, and the selector with the look as &. The look is a
 // class of its own, such as .tm-look-fill:hover, or one item of :is() or :where(), such as
 // :is(.tm-look-tint, .tm-button--soft) > span; then the whole :is() becomes &.
 export function lookInSelector(selector) {
-  const m = /\.tm-look-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/.exec(selector);
+  const m = /\.tm-(look|enter)-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/.exec(selector);
   if (!m) return null;
-  const name = m[1];
+  const name = lookName(m);
   // Is the look inside :is( or :where( ? Find the innermost open group before it.
   let depth = 0;
   for (let i = m.index - 1; i >= 0; i--) {
@@ -135,11 +144,11 @@ export function parseLooks(css) {
 // Every look that a selector names, each with the selector made relative to it.
 function looksIn(selector) {
   const out = [];
-  const names = new Set([...selector.matchAll(/\.tm-look-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/g)].map((m) => m[1]));
+  const names = new Set([...selector.matchAll(/\.tm-(look|enter)-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/g)].map(lookName));
   for (const name of names) {
     // Hide the other looks, so lookInSelector finds this one, then show them again.
     const others = [];
-    const only = selector.replace(/\.tm-look-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/g, (all, n) => (n === name ? all : `.tm-hidden-${others.push(all) - 1}`));
+    const only = selector.replace(/\.tm-(look|enter)-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/g, (all, kind, n) => (lookName([all, kind, n]) === name ? all : `.tm-hidden-${others.push(all) - 1}`));
     const found = lookInSelector(only);
     if (found) out.push({ name, nested: found.nested.replace(/\.tm-hidden-(\d+)/g, (all, i) => others[i]) });
   }
@@ -178,23 +187,24 @@ const inOrder = (looks) => Object.entries(looks).sort(([a], [b]) => (Object.keys
 
 const plainRule = ({ selectors, body }) => `${selectors.join(', ')} { ${declarations(body).join('; ')}; }`;
 
-// The Sass form: a mixin for each look. @use "…/looks" as tm; then .my-button { @include tm.look-fill; }
+// The Sass form: a mixin for each look, look-<name> or enter-<kind>. @use "…/looks" as tm; then
+// .my-button { @include tm.look-fill; }
 export function looksScss(css) {
   const { looks, statements, shared } = parseLooks(css);
   const parts = [HEADER('as Sass mixins'), '', ...statements, ...shared.map(plainRule)];
   for (const [name, rules] of inOrder(looks)) {
-    parts.push('', `@mixin look-${name} {`, ...nestedBody(rules, 2), '}');
+    parts.push('', `@mixin ${lookClass(name).replace(/^tm-/, '')} {`, ...nestedBody(rules, 2), '}');
   }
   return parts.join('\n') + '\n';
 }
 
-// The Tailwind CSS v4 form: a utility for each look, named as the class. @import it after
+// The Tailwind CSS v4 form: a utility for each look, named as its class. @import it after
 // tailwindcss; then class="tm-look-fill", or .my-button { @apply tm-look-fill; }
 export function looksTailwind(css) {
   const { looks, statements, shared } = parseLooks(css);
   const parts = [HEADER('as Tailwind CSS v4 utilities'), '', ...statements, ...shared.map(plainRule)];
   for (const [name, rules] of inOrder(looks)) {
-    parts.push('', `@utility tm-look-${name} {`, ...nestedBody(rules, 2), '}');
+    parts.push('', `@utility ${lookClass(name)} {`, ...nestedBody(rules, 2), '}');
   }
   return parts.join('\n') + '\n';
 }

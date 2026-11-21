@@ -133,6 +133,11 @@
     --_edge-alpha: var(--_edge-alpha-inverted, 1);
     --_halo-strength: 0;
   }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
+  }
 }
 
 @utility tm-look-tint {
@@ -323,6 +328,11 @@
       text-shadow: none;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
+  }
 }
 
 @utility tm-look-quiet {
@@ -471,6 +481,11 @@
     --_alpha: var(--tm-tint-alpha);
     --_edge-alpha: var(--_edge-alpha-inverted, 1);
     --_halo-strength: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
   }
 }
 
@@ -649,6 +664,11 @@
       pointer-events: none;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
+  }
 }
 
 @utility tm-look-ghost {
@@ -794,6 +814,11 @@
       text-shadow: none;
     }
   }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
+  }
 }
 
 @utility tm-look-surface {
@@ -826,6 +851,11 @@
   }
   &[aria-invalid="true"] {
     border-color: var(--tm-border-action);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
   }
 }
 
@@ -860,6 +890,11 @@
   @container style(--tm-action-gradient: on) {
     & ::selection, &::selection {
       -webkit-text-fill-color: currentColor;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
     }
   }
 }
@@ -897,6 +932,72 @@
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
+    }
+  }
+}
+
+@utility tm-enter-pop {
+  opacity: 1;
+  transform: none;
+  transition: opacity calc(var(--tm-duration-sm) * 0.67) var(--tm-ease-fade), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
+  &:is([hidden], dialog:not([open]), [popover]:not(:popover-open)) {
+    transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), display calc(var(--tm-duration-sm) * 0.8) allow-discrete, overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+    opacity: 0;
+    transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale));
+  }
+  @starting-style {
+    & {
+      opacity: 0;
+      transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
+  }
+}
+
+@utility tm-enter-arrive {
+  opacity: 1;
+  transform: none;
+  transition: opacity calc(var(--tm-duration-sm) * 0.5) var(--tm-ease-fade), transform var(--tm-duration-arrive-sm) var(--tm-ease-arrive);
+  &:is([hidden], dialog:not([open]), [popover]:not(:popover-open)) {
+    opacity: 0;
+    transform: translateY(calc((100% + var(--tm-space-lg)) * var(--tm-motion-travel)));
+    transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit);
+  }
+  &:is([hidden], dialog:not([open]), [popover]:not(:popover-open)) {
+    transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), display calc(var(--tm-duration-sm) * 0.8) allow-discrete, overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+  }
+  @starting-style {
+    & {
+      opacity: 0;
+      transform: translateY(calc((100% + var(--tm-space-lg)) * var(--tm-motion-travel)));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
+    }
+  }
+}
+
+@utility tm-enter-fade {
+  opacity: 1;
+  transition: opacity calc(var(--tm-duration-sm) * 0.67) var(--tm-ease-fade);
+  &:is([hidden], dialog:not([open]), [popover]:not(:popover-open)) {
+    opacity: 0;
+    transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), display calc(var(--tm-duration-sm) * 0.8) allow-discrete, overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
+  }
+  @starting-style {
+    & {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & {
+      transition-duration: 0s !important;
     }
   }
 }

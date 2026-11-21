@@ -671,25 +671,9 @@
 
 /* A part that pops in place, such as a menu: it grows out of where it comes from. Set
    transform-origin toward its trigger. Toggle .is-open: closed, it is display: none, after its
-   exit. */
-.tm-pop {
-  transform-origin: top left;
-  transition:
-    opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
-    transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit),
-    display calc(var(--tm-duration-sm) * 0.8) allow-discrete,
-    overlay calc(var(--tm-duration-sm) * 0.8) allow-discrete;
-  display: none;
-  opacity: 0;
-  transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale));
-}
-.tm-pop.is-open {
-  display: block;
-  opacity: 1;
-  transform: none;
-  transition: opacity calc(var(--tm-duration-sm) * 0.67) var(--tm-ease-fade), transform var(--tm-duration-pop-sm) var(--tm-ease-pop);
-}
-@starting-style { .tm-pop.is-open { opacity: 0; transform: translateY(calc(var(--tm-motion-distance) * -0.25)) scale(var(--tm-motion-scale)); } }
+   exit. Its motion is the pop look, tm-enter-pop: see looks.css. */
+.tm-pop { transform-origin: top left; display: none; }
+.tm-pop.is-open { display: block; }
 
 /* A toast: a short message in a corner of the window. It comes in from below the edge with the
    arrive spring, and leaves with the exit curve. Make it a popover="manual", so it sits in the
@@ -713,18 +697,10 @@
   color: var(--tm-fg-base);
   font-family: var(--tm-font-body);
   box-shadow: var(--tm-elevation-3);
-  opacity: 0;
-  /* Below the edge. In a theme that fades, it stays in place. */
-  transform: translateY(calc((100% + var(--tm-space-lg)) * var(--tm-motion-travel)));
   pointer-events: none;
-  transition: opacity calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit), transform calc(var(--tm-duration-sm) * 0.8) var(--tm-ease-exit);
 }
-.tm-toast.is-open {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-  transition: opacity calc(var(--tm-duration-sm) * 0.5) var(--tm-ease-fade), transform var(--tm-duration-arrive-sm) var(--tm-ease-arrive);
-}
+/* Its motion is the arrive look, tm-enter-arrive: see looks.css. */
+.tm-toast.is-open { pointer-events: auto; }
 
 /* A list whose items arrive one after another. Give each item --i: 0, 1, 2, and so on. Add
    .is-in to the list to play it; take it off, and the items leave together, quickly. A sober
