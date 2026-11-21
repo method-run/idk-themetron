@@ -53,6 +53,8 @@ Then add the components stylesheet, and put `class="tm-theme"` on the element th
 import '@method-run/idk-themetron/components.css';
 ```
 
+To give your own elements the look of themetron's parts, without their layout, add a look instead, such as `class="my-button tm-look-fill"`. Import `@method-run/idk-themetron/looks.css`, or use the Sass mixins (`/looks.scss`) or Tailwind utilities (`/looks.tailwind.css`). See [Looks](./components/README.md#looks "components").
+
 The package has TypeScript types for the public functions and for the inputs, such as `Inputs` and `ThemeInput`. It also has the contract files: `@method-run/idk-themetron/spec/tokens.manifest.json` and `@method-run/idk-themetron/spec/inputs.schema.json`. The engine has no dependencies. It runs in Node 20 or later, and in browsers.
 
 ## Work on themetron
@@ -77,7 +79,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 1. If the token contract changed, raise `CONTRACT_VERSION` and move the **Unreleased** notes of the [contract changelog](./spec/consumers.md#changelog "consumers") under it. See [Versions](./spec/consumers.md#versions "consumers").
 2. In [CHANGELOG.md](./CHANGELOG.md "changelog"), move the **Unreleased** notes under a heading for the new package version, such as `## 0.3.0`.
 3. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
-4. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the README, the changelog, and the license.
+4. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the looks (`components/looks.css`, `_looks.scss`, and `looks.tailwind.css`), the README, the changelog, and the license.
 5. If you changed a public function or the inputs, update `src/index.d.ts`. A test fails when `index.js` exports a name that `index.d.ts` does not declare.
 6. Run `npm version patch`, `npm version minor`, or `npm version major`. This changes the version in `package.json`, and makes a commit and a tag. The package version goes up whenever the contract version does, by at least as much.
 7. Run `npm publish --access public`. npm makes a scoped package private unless you ask, so use `--access public`. (`publishConfig` in `package.json` also sets it.) `prepublishOnly` runs the tests and the docs check first.

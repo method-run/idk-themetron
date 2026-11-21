@@ -24,11 +24,12 @@ if (plan.error) {
   process.exit(1);
 }
 
-const files = Object.entries(releaseFiles());
+const looksCss = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
+const files = Object.entries(releaseFiles({ looksCss }));
 const changed = [];
 for (const [file] of files) {
   const url = new URL(`../${file}`, import.meta.url);
-  if (existsSync(url) && (await readFile(url, 'utf8')) !== releaseFiles()[file]) changed.push(file);
+  if (existsSync(url) && (await readFile(url, 'utf8')) !== releaseFiles({ looksCss })[file]) changed.push(file);
 }
 if (changed.length) {
   console.error(`The contract changed since ${CONTRACT_VERSION} was released: ${changed.join(', ')}. Raise CONTRACT_VERSION in src/manifest.js, list the changes in the changelog, and run this again.`);

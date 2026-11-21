@@ -227,7 +227,8 @@ npx themetron --help
 | Format | What it writes |
 |---|---|
 | `css` | The tokens as CSS custom properties, one rule for each theme. This is the default. |
-| `stylesheet` | The CSS tokens, then `components/components.css`, in one file. |
+| `stylesheet` | The CSS tokens, then `components/components.css` with the looks, in one file. |
+| `looks` | The CSS tokens, then `components/looks.css`: the `tm-look-*` and `tm-enter-*` classes, which give your own elements a themetron appearance. |
 | `dtcg` | Design Tokens Community Group JSON. |
 | `tailwind` | A Tailwind CSS v4 theme. It reads the CSS tokens, so add them too. |
 | `shadcn` | Variables for shadcn/ui's `globals.css`. |
