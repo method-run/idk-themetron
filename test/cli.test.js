@@ -48,6 +48,16 @@ test('build --format looks adds the looks after the tokens', async () => {
   assert.ok(stdout.endsWith(await readFile(new URL('../components/looks.css', import.meta.url), 'utf8')));
 });
 
+test('build --format bootstrap-css --looks adds the looks', async () => {
+  const inputs = join(example, 'inputs.json');
+  const { buildThemes, toBootstrapCss } = await import('../src/index.js');
+  const looksCss = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
+  const { code, stdout } = await run('build', inputs, '-f', 'bootstrap-css', '--looks');
+  assert.equal(code, 0);
+  assert.equal(stdout, toBootstrapCss(buildThemes(JSON.parse(await readFile(inputs, 'utf8'))), { looksCss }));
+  assert.match((await run('build', inputs, '--looks')).stderr, /Warning: skipped --looks: it does nothing with --format css/);
+});
+
 test('build --out writes a file, and nothing to stdout', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'themetron-'));
   try {

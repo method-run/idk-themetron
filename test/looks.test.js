@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { LOOKS, lookClass, lookFiles, parseLooks, lookInSelector, splitList, withLooks } from '../src/looks.js';
+import { LOOKS, lookClass, lookFiles, parseLooks, lookInSelector, looksOn, splitList, withLooks } from '../src/looks.js';
 
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 
@@ -58,4 +58,27 @@ test('each form has every look, and the shared rules that the looks need', async
     assert.ok(text.includes('.tm-invert { --_halo-fill-on: 0;'));
     assert.ok(!/tm-(button|card|input|badge|pop|toast)\b/.test(text), 'the forms name no components');
   }
+});
+
+test('looksOn puts other classes in place of the looks, and keeps the order and specificity', () => {
+  const css = `@property --_x { syntax: '<color>'; inherits: true; initial-value: transparent; }
+:where(.tm-look-fill, .tm-look-tint, .tm-button) { --_a: 1; }
+.tm-look-fill, .tm-look-tint, .tm-button { color: red; }
+.tm-look-fill:hover, .tm-button:hover { color: blue; }
+.tm-card { color: green; }
+.tm-look-fill.tm-invert { color: black; }
+@container style(--tm-action-gradient: on) {
+  .tm-look-fill::before { content: ""; }
+  .tm-field .tm-error { color: pink; }
+}`;
+  assert.equal(looksOn(css, { fill: '.btn-a, .btn-b' }), `@property --_x { syntax: '<color>'; inherits: true; initial-value: transparent; }
+:where(:is(.btn-a, .btn-b)) { --_a: 1; }
+:is(.btn-a, .btn-b) { color: red; }
+:is(.btn-a, .btn-b):hover { color: blue; }
+:is(.btn-a, .btn-b).tm-invert { color: black; }
+@container style(--tm-action-gradient: on) {
+:is(.btn-a, .btn-b)::before { content: ""; }
+}
+`);
+  assert.equal(looksOn(css, { tint: '.chip' }).split('\n')[2], '.chip { color: red; }', 'one selector needs no :is()');
 });

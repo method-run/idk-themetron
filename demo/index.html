@@ -360,6 +360,7 @@ details.feels[open] > summary { margin-bottom: 12px; }
 
 /* Tokens */
 .code-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.format-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .format-pick { grid-template-columns: auto minmax(0, 1fr); }
 .format-preview { margin: 0 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
 .format-preview > summary { padding: 10px 14px; cursor: pointer; font-weight: 600; }
@@ -477,8 +478,11 @@ td code { font-family: var(--mono); font-size: 12px; }
     <section class="view" id="view-palettes" role="tabpanel" aria-labelledby="tab-palettes" hidden></section>
     <section class="view" id="view-tokens" role="tabpanel" aria-labelledby="tab-tokens" hidden>
       <div class="code-head">
-        <div class="field format-pick"><label for="format">Format</label>
-          <select id="format"></select></div>
+        <div class="format-row">
+          <div class="field format-pick"><label for="format">Format</label>
+            <select id="format"></select></div>
+          <div class="seg" id="format-looks" role="group" aria-label="Bootstrap's look" hidden></div>
+        </div>
         <span class="actions"><button class="small-btn" id="copy" type="button">Copy</button> <button class="small-btn" id="download" type="button">Download</button></span>
       </div>
       <p class="fader-hint format-note" id="format-note"></p>

@@ -12,7 +12,7 @@ aliases: [Using themetron in a site or library]
 # Using themetron in a site or library
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 58% (10/17) · 1 dropped
+◐ 61% (11/18) · 1 dropped
 <!-- idk-plans:progress:end -->
 
 > **Status:** contract 0.2.0, first released with package 0.2.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).

@@ -68,6 +68,17 @@ Each look also comes as a Sass mixin and a Tailwind CSS v4 utility of the same n
 .my-button { @apply tm-look-fill; }
 ```
 
+On Bootstrap, the `bootstrap-css` export can put the looks on Bootstrap's own classes, so you don't change your markup. Build it with `--looks`, or pick **Themetron looks** in the playground.
+
+| Bootstrap class | Look |
+|---|---|
+| `.btn-primary`, and `.btn-danger`, `.btn-warning`, `.btn-success`, `.btn-info` when the theme set has that status theme | `fill`, in that status theme's colors |
+| `.btn-secondary` | `quiet` |
+| `.btn-outline-primary`, and the outline button of each status theme | `outline` |
+| `.btn-link` | `ghost` |
+| `.card` | `surface` |
+| `.form-control`, `.form-select` | `field` |
+
 <details>
 <summary>How looks work</summary>
 
@@ -75,6 +86,7 @@ Each look also comes as a Sass mixin and a Tailwind CSS v4 utility of the same n
 - `npm run looks` makes `components/_looks.scss` and `components/looks.tailwind.css` from `looks.css`. They name no components. A test fails when they are out of date. In a browser, the three forms of each look give the same computed styles, at rest, on hover, and on press.
 - A look's rules have the specificity of one class, as a component's do. A class of your site that comes later wins, and an element rule, such as a reset of `button`, does not. The looks are not in a cascade layer: a site's unlayered reset of `button` would win over a layer, and wipe the looks.
 - The token manifest lists each look under `looks`: what it gives, its states, the components that wear it, its Sass and Tailwind names, and the tokens it reads. All looks are experimental for now.
+- `looksOn(looksCss, targets)` puts other classes in place of the looks, such as `{ fill: '.btn-primary' }`, with the same order and specificity. The Bootstrap export uses it. It also adds the tokens, with each status theme's rules naming its buttons, and makes the mode follow `data-bs-theme`, not the system setting.
 - The shine of a fill is sized for a control. A taller part can set `--_shine-height` to its own height.
 
 </details>

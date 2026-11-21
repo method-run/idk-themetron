@@ -216,3 +216,54 @@ export function lookFiles(css) {
 
 // components.css with looks.css in place of its @import, as one stylesheet.
 export const withLooks = (componentsCss, looksCss) => componentsCss.replace('@import "./looks.css";', looksCss.trim());
+
+const LOOK_CLASS = /\.tm-(look|enter)-([a-z]+(?:-[a-z]+)*)(?![a-z0-9_-])/g;
+
+// The selector list of each :is() and :where() in a selector, made with `list`, from the inside
+// out. An empty list removes the selector: the result is null.
+function eachInnerList(selector, list) {
+  const at = /:(is|where)\(/.exec(selector);
+  if (!at) return selector;
+  const open = at.index + at[0].length - 1;
+  let depth = 0, end = open;
+  for (; end < selector.length; end++) {
+    if (selector[end] === '(') depth++;
+    else if (selector[end] === ')' && --depth === 0) break;
+  }
+  const inner = list(splitList(selector.slice(open + 1, end)));
+  if (!inner.length) return null;
+  const rest = eachInnerList(selector.slice(end + 1), list);
+  return rest === null ? null : `${selector.slice(0, open + 1)}${inner.join(', ')})${rest}`;
+}
+
+// looks.css on another framework's classes. `targets` gives each look a selector list, such as
+// { fill: '.btn-primary, .btn-danger' }, and each look's class becomes it: .tm-look-fill:hover
+// becomes :is(.btn-primary, .btn-danger):hover. The selectors of looks with no target, and of
+// themetron's own components, are left out. The rules keep their order and specificity, so the
+// framework's parts act as the looks do. Load it after the framework's CSS: then a look's rule
+// wins over the framework's rule of the same specificity.
+export function looksOn(css, targets) {
+  const target = (match) => targets[lookName(match)];
+  // Keep a selector when each look in it has a target, and it names no other themetron class
+  // than tm-invert.
+  const keep = (selector) => [...selector.matchAll(LOOK_CLASS)].every(target)
+    && !/\.tm-(?!invert(?![a-z0-9_-]))/.test(selector.replace(LOOK_CLASS, ''));
+  const list = (selectors) => selectors.map((s) => eachInnerList(s, list)).filter((s) => s !== null && keep(s));
+  const swap = (selector) => selector.replace(LOOK_CLASS, (...match) => (splitList(target(match)).length > 1 ? `:is(${target(match)})` : target(match)));
+  const out = [];
+  let open = [];
+  for (const rule of readRules(css)) {
+    if (rule.statement) { if (rule.statement.startsWith('@property')) out.push(rule.statement); continue; }
+    const selectors = list(rule.selectors).map(swap);
+    if (!selectors.length) continue;
+    // Rules in a row with the same at-rules share one block of them.
+    if (open.join('\n') !== rule.context.join('\n')) {
+      out.push(...open.map(() => '}'));
+      out.push(...rule.context.map((prelude) => `${prelude} {`));
+      open = rule.context;
+    }
+    out.push(`${selectors.join(', ')} { ${declarations(rule.body).join('; ')}; }`);
+  }
+  out.push(...open.map(() => '}'));
+  return out.join('\n') + '\n';
+}
