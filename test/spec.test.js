@@ -6,7 +6,8 @@ import { specFiles, releaseFiles, tokenManifest, inputsSchema, checkCss, PAIRS, 
 import { releasedVersions, newestReleasedManifest, releasePlan, removedMessage } from '../scripts/releases.js';
 
 test('the files in spec/ match the code. Run npm run spec after a change.', async () => {
-  for (const [file, text] of Object.entries(specFiles())) {
+  const looksCss = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
+  for (const [file, text] of Object.entries(specFiles({ looksCss }))) {
     assert.equal(await readFile(new URL(`../${file}`, import.meta.url), 'utf8'), text, `${file} is out of date. Run npm run spec.`);
   }
 });

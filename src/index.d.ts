@@ -479,9 +479,21 @@ export interface TokenManifest {
   selectors: Record<string, string>;
   pairs: { fg: string[]; bg: string[]; purpose: Purpose }[];
   tokens: Record<string, TokenInfo>;
+  /** The looks, by class, such as tm-look-fill. */
+  looks: Record<string, LookInfo>;
 }
-/** The token contract, as in spec/tokens.manifest.json. */
-export function tokenManifest(): TokenManifest;
+export interface LookInfo extends Look {
+  stability: 'stable' | 'experimental';
+  /** The Sass mixin, such as look-fill. */
+  sass: string;
+  /** The Tailwind utility, such as tm-look-fill. */
+  tailwind: string;
+  /** The tokens that the look reads, without the prefix. Only with looksCss. */
+  tokens?: string[];
+}
+/** The token contract, as in spec/tokens.manifest.json. Pass the text of components/looks.css to
+    list the tokens that each look reads. */
+export function tokenManifest(options?: { looksCss?: string }): TokenManifest;
 /** The JSON Schema of the inputs, as in spec/inputs.schema.json. */
 export function inputsSchema(): Record<string, any>;
 /** The version of the token contract. It is not the package version. */

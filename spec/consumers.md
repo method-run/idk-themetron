@@ -23,11 +23,12 @@ The contract is in three files. The code makes them, and a test fails when they 
 
 | File | What it holds |
 |---|---|
-| [`spec/tokens.manifest.json`](./tokens.manifest.json) | Every CSS token: its tier, type, whether it holds both modes, its role, whether it is stable, and what it means. Also the color pairs that pass, and the classes and attributes. |
+| [`spec/tokens.manifest.json`](./tokens.manifest.json) | Every CSS token: its tier, type, whether it holds both modes, its role, whether it is stable, and what it means. Also the color pairs that pass, the classes and attributes, and the looks. |
 | [`spec/inputs.schema.json`](./inputs.schema.json) | The JSON Schema of the inputs. A draft. See [Inputs](./inputs.md "inputs"). |
 | [`components/components.css`](../components/components.css) | The reference components. They follow this contract. |
+| [`components/looks.css`](../components/looks.css) | The looks: the appearance of the components, for your own elements, such as `tm-look-fill`. Also as Sass mixins and Tailwind utilities. See [Looks](../components/README.md#looks "components"). |
 
-From the package: `@method-run/idk-themetron/spec/tokens.manifest.json`, `@method-run/idk-themetron/spec/inputs.schema.json`, and `@method-run/idk-themetron/components.css`.
+From the package: `@method-run/idk-themetron/spec/tokens.manifest.json`, `@method-run/idk-themetron/spec/inputs.schema.json`, `@method-run/idk-themetron/components.css`, and the looks: `/looks.css`, `/looks.scss`, and `/looks.tailwind.css`.
 
 The site also publishes them at fixed URLs:
 
@@ -276,6 +277,7 @@ To release:
 
 This is the changelog of the token contract. The npm package has its own: [CHANGELOG.md](../CHANGELOG.md "changelog").
 
+- **Unreleased (0.4.0):** the manifest lists the looks under `looks`: each look's class, what it gives, its states, the components that wear it, its Sass mixin and Tailwind utility, and the tokens it reads. All are experimental. Additions only, so a minor version.
 - **0.3.0:** a new color model, `okhsl`, for `contrast.model` in the inputs. New inputs: the `playfulness` and `energy` feels, and `animation` (`none`, `fade`, or `move`). New experimental motion tokens: `duration-xs`, `-sm`, `-md`, and `-lg`, `ease-fade`, the springs `ease-pop` and `ease-arrive` (CSS `linear()` curves) with `duration-pop-*` and `duration-arrive-*`, and `motion-distance`, `-scale`, `-press`, `-stagger`, `-shake`, `-weight`, and `-travel`. Durations and curves now change with the theme. Additions only, so a minor version.
 - **0.2.0:** icons and action gradients, in package 0.2.0. New experimental tokens `font-icon`, `icon-fill`, and `icon-weight`, for Material Symbols icons. A theme's new `icons` input sets them. The CSS loads the icon font with a second `@import`. New experimental tokens for the action gradient, which a theme's `action` input can now set: `action-angle`, the `-from` and `-to` ends of each `fill-action`, `fill-action-exact`, and `tint-action` state, and an `-image` for each. Without a gradient, the ends are the solid color. Themes with a gradient also have the ramps `action-from-*` and `action-to-*`. Action text, edges, and labels on tints have ends too: `fg-action-from` and `-to`, `border-action-from` and `-to`, and `on-tint-action-from` and `-to` for each state. `action-gradient` is `on` or `off`, for a style query.
 - **0.1.0:** the first contract, in package 0.1.0.
