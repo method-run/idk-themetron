@@ -94,9 +94,7 @@ The classes ship as a new export format, `looks`, and as a file in the package: 
 
 ```css
 /* looks.css: the one source. Each rule names the look and the components that wear it. */
-@layer themetron {
-  .tm-look-tint, .tm-button--soft { --_bg: var(--tm-tint-action); }
-}
+.tm-look-tint, .tm-button--soft { --_bg: var(--tm-tint-action); }
 
 /* components.css: layout only, such as size and padding. */
 @import "./looks.css";
@@ -128,7 +126,7 @@ A look sets colors, edges, radius, shadows, shine, and transitions. It does not 
 <details>
 <summary>How a look stays out of the site's way</summary>
 
-- **A layer, not low specificity.** Every rule is in `@layer themetron`. A rule outside a layer wins over a rule in one, whatever its specificity, so any rule of the site wins. The selectors are plain lists, not `:where()`: browsers sort plain class selectors into fast lookups.
+- **The specificity of one class, and no layer.** A look's rules weigh the same as a component's. A class of the site that comes later wins, and an element rule, such as a reset of `button`, does not. The first plan put the looks in `@layer themetron`, so that any rule of the site would win. The build showed why that fails: a rule outside a layer wins over every rule in one, so a site's reset, such as `button { color: inherit }`, wiped the looks. The selectors are plain lists, not `:where()`: browsers sort plain class selectors into fast lookups.
 - **Hooks, not overrides.** A look reads private custom properties, such as `--_bg`, so a site can change one part of the look: `.my-btn { --tm-look-radius: 0 }`.
 - **Machine-readable.** The token manifest lists each look: its class, the states that it reacts to, the tokens that it reads, and a short markup example. A tool or an agent can map a site's parts to looks from the manifest.
 
