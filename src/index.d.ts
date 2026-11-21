@@ -246,8 +246,8 @@ export function toTailwind(built: BuiltThemes, options?: { prefix?: string } & S
 export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
 /** Bootstrap 5 Sass variables, to import before Bootstrap. The root theme's light values, with *-dark twins. */
 export function toBootstrapSass(built: BuiltThemes, options?: { more?: boolean } & SetOption): string;
-/** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. */
-export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
+/** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. `looksCss`, the text of components/looks.css, also gives Bootstrap's buttons, cards, and fields themetron's looks. */
+export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string; looksCss?: string } & SetOption): string;
 /** A Material UI theme for createTheme(), with light and dark colorSchemes. */
 export function toMui(built: BuiltThemes, options?: { theme?: string; more?: boolean }): Record<string, any>;
 /** daisyUI 5 themes for a Tailwind CSS v4 stylesheet. Use it with the output of toCss. */
@@ -389,6 +389,8 @@ export const LOOKS: Record<LookName, Look>;
 export function looksScss(looksCss: string): string;
 /** The looks as Tailwind CSS v4 utilities, tm-look-<name>, from the text of looks.css. */
 export function looksTailwind(looksCss: string): string;
+/** looks.css on another framework's classes, as plain CSS. `targets` gives each look a selector list, such as `{ fill: '.btn-primary' }`. Looks with no target, and themetron's own components, are left out. */
+export function looksOn(looksCss: string, targets: Partial<Record<LookName, string>>): string;
 /** components.css with looks.css in place of its @import, as one stylesheet. */
 export function withLooks(componentsCss: string, looksCss: string): string;
 

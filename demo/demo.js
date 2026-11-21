@@ -95,7 +95,7 @@ function saveSets() {
 // ?preset=glass opens the playground with a preset on the root theme, for links and screenshots.
 const askedPreset = new URLSearchParams(location.search).get('preset');
 if (PRESETS[askedPreset]) { state.themes[ROOT].preset = askedPreset; delete state.themes[ROOT].feel; }
-let ui = { view: 'preview', mode: 'both', contrast: 'base', format: 'stylesheet', pickA: null, pickB: null };
+let ui = { view: 'preview', mode: 'both', contrast: 'base', format: 'stylesheet', bootstrapLooks: false, pickA: null, pickB: null };
 let built = null;
 
 function load(key) {
@@ -1038,6 +1038,7 @@ function renderSegs() {
     ['Data', [['dtcg', 'DTCG JSON'], ['inputs', 'Inputs']]],
   ].map(([group, options]) => el('optgroup', { label: group }, ...options.map(([value, label]) => el('option', { value }, label)))));
   format.value = ui.format;
+  seg($('#format-looks'), [[false, 'Colors only'], [true, 'Themetron looks']], ui.bootstrapLooks, (v) => { ui.bootstrapLooks = v; renderSegs(); renderView(); });
 }
 
 const MODEL_NOTES = {
@@ -1716,7 +1717,7 @@ const FORMAT_NOTES = {
   bootstrap: 'Bootstrap 5 Sass variables: import this file before Bootstrap. Sass is fixed when it compiles, so these are the root theme\'s light values, and the *-dark variables hold its dark values.',
   mui: 'A Material UI theme for the root theme, in both modes: pass it to createTheme() (MUI v6 or later). The shadows are the light-mode ones.',
   daisyui: 'Two daisyUI 5 themes, light and dark, for your Tailwind CSS. Add the CSS tokens too: these colors point at them.',
-  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too.',
+  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too. Themetron looks also adds the tokens and the looks, so Bootstrap\'s buttons, cards, and fields get the theme\'s shine, gradients, and depth.',
   inputs: 'Your themes as inputs. Open this file again here, or build the tokens from it with the engine.',
 };
 
@@ -1736,7 +1737,7 @@ function tokenText() {
   if (ui.format === 'bootstrap') return toBootstrapSass(built, { set });
   if (ui.format === 'mui') return JSON.stringify(toMui(built), null, 2);
   if (ui.format === 'daisyui') return toDaisyui(built, { set });
-  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set });
+  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set, looksCss: ui.bootstrapLooks ? looksCss : undefined });
   return JSON.stringify(inputsFile(), null, 2);
 }
 
@@ -1822,6 +1823,7 @@ $('#format').addEventListener('change', (e) => { ui.format = e.target.value; ren
 function renderTokens() {
   renderFormatPreview();
   $('#format-note').textContent = FORMAT_NOTES[ui.format];
+  $('#format-looks').hidden = ui.format !== 'bootstrap-css';
   const inputs = ui.format === 'inputs';
   $('#code').hidden = inputs;
   $('#io').hidden = !inputs;
@@ -1903,7 +1905,8 @@ const DOWNLOADS = {
 };
 $('#download').addEventListener('click', () => {
   const [file, type] = DOWNLOADS[ui.format];
-  const name = file.replace(/^themetron/, fileStem());
+  const looks = ui.format === 'bootstrap-css' && ui.bootstrapLooks;
+  const name = (looks ? file.replace('.bootstrap.', '.bootstrap-looks.') : file).replace(/^themetron/, fileStem());
   const text = ui.format === 'inputs' ? $('#io-text').value : tokenText();
   const url = URL.createObjectURL(new Blob([text], { type }));
   const a = el('a', { href: url, download: name });

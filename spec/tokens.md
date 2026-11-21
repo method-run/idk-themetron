@@ -233,7 +233,7 @@ npx themetron --help
 | `tailwind` | A Tailwind CSS v4 theme. It reads the CSS tokens, so add them too. |
 | `shadcn` | Variables for shadcn/ui's `globals.css`. |
 | `bootstrap` | Bootstrap 5 Sass variables. Import the file before Bootstrap. |
-| `bootstrap-css` | Bootstrap 5.3 CSS variables. Load the file after `bootstrap.css`. |
+| `bootstrap-css` | Bootstrap 5.3 CSS variables. Load the file after `bootstrap.css`. With `--looks`, Bootstrap's buttons, cards, and fields also get themetron's looks. |
 | `mui` | A Material UI theme for the root theme, as JSON. Pass it to `createTheme()`. |
 | `daisyui` | Two daisyUI 5 themes, light and dark. They read the CSS tokens, so add them too. |
 
@@ -249,6 +249,7 @@ These flags change the output. Each one is an option of the export function, and
 | `--no-more` | Leave out the more-contrast rules. | `css`, `stylesheet` |
 | `--more` | Make the more-contrast version, which your app or page loads for readers who ask for more contrast. | `mui`, `bootstrap` |
 | `--no-icons` | Leave out the `@import` of the icon font, for pages without icons, or a site that loads the font itself. The icon tokens stay. | `css`, `stylesheet` |
+| `--looks` | Add the tokens and themetron's looks on Bootstrap's buttons, cards, and fields. See [Looks](../components/README.md#looks "components"). | `bootstrap-css` |
 | `--set <name>` | The theme set's name. The file's first line names it, with the token contract. It is also the daisyUI theme's name. | all but `mui` |
 
 `stylesheet` takes no `--prefix`, because the components read `--tm-*` tokens.
