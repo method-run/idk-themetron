@@ -1453,6 +1453,8 @@ function stageFor(name, mode) {
   const stage = el('div', { class: `stage tm-theme ${themeClass(name)}`, 'data-tm-mode': mode, 'data-tm-contrast': ui.contrast, 'data-stage-theme': name });
   stage.innerHTML = `<span class="stage-label">${escapeHtml(labelOf(name))} · ${mode}</span>${html}`;
   for (const play of stage.querySelectorAll('[data-play]')) play.addEventListener('click', () => stage.querySelector('[data-track]').classList.toggle('on'));
+  // The motion looks play when their part is shown or hidden.
+  for (const toggle of stage.querySelectorAll('[data-look-toggle]')) toggle.addEventListener('click', () => { const note = toggle.nextElementSibling; note.hidden = !note.hidden; });
   wireMotion(stage);
   // Every theme's button on this stage's background: the normal button, then the exact one.
   // Each theme class sets every token, so each button has its own theme's shape.
