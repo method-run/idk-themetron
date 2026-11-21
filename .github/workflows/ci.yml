@@ -45,3 +45,23 @@ jobs:
       - run: npm ci
       - run: npx idk-plans check --quiet
       - run: npm run build
+
+  # In headless Chrome, themetron's looks on each framework's parts match plain looks, in each
+  # state. It takes about 15 seconds after npm ci. The runner has Chrome. On a failure, the
+  # contact sheet of the parts is an artifact of the run.
+  looks:
+    name: Looks on each framework
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run looks:check
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: looks-check
+          path: test-results/looks-check
