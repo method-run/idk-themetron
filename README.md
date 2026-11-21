@@ -1,7 +1,7 @@
 # idk-themetron
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 61% (41/67) · 9 deferred · 3 dropped
+◐ 66% (45/68) · 9 deferred · 3 dropped
 <!-- idk-plans:progress:end -->
 
 idk-themetron (themetron for short) makes design-token themes from a few inputs that people understand: a base color, an action color (one color, or a two-color gradient), fonts, icons, and "feels" such as roundness, depth, and shininess. Themes form a tree: a child, such as a danger theme, changes a few settings of its parent. Every text and background pair in the theme passes the contrast standard that you choose: WCAG 2, or APCA with the WCAG 2 minimums as a floor.
@@ -53,6 +53,8 @@ Then add the components stylesheet, and put `class="tm-theme"` on the element th
 import '@method-run/idk-themetron/components.css';
 ```
 
+To give your own elements the look of themetron's parts, without their layout, add a look instead, such as `class="my-button tm-look-fill"`. Import `@method-run/idk-themetron/looks.css`, or use the Sass mixins (`/looks.scss`) or Tailwind utilities (`/looks.tailwind.css`). See [Looks](./components/README.md#looks "components").
+
 The package has TypeScript types for the public functions and for the inputs, such as `Inputs` and `ThemeInput`. It also has the contract files: `@method-run/idk-themetron/spec/tokens.manifest.json` and `@method-run/idk-themetron/spec/inputs.schema.json`. The engine has no dependencies. It runs in Node 20 or later, and in browsers.
 
 ## Work on themetron
@@ -77,7 +79,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 1. If the token contract changed, raise `CONTRACT_VERSION` and move the **Unreleased** notes of the [contract changelog](./spec/consumers.md#changelog "consumers") under it. See [Versions](./spec/consumers.md#versions "consumers").
 2. In [CHANGELOG.md](./CHANGELOG.md "changelog"), move the **Unreleased** notes under a heading for the new package version, such as `## 0.3.0`.
 3. Run `npm run spec`, `npm test`, and `npm run docs:check`. All must pass.
-4. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the README, the changelog, and the license.
+4. Run `npm pack --dry-run`, and read the list of files. The package holds only `src/`, `bin/`, `spec/` (but not `spec/versions/`), `components/components.css`, the looks (`components/looks.css`, `_looks.scss`, and `looks.tailwind.css`), the README, the changelog, and the license.
 5. If you changed a public function or the inputs, update `src/index.d.ts`. A test fails when `index.js` exports a name that `index.d.ts` does not declare.
 6. Run `npm version patch`, `npm version minor`, or `npm version major`. This changes the version in `package.json`, and makes a commit and a tag. The package version goes up whenever the contract version does, by at least as much.
 7. Run `npm publish --access public`. npm makes a scoped package private unless you ask, so use `--access public`. (`publishConfig` in `package.json` also sets it.) `prepublishOnly` runs the tests and the docs check first.
@@ -92,7 +94,7 @@ npx themetron check site.css  # list the themetron tokens that a stylesheet read
 - [How it works](./docs/how-it-works.md "how-it-works"): What themetron does with your inputs, step by step, from a tree of themes to CSS that components read. The engine is deterministic, and it uses no network.
 - [Inputs](./spec/inputs.md "inputs"): A theme set is a tree of themes. Each theme has a base color and an action color, and the root theme also has a font. Each child theme changes some fields of its parent and takes the rest from it. ◐ 62% (5/8) · 6 deferred · 2 dropped
 - [Tokens](./spec/tokens.md "tokens"): The design tokens that themetron makes, their names, and their formats. Each theme in the tree becomes one CSS rule. A component library that reads only these tokens works with every themetron theme. ◐ 91% (11/12) · 3 deferred
-- [Using themetron in a site or library](./spec/consumers.md "consumers"): The contract between themetron and the sites and libraries that use its stylesheets. Which tokens are stable, which color pairs pass, how theme classes and modes work, and how to check a stylesheet. Written so that a tool such as idk-plans can adopt themetron themes with little work. ◐ 41% (7/17) · 1 dropped
+- [Using themetron in a site or library](./spec/consumers.md "consumers"): The contract between themetron and the sites and libraries that use its stylesheets. Which tokens are stable, which color pairs pass, how theme classes and modes work, and how to check a stylesheet. Written so that a tool such as idk-plans can adopt themetron themes with little work. ◐ 61% (11/18) · 1 dropped
 - [Components](./components/README.md "components"): A small CSS component library that reads only themetron tokens. It shows how each feel changes real parts, such as buttons, fields, and cards. ◐ 37% (3/8)
 - [Examples](./examples/README.md "examples"): A small theme tree, and the file that each pipeline level makes from it, up to a page that reads the tokens. Each level names its spec.
 - [Engine](./src/README.md "engine"): The JavaScript that turns inputs into a theme, and a theme into CSS, DTCG JSON, Tailwind, or the theme formats of UI libraries. It has no dependencies and runs in Node and in browsers. ● 100% (1/1)

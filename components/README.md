@@ -5,7 +5,7 @@ summary: A small CSS component library that reads only themetron tokens. It show
 parent: idk-themetron
 kind: module
 order: 4
-code: [components/components.css]
+code: [components/components.css, components/looks.css, src/looks.js]
 tags: [system/components]
 ---
 # Components
@@ -25,6 +25,71 @@ The component library is one CSS file. It has no JavaScript. Each component read
 ```
 
 `.tm-theme` sets the canvas, the text color, and the body font. Put it on the element that holds your page, or on `body`. Put it on a full theme's element too, if you want that element to show the theme's own canvas.
+
+## Looks
+
+A **look** gives your own element the appearance of a themetron part, without its layout. Your element keeps its size, padding, and markup. The look gives it the fill, edge, radius, shadows, shine, gradients, motion, and how they change on hover and press.
+
+```html
+<link rel="stylesheet" href="themetron.looks.css">  <!-- the "looks" export: the tokens and the looks -->
+<button class="my-button tm-look-fill">Save</button>
+<a class="nav-link tm-look-gradient-text" href="/docs">Docs</a>
+<aside class="sidebar tm-look-surface">…</aside>
+<div class="menu tm-look-surface tm-enter-pop" popover>…</div>
+```
+
+| Look | Gives | Worn by |
+|---|---|---|
+| `tm-look-fill` | A solid action fill, with the shine and the lift: a primary button | `tm-button` |
+| `tm-look-tint` | A soft tint of the action color: a secondary button, or a selected item | `tm-button--soft` |
+| `tm-look-quiet` | A quiet fill in the base color, for parts that are not the main action | `tm-button--quiet` |
+| `tm-look-outline` | An edge in the action color, with a tint on hover | `tm-button--outline` |
+| `tm-look-ghost` | Action text with no edge, and a tint on hover | `tm-button--ghost` |
+| `tm-look-surface` | A card or panel: the panel color, edge, radius, elevation, and frost | `tm-card` |
+| `tm-look-field` | A text field: the field color, edge, radius, and inset shadow | `tm-input`, `tm-select`, `tm-textarea` |
+| `tm-look-gradient-text` | Action text, such as a link. In a gradient theme, the letters wear the gradient. | `tm-link` |
+| `tm-look-ring` | An edge in the action color. In a gradient theme, the edge is the gradient. | |
+| `tm-enter-pop` | Motion: pops in place as it appears, such as a menu | `tm-pop` |
+| `tm-enter-arrive` | Motion: comes in from below with a spring, such as a toast | `tm-toast` |
+| `tm-enter-fade` | Motion: fades in and out in place | |
+
+A motion look plays when its element appears: when it is added to the page, loses `hidden`, or is a dialog or popover that opens. It plays out when the element gets `hidden`, or the dialog or popover closes. It needs no script.
+
+Each look also comes as a Sass mixin and a Tailwind CSS v4 utility of the same name, so you can give a look to your own class without changing your markup. For the `pkg:` URL, Sass 1.71 or later needs its Node package importer, such as `--pkg-importer=node`.
+
+```scss
+@use "pkg:@method-run/idk-themetron/looks.scss" as tm;
+.my-button { @include tm.look-fill; }
+```
+
+```css
+@import "tailwindcss";
+@import "@method-run/idk-themetron/looks.tailwind.css";
+.my-button { @apply tm-look-fill; }
+```
+
+On Bootstrap, the `bootstrap-css` export can put the looks on Bootstrap's own classes, so you don't change your markup. Build it with `--looks`, or pick **Themetron looks** in the playground.
+
+| Bootstrap class | Look |
+|---|---|
+| `.btn-primary`, and `.btn-danger`, `.btn-warning`, `.btn-success`, `.btn-info` when the theme set has that status theme | `fill`, in that status theme's colors |
+| `.btn-secondary` | `quiet` |
+| `.btn-outline-primary`, and the outline button of each status theme | `outline` |
+| `.btn-link` | `ghost` |
+| `.card` | `surface` |
+| `.form-control`, `.form-select` | `field` |
+
+<details>
+<summary>How looks work</summary>
+
+- `components/looks.css` is the one source. `components.css` imports it, and each look's rules also name the components that wear it, such as `.tm-look-tint, .tm-button--soft`. So the components and the looks cannot drift apart.
+- `npm run looks` makes `components/_looks.scss` and `components/looks.tailwind.css` from `looks.css`. They name no components. A test fails when they are out of date. In a browser, the three forms of each look give the same computed styles, at rest, on hover, and on press.
+- A look's rules have the specificity of one class, as a component's do. A class of your site that comes later wins, and an element rule, such as a reset of `button`, does not. The looks are not in a cascade layer: a site's unlayered reset of `button` would win over a layer, and wipe the looks.
+- The token manifest lists each look under `looks`: what it gives, its states, the components that wear it, its Sass and Tailwind names, and the tokens it reads. All looks are experimental for now.
+- `looksOn(looksCss, targets)` puts other classes in place of the looks, such as `{ fill: '.btn-primary' }`, with the same order and specificity. The Bootstrap export uses it. It also adds the tokens, with each status theme's rules naming its buttons, and makes the mode follow `data-bs-theme`, not the system setting.
+- The shine of a fill is sized for a control. A taller part can set `--_shine-height` to its own height.
+
+</details>
 
 ## Parts
 
@@ -62,7 +127,7 @@ A part takes its color from the nearest theme class, such as `theme-danger`. `tm
 | Shininess (Shine) | Buttons get a brighter top and a darker bottom. Checks, radios, switches, badges, avatars, progress bars, and the pressed segment get a gradient, an edge band, and a glow. Labels on buttons, badges, avatars, and pressed segments get a 1 px line that sets them into the surface (`text-shadow-*`). |
 | Clarity (Clear) | How see-through cards, fields, tints, quiet buttons, and solid fills are. Labels on fading solid fills get a halo of the fill's color. |
 
-The motion feels are removed for now. Until they come back, motion is the same in every theme. The components still read the same tokens, so the effects come back without changes here.
+Energy and Play set the motion: how fast parts move, and how far they travel and bounce. The theme's animation input can turn travel off (`fade`) or all motion off (`none`). See [Motion](../spec/inputs.md#motion "inputs").
 
 <details>
 <summary>How it works</summary>

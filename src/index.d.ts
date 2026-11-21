@@ -246,8 +246,8 @@ export function toTailwind(built: BuiltThemes, options?: { prefix?: string } & S
 export function toShadcn(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
 /** Bootstrap 5 Sass variables, to import before Bootstrap. The root theme's light values, with *-dark twins. */
 export function toBootstrapSass(built: BuiltThemes, options?: { more?: boolean } & SetOption): string;
-/** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. */
-export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string } & SetOption): string;
+/** Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. `looksCss`, the text of components/looks.css, also gives Bootstrap's buttons, cards, and fields themetron's looks. */
+export function toBootstrapCss(built: BuiltThemes, options?: { classPrefix?: string; looksCss?: string } & SetOption): string;
 /** A Material UI theme for createTheme(), with light and dark colorSchemes. */
 export function toMui(built: BuiltThemes, options?: { theme?: string; more?: boolean }): Record<string, any>;
 /** daisyUI 5 themes for a Tailwind CSS v4 stylesheet. Use it with the output of toCss. */
@@ -370,6 +370,30 @@ export function motionFor(feel: { energy: number; playfulness: number }, animati
 /** A spring from a perceived duration T (s) and a bounce (0 to 1), with mass 1. */
 export function spring(T: number, bounce: number, velocity?: number): Spring;
 
+// ---- looks.js
+
+export type LookName = 'fill' | 'tint' | 'quiet' | 'outline' | 'ghost' | 'surface' | 'field' | 'gradient-text' | 'ring';
+export interface Look {
+  /** What the look gives. */
+  summary: string;
+  /** The component classes that wear the look, such as tm-button--soft. */
+  components: string[];
+  /** The states and parts that the look reacts to, such as :hover or [aria-invalid="true"]. */
+  states: string[];
+  /** A short example of markup. */
+  example: string;
+}
+/** The looks, by name. Each is a class tm-look-<name> in components/looks.css. */
+export const LOOKS: Record<LookName, Look>;
+/** The looks as Sass mixins, look-<name>, from the text of looks.css. */
+export function looksScss(looksCss: string): string;
+/** The looks as Tailwind CSS v4 utilities, tm-look-<name>, from the text of looks.css. */
+export function looksTailwind(looksCss: string): string;
+/** looks.css on another framework's classes, as plain CSS. `targets` gives each look a selector list, such as `{ fill: '.btn-primary' }`. Looks with no target, and themetron's own components, are left out. */
+export function looksOn(looksCss: string, targets: Partial<Record<LookName, string>>): string;
+/** components.css with looks.css in place of its @import, as one stylesheet. */
+export function withLooks(componentsCss: string, looksCss: string): string;
+
 // ---- palette.js
 
 /** The grades: 0, 5, 10, ... 100. */
@@ -457,9 +481,21 @@ export interface TokenManifest {
   selectors: Record<string, string>;
   pairs: { fg: string[]; bg: string[]; purpose: Purpose }[];
   tokens: Record<string, TokenInfo>;
+  /** The looks, by class, such as tm-look-fill. */
+  looks: Record<string, LookInfo>;
 }
-/** The token contract, as in spec/tokens.manifest.json. */
-export function tokenManifest(): TokenManifest;
+export interface LookInfo extends Look {
+  stability: 'stable' | 'experimental';
+  /** The Sass mixin, such as look-fill. */
+  sass: string;
+  /** The Tailwind utility, such as tm-look-fill. */
+  tailwind: string;
+  /** The tokens that the look reads, without the prefix. Only with looksCss. */
+  tokens?: string[];
+}
+/** The token contract, as in spec/tokens.manifest.json. Pass the text of components/looks.css to
+    list the tokens that each look reads. */
+export function tokenManifest(options?: { looksCss?: string }): TokenManifest;
 /** The JSON Schema of the inputs, as in spec/inputs.schema.json. */
 export function inputsSchema(): Record<string, any>;
 /** The version of the token contract. It is not the package version. */

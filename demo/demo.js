@@ -2,10 +2,11 @@
 import '../components/components.css';
 // The same file as text, for the Stylesheet download.
 import componentsCss from '../components/components.css?raw';
+import looksCss from '../components/looks.css?raw';
 import { combobox } from './combobox.js';
 import { parseHex, toHex, srgbToOklch, oklchToSrgb } from '../src/color.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette, withLooks } from '../src/index.js';
 
 // Debug mode, a switch in the View menu, shows tools for comparing color models: HSL in the
 // Color model menu, and every model side by side on the Palettes tab.
@@ -94,7 +95,7 @@ function saveSets() {
 // ?preset=glass opens the playground with a preset on the root theme, for links and screenshots.
 const askedPreset = new URLSearchParams(location.search).get('preset');
 if (PRESETS[askedPreset]) { state.themes[ROOT].preset = askedPreset; delete state.themes[ROOT].feel; }
-let ui = { view: 'preview', mode: 'both', contrast: 'base', format: 'stylesheet', pickA: null, pickB: null };
+let ui = { view: 'preview', mode: 'both', contrast: 'base', format: 'stylesheet', bootstrapLooks: false, pickA: null, pickB: null };
 let built = null;
 
 function load(key) {
@@ -1029,7 +1030,15 @@ function renderSegs() {
   });
   const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
   $('#view-summary').textContent = `· ${ui.view === 'tokens' ? 'Both modes' : modeLabel}${ui.contrast === 'more' && ui.view !== 'tokens' ? ' · More contrast' : ''}`;
-  seg($('#format'), [['stylesheet', 'Stylesheet'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['mui', 'MUI'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
+  // The formats are a grouped dropdown, not buttons: there are too many to fit in a row.
+  const format = $('#format');
+  if (!format.options.length) format.replaceChildren(...[
+    ['Themetron CSS', [['stylesheet', 'Stylesheet'], ['looks', 'Looks'], ['css', 'CSS tokens']]],
+    ['Frameworks', [['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['mui', 'MUI']]],
+    ['Data', [['dtcg', 'DTCG JSON'], ['inputs', 'Inputs']]],
+  ].map(([group, options]) => el('optgroup', { label: group }, ...options.map(([value, label]) => el('option', { value }, label)))));
+  format.value = ui.format;
+  seg($('#format-looks'), [[false, 'Colors only'], [true, 'Themetron looks']], ui.bootstrapLooks, (v) => { ui.bootstrapLooks = v; renderSegs(); renderView(); });
 }
 
 const MODEL_NOTES = {
@@ -1452,6 +1461,8 @@ function stageFor(name, mode) {
   const stage = el('div', { class: `stage tm-theme ${themeClass(name)}`, 'data-tm-mode': mode, 'data-tm-contrast': ui.contrast, 'data-stage-theme': name });
   stage.innerHTML = `<span class="stage-label">${escapeHtml(labelOf(name))} · ${mode}</span>${html}`;
   for (const play of stage.querySelectorAll('[data-play]')) play.addEventListener('click', () => stage.querySelector('[data-track]').classList.toggle('on'));
+  // The motion looks play when their part is shown or hidden.
+  for (const toggle of stage.querySelectorAll('[data-look-toggle]')) toggle.addEventListener('click', () => { const note = toggle.nextElementSibling; note.hidden = !note.hidden; });
   wireMotion(stage);
   // Every theme's button on this stage's background: the normal button, then the exact one.
   // Each theme class sets every token, so each button has its own theme's shape.
@@ -1698,6 +1709,7 @@ const nearestGrade = (g) => GRADES.reduce((best, x) => (Math.abs(x - g) < Math.a
 // Each format, and a line that says how to use it.
 const FORMAT_NOTES = {
   stylesheet: 'Ready to use: the tokens and the components in one file. Link it, then use class="tm-button", class="theme-danger", and the other classes.',
+  looks: 'The tokens and the looks in one file. Add a look to your own elements, such as class="my-button tm-look-fill", for the theme\'s fill, shine, gradients, and states without its layout.',
   css: 'The tokens as CSS custom properties, one rule for each theme. Use them with your own CSS.',
   dtcg: 'The tokens as Design Tokens Community Group JSON, for design tools and token pipelines such as Style Dictionary.',
   tailwind: 'A Tailwind CSS v4 theme. Add the CSS tokens too: these names point at them.',
@@ -1705,7 +1717,7 @@ const FORMAT_NOTES = {
   bootstrap: 'Bootstrap 5 Sass variables: import this file before Bootstrap. Sass is fixed when it compiles, so these are the root theme\'s light values, and the *-dark variables hold its dark values.',
   mui: 'A Material UI theme for the root theme, in both modes: pass it to createTheme() (MUI v6 or later). The shadows are the light-mode ones.',
   daisyui: 'Two daisyUI 5 themes, light and dark, for your Tailwind CSS. Add the CSS tokens too: these colors point at them.',
-  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too.',
+  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too. Themetron looks also adds the tokens and the looks, so Bootstrap\'s buttons, cards, and fields get the theme\'s shine, gradients, and depth.',
   inputs: 'Your themes as inputs. Open this file again here, or build the tokens from it with the engine.',
 };
 
@@ -1716,7 +1728,8 @@ const fileStem = () => themeName(setName()) || 'themetron';
 
 function tokenText() {
   const set = setName();
-  if (ui.format === 'stylesheet') return `${toCss(built, { set })}\n/* ---- themetron components */\n\n${componentsCss}`;
+  if (ui.format === 'stylesheet') return `${toCss(built, { set })}\n/* ---- themetron components */\n\n${withLooks(componentsCss, looksCss)}`;
+  if (ui.format === 'looks') return `${toCss(built, { set })}\n/* ---- themetron looks */\n\n${looksCss}`;
   if (ui.format === 'shadcn') return toShadcn(built, { set });
   if (ui.format === 'css') return toCss(built, { set });
   if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built, { set }), null, 2);
@@ -1724,7 +1737,7 @@ function tokenText() {
   if (ui.format === 'bootstrap') return toBootstrapSass(built, { set });
   if (ui.format === 'mui') return JSON.stringify(toMui(built), null, 2);
   if (ui.format === 'daisyui') return toDaisyui(built, { set });
-  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set });
+  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set, looksCss: ui.bootstrapLooks ? looksCss : undefined });
   return JSON.stringify(inputsFile(), null, 2);
 }
 
@@ -1805,10 +1818,12 @@ async function renderFormatPreview() {
   if ($('#format-frame').srcdoc !== page) $('#format-frame').srcdoc = page;
 }
 $('#format-preview').addEventListener('toggle', renderFormatPreview);
+$('#format').addEventListener('change', (e) => { ui.format = e.target.value; renderView(); });
 
 function renderTokens() {
   renderFormatPreview();
   $('#format-note').textContent = FORMAT_NOTES[ui.format];
+  $('#format-looks').hidden = ui.format !== 'bootstrap-css';
   const inputs = ui.format === 'inputs';
   $('#code').hidden = inputs;
   $('#io').hidden = !inputs;
@@ -1877,6 +1892,7 @@ $('#io-file').addEventListener('change', async (e) => {
 // Download the format on screen as a file.
 const DOWNLOADS = {
   stylesheet: ['themetron.bundle.css', 'text/css'],
+  looks: ['themetron.looks.css', 'text/css'],
   shadcn: ['themetron.shadcn.css', 'text/css'],
   css: ['themetron.css', 'text/css'],
   dtcg: ['themetron.tokens.json', 'application/json'],
@@ -1889,7 +1905,8 @@ const DOWNLOADS = {
 };
 $('#download').addEventListener('click', () => {
   const [file, type] = DOWNLOADS[ui.format];
-  const name = file.replace(/^themetron/, fileStem());
+  const looks = ui.format === 'bootstrap-css' && ui.bootstrapLooks;
+  const name = (looks ? file.replace('.bootstrap.', '.bootstrap-looks.') : file).replace(/^themetron/, fileStem());
   const text = ui.format === 'inputs' ? $('#io-text').value : tokenText();
   const url = URL.createObjectURL(new Blob([text], { type }));
   const a = el('a', { href: url, download: name });

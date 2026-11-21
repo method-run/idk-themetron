@@ -3,6 +3,7 @@ import { GRADES } from './palette.js';
 import { ROOT, ROLES, FONT_FIELDS, themeName } from './inputs.js';
 import { iconImport } from './icons.js';
 import { CONTRACT_VERSION, specUrl } from './manifest.js';
+import { looksOn } from './looks.js';
 
 // The line that says what made an export: themetron, the theme set, and the token contract, with
 // the URL of that contract's manifest. A tool can read the contract version from it, to tell
@@ -841,7 +842,9 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, n
 // hover and press colors, and one rule for each button reads them, so a theme class or dark mode
 // changes the buttons inside it too. Primary and the statuses use the action fill, and
 // secondary uses the quiet button.
-export function toBootstrapCss(built, { classPrefix = 'theme-', set } = {}) {
+// `looksCss`, the text of components/looks.css, adds themetron's looks to Bootstrap's parts. See
+// bootstrapLooks.
+export function toBootstrapCss(built, { classPrefix = 'theme-', set, looksCss } = {}) {
   const statuses = statusThemes(built);
   const colors = (theme, mode, more) => {
     const out = {};
@@ -937,5 +940,42 @@ export function toBootstrapCss(built, { classPrefix = 'theme-', set } = {}) {
   ];
   const out = [`/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)];
   out.push('/* Buttons. Bootstrap sets their colors from Sass, so these rules set them again. */\n', ...roles.flatMap(buttons));
+  if (looksCss) out.push(bootstrapLooks(built, looksCss, classPrefix));
   return out.join('\n');
+}
+
+// Themetron's looks on Bootstrap's parts: the --tm-* tokens, then looks.css with Bootstrap's
+// classes in place of the looks. The solid buttons get the fill, .btn-secondary the quiet look,
+// the outline buttons the outline, .btn-link the ghost, .card the surface, and the form fields
+// the field. Each status button also takes its theme's tokens, so .btn-danger has the danger
+// theme's fill and shine. The tokens follow color-scheme, so the mode follows data-bs-theme, as
+// Bootstrap's own colors do, and not the system setting.
+function bootstrapLooks(built, looksCss, classPrefix) {
+  const statuses = Object.entries(STATUSES)
+    .map(([status, names]) => [status === 'error' ? 'danger' : status, names.find((n) => built.themes[n])])
+    .filter(([, name]) => name);
+  const solid = ['primary', ...statuses.map(([k]) => k)];
+  const targets = {
+    fill: solid.map((k) => `.btn-${k}`).join(', '),
+    quiet: '.btn-secondary',
+    outline: solid.map((k) => `.btn-outline-${k}`).join(', '),
+    ghost: '.btn-link',
+    surface: '.card',
+    field: '.form-control, .form-select',
+  };
+  const aliases = Object.fromEntries(statuses.map(([k, name]) => [`.${classPrefix}${name}`, [`.btn-${k}`, `.btn-outline-${k}`]]));
+  // The tokens, without their first line, their @imports (an @import must start the file), and
+  // their color-scheme rules. Each rule of a status theme also names its buttons.
+  const tokens = toCss(built, { classPrefix, icons: false }).split('\n').slice(1)
+    .filter((line) => !line.startsWith('@import') && !/^(:root|\[data-tm-mode="(light|dark)"\]) \{ color-scheme/.test(line))
+    .map((line) => {
+      const m = /^(\s*)([^@\s][^{]*) \{$/.exec(line);
+      return m ? `${m[1]}${m[2].split(', ').flatMap((s) => [s, ...(aliases[s] ?? [])]).join(', ')} {` : line;
+    });
+  return [
+    '/* ---- themetron looks on Bootstrap. The --tm-* tokens, then the looks. */\n',
+    ':root, [data-bs-theme=light] { color-scheme: light; }\n[data-bs-theme=dark] { color-scheme: dark; }\n',
+    tokens.join('\n').trim(), '',
+    looksOn(looksCss, targets),
+  ].join('\n');
 }

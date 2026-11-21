@@ -16,7 +16,14 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+- **New: looks.** A look gives your own element the appearance of a themetron part, without its layout: `class="my-button tm-look-fill"`. Nine looks: `fill`, `tint`, `quiet`, `outline`, `ghost`, `surface`, `field`, `gradient-text`, and `ring`, with the theme's shine, gradients, clarity, and states. Three motion looks: `tm-enter-pop`, `tm-enter-arrive`, and `tm-enter-fade`. They play when a part appears or is hidden, with no script. See [Looks](./components/README.md#looks "components").
+- **New files:** `components/looks.css` (`@method-run/idk-themetron/looks.css`), and the same looks as Sass mixins (`/looks.scss`) and Tailwind CSS v4 utilities (`/looks.tailwind.css`). `components.css` imports `looks.css`, and the components look the same as before.
+- **New export format: `looks`.** The tokens and the looks in one file, in the CLI and the playground. The `stylesheet` format includes the looks.
+- **The token manifest lists the looks**, with the tokens that each one reads. Contract 0.4.0, when released.
+- **Engine:** `LOOKS`, `looksScss()`, `looksTailwind()`, and `withLooks()`.
 - **Playground: preview the Bootstrap CSS export.** In the Tokens view, "Preview on Bootstrap 5.3" shows Bootstrap's stock parts with the export, in both modes.
+- **Looks on Bootstrap.** `build --format bootstrap-css --looks` adds the tokens and the looks on Bootstrap's classes: the solid buttons get the fill, `.btn-secondary` the quiet look, the outline buttons the outline, `.btn-link` the ghost, `.card` the surface, and the form fields the field. Each status button wears its status theme. In the playground, pick **Themetron looks** next to the format to see it in the preview and download it. Engine: `toBootstrapCss(built, { looksCss })` and `looksOn()`.
+- **Playground: a Format list in the Tokens view.** The formats are now a dropdown, grouped as Themetron CSS, Frameworks, and Data. Before, the buttons wrapped onto several rows.
 
 ## 0.3.0
 

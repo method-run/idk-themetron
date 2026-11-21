@@ -5,6 +5,7 @@ import { buildThemes } from './tokens.js';
 import { primitiveEntries, semanticEntries } from './export.js';
 import { ANIMATIONS, FEELS, REMOVED_FEELS, TYPE_VARIANCE, PRESETS, ROOT, ROLES, INHERIT, CONTRAST_METHODS, CONTRAST_MODELS, INPUTS_VERSION, THEME_NAME, FONT_URL, FONT_WEIGHT, FONT_STYLES, GRADIENT_DEFAULTS } from './inputs.js';
 import { ICON_DEFAULTS, ICON_STYLES, ICON_WEIGHT } from './icons.js';
+import { LOOKS, lookClass, parseLooks } from './looks.js';
 
 // The version of the token contract. It is not the package version.
 // Major: a stable token is removed or renamed, or its type or meaning changes.
@@ -133,7 +134,8 @@ function typeOf(value) {
 }
 
 // Every token of the contract. Every theme class sets all of them.
-export function tokenManifest() {
+// looksCss is the text of components/looks.css. With it, each look lists the tokens that it reads.
+export function tokenManifest({ looksCss } = {}) {
   const root = buildThemes({}).themes[ROOT];
   const prims = primitiveEntries(root.primitives).map(([name, value]) => [name, value, 'primitive']);
   const sems = semanticEntries(root).map(([name, value]) => [name, value, 'semantic']);
@@ -173,7 +175,28 @@ export function tokenManifest() {
     },
     pairs: PAIRS,
     tokens,
+    looks: lookEntries(looksCss),
   };
+}
+
+// The looks, by class: what each gives, the states and components, the Sass mixin and Tailwind
+// utility of the same look, and the tokens that it reads. All are experimental for now.
+function lookEntries(looksCss) {
+  const rules = looksCss ? parseLooks(looksCss).looks : {};
+  return Object.fromEntries(Object.entries(LOOKS).map(([name, look]) => {
+    const css = (rules[name] ?? []).flatMap((r) => r.decls).join(';');
+    const reads = [...new Set([...css.matchAll(/var\(--tm-([a-z0-9-]+)/g)].map((m) => m[1]))].sort();
+    return [lookClass(name), {
+      stability: 'experimental',
+      summary: look.summary,
+      states: look.states,
+      components: look.components,
+      example: look.example,
+      sass: lookClass(name).replace(/^tm-/, ''),
+      tailwind: lookClass(name),
+      ...(looksCss ? { tokens: reads } : {}),
+    }];
+  }));
 }
 
 // The JSON Schema of the inputs. It accepts what normalizeInputs accepts, except the checks
@@ -308,19 +331,19 @@ export function inputsSchema({ id = INPUTS_SCHEMA_URL } = {}) {
 const json = (data) => `${JSON.stringify(data, null, 2)}\n`;
 
 // The generated files in spec/, as { path: text }.
-export function specFiles() {
+export function specFiles({ looksCss } = {}) {
   return {
-    'spec/tokens.manifest.json': json(tokenManifest()),
+    'spec/tokens.manifest.json': json(tokenManifest({ looksCss })),
     'spec/inputs.schema.json': json(inputsSchema()),
   };
 }
 
 // The copy of the current contract version, for a release, as { path: text }. The schema's $id
 // is the URL of its version.
-export function releaseFiles() {
+export function releaseFiles({ looksCss } = {}) {
   const dir = `spec/versions/${CONTRACT_VERSION}`;
   return {
-    [`${dir}/tokens.manifest.json`]: json(tokenManifest()),
+    [`${dir}/tokens.manifest.json`]: json(tokenManifest({ looksCss })),
     [`${dir}/inputs.schema.json`]: json(inputsSchema({ id: specUrl('inputs.schema.json', CONTRACT_VERSION) })),
   };
 }

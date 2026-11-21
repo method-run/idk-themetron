@@ -10,7 +10,7 @@ tags: [system/consumers/plan-consumers]
 # Plan: make themes easier to use
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 18% (2/11) · 1 dropped
+◐ 50% (6/12) · 1 dropped
 <!-- idk-plans:progress:end -->
 
 This plan looks at four ideas. We talked them through on 2026-11-20, and each section has the decisions:
@@ -216,17 +216,20 @@ Each framework is a development dependency, bundled into the playground. The eng
 
 The Bootstrap preview found a gap at once: the active item of a list group keeps Bootstrap's own blue, because the export does not map it.
 
+With the **Themetron looks** switch, the Bootstrap CSS export also puts the looks on Bootstrap's buttons, cards, and fields. The preview shows the export either way.
+
 ## Tasks
 
 - [x] Agree on the look idea and the first list of looks
-- [ ] Build `looks.css` and the `looks` export, and move `components.css` onto it
-- [ ] Make a Tailwind `@utility` and a Sass mixin for each look, from the same source, with a test that the three match
-- [ ] List the looks in the token manifest, with their states and tokens, as experimental
+- [x] Build `looks.css` and the `looks` export, and move `components.css` onto it
+- [x] Make a Tailwind `@utility` and a Sass mixin for each look, from the same source, with a test that the three match
+- [x] List the looks in the token manifest, with their states and tokens, as experimental
 - [ ] Make each recipe from its look's source
 - [ ] Write the agent guide, `llms.txt`, from the manifest, with a test
 - [ ] Add subpath exports for the engine, the exporters, the contract, and the CSS
 - [ ] Decide whether to make a Vite or PostCSS plugin, as the first separate package
 - [x] Preview the Bootstrap CSS format in the playground
+- [x] Put the looks on Bootstrap's classes in the Bootstrap CSS export, behind a switch, with the preview and the download following it
 - [ ] Map the Bootstrap parts that the preview shows in stock colors, such as the active list-group item
 - [ ] Preview daisyUI, Tailwind, and shadcn
 - [-] Preview MUI. A React bundle costs too much build and upkeep for one preview. Look again if sites use the MUI export.

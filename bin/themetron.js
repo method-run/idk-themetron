@@ -11,11 +11,12 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, InputError } from '../src/index.js';
 import { checkCss, CONTRACT_VERSION } from '../src/manifest.js';
+import { withLooks } from '../src/looks.js';
 
 const USAGE = `Usage:
   themetron build <inputs.json> [--format css] [--out <file>]
                   [--prefix tm] [--class-prefix theme-] [--no-root] [--no-more] [--more]
-                  [--no-icons] [--set <name>]
+                  [--no-icons] [--looks] [--set <name>]
   themetron check <file.css>... [--strict] [--prefix tm]
 
 A flag that the command does not know stops it. A build flag that the format does not use, such
@@ -24,12 +25,15 @@ as --prefix with dtcg, prints a warning, and the build goes on without it.
 build formats:
   css         The tokens as CSS custom properties, one rule for each theme. The default.
   stylesheet  The tokens and the components in one file.
+  looks       The tokens and the looks in one file: the tm-look-* classes, which give any
+              element a themetron appearance.
   dtcg        Design Tokens Community Group JSON.
   tailwind    A Tailwind CSS v4 theme. Add the CSS tokens too.
   shadcn      Variables for shadcn/ui's globals.css.
   bootstrap   Bootstrap 5 Sass variables. Import the file before Bootstrap.
   bootstrap-css
-              Bootstrap 5.3 CSS variables. Load the file after bootstrap.css.
+              Bootstrap 5.3 CSS variables. Load the file after bootstrap.css. With --looks,
+              Bootstrap's parts also get themetron's looks.
   mui         A Material UI theme for the root theme, as JSON, for createTheme() in MUI v6
               or later.
   daisyui     Two daisyUI 5 themes, light and dark. Add the CSS tokens too.
@@ -45,6 +49,8 @@ build flags:
                       who ask for more contrast. For mui and bootstrap.
   --no-icons          Leave out the @import of the icon font, for pages without icons, or a
                       site that loads the font itself. For css and stylesheet.
+  --looks             Add themetron's tokens and looks, so Bootstrap's buttons, cards, and
+                      fields look like themetron's parts. For bootstrap-css.
   --set <name>        The theme set's name, such as "Admin app". The first line of the file
                       names it, as admin-app, with the token contract version. It is also the
                       daisyUI theme's name. For every format but mui.
@@ -52,15 +58,18 @@ build flags:
 Every format but mui starts with a line that names the token contract that made it.`;
 
 // The same formats as the playground's download, except "inputs". `flags` lists the build flags
-// that each format uses. The components read --tm-* tokens, so stylesheet takes no --prefix.
+// that each format uses. The components and looks read --tm-* tokens, so stylesheet and looks
+// take no --prefix.
+const file = (name) => readFile(new URL(`../components/${name}`, import.meta.url), 'utf8');
 const FORMATS = {
   css: { flags: ['prefix', 'class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: (built, o) => toCss(built, o) },
-  stylesheet: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron components */\n\n${await readFile(new URL('../components/components.css', import.meta.url), 'utf8')}` },
+  stylesheet: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron components */\n\n${withLooks(await file('components.css'), await file('looks.css'))}` },
+  looks: { flags: ['class-prefix', 'no-root', 'no-more', 'no-icons', 'set'], make: async (built, o) => `${toCss(built, o)}\n/* ---- themetron looks */\n\n${await file('looks.css')}` },
   dtcg: { flags: ['set'], make: (built, o) => `${JSON.stringify(toDtcg(built, o), null, 2)}\n` },
   tailwind: { flags: ['prefix', 'set'], make: (built, o) => toTailwind(built, o) },
   shadcn: { flags: ['class-prefix', 'set'], make: (built, o) => toShadcn(built, o) },
   bootstrap: { flags: ['more', 'set'], make: (built, o) => toBootstrapSass(built, { more: o.variant, set: o.set }) },
-  'bootstrap-css': { flags: ['class-prefix', 'set'], make: (built, o) => toBootstrapCss(built, o) },
+  'bootstrap-css': { flags: ['class-prefix', 'looks', 'set'], make: async (built, o) => toBootstrapCss(built, { ...o, looksCss: o.looks ? await file('looks.css') : undefined }) },
   mui: { flags: ['more'], make: (built, o) => `${JSON.stringify(toMui(built, { more: o.variant }), null, 2)}\n` },
   daisyui: { flags: ['prefix', 'class-prefix', 'set'], make: (built, o) => toDaisyui(built, o) },
 };
@@ -71,6 +80,7 @@ const BUILD_FLAGS = {
   'no-more': { type: 'boolean' },
   more: { type: 'boolean' },
   'no-icons': { type: 'boolean' },
+  looks: { type: 'boolean' },
   set: { type: 'string' },
 };
 
@@ -114,6 +124,7 @@ async function build(args) {
     more: !(format.flags.includes('no-more') && values['no-more']),
     variant: format.flags.includes('more') && Boolean(values.more),
     icons: !(format.flags.includes('no-icons') && values['no-icons']),
+    looks: format.flags.includes('looks') && Boolean(values.looks),
     set: format.flags.includes('set') ? values.set : undefined,
   };
   const [file] = positionals;

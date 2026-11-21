@@ -63,10 +63,10 @@ test('headings are checked at their size at regular weight, and with APCA the la
   for (const s of ['lg', '2xl', '3xl']) assert.ok(grade(apca, `fg.base-heading-${s}`) >= grade(wcag, `fg.base-heading-${s}`), s);
 });
 
-test('the components use only tokens that the CSS defines', async () => {
+test('the components and the looks use only tokens that the CSS defines', async () => {
   const css = toCss(buildThemes({}));
   const defined = new Set([...css.matchAll(/--(tm-[a-z0-9-]+):/g)].map((m) => m[1]));
-  const components = await readFile(new URL('../components/components.css', import.meta.url), 'utf8');
+  const components = (await Promise.all(['components.css', 'looks.css'].map((f) => readFile(new URL(`../components/${f}`, import.meta.url), 'utf8')))).join('\n');
   const used = new Set([...components.matchAll(/var\(--(tm-[a-z0-9-]+)/g)].map((m) => m[1]));
   const missing = [...used].filter((name) => !defined.has(name));
   assert.deepEqual(missing, []);
@@ -278,6 +278,26 @@ test('the Bootstrap CSS export has its variables, with -rgb twins, for each mode
   assert.ok(css.includes(`--tm-bs-primary-hover: ${t('default', 'light', 'fill.action-hover')};`));
   assert.ok(css.includes(`--tm-bs-secondary: ${t('default', 'light', 'fill.quiet')};`));
   assert.ok(css.includes(`--tm-bs-primary: ${t('promo', 'dark', 'fill.action')};`), 'child themes set the helpers in dark mode too');
+});
+
+test('the Bootstrap CSS export with looks adds the tokens, and the looks on Bootstrap\'s classes', async () => {
+  const built = buildThemes(STATUS_TREE);
+  const looksCss = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
+  const plain = toBootstrapCss(built);
+  const css = toBootstrapCss(built, { looksCss });
+  assert.ok(css.startsWith(plain), 'the variables come first, as without looks');
+  const looks = css.slice(plain.length);
+  assert.match(looks, /^:root, \[data-bs-theme=light\] \{ color-scheme: light; \}$/m, 'the mode follows data-bs-theme');
+  assert.match(looks, /--tm-fill-action: /, 'the tokens');
+  assert.doesNotMatch(looks, /^@import/m, 'an @import must start a file');
+  assert.doesNotMatch(looks, /^:root \{ color-scheme: light dark; \}$/m, 'not the system setting');
+  // The danger theme's rules also name its buttons, so they wear its tokens.
+  assert.match(looks, /^\.theme-danger, \.btn-danger, \.btn-outline-danger \{$/m);
+  assert.match(looks, /^:is\(\.btn-primary, \.btn-danger\):hover, /m, 'the fill');
+  assert.match(looks, /^\.btn-secondary \{ --_bg: var\(--tm-fill-quiet\)/m, 'the quiet look');
+  assert.match(looks, /^\.card \{/m, 'the surface');
+  assert.doesNotMatch(looks, /\.tm-(button|card|look-)/, 'no themetron classes but tm-invert');
+  assert.doesNotMatch(looks, /\.btn-success/, 'no success theme, so Bootstrap keeps its own button');
 });
 
 test('the framework exports have more contrast, in the way each tool allows', () => {
