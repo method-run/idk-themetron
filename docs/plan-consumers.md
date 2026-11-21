@@ -10,7 +10,7 @@ tags: [system/consumers/plan-consumers]
 # Plan: make themes easier to use
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 18% (2/11) · 1 dropped
+◐ 45% (5/11) · 1 dropped
 <!-- idk-plans:progress:end -->
 
 This plan looks at four ideas. We talked them through on 2026-11-20, and each section has the decisions:
@@ -219,9 +219,9 @@ The Bootstrap preview found a gap at once: the active item of a list group keeps
 ## Tasks
 
 - [x] Agree on the look idea and the first list of looks
-- [ ] Build `looks.css` and the `looks` export, and move `components.css` onto it
-- [ ] Make a Tailwind `@utility` and a Sass mixin for each look, from the same source, with a test that the three match
-- [ ] List the looks in the token manifest, with their states and tokens, as experimental
+- [x] Build `looks.css` and the `looks` export, and move `components.css` onto it
+- [x] Make a Tailwind `@utility` and a Sass mixin for each look, from the same source, with a test that the three match
+- [x] List the looks in the token manifest, with their states and tokens, as experimental
 - [ ] Make each recipe from its look's source
 - [ ] Write the agent guide, `llms.txt`, from the manifest, with a test
 - [ ] Add subpath exports for the engine, the exporters, the contract, and the CSS
