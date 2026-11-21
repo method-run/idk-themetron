@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { LOOKS, lookFiles, parseLooks, lookInSelector, splitList, withLooks } from '../src/looks.js';
+import { LOOKS, lookClass, lookFiles, parseLooks, lookInSelector, splitList, withLooks } from '../src/looks.js';
 
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 
@@ -21,7 +21,7 @@ test('each look names components that are in components.css, and has an example 
   const [components, looks] = await Promise.all([read('components/components.css'), read('components/looks.css')]);
   const all = withLooks(components, looks);
   for (const [name, look] of Object.entries(LOOKS)) {
-    assert.ok(look.example.includes(`tm-look-${name}`), `the example of ${name} uses tm-look-${name}`);
+    assert.ok(look.example.includes(lookClass(name)), `the example of ${name} uses ${lookClass(name)}`);
     for (const c of look.components) assert.ok(all.includes(`.${c}`), `${c} is in components.css or looks.css`);
   }
 });
@@ -41,18 +41,21 @@ test('a selector becomes relative to its look', () => {
   assert.deepEqual(lookInSelector(':is(.tm-look-tint, .tm-button--soft) > :is(span, .tm-icon)'), { name: 'tint', nested: '& > :is(span, .tm-icon)' });
   assert.deepEqual(lookInSelector(':where(.tm-over-media) :is(.tm-look-gradient-text, .tm-link)'), { name: 'gradient-text', nested: ':where(.tm-over-media) &' });
   assert.equal(lookInSelector('.tm-button--soft'), null);
+  assert.deepEqual(lookInSelector('.tm-enter-pop:is([hidden], dialog:not([open]))'), { name: 'enter-pop', nested: '&:is([hidden], dialog:not([open]))' });
+  assert.equal(lookClass('enter-pop'), 'tm-enter-pop');
+  assert.equal(lookClass('fill'), 'tm-look-fill');
   assert.deepEqual(splitList(':is(a, b), c'), [':is(a, b)', 'c']);
 });
 
 test('each form has every look, and the shared rules that the looks need', async () => {
   const files = lookFiles(await read('components/looks.css'));
   for (const name of Object.keys(LOOKS)) {
-    assert.ok(files['components/_looks.scss'].includes(`@mixin look-${name} {`), `mixin look-${name}`);
-    assert.ok(files['components/looks.tailwind.css'].includes(`@utility tm-look-${name} {`), `utility tm-look-${name}`);
+    assert.ok(files['components/_looks.scss'].includes(`@mixin ${lookClass(name).slice(3)} {`), `mixin for ${name}`);
+    assert.ok(files['components/looks.tailwind.css'].includes(`@utility ${lookClass(name)} {`), `utility for ${name}`);
   }
   for (const text of Object.values(files)) {
     assert.ok(text.includes('@property --_paint-from'));
     assert.ok(text.includes('.tm-invert { --_halo-fill-on: 0;'));
-    assert.ok(!/tm-button|tm-card|tm-input|tm-badge/.test(text), 'the forms name no components');
+    assert.ok(!/tm-(button|card|input|badge|pop|toast)\b/.test(text), 'the forms name no components');
   }
 });
