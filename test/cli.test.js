@@ -58,6 +58,18 @@ test('build --format bootstrap-css --looks adds the looks', async () => {
   assert.match((await run('build', inputs, '--looks')).stderr, /Warning: skipped --looks: it does nothing with --format css/);
 });
 
+test('build --looks with bootstrap or mui makes the looks file of its own', async () => {
+  const inputs = join(example, 'inputs.json');
+  const { buildThemes, toBootstrapLooks, toMuiLooks } = await import('../src/index.js');
+  const looksCss = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
+  const built = buildThemes(JSON.parse(await readFile(inputs, 'utf8')));
+  assert.equal((await run('build', inputs, '-f', 'bootstrap', '--looks')).stdout, toBootstrapLooks(built, { looksCss }));
+  assert.equal((await run('build', inputs, '-f', 'mui', '--looks')).stdout, toMuiLooks(built, { looksCss }));
+  const prefixed = await run('build', inputs, '-f', 'tailwind', '--looks', '--prefix', 'x');
+  assert.notEqual(prefixed.code, 0);
+  assert.match(prefixed.stderr, /--looks: the looks read --tm-\* tokens/);
+});
+
 test('build --out writes a file, and nothing to stdout', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'themetron-'));
   try {

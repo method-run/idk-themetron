@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { PRESETS, buildThemes, toCss, toDtcg, toShadcn, toTailwind, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, tokenManifest } from '../src/index.js';
+import { PRESETS, buildThemes, toCss, toDtcg, toShadcn, toTailwind, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, toBootstrapLooks, toMuiLooks, tokenManifest } from '../src/index.js';
 
 // A root color and a child color theme. Hard cases: yellow, near white, near black, neon.
 const TRICKY = [
@@ -148,7 +148,8 @@ test('feels change the primitives', () => {
   const p = (feel) => buildThemes({ themes: { default: { feel } } }).themes.default.primitives;
   assert.ok(p({ spaciousness: 1 }).space.md > p({ spaciousness: 0 }).space.md);
   assert.equal(p({ roundness: 0 }).radius.control, 0);
-  assert.equal(p({ roundness: 1 }).radius.control, p({ roundness: 1 }).control.height / 2);
+  assert.equal(p({ roundness: 1 }).radius.control, p({ roundness: 1 }).radius.full, 'a pill at any height');
+  assert.equal(p({ roundness: 0.5 }).radius.control, p({ roundness: 0.5 }).control.height / 4);
   assert.equal(p({ shininess: 0.4 }).shininess, 0.4);
   // Type variance: small text stays at 11 px or more, body text at 16 or 17, and every larger
   // size only grows. The default keeps the classic 1.2 scale.
@@ -296,11 +297,65 @@ test('the Bootstrap CSS export with looks adds the tokens, and the looks on Boot
   assert.doesNotMatch(looks, /^:root \{ color-scheme: light dark; \}$/m, 'not the system setting');
   // The danger theme's rules also name its buttons, so they wear its tokens.
   assert.match(looks, /^\.theme-danger, \.btn-danger, \.btn-outline-danger \{$/m);
-  assert.match(looks, /^:is\(\.btn-primary, \.btn-danger\):hover, /m, 'the fill');
-  assert.match(looks, /^\.btn-secondary \{ --_bg: var\(--tm-fill-quiet\)/m, 'the quiet look');
+  assert.match(looks, /^:is\(\.btn-primary\.btn-primary\.btn-primary, \.btn-danger\.btn-danger\.btn-danger\):hover, /m, 'the fill, as specific as Bootstrap\'s state rules');
+  assert.match(looks, /^\.btn-secondary\.btn-secondary\.btn-secondary \{ --_bg: var\(--tm-fill-quiet\)/m, 'the quiet look');
   assert.match(looks, /^\.card \{/m, 'the surface');
   assert.doesNotMatch(looks, /\.tm-(button|card|look-)/, 'no themetron classes but tm-invert');
   assert.doesNotMatch(looks, /\.btn-success/, 'no success theme, so Bootstrap keeps its own button');
+});
+
+test('the other framework exports with looks add the tokens, and the looks on the framework\'s parts', async () => {
+  const built = buildThemes(STATUS_TREE);
+  const looksCss = await readFile(new URL('../components/looks.css', import.meta.url), 'utf8');
+  // The part after the export: the export comes first, as without looks.
+  const after = (make) => { const css = make({ looksCss }); assert.ok(css.includes(make({}).split('\n').slice(-6).join('\n').trimEnd())); return css.slice(css.indexOf('/* ---- themetron looks')); };
+  for (const looks of [after((o) => toShadcn(built, o)), after((o) => toDaisyui(built, o)), toBootstrapLooks(built, { looksCss }), toMuiLooks(built, { looksCss })]) {
+    assert.match(looks, /--tm-fill-action: /, 'the tokens');
+    assert.doesNotMatch(looks, /^@import/m, 'an @import must start a file');
+    assert.doesNotMatch(looks, /\.tm-(button|card|look-)/, 'no themetron classes but tm-invert');
+  }
+
+  const shadcn = after((o) => toShadcn(built, o));
+  assert.match(shadcn, /^\.dark \{ color-scheme: dark; \}$/m, 'the mode follows .dark');
+  assert.match(shadcn, /^\.theme-danger, \[data-slot=button\]\[data-variant=destructive\] \{$/m, 'the destructive button wears the danger theme');
+  assert.match(shadcn, /^\[data-slot=card\] \{/m, 'the surface');
+
+  const daisyui = after((o) => toDaisyui(built, o));
+  assert.doesNotMatch(daisyui, /^(:root|\[data-tm-mode="(light|dark)"\]) \{ color-scheme/m, 'daisyUI\'s themes set color-scheme');
+  assert.match(daisyui, /^\.theme-danger, \.btn-error \{$/m, 'each error button wears the danger theme, in any style');
+  assert.match(daisyui, /:is\(\.btn-outline, \.btn-dash\):hover/, 'the outline');
+
+  assert.match(toBootstrapLooks(built, { looksCss }), /^\[data-bs-theme=dark\] \{ color-scheme: dark; \}$/m, 'the same looks as Bootstrap CSS');
+  const mui = toMuiLooks(built, { looksCss });
+  assert.match(mui, /:is\(\.MuiButton-root\.MuiButton-contained\.MuiButton-colorPrimary, \.MuiButton-root\.MuiButton-contained\.MuiButton-colorError\b/, 'three classes, to win over MUI\'s state rules');
+  assert.match(mui, /^\.theme-danger, \.MuiButton-colorError \{$/m, 'each error button wears the danger theme');
+  assert.match(mui, /^\[data-tm-mode="dark"\] \{ color-scheme: dark; \}$/m, 'the mode follows the tokens\' own rules');
+
+  const tailwind = toTailwind(built, { looksCss });
+  assert.match(tailwind, /^@utility tm-look-fill \{$/m, 'the looks as utilities');
+  assert.match(tailwind, /--tm-fill-action: /, 'the tokens');
+  assert.doesNotMatch(tailwind, /Add the themetron CSS too/, 'the tokens are in the file');
+});
+
+test('every framework\'s secondary button is the quiet button, and its controls are rounded as controls', () => {
+  const built = buildThemes({ themes: { default: { color: '#2456e8', feel: { roundness: 'pill' } } } });
+  const { radius } = built.themes.default.primitives;
+  const quiet = built.themes.default.modes.light.tokens['fill.quiet'].value;
+  assert.notEqual(radius.control, radius.md, 'a pill theme rounds controls more than panels');
+
+  const mui = toMui(built);
+  assert.equal(mui.colorSchemes.light.palette.secondary.main, quiet);
+  assert.equal(mui.shape.borderRadius, radius.md, 'panels');
+  assert.equal(mui.components.MuiButton.styleOverrides.root.borderRadius, radius.control);
+  assert.equal(radius.control, radius.full, 'a pill theme\'s controls are pills at any height');
+  assert.equal(mui.components.MuiOutlinedInput.styleOverrides.root.borderRadius, built.themes.default.primitives.control.height / 2, 'a field is no rounder than half its height, so a text area stays a box');
+
+  assert.match(toDaisyui(built), /--color-secondary: var\(--tm-fill-quiet\);/);
+
+  const bootstrap = toBootstrapCss(built);
+  assert.match(bootstrap, new RegExp(`^\\.btn \\{ --bs-btn-border-radius: ${radius.control}px; \\}$`, 'm'));
+  assert.match(bootstrap, new RegExp(`^\\.form-control, \\.form-select \\{ border-radius: ${built.themes.default.primitives.control.height / 2}px; \\}$`, 'm'));
+  assert.ok(bootstrap.indexOf('.btn { --bs-btn-border-radius') < bootstrap.indexOf('.btn-sm, '), 'a size class comes after, so it wins');
 });
 
 test('the framework exports have more contrast, in the way each tool allows', () => {
@@ -406,9 +461,8 @@ test('the grid stays 4 px, and space, line heights, and control heights never sh
     const sizes = [...Object.values(now.space), ...Object.values(now.font.leading), ...Object.values(now.font.leadingTight), now.control.heightSm, now.control.height, now.control.heightLg];
     if (prev) sizes.forEach((v, k) => assert.ok(v >= prev[k], `spaciousness ${i / 100}: ${v} < ${prev[k]}`));
     prev = sizes;
-    // At full roundness, every control size is a pill.
-    assert.equal(now.radius.controlSm, now.control.heightSm / 2);
-    assert.equal(now.radius.controlLg, now.control.heightLg / 2);
+    // At full roundness, every control size is a pill, at any height.
+    for (const size of ['controlSm', 'control', 'controlLg']) assert.equal(now.radius[size], now.radius.full);
     assert.ok(now.radius.lg <= now.space.lg, 'a card corner does not cut into its padding');
   }
 });

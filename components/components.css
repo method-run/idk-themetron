@@ -112,7 +112,7 @@
    Round fields move their text in from the curve: the side padding is at least the corner
    radius, rounded up to whole grid squares, so the text's edge stays on a grid line. */
 .tm-input, .tm-select, .tm-input-icon {
-  --_field-inset: max(var(--tm-control-padding-x), calc(round(up, min(var(--tm-radius-control), var(--tm-radius-lg)), var(--tm-rhythm)) - max(1px, var(--tm-border-width))));
+  --_field-inset: max(var(--tm-control-padding-x), calc(round(up, min(var(--tm-radius-control), var(--tm-radius-lg), var(--tm-control-height) / 2), var(--tm-rhythm)) - max(1px, var(--tm-border-width))));
 }
 .tm-input, .tm-select {
   height: var(--tm-control-height);
@@ -636,6 +636,7 @@
   .tm-tabs button[aria-selected="true"] { border-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-border-action-from), var(--tm-border-action-to)) 1; }
 
   .tm-badge:not(.tm-badge--solid) {
+    --_ring-drawn: on;
     --_text-from: var(--tm-on-tint-action-from);
     --_text-to: var(--tm-on-tint-action-to);
     --_ring-width: var(--tm-border-width);

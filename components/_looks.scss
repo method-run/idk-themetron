@@ -48,6 +48,7 @@
     border-radius: var(--tm-radius-control);
     --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
     background-image: var(--_fill-image);
+    background-color: transparent;
     background-origin: border-box;
     -webkit-backdrop-filter: var(--tm-backdrop-control);
     backdrop-filter: var(--tm-backdrop-control);
@@ -182,6 +183,7 @@
     border-radius: var(--tm-radius-control);
     --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
     background-image: var(--_fill-image);
+    background-color: transparent;
     background-origin: border-box;
     -webkit-backdrop-filter: var(--tm-backdrop-control);
     backdrop-filter: var(--tm-backdrop-control);
@@ -377,6 +379,7 @@
     border-radius: var(--tm-radius-control);
     --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
     background-image: var(--_fill-image);
+    background-color: transparent;
     background-origin: border-box;
     -webkit-backdrop-filter: var(--tm-backdrop-control);
     backdrop-filter: var(--tm-backdrop-control);
@@ -531,6 +534,7 @@
     border-radius: var(--tm-radius-control);
     --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
     background-image: var(--_fill-image);
+    background-color: transparent;
     background-origin: border-box;
     -webkit-backdrop-filter: var(--tm-backdrop-control);
     backdrop-filter: var(--tm-backdrop-control);
@@ -614,6 +618,9 @@
     --_tint-to: var(--tm-tint-action-active-to);
     color: var(--tm-on-tint-action-active);
   }
+  & {
+    --_ring-drawn: off;
+  }
   @container style(--tm-action-gradient: on) {
     & ::selection, &::selection {
       -webkit-text-fill-color: currentColor;
@@ -634,13 +641,14 @@
   }
   @container style(--tm-action-gradient: on) {
     & {
+      --_ring-drawn: on;
       --_ring-width: max(1px, var(--tm-border-width));
       --_ring-from: color-mix(in oklab, var(--tm-border-action-from) calc(var(--tm-fill-alpha) * 100%), transparent);
       --_ring-to: color-mix(in oklab, var(--tm-border-action-to) calc(var(--tm-fill-alpha) * 100%), transparent);
       border-color: transparent;
     }
   }
-  @container style(--tm-action-gradient: on) {
+  @container style(--_ring-drawn: on) {
     &::before {
       content: "";
       position: absolute;
@@ -713,6 +721,7 @@
     border-radius: var(--tm-radius-control);
     --_fill-image: linear-gradient(var(--tm-action-angle) in oklch, color-mix(in oklab, var(--_paint-from) calc(var(--_opacity) * 100%), transparent), color-mix(in oklab, var(--_paint-to) calc(var(--_opacity) * 100%), transparent));
     background-image: var(--_fill-image);
+    background-color: transparent;
     background-origin: border-box;
     -webkit-backdrop-filter: var(--tm-backdrop-control);
     backdrop-filter: var(--tm-backdrop-control);
@@ -837,7 +846,7 @@
   }
   & {
     border: max(1px, var(--tm-border-width)) solid var(--tm-border-base-field);
-    border-radius: min(var(--tm-radius-control), var(--tm-radius-lg));
+    border-radius: min(var(--tm-radius-control), var(--tm-radius-lg), var(--tm-control-height) / 2);
     background-color: color-mix(in oklab, var(--tm-bg-field) calc(var(--tm-field-alpha) * 100%), transparent);
     color: var(--tm-fg-base);
     box-shadow: var(--tm-elevation-field);
@@ -901,8 +910,10 @@
 
 @mixin look-ring {
   border: max(1px, var(--tm-border-width)) solid var(--tm-border-action);
+  --_ring-drawn: off;
   @container style(--tm-action-gradient: on) {
     & {
+      --_ring-drawn: on;
       --_ring-width: max(1px, var(--tm-border-width));
       --_ring-from: var(--tm-border-action-from);
       --_ring-to: var(--tm-border-action-to);
@@ -910,7 +921,7 @@
       border-color: transparent;
     }
   }
-  @container style(--tm-action-gradient: on) {
+  @container style(--_ring-drawn: on) {
     &::before {
       content: "";
       position: absolute;

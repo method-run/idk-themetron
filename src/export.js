@@ -3,7 +3,7 @@ import { GRADES } from './palette.js';
 import { ROOT, ROLES, FONT_FIELDS, themeName } from './inputs.js';
 import { iconImport } from './icons.js';
 import { CONTRACT_VERSION, specUrl } from './manifest.js';
-import { looksOn } from './looks.js';
+import { looksOn, looksTailwind, splitList } from './looks.js';
 
 // The line that says what made an export: themetron, the theme set, and the token contract, with
 // the URL of that contract's manifest. A tool can read the contract version from it, to tell
@@ -514,7 +514,7 @@ function setPath(obj, path, value) {
 // A Tailwind CSS v4 `@theme inline` block. Every value points at a themetron CSS
 // variable, so the theme classes and the modes work in Tailwind utilities too.
 // Use it with the output of toCss. Grade 5 is Tailwind's 50, grade 10 is 100, and so on.
-export function toTailwind(built, { prefix = 'tm', set } = {}) {
+export function toTailwind(built, { prefix = 'tm', set, looksCss } = {}) {
   const theme = built.themes[ROOT];
   const p = theme.primitives;
   const v = (name) => `var(--${prefix}-${name})`;
@@ -531,7 +531,11 @@ export function toTailwind(built, { prefix = 'tm', set } = {}) {
   for (const k of ['sm', 'md', 'lg', 'control']) lines.push(`--radius-${k}: ${v(`radius-${k}`)};`);
   for (const level of [1, 2, 3]) lines.push(`--shadow-${['sm', 'md', 'lg'][level - 1]}: ${v(`elevation-${level}`)};`);
   lines.push(`--ease-standard: ${v('ease-standard')};`, `--ease-enter: ${v('ease-enter')};`);
-  return `/* ${madeBy(set)} */\n@import "tailwindcss";\n\n/* Add the themetron CSS too: these names point at its variables. */\n@theme inline {\n${lines.map((l) => '  ' + l).join('\n')}\n}\n`;
+  const head = looksCss ? 'These names point at the themetron tokens, at the end of this file.' : 'Add the themetron CSS too: these names point at its variables.';
+  const out = `/* ${madeBy(set)} */\n@import "tailwindcss";\n\n/* ${head} */\n@theme inline {\n${lines.map((l) => '  ' + l).join('\n')}\n}\n`;
+  // With looksCss, the tokens, and the looks as utilities: class="tm-look-fill", or @apply.
+  if (!looksCss) return out;
+  return `${out}\n/* ---- themetron tokens */\n\n${tokensAfter(built)}\n\n${looksTailwind(looksCss)}`;
 }
 
 // shadcn/ui theme variables, for its globals.css. :root and .dark hold the root theme's
@@ -555,7 +559,7 @@ const withMoreContrast = (pairs, block) => {
   ];
 };
 
-export function toShadcn(built, { classPrefix = 'theme-', set } = {}) {
+export function toShadcn(built, { classPrefix = 'theme-', set, looksCss } = {}) {
   const vars = (theme, mode, more) => {
     const t = atLevel(theme, more).modes[mode].tokens;
     const v = (name) => t[name].value;
@@ -606,7 +610,9 @@ export function toShadcn(built, { classPrefix = 'theme-', set } = {}) {
       rule(`.dark .${classPrefix}${name}, .${classPrefix}${name}.dark`, built.themes[name], 'dark'),
     ]),
   ];
-  return [`/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)].join('\n');
+  const out = [`/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)];
+  if (looksCss) out.push(shadcnLooks(built, looksCss, classPrefix));
+  return out.join('\n');
 }
 
 // Bootstrap 5 Sass variables, to put before Bootstrap's own Sass. Sass variables are fixed when
@@ -681,9 +687,9 @@ export function toBootstrapSass(built, { more = false, set } = {}) {
     ['btn-border-radius-sm', size(p.radius.controlSm)],
     ['btn-border-radius', size(p.radius.control)],
     ['btn-border-radius-lg', size(p.radius.controlLg)],
-    ['input-border-radius-sm', size(p.radius.controlSm)],
-    ['input-border-radius', size(p.radius.control)],
-    ['input-border-radius-lg', size(p.radius.controlLg)],
+    ['input-border-radius-sm', size(fieldRadius(p, 'Sm'))],
+    ['input-border-radius', size(fieldRadius(p))],
+    ['input-border-radius-lg', size(fieldRadius(p, 'Lg'))],
     ['input-btn-padding-y', size(p.control.paddingY)],
     ['input-btn-padding-x', size(p.control.paddingX)],
     ['input-btn-line-height', p.font.lineHeight.control],
@@ -724,6 +730,11 @@ export function toBootstrapSass(built, { more = false, set } = {}) {
 const STATUSES = { error: ['danger', 'error'], warning: ['warning'], success: ['success'], info: ['info'] };
 const statusThemes = (built) => Object.fromEntries(Object.entries(STATUSES).map(([status, names]) => [status, built.themes[names.find((n) => built.themes[n])]]).filter(([, theme]) => theme));
 
+// A field's radius, as tm-look-field rounds it: the control radius, but no more than the
+// panels' lg or half the field's height. A pill theme's control radius is full, and a text area
+// would be a stadium.
+const fieldRadius = (p, size = '') => Math.min(p.radius[`control${size}`], p.radius.lg, p.control[`height${size}`] / 2);
+
 // "#rrggbb" as "r, g, b", for the -rgb variables of Bootstrap.
 const rgbList = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(', ');
 
@@ -747,7 +758,7 @@ export function toMui(built, { theme: name = ROOT, more = false } = {}) {
     return {
       mode,
       primary: { main: v('fill.action'), contrastText: v('on-fill.action') },
-      secondary: { main: v('tint.action'), contrastText: v('on-tint.action') },
+      secondary: { main: v('fill.quiet'), contrastText: v('on-fill.quiet') },
       ...Object.fromEntries(Object.entries(statuses).map(([status, t]) => [status, { main: v('fill.action', t), contrastText: v('on-fill.action', t) }])),
       background: { default: v('bg.canvas'), paper: v('bg.surface') },
       text: { primary: v('fg.base'), secondary: v('fg.base-muted'), disabled: v('fg.base-subtle') },
@@ -760,6 +771,12 @@ export function toMui(built, { theme: name = ROOT, more = false } = {}) {
   return {
     colorSchemes: { light: { palette: palette('light') }, dark: { palette: palette('dark') } },
     shape: { borderRadius: p.radius.md },
+    // MUI rounds buttons and fields with shape.borderRadius, as it does panels. Themetron
+    // rounds controls on their own, so a pill theme has pill buttons and rounded cards.
+    components: {
+      MuiButton: { styleOverrides: { root: { borderRadius: p.radius.control }, sizeSmall: { borderRadius: p.radius.controlSm }, sizeLarge: { borderRadius: p.radius.controlLg } } },
+      MuiOutlinedInput: { styleOverrides: { root: { borderRadius: fieldRadius(p) } } },
+    },
     shadows,
     typography: {
       fontFamily: fontList(p.font.family.body),
@@ -779,7 +796,7 @@ export function toMui(built, { theme: name = ROOT, more = false } = {}) {
 // value of a variable where it is set, so the child theme classes set the daisyUI colors again.
 // The status colors are the fills of the status themes in both modes. A status without a theme
 // gets the action fill, because daisyUI needs every color.
-export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, name = setSlug(set) || 'themetron' } = {}) {
+export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, name = setSlug(set) || 'themetron', looksCss } = {}) {
   const p = built.themes[ROOT].primitives;
   const v = (token) => `var(--${prefix}-${cssName(token)})`;
   const colors = {
@@ -789,8 +806,8 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, n
     'base-content': v('fg.base'),
     primary: v('fill.action'),
     'primary-content': v('on-fill.action'),
-    secondary: v('tint.action'),
-    'secondary-content': v('on-tint.action'),
+    secondary: v('fill.quiet'),
+    'secondary-content': v('on-fill.quiet'),
     accent: v('fill.action-exact'),
     'accent-content': v('on-fill.action-exact'),
     neutral: v('fg.base'),
@@ -823,11 +840,43 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, n
     `/* ${madeBy(set)} */`,
     '@import "tailwindcss";',
     '@plugin "daisyui";\n',
-    '/* Add the themetron CSS too: these values point at its variables. */',
+    looksCss ? '/* These values point at the themetron tokens, at the end of this file. */' : '/* Add the themetron CSS too: these values point at its variables. */',
     plugin(name, 'light'),
     plugin(`${name}-dark`, 'dark'),
     ...(children.length ? ['/* Each theme class sets the colors again, from its own variables. */', `${children.join(', ')} {\n${decls(own)}\n}\n`] : []),
+    ...(looksCss ? [daisyuiLooks(built, looksCss, classPrefix)] : []),
   ].join('\n');
+}
+
+// shadcn/ui's parts, by their data-slot and data-variant: the default button gets the fill,
+// secondary the quiet look, outline the outline, ghost the ghost, and link the gradient text.
+// The destructive button wears the danger theme. Card gets the surface, and the fields the
+// field. The mode follows the .dark class, as shadcn/ui's own colors do.
+function shadcnLooks(built, looksCss, classPrefix) {
+  const button = (variant) => `[data-slot=button][data-variant=${variant}]`;
+  return looksLayer(built, looksCss, {
+    classPrefix,
+    title: 'shadcn/ui',
+    targets: { fill: button('default'), quiet: button('secondary'), outline: button('outline'), ghost: button('ghost'), 'gradient-text': button('link'), surface: '[data-slot=card]', field: '[data-slot=input], [data-slot=textarea], [data-slot=select-trigger]' },
+    status: (s) => (s === 'error' ? { fill: button('destructive') } : {}),
+    schemes: ':root { color-scheme: light; }\n.dark { color-scheme: dark; }\n',
+  });
+}
+
+// daisyUI's parts: .btn-primary gets the fill, .btn-soft the tint, .btn-secondary and a plain
+// .btn the quiet look, .btn-outline and .btn-dash the outline, .btn-ghost the ghost, and
+// .btn-link and .link the gradient text. Each status button wears its status theme, with any
+// style. .card gets the surface, and the fields the field. daisyUI's themes set color-scheme.
+function daisyuiLooks(built, looksCss, classPrefix) {
+  const styles = '.btn-outline, .btn-dash, .btn-soft, .btn-ghost, .btn-link';
+  const colors = ['primary', 'secondary', 'accent', 'neutral', ...Object.keys(STATUSES)].map((c) => `.btn-${c}`).join(', ');
+  return looksLayer(built, looksCss, {
+    classPrefix,
+    title: 'daisyUI',
+    targets: { fill: `.btn-primary:not(${styles})`, tint: '.btn-soft', quiet: `.btn-secondary:not(${styles}), .btn:not(${colors}, ${styles})`, outline: '.btn-outline, .btn-dash', ghost: '.btn-ghost', 'gradient-text': '.btn-link, .link', surface: '.card', field: '.input, .select, .textarea' },
+    status: (s) => ({ fill: `.btn-${s}:not(${styles})`, theme: `.btn-${s}` }),
+    schemes: '',
+  });
 }
 
 // Bootstrap 5.3 CSS variables, for a page that loads Bootstrap's compiled CSS. For Bootstrap's
@@ -944,42 +993,93 @@ export function toBootstrapCss(built, { classPrefix = 'theme-', set, looksCss } 
   // color, black for warning and info, with !important. So this sets the label from the theme too.
   out.push('/* Labels on .text-bg-*. Bootstrap fixes their color, so these rules set it again. */\n',
     ...roles.filter((k) => k !== 'secondary').map((k) => `.text-bg-${k} { color: var(--tm-bs-${k}-on) !important; }\n`));
+  // Bootstrap rounds buttons and fields with --bs-border-radius, as it does panels. Themetron
+  // rounds controls on their own, so a pill theme has pill buttons and rounded cards.
+  // The plain size comes first, so a size class wins.
+  const control = (prop, radius, md, sm, lg) => `${md} { ${prop}: ${px(radius(''))}; }\n${sm} { ${prop}: ${px(radius('Sm'))}; }\n${lg} { ${prop}: ${px(radius('Lg'))}; }\n`;
+  out.push('/* Controls. Bootstrap rounds them as panels, so these rules round them as controls. */\n',
+    control('--bs-btn-border-radius', (size) => p.radius[`control${size}`], '.btn', '.btn-sm, .btn-group-sm > .btn', '.btn-lg, .btn-group-lg > .btn'),
+    control('border-radius', (size) => fieldRadius(p, size), '.form-control, .form-select', '.form-control-sm, .form-select-sm', '.form-control-lg, .form-select-lg'));
   if (looksCss) out.push(bootstrapLooks(built, looksCss, classPrefix));
   return out.join('\n');
 }
 
-// Themetron's looks on Bootstrap's parts: the --tm-* tokens, then looks.css with Bootstrap's
-// classes in place of the looks. The solid buttons get the fill, .btn-secondary the quiet look,
-// the outline buttons the outline, .btn-link the ghost, .card the surface, and the form fields
-// the field. Each status button also takes its theme's tokens, so .btn-danger has the danger
-// theme's fill and shine. The tokens follow color-scheme, so the mode follows data-bs-theme, as
-// Bootstrap's own colors do, and not the system setting.
-function bootstrapLooks(built, looksCss, classPrefix) {
-  const statuses = Object.entries(STATUSES)
-    .map(([status, names]) => [status === 'error' ? 'danger' : status, names.find((n) => built.themes[n])])
-    .filter(([, name]) => name);
-  const solid = ['primary', ...statuses.map(([k]) => k)];
-  const targets = {
-    fill: solid.map((k) => `.btn-${k}`).join(', '),
-    quiet: '.btn-secondary',
-    outline: solid.map((k) => `.btn-outline-${k}`).join(', '),
-    ghost: '.btn-link',
-    surface: '.card',
-    field: '.form-control, .form-select',
-  };
-  const aliases = Object.fromEntries(statuses.map(([k, name]) => [`.${classPrefix}${name}`, [`.btn-${k}`, `.btn-outline-${k}`]]));
-  // The tokens, without their first line, their @imports (an @import must start the file), and
-  // their color-scheme rules. Each rule of a status theme also names its buttons.
-  const tokens = toCss(built, { classPrefix, icons: false }).split('\n').slice(1)
-    .filter((line) => !line.startsWith('@import') && !/^(:root|\[data-tm-mode="(light|dark)"\]) \{ color-scheme/.test(line))
+// Themetron's looks on another framework's parts, to load after the framework's CSS: the --tm-*
+// tokens, then looks.css with the framework's selectors in place of the looks (see looksOn).
+// `targets` gives each look its selectors. `status(name)` gives the selectors of a status's own
+// parts, by look, such as { fill: '.btn-danger' }: they get the fill too, and wear the status
+// theme, so .btn-danger has the danger theme's fill and shine. A set with no theme for a status
+// keeps the framework's own part. The tokens follow color-scheme. `schemes` sets it from the
+// framework's mode switch, in place of the tokens' own rules (the system setting and
+// data-tm-mode). `schemes: ''` leaves it to the framework.
+function looksLayer(built, looksCss, { classPrefix = 'theme-', targets, status = () => ({}), schemes, title }) {
+  const found = Object.entries(STATUSES).map(([s, names]) => [s, names.find((n) => built.themes[n])]).filter(([, name]) => name);
+  const join = (...lists) => lists.filter(Boolean).join(', ');
+  const all = { ...targets };
+  const aliases = {};
+  for (const [s, name] of found) {
+    // `theme`, if given, lists the parts that wear the status theme. Otherwise they are the
+    // parts that get a look.
+    const { theme, ...parts } = status(s);
+    for (const [look, selectors] of Object.entries(parts)) all[look] = join(all[look], selectors);
+    const wearers = theme ? splitList(theme) : Object.values(parts).flatMap(splitList);
+    if (wearers.length) aliases[`.${classPrefix}${name}`] = wearers;
+  }
+  return [
+    `/* ---- themetron looks on ${title}. The --tm-* tokens, then the looks. */\n`,
+    ...(schemes ? [schemes] : []),
+    tokensAfter(built, { classPrefix, schemes, aliases }), '',
+    looksOn(looksCss, all),
+  ].join('\n');
+}
+
+// The --tm-* tokens, to add after other CSS: without their first line and their @imports (an
+// @import must start the file), and with `schemes`, without their color-scheme rules. `aliases`
+// adds selectors to theme rules: { '.theme-danger': ['.btn-danger'] }.
+function tokensAfter(built, { classPrefix = 'theme-', schemes, aliases = {} } = {}) {
+  return toCss(built, { classPrefix, icons: false }).split('\n').slice(1)
+    .filter((line) => !line.startsWith('@import') && (schemes === undefined || !/^(:root|\[data-tm-mode="(light|dark)"\]) \{ color-scheme/.test(line)))
     .map((line) => {
       const m = /^(\s*)([^@\s][^{]*) \{$/.exec(line);
-      return m ? `${m[1]}${m[2].split(', ').flatMap((s) => [s, ...(aliases[s] ?? [])]).join(', ')} {` : line;
-    });
-  return [
-    '/* ---- themetron looks on Bootstrap. The --tm-* tokens, then the looks. */\n',
-    ':root, [data-bs-theme=light] { color-scheme: light; }\n[data-bs-theme=dark] { color-scheme: dark; }\n',
-    tokens.join('\n').trim(), '',
-    looksOn(looksCss, targets),
-  ].join('\n');
+      return m ? `${m[1]}${m[2].split(', ').flatMap((sel) => [sel, ...(aliases[sel] ?? [])]).join(', ')} {` : line;
+    })
+    .join('\n').trim();
+}
+
+// A class three times, such as .btn-primary.btn-primary.btn-primary: as specific as three
+// classes. Some frameworks' state rules have that many, such as Bootstrap's
+// :not(.btn-check)+.btn:active, and would win over a look's color and edge.
+const thrice = (cls) => cls.repeat(3);
+
+// Bootstrap's parts: the solid buttons get the fill, .btn-secondary the quiet look, the outline
+// buttons the outline, .btn-link the ghost, .card the surface, and the form fields the field.
+// The buttons and fields have three classes, to win over Bootstrap's state rules.
+// The mode follows data-bs-theme, as Bootstrap's own colors do, and not the system setting.
+const bootstrapLooks = (built, looksCss, classPrefix) => looksLayer(built, looksCss, {
+  classPrefix,
+  title: 'Bootstrap',
+  targets: { fill: thrice('.btn-primary'), quiet: thrice('.btn-secondary'), outline: thrice('.btn-outline-primary'), ghost: thrice('.btn-link'), surface: '.card', field: `${thrice('.form-control')}, ${thrice('.form-select')}` },
+  status: (s) => { const k = s === 'error' ? 'danger' : s; return { fill: thrice(`.btn-${k}`), outline: thrice(`.btn-outline-${k}`), theme: `.btn-${k}, .btn-outline-${k}` }; },
+  schemes: ':root, [data-bs-theme=light] { color-scheme: light; }\n[data-bs-theme=dark] { color-scheme: dark; }\n',
+});
+
+// Themetron's looks for Bootstrap, as a file of its own, for a Bootstrap built from Sass: load it
+// after Bootstrap. The Bootstrap CSS export with looksCss ends with the same rules.
+export function toBootstrapLooks(built, { classPrefix = 'theme-', set, looksCss } = {}) {
+  return `/* Themetron looks for Bootstrap 5.3. Load after Bootstrap. ${madeBy(set)} */\n\n${bootstrapLooks(built, looksCss, classPrefix)}`;
+}
+
+// Themetron's looks for Material UI, as CSS to load next to the MUI theme. Each button target
+// has three classes, so it wins over MUI's own styles: one class, and two in a state such as
+// :hover, which MUI adds to the page after this file. The contained buttons get the fill,
+// or the quiet look for the secondary color, the outlined buttons the outline, the text buttons the
+// ghost, and Card the surface. The mode follows the system setting, or data-tm-mode.
+export function toMuiLooks(built, { classPrefix = 'theme-', set, looksCss } = {}) {
+  const button = (variant, color) => `.MuiButton-root.MuiButton-${variant}.MuiButton-color${color}`;
+  return `/* Themetron looks for Material UI. Load next to the MUI theme. ${madeBy(set)} */\n\n${looksLayer(built, looksCss, {
+    classPrefix,
+    title: 'Material UI',
+    targets: { fill: button('contained', 'Primary'), quiet: button('contained', 'Secondary'), outline: thrice('.MuiButton-outlined'), ghost: thrice('.MuiButton-text'), surface: '.MuiPaper-root.MuiCard-root' },
+    status: (s) => { const c = s[0].toUpperCase() + s.slice(1); return { fill: button('contained', c), theme: `.MuiButton-color${c}` }; },
+  })}`;
 }

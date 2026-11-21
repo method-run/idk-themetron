@@ -6,7 +6,7 @@ import looksCss from '../components/looks.css?raw';
 import { combobox } from './combobox.js';
 import { parseHex, toHex, srgbToOklch, oklchToSrgb } from '../src/color.js';
 import fontChoices from './font-choices.json';
-import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette, withLooks } from '../src/index.js';
+import { buildThemes, toCss, toDtcg, toTailwind, toShadcn, toBootstrapSass, toMui, toDaisyui, toBootstrapCss, toBootstrapLooks, toMuiLooks, FEELS, TYPE_VARIANCE, PRESETS, GRADES, THRESHOLDS, ROOT, INHERIT, SEMANTIC_THEMES, INPUTS_VERSION, INPUTS_SCHEMA_URL, themeName, defaultLabel, measure, feelWord, gradeGaps, contrastTest, InputError, turnOldFeels, FONT_URL, FONT_WEIGHT, ICONS, ICON_STYLES, ICON_WEIGHT, GRADIENT_DEFAULTS, COLOR_MODELS, makePalette, withLooks } from '../src/index.js';
 
 // Debug mode, a switch in the View menu, shows tools for comparing color models: HSL in the
 // Color model menu, and every model side by side on the Palettes tab.
@@ -95,7 +95,7 @@ function saveSets() {
 // ?preset=glass opens the playground with a preset on the root theme, for links and screenshots.
 const askedPreset = new URLSearchParams(location.search).get('preset');
 if (PRESETS[askedPreset]) { state.themes[ROOT].preset = askedPreset; delete state.themes[ROOT].feel; }
-let ui = { view: 'preview', mode: 'both', contrast: 'base', format: 'stylesheet', bootstrapLooks: false, pickA: null, pickB: null };
+let ui = { view: 'preview', mode: 'both', contrast: 'base', format: 'stylesheet', looks: false, pickA: null, pickB: null };
 let built = null;
 
 function load(key) {
@@ -1038,7 +1038,7 @@ function renderSegs() {
     ['Data', [['dtcg', 'DTCG JSON'], ['inputs', 'Inputs']]],
   ].map(([group, options]) => el('optgroup', { label: group }, ...options.map(([value, label]) => el('option', { value }, label)))));
   format.value = ui.format;
-  seg($('#format-looks'), [[false, 'Colors only'], [true, 'Themetron looks']], ui.bootstrapLooks, (v) => { ui.bootstrapLooks = v; renderSegs(); renderView(); });
+  seg($('#format-looks'), [[false, 'Colors only'], [true, 'Themetron looks']], ui.looks, (v) => { ui.looks = v; renderSegs(); renderView(); });
 }
 
 const MODEL_NOTES = {
@@ -1717,8 +1717,18 @@ const FORMAT_NOTES = {
   bootstrap: 'Bootstrap 5 Sass variables: import this file before Bootstrap. Sass is fixed when it compiles, so these are the root theme\'s light values, and the *-dark variables hold its dark values.',
   mui: 'A Material UI theme for the root theme, in both modes: pass it to createTheme() (MUI v6 or later). The shadows are the light-mode ones.',
   daisyui: 'Two daisyUI 5 themes, light and dark, for your Tailwind CSS. Add the CSS tokens too: these colors point at them.',
-  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too. Themetron looks also adds the tokens and the looks, so Bootstrap\'s buttons, cards, and fields get the theme\'s shine, gradients, and depth.',
+  'bootstrap-css': 'Bootstrap 5.3 CSS variables, for light and [data-bs-theme=dark]. Load them after bootstrap.css. Child themes become classes. Buttons are recolored too.',
   inputs: 'Your themes as inputs. Open this file again here, or build the tokens from it with the engine.',
+};
+// Each framework format with themetron looks on: the tokens and the looks are in the file, so
+// the framework's own parts get the theme's shine, gradients, and depth.
+const LOOKS_NOTES = {
+  tailwind: 'A Tailwind CSS v4 theme, with the tokens, and the looks as utilities: class="tm-look-fill", or @apply tm-look-fill in your own classes.',
+  shadcn: 'For shadcn/ui: paste into globals.css in place of its :root and .dark blocks. The tokens and the looks follow, on the parts\' data-slot and data-variant: Button, Card, Input, Textarea, and Select. The destructive button wears the danger theme.',
+  daisyui: 'Two daisyUI 5 themes, with the tokens, and the looks on daisyUI\'s classes: .btn and its colors and styles, .card, and the fields. Each status button wears its status theme.',
+  bootstrap: 'The looks for a Bootstrap built from Sass, as CSS: load it after Bootstrap. Get the Sass variables from Colors only.',
+  'bootstrap-css': 'Bootstrap 5.3 CSS variables, then the tokens, and the looks on Bootstrap\'s classes: buttons, cards, and fields. Load the file after bootstrap.css. Each status button wears its status theme.',
+  mui: 'The looks for Material UI, as CSS: load it next to the MUI theme from Colors only. Buttons and Card get the looks. The mode follows the system setting, or data-tm-mode.',
 };
 
 // The open theme set's name. Exports name it in their first line, and downloads take it as the
@@ -1730,123 +1740,107 @@ function tokenText() {
   const set = setName();
   if (ui.format === 'stylesheet') return `${toCss(built, { set })}\n/* ---- themetron components */\n\n${withLooks(componentsCss, looksCss)}`;
   if (ui.format === 'looks') return `${toCss(built, { set })}\n/* ---- themetron looks */\n\n${looksCss}`;
-  if (ui.format === 'shadcn') return toShadcn(built, { set });
+  const looks = withLooksOn() ? looksCss : undefined;
+  if (ui.format === 'shadcn') return toShadcn(built, { set, looksCss: looks });
   if (ui.format === 'css') return toCss(built, { set });
   if (ui.format === 'dtcg') return JSON.stringify(toDtcg(built, { set }), null, 2);
-  if (ui.format === 'tailwind') return toTailwind(built, { set });
-  if (ui.format === 'bootstrap') return toBootstrapSass(built, { set });
-  if (ui.format === 'mui') return JSON.stringify(toMui(built), null, 2);
-  if (ui.format === 'daisyui') return toDaisyui(built, { set });
-  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set, looksCss: ui.bootstrapLooks ? looksCss : undefined });
+  if (ui.format === 'tailwind') return toTailwind(built, { set, looksCss: looks });
+  // Bootstrap Sass and MUI's theme load before the framework, and the looks after it, so their
+  // looks are a CSS file of their own.
+  if (ui.format === 'bootstrap') return looks ? toBootstrapLooks(built, { set, looksCss: looks }) : toBootstrapSass(built, { set });
+  if (ui.format === 'mui') return looks ? toMuiLooks(built, { set, looksCss: looks }) : JSON.stringify(toMui(built), null, 2);
+  if (ui.format === 'daisyui') return toDaisyui(built, { set, looksCss: looks });
+  if (ui.format === 'bootstrap-css') return toBootstrapCss(built, { set, looksCss: looks });
   return JSON.stringify(inputsFile(), null, 2);
 }
 
-// Previews: a format on its framework's own stock parts, in an iframe, so the framework's CSS
-// stays out of the playground. Each loads its framework's CSS when you first open it.
-const PREVIEWS = {
-  'bootstrap-css': {
-    label: 'Bootstrap 5.3',
-    css: () => import('bootstrap/dist/css/bootstrap.min.css?raw').then((m) => m.default),
-    page: bootstrapPage,
-  },
-};
-// One mode of the Bootstrap sample: stock Bootstrap markup, and a row for each child theme.
-function bootstrapSample(mode, children) {
-  return `<section data-bs-theme="${mode}" class="p-4 bg-body text-body">
-  <h2 class="h5 mb-3">${mode === 'light' ? 'Light' : 'Dark'}</h2>
-  <div class="d-flex flex-wrap gap-2 mb-3">
-    <button class="btn btn-primary">Primary</button><button class="btn btn-secondary">Secondary</button>
-    <button class="btn btn-success">Success</button><button class="btn btn-danger">Danger</button>
-    <button class="btn btn-warning">Warning</button><button class="btn btn-info">Info</button>
-    <button class="btn btn-outline-primary">Outline</button><button class="btn btn-link">Link</button>
-  </div>
-  <p>Body text with <a href="#">a link</a>, <strong>strong</strong> text, and <code>code</code>. <span class="text-body-secondary">Secondary text.</span></p>
-  <div class="d-flex flex-wrap gap-2 mb-3">
-    <span class="badge text-bg-primary">Primary</span><span class="badge text-bg-success">Success</span>
-    <span class="badge text-bg-danger">Danger</span><span class="badge text-bg-warning">Warning</span>
-    <span class="badge rounded-pill text-bg-info">Info</span>
-  </div>
-  <div class="alert alert-primary">A primary alert, with <a href="#" class="alert-link">a link</a>.</div>
-  <div class="alert alert-danger">A danger alert.</div>
-  <div class="row g-3 mb-3">
-    <div class="col-sm-6">
-      <label class="form-label" for="e-${mode}">Email</label>
-      <input class="form-control" id="e-${mode}" placeholder="ada@example.org">
-      <div class="form-text">A hint under the field.</div>
-    </div>
-    <div class="col-sm-6">
-      <label class="form-label" for="s-${mode}">City</label>
-      <select class="form-select" id="s-${mode}"><option>Harbor</option><option>Tide</option></select>
-    </div>
-    <div class="col-12 d-flex flex-wrap gap-3">
-      <div class="form-check"><input class="form-check-input" type="checkbox" id="c-${mode}" checked><label class="form-check-label" for="c-${mode}">Check</label></div>
-      <div class="form-check"><input class="form-check-input" type="radio" name="r-${mode}" id="r-${mode}" checked><label class="form-check-label" for="r-${mode}">Radio</label></div>
-      <div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="w-${mode}" checked><label class="form-check-label" for="w-${mode}">Switch</label></div>
-      <input type="range" class="form-range w-auto flex-grow-1">
-    </div>
-  </div>
-  <ul class="nav nav-tabs mb-3"><li class="nav-item"><a class="nav-link active" href="#">Active</a></li><li class="nav-item"><a class="nav-link" href="#">Tab</a></li><li class="nav-item"><a class="nav-link disabled">Disabled</a></li></ul>
-  <div class="row g-3 mb-3">
-    <div class="col-sm-6"><div class="card"><div class="card-header">Card</div><div class="card-body"><h3 class="card-title h6">Card title</h3><p class="card-text">Some text in a card.</p><a href="#" class="btn btn-primary btn-sm">Go</a></div></div></div>
-    <div class="col-sm-6"><ul class="list-group"><li class="list-group-item active">Active item</li><li class="list-group-item">Item</li><li class="list-group-item list-group-item-action">Action item</li></ul></div>
-  </div>
-  <div class="progress mb-3" role="progressbar" aria-label="Progress"><div class="progress-bar" style="width: 60%">60%</div></div>
-  <nav aria-label="Pages"><ul class="pagination"><li class="page-item"><a class="page-link" href="#">1</a></li><li class="page-item active"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li></ul></nav>
-  ${children.length ? `<h3 class="h6 mt-4">Child themes</h3>${children.map((name) => `<div class="theme-${name} d-flex flex-wrap align-items-center gap-2 mb-2"><button class="btn btn-primary btn-sm">${name}</button><span class="badge text-bg-primary">Badge</span><a href="#">A link</a></div>`).join('')}` : ''}
-</section>`;
-}
-function bootstrapPage(frameworkCss, exportCss) {
-  const children = built.order.filter((name) => name !== ROOT);
-  return `<!doctype html><meta charset="utf-8"><style>${frameworkCss}</style><style>${exportCss}</style>
-<style>body { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }</style>
-${bootstrapSample('light', children)}${bootstrapSample('dark', children)}`;
-}
-const frameworkCss = {};
+// The framework formats. Each has a preview, and a switch for themetron's looks.
+const FRAMEWORKS = ['tailwind', 'shadcn', 'daisyui', 'bootstrap', 'bootstrap-css', 'mui'];
+const withLooksOn = () => FRAMEWORKS.includes(ui.format) && ui.looks;
+
+// The preview: the format on its framework's own stock parts, in an iframe. previews.js and each
+// framework load when you first open it.
+const loadPreviews = (() => { let p; return () => (p ??= import('./previews.js').then((m) => m.PREVIEWS)); })();
+let previewRun = 0;
 async function renderFormatPreview() {
-  const preview = PREVIEWS[ui.format];
   const box = $('#format-preview');
-  box.hidden = !preview;
-  if (!preview) return;
-  $('#format-preview-label').textContent = `Preview on ${preview.label}`;
+  box.hidden = !FRAMEWORKS.includes(ui.format);
+  if (box.hidden) return;
+  const previews = await loadPreviews();
+  const preview = previews[ui.format];
+  $('#format-preview-label').textContent = `Preview on ${preview.label}${withLooksOn() ? ', with themetron looks' : ''}`;
   if (!box.open) return;
-  const format = ui.format;
-  frameworkCss[format] ??= await preview.css();
-  // The format can change while the framework's CSS loads.
-  if (ui.format !== format) return;
-  // Only when it changed: a new srcdoc loads the page again.
-  const page = preview.page(frameworkCss[format], tokenText());
-  if ($('#format-frame').srcdoc !== page) $('#format-frame').srcdoc = page;
+  // A newer call wins: the inputs or the format can change while a framework compiles.
+  const run = ++previewRun;
+  const frame = $('#format-frame');
+  let result;
+  try {
+    result = await preview.frame({ built, set: setName(), looksCss: withLooksOn() ? looksCss : undefined });
+  } catch (err) {
+    result = { srcdoc: `<!doctype html><meta charset="utf-8"><p style="font: 14px system-ui; padding: 16px">The preview failed: ${String(err.message).replace(/</g, '&lt;')}</p>` };
+  }
+  if (run !== previewRun) return;
+  if (result.srcdoc !== undefined) {
+    // Only when it changed: a new srcdoc loads the page again.
+    if (frame.srcdoc !== result.srcdoc) frame.srcdoc = result.srcdoc;
+    return;
+  }
+  frame.removeAttribute('srcdoc');
+  pendingMessage = result.message;
+  if (frame.getAttribute('src') !== result.src) frame.src = result.src;
+  else frame.contentWindow?.postMessage(pendingMessage, location.origin);
 }
+// The MUI page asks for its message when it is ready.
+let pendingMessage = null;
+addEventListener('message', (e) => {
+  if (e.origin === location.origin && e.data?.muiPreviewReady && pendingMessage) e.source.postMessage(pendingMessage, location.origin);
+});
 $('#format-preview').addEventListener('toggle', renderFormatPreview);
-$('#format').addEventListener('change', (e) => { ui.format = e.target.value; renderView(); });
+$('#format').addEventListener('change', (e) => { ui.format = e.target.value; renderSegs(); renderView(); });
+
+// The code shows 15 lines until you expand it.
+const CODE_LINES = 15;
+let codeOpen = false;
+function renderCode(text) {
+  $('#code').textContent = text;
+  const lines = text.split('\n').length;
+  const more = $('#code-more');
+  more.hidden = lines <= CODE_LINES;
+  $('#code-wrap').classList.toggle('clamped', !more.hidden && !codeOpen);
+  more.textContent = codeOpen ? 'Show fewer lines' : `Show all ${lines.toLocaleString()} lines`;
+  more.setAttribute('aria-expanded', String(codeOpen));
+}
+$('#code-more').addEventListener('click', () => { codeOpen = !codeOpen; renderCode($('#code').textContent); });
 
 function renderTokens() {
   renderFormatPreview();
-  $('#format-note').textContent = FORMAT_NOTES[ui.format];
-  $('#format-looks').hidden = ui.format !== 'bootstrap-css';
+  $('#format-note').textContent = (withLooksOn() ? LOOKS_NOTES : FORMAT_NOTES)[ui.format];
+  $('#format-looks').hidden = !FRAMEWORKS.includes(ui.format);
   const inputs = ui.format === 'inputs';
-  $('#code').hidden = inputs;
+  $('#code-wrap').hidden = inputs;
   $('#io').hidden = !inputs;
   if (inputs) {
     if (document.activeElement !== $('#io-text')) $('#io-text').value = tokenText();
   } else {
-    $('#code').textContent = tokenText();
+    renderCode(tokenText());
   }
 }
 
 $('#copy').addEventListener('click', async (e) => {
+  const button = e.currentTarget;
   const text = ui.format === 'inputs' ? $('#io-text').value : tokenText();
   try {
     await navigator.clipboard.writeText(text);
-    e.target.textContent = 'Copied';
+    button.classList.add('done');
+    $('#copy-status').textContent = 'Copied';
   } catch {
     const range = document.createRange();
     range.selectNodeContents(ui.format === 'inputs' ? $('#io-text') : $('#code'));
     getSelection().removeAllRanges();
     getSelection().addRange(range);
-    e.target.textContent = 'Selected. Press Ctrl+C or ⌘C';
+    $('#copy-status').textContent = 'Selected. Press Ctrl+C or ⌘C';
   }
-  setTimeout(() => { e.target.textContent = 'Copy'; }, 1800);
+  setTimeout(() => { button.classList.remove('done'); $('#copy-status').textContent = ''; }, 1800);
 });
 
 // ---- Import and export: the inputs as JSON text, a file, or a link.
@@ -1903,10 +1897,19 @@ const DOWNLOADS = {
   'bootstrap-css': ['themetron.bootstrap.css', 'text/css'],
   inputs: ['themetron-inputs.json', 'application/json'],
 };
+// With looks on, a framework's download. Bootstrap Sass and MUI give a CSS file of looks, to add
+// to the colors-only file.
+const LOOKS_DOWNLOADS = {
+  tailwind: ['themetron.tailwind-looks.css', 'text/css'],
+  shadcn: ['themetron.shadcn-looks.css', 'text/css'],
+  daisyui: ['themetron.daisyui-looks.css', 'text/css'],
+  bootstrap: ['themetron.looks-for-bootstrap.css', 'text/css'],
+  'bootstrap-css': ['themetron.bootstrap-looks.css', 'text/css'],
+  mui: ['themetron.looks-for-mui.css', 'text/css'],
+};
 $('#download').addEventListener('click', () => {
-  const [file, type] = DOWNLOADS[ui.format];
-  const looks = ui.format === 'bootstrap-css' && ui.bootstrapLooks;
-  const name = (looks ? file.replace('.bootstrap.', '.bootstrap-looks.') : file).replace(/^themetron/, fileStem());
+  const [file, type] = (withLooksOn() ? LOOKS_DOWNLOADS : DOWNLOADS)[ui.format];
+  const name = file.replace(/^themetron/, fileStem());
   const text = ui.format === 'inputs' ? $('#io-text').value : tokenText();
   const url = URL.createObjectURL(new Blob([text], { type }));
   const a = el('a', { href: url, download: name });

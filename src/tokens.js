@@ -129,17 +129,20 @@ export function buildPrimitives(settings, palettes, gaps, stops = null) {
   control.heightLg = control.height + sizeStep;
 
   // Roundness is a share of the most that each part can round. A control can round to half its
-  // height, so at roundness 1 every control size is a pill. Other parts can round as far as
+  // height. At roundness 1, every control radius is full, so a control of any height is a pill:
+  // a framework's taller button, or a button whose label wraps. Other parts can round as far as
   // their padding, so a corner never cuts into the content: cards (padding lg), alerts and text
   // areas (padding md), and small parts such as checks and code (space xs).
+  const FULL = 9999;
+  const controlRadius = (height) => (r >= 1 ? FULL : round((r * height) / 2));
   const radius = {
     sm: round(r * space.xs),
     md: round(r * space.md),
     lg: round(r * space.lg),
-    control: round((r * control.height) / 2),
-    controlSm: round((r * control.heightSm) / 2),
-    controlLg: round((r * control.heightLg) / 2),
-    full: 9999,
+    control: controlRadius(control.height),
+    controlSm: controlRadius(control.heightSm),
+    controlLg: controlRadius(control.heightLg),
+    full: FULL,
   };
 
   const font = {};

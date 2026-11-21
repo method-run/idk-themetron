@@ -1668,3 +1668,13 @@
 .text-bg-warning { color: var(--tm-bs-warning-on) !important; }
 
 .text-bg-success { color: var(--tm-bs-success-on) !important; }
+
+/* Controls. Bootstrap rounds them as panels, so these rules round them as controls. */
+
+.btn { --bs-btn-border-radius: 6.3px; }
+.btn-sm, .btn-group-sm > .btn { --bs-btn-border-radius: 4.9px; }
+.btn-lg, .btn-group-lg > .btn { --bs-btn-border-radius: 7.7px; }
+
+.form-control, .form-select { border-radius: 6.3px; }
+.form-control-sm, .form-select-sm { border-radius: 4.9px; }
+.form-control-lg, .form-select-lg { border-radius: 7.7px; }

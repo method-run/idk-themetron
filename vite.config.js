@@ -15,5 +15,11 @@ export default defineConfig({
   build: {
     outDir: '../_site/play',
     emptyOutDir: true,
+    // The MUI preview is a page of its own, in an iframe.
+    rolldownOptions: {
+      input: { main: 'demo/index.html', mui: 'demo/mui-preview.html' },
+      // MUI's "use client" lines are for React servers. They do nothing here.
+      onLog: (level, log, handler) => { if (log.code !== 'MODULE_LEVEL_DIRECTIVE') handler(level, log); },
+    },
   },
 });

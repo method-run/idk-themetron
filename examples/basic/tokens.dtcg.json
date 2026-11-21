@@ -13246,21 +13246,21 @@
         "control": {
           "$type": "dimension",
           "$value": {
-            "value": 18,
+            "value": 9999,
             "unit": "px"
           }
         },
         "controlSm": {
           "$type": "dimension",
           "$value": {
-            "value": 14,
+            "value": 9999,
             "unit": "px"
           }
         },
         "controlLg": {
           "$type": "dimension",
           "$value": {
-            "value": 22,
+            "value": 9999,
             "unit": "px"
           }
         },
@@ -16409,21 +16409,21 @@
         "control": {
           "$type": "dimension",
           "$value": {
-            "value": 18,
+            "value": 9999,
             "unit": "px"
           }
         },
         "controlSm": {
           "$type": "dimension",
           "$value": {
-            "value": 14,
+            "value": 9999,
             "unit": "px"
           }
         },
         "controlLg": {
           "$type": "dimension",
           "$value": {
-            "value": 22,
+            "value": 9999,
             "unit": "px"
           }
         },

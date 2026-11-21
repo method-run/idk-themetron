@@ -14,8 +14,8 @@
   --color-base-content: var(--tm-fg-base);
   --color-primary: var(--tm-fill-action);
   --color-primary-content: var(--tm-on-fill-action);
-  --color-secondary: var(--tm-tint-action);
-  --color-secondary-content: var(--tm-on-tint-action);
+  --color-secondary: var(--tm-fill-quiet);
+  --color-secondary-content: var(--tm-on-fill-quiet);
   --color-accent: var(--tm-fill-action-exact);
   --color-accent-content: var(--tm-on-fill-action-exact);
   --color-neutral: var(--tm-fg-base);
@@ -49,8 +49,8 @@
   --color-base-content: var(--tm-fg-base);
   --color-primary: var(--tm-fill-action);
   --color-primary-content: var(--tm-on-fill-action);
-  --color-secondary: var(--tm-tint-action);
-  --color-secondary-content: var(--tm-on-tint-action);
+  --color-secondary: var(--tm-fill-quiet);
+  --color-secondary-content: var(--tm-on-fill-quiet);
   --color-accent: var(--tm-fill-action-exact);
   --color-accent-content: var(--tm-on-fill-action-exact);
   --color-neutral: var(--tm-fg-base);
@@ -81,8 +81,8 @@
   --color-base-content: var(--tm-fg-base);
   --color-primary: var(--tm-fill-action);
   --color-primary-content: var(--tm-on-fill-action);
-  --color-secondary: var(--tm-tint-action);
-  --color-secondary-content: var(--tm-on-tint-action);
+  --color-secondary: var(--tm-fill-quiet);
+  --color-secondary-content: var(--tm-on-fill-quiet);
   --color-accent: var(--tm-fill-action-exact);
   --color-accent-content: var(--tm-on-fill-action-exact);
   --color-neutral: var(--tm-fg-base);

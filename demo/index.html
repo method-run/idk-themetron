@@ -366,6 +366,16 @@ details.feels[open] > summary { margin-bottom: 12px; }
 .format-preview > summary { padding: 10px 14px; cursor: pointer; font-weight: 600; }
 .format-preview iframe { display: block; width: 100%; height: 70vh; border: 0; border-top: 1px solid var(--line); border-radius: 0 0 10px 10px; }
 pre.code { margin: 0; max-height: 70vh; overflow: auto; padding: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; font: 12px/1.55 var(--mono); tab-size: 2; }
+/* The code shows 15 lines until you expand it. */
+.code-wrap { position: relative; }
+.code-wrap.clamped pre.code { max-height: calc(15 * 1.55em + 14px); overflow: hidden; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); }
+.code-wrap[hidden] { display: none; }
+.code-more { display: block; margin: 8px auto 0; }
+.code-more[hidden] { display: none; }
+.icon-btn { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; color: inherit; }
+.icon-btn .when-done, .icon-btn.done .when-idle { display: none; }
+.icon-btn.done .when-done { display: block; }
+.code-head .actions { display: flex; gap: 6px; align-items: center; }
 textarea.io { width: 100%; height: 50vh; padding: 12px; font: 12px/1.5 var(--mono); resize: vertical; }
 .format-note { margin: 8px 0 10px; }
 .seg[hidden] { display: none; }
@@ -481,16 +491,23 @@ td code { font-family: var(--mono); font-size: 12px; }
         <div class="format-row">
           <div class="field format-pick"><label for="format">Format</label>
             <select id="format"></select></div>
-          <div class="seg" id="format-looks" role="group" aria-label="Bootstrap's look" hidden></div>
+          <div class="seg" id="format-looks" role="group" aria-label="The framework's look" hidden></div>
         </div>
-        <span class="actions"><button class="small-btn" id="copy" type="button">Copy</button> <button class="small-btn" id="download" type="button">Download</button></span>
+        <span class="actions">
+          <button class="small-btn icon-btn" id="copy" type="button" aria-label="Copy" title="Copy"><svg class="when-idle" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/><path d="M10.5 3.5v-.5a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h.5"/></svg><svg class="when-done" aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.5 3.2 3L13 4.5"/></svg></button>
+          <button class="small-btn icon-btn" id="download" type="button" aria-label="Download" title="Download"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M2.5 11.5v1a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1"/></svg></button>
+          <span class="sr-only" id="copy-status" role="status"></span>
+        </span>
       </div>
       <p class="fader-hint format-note" id="format-note"></p>
       <details class="format-preview" id="format-preview" hidden>
         <summary id="format-preview-label">Preview</summary>
         <iframe id="format-frame" title="The export on the framework's own parts"></iframe>
       </details>
-      <pre class="code" id="code"></pre>
+      <div class="code-wrap" id="code-wrap">
+        <pre class="code" id="code" tabindex="0"></pre>
+        <button class="small-btn code-more" id="code-more" type="button" aria-controls="code" hidden></button>
+      </div>
       <div id="io" hidden>
         <textarea class="io" id="io-text" spellcheck="false" aria-label="Inputs as JSON"></textarea>
         <div class="io-actions">
