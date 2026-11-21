@@ -102,7 +102,15 @@ async function launch() {
   await send('DOM.enable');
   await send('CSS.enable');
   await send('Emulation.setDeviceMetricsOverride', { width: 1400, height: 900, deviceScaleFactor: 1, mobile: false });
-  return { send, ev, navigate, until: until_, close: () => { ws.close(); chrome.kill(); rmSync(profile, { recursive: true, force: true }); } };
+  // Chrome writes to its profile until it exits, so remove the profile after that.
+  const close = async () => {
+    ws.close();
+    const exited = new Promise((r) => chrome.once('exit', r));
+    chrome.kill();
+    await Promise.race([exited, new Promise((r) => setTimeout(r, 5000))]);
+    try { rmSync(profile, { recursive: true, force: true, maxRetries: 5 }); } catch { /* a temporary folder: the system removes it */ }
+  };
+  return { send, ev, navigate, until: until_, close };
 }
 
 // ---- One page: put it on screen, then read each part in each state.
@@ -252,7 +260,7 @@ try {
     runs.push({ file, prefix: shots.prefix, results, origins: shots.origins });
   }
 } finally {
-  chrome.close();
+  await chrome.close();
   await server.close();
 }
 writeFileSync(join(out, 'results.json'), JSON.stringify(runs.map(({ file, results }) => ({ file, results })), null, 1));
