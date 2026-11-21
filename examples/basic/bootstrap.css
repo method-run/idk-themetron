@@ -1658,3 +1658,13 @@
   --bs-btn-disabled-bg: transparent;
   --bs-btn-disabled-border-color: var(--tm-bs-success-border);
 }
+
+/* Labels on .text-bg-*. Bootstrap fixes their color, so these rules set it again. */
+
+.text-bg-primary { color: var(--tm-bs-primary-on) !important; }
+
+.text-bg-danger { color: var(--tm-bs-danger-on) !important; }
+
+.text-bg-warning { color: var(--tm-bs-warning-on) !important; }
+
+.text-bg-success { color: var(--tm-bs-success-on) !important; }

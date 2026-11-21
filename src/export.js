@@ -940,6 +940,10 @@ export function toBootstrapCss(built, { classPrefix = 'theme-', set, looksCss } 
   ];
   const out = [`/* Bootstrap 5.3 CSS variables. Load after bootstrap.css. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)];
   out.push('/* Buttons. Bootstrap sets their colors from Sass, so these rules set them again. */\n', ...roles.flatMap(buttons));
+  // .text-bg-* (badges, for example) fills with the role's color, but Bootstrap fixes its label
+  // color, black for warning and info, with !important. So this sets the label from the theme too.
+  out.push('/* Labels on .text-bg-*. Bootstrap fixes their color, so these rules set it again. */\n',
+    ...roles.filter((k) => k !== 'secondary').map((k) => `.text-bg-${k} { color: var(--tm-bs-${k}-on) !important; }\n`));
   if (looksCss) out.push(bootstrapLooks(built, looksCss, classPrefix));
   return out.join('\n');
 }
