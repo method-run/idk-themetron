@@ -29,7 +29,11 @@
 :root[data-theme="dark"] { --paper: #111317; --panel: #1a1d22; --ink: #e6e8ec; --muted: #9aa2af; --line: #2d323b; --hover: #22262c; --pass: #5bc982; --fail: #ff7b7f; color-scheme: dark; }
 
 body { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.45 var(--ui); }
-button, input, select, textarea { font: inherit; color: inherit; }
+/* The reset is in a layer, so any rule outside a layer wins over it, such as a themetron look on
+   a plain button. It still wins over the browser's own styles. */
+@layer reset {
+  button, input, select, textarea { font: inherit; color: inherit; }
+}
 .app { --controls-w: 340px; display: grid; grid-template-columns: var(--controls-w) 7px minmax(0, 1fr); height: 100vh; height: 100dvh; }
 .app.collapsed { grid-template-columns: 0 0 minmax(0, 1fr); }
 .app.collapsed .controls, .app.collapsed .splitter { visibility: hidden; overflow: hidden; padding: 0; border: 0; }
