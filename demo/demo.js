@@ -1030,7 +1030,14 @@ function renderSegs() {
   });
   const modeLabel = { light: 'Light', dark: 'Dark', both: 'Both modes' }[ui.mode];
   $('#view-summary').textContent = `· ${ui.view === 'tokens' ? 'Both modes' : modeLabel}${ui.contrast === 'more' && ui.view !== 'tokens' ? ' · More contrast' : ''}`;
-  seg($('#format'), [['stylesheet', 'Stylesheet'], ['looks', 'Looks'], ['css', 'CSS tokens'], ['dtcg', 'DTCG JSON'], ['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['mui', 'MUI'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['inputs', 'Inputs']], ui.format, (v) => { ui.format = v; renderSegs(); renderView(); });
+  // The formats are a grouped dropdown, not buttons: there are too many to fit in a row.
+  const format = $('#format');
+  if (!format.options.length) format.replaceChildren(...[
+    ['Themetron CSS', [['stylesheet', 'Stylesheet'], ['looks', 'Looks'], ['css', 'CSS tokens']]],
+    ['Frameworks', [['tailwind', 'Tailwind'], ['shadcn', 'shadcn/ui'], ['daisyui', 'daisyUI'], ['bootstrap', 'Bootstrap Sass'], ['bootstrap-css', 'Bootstrap CSS'], ['mui', 'MUI']]],
+    ['Data', [['dtcg', 'DTCG JSON'], ['inputs', 'Inputs']]],
+  ].map(([group, options]) => el('optgroup', { label: group }, ...options.map(([value, label]) => el('option', { value }, label)))));
+  format.value = ui.format;
 }
 
 const MODEL_NOTES = {
@@ -1810,6 +1817,7 @@ async function renderFormatPreview() {
   if ($('#format-frame').srcdoc !== page) $('#format-frame').srcdoc = page;
 }
 $('#format-preview').addEventListener('toggle', renderFormatPreview);
+$('#format').addEventListener('change', (e) => { ui.format = e.target.value; renderView(); });
 
 function renderTokens() {
   renderFormatPreview();

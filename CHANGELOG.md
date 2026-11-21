@@ -22,6 +22,7 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 - **The token manifest lists the looks**, with the tokens that each one reads. Contract 0.4.0, when released.
 - **Engine:** `LOOKS`, `looksScss()`, `looksTailwind()`, and `withLooks()`.
 - **Playground: preview the Bootstrap CSS export.** In the Tokens view, "Preview on Bootstrap 5.3" shows Bootstrap's stock parts with the export, in both modes.
+- **Playground: a Format list in the Tokens view.** The formats are now a dropdown, grouped as Themetron CSS, Frameworks, and Data. Before, the buttons wrapped onto several rows.
 
 ## 0.3.0
 
