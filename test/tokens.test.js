@@ -274,6 +274,9 @@ test('the Bootstrap CSS export has its variables, with -rgb twins, for each mode
     assert.match(css, new RegExp(`^\\.btn-outline-${k} \\{`, 'm'), k);
   }
   assert.doesNotMatch(css, /\.btn-success/, 'no success theme, so Bootstrap keeps its own button');
+  // Bootstrap fixes the label color of .text-bg-warning and -info to black, so the export sets it.
+  assert.match(css, /^\.text-bg-danger \{ color: var\(--tm-bs-danger-on\) !important; \}$/m);
+  assert.doesNotMatch(css, /\.text-bg-(secondary|success)/);
   const t = (name, mode, token) => built.themes[name].modes[mode].tokens[token].value;
   assert.ok(css.includes(`--tm-bs-primary-hover: ${t('default', 'light', 'fill.action-hover')};`));
   assert.ok(css.includes(`--tm-bs-secondary: ${t('default', 'light', 'fill.quiet')};`));
