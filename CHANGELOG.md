@@ -16,8 +16,11 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
-- **Fix: an inverted card had a double edge.** Its edge took the other mode's `panel-border`, so a dark card on a light page had a light edge between its dark fill and its dark shadow. It shows most with a hard edge and shadow, as in the Brutalist feel. Now an inverted card, dialog, menu, or toast draws its edge in the page's mode, like its shadow. New experimental tokens: `panel-border-normal` and `panel-border-flipped`.
+## 0.5.0
 
+Contract 0.5.0.
+
+- **Fix: an inverted card had a double edge.** Its edge took the other mode's `panel-border`, so a dark card on a light page had a light edge between its dark fill and its dark shadow. It shows most with a hard edge and shadow, as in the Brutalist feel. Now an inverted card, dialog, menu, or toast draws its edge in the page's mode, like its shadow. New experimental tokens: `panel-border-normal` and `panel-border-flipped`.
 - **Fix: shadcn/ui rounded buttons and fields as panels.** With colors only, they took `--radius`, which is the panel radius. Now the export rounds buttons with the control radius, at each `data-size`, and inputs, text areas, and selects with the field radius. Cards keep `--radius`.
 - **Fix: in a pill theme, the daisyUI text area was a pill.** daisyUI rounds `.textarea` with `--radius-field`, which is `full` in a pill theme. Now the export rounds it with the field radius, so it is a rounded box, as with looks.
 
