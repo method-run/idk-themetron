@@ -118,7 +118,7 @@ export const PAIRS = [
 ];
 
 // The role of a token, from its name: "base", "action", or none.
-const roleOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /(^|-)base(-|$)|^bg-|^panel-border$|-quiet(-|$)/.test(name) ? 'base' : undefined);
+const roleOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /(^|-)base(-|$)|^bg-|^panel-border(-normal|-flipped)?$|-quiet(-|$)/.test(name) ? 'base' : undefined);
 
 // The type of a token, from its CSS value. The names match DTCG types where one fits.
 function typeOf(value) {

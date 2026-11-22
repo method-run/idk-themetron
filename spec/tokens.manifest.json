@@ -2088,6 +2088,20 @@
       "modes": true,
       "stability": "stable"
     },
+    "panel-border-normal": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
+    "panel-border-flipped": {
+      "tier": "semantic",
+      "type": "color",
+      "modes": true,
+      "role": "base",
+      "stability": "experimental"
+    },
     "highlight-action": {
       "tier": "semantic",
       "type": "fontFamily",

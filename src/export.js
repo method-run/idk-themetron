@@ -121,6 +121,14 @@ export function semanticEntries(theme, prefix = 'tm') {
     out.push([`elevation-${level}-normal`, bothModes(light.computed[name], dark.computed[name])]);
     out.push([`elevation-${level}-flipped`, bothModes(dark.computed[name], light.computed[name])]);
   }
+  // A card's edge is against the page too, so an inverted card draws it in the page's mode, like
+  // its shadow. Otherwise a dark card on a light page has a light edge between its dark fill and
+  // its dark shadow.
+  {
+    const l = refCss(light.tokens['panel.border'], prefix);
+    const d = refCss(dark.tokens['panel.border'], prefix);
+    out.push(['panel-border-normal', l === d ? l : `light-dark(${l}, ${d})`], ['panel-border-flipped', l === d ? l : `light-dark(${d}, ${l})`]);
+  }
   // The edge band and glow, for parts that draw them: action fills (checks, switches, badges, and
   // other parts) and small base parts (a switch's knob). Buttons shade through their backdrop
   // instead, so quiet and exact buttons have none.
@@ -232,7 +240,7 @@ function bothModes(light, dark) {
 
 // Tokens in groups that often hold the same values across themes: the action role, the base
 // role, and the rest. Themes with the same values in a group share one rule for it.
-const groupOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /^(base-\d|bg-|fg-base|border-base|(on-)?(fill|tint)-base|gloss-base|panel-border$)|^(on-)?(fill|gloss)-quiet/.test(name) ? 'base' : 'rest');
+const groupOf = (name) => (/(^|-)action(-|$)|^border-focus$/.test(name) ? 'action' : /^(base-\d|bg-|fg-base|border-base|(on-)?(fill|tint)-base|gloss-base|panel-border(-normal|-flipped)?$)|^(on-)?(fill|gloss)-quiet/.test(name) ? 'base' : 'rest');
 
 // CSS custom properties. Each theme class sets every token, from the theme's place in the tree,
 // so a theme looks the same wherever it is on the page. The root theme also applies to :root,
@@ -325,9 +333,9 @@ function invertRules(prefix) {
 }
 
 // What an inverted part draws on the page around it, or over it:
-// - Its outer shadows fall on the page, so they keep the page's mode. Under the flipped
-//   color-scheme, the flipped twin resolves to the page's mode. Inset shadows and highlights
-//   are inside the part, so they flip with it.
+// - Its outer shadows and a card's edge are against the page, so they keep the page's mode.
+//   Under the flipped color-scheme, the flipped twin resolves to the page's mode. Inset shadows
+//   and highlights are inside the part, so they flip with it.
 // - Its fill, tint, and card background are the other mode's, over this mode's page, so they
 //   have their own opacities: an inverted fill can be far more see-through, and an inverted
 //   card must be more solid, so its text passes.
@@ -347,6 +355,7 @@ function overMediaRules(prefix) {
 function invertRulesAfter(prefix) {
   const set = (shadow, alpha) => [
     ...[1, 2, 3].map((n) => `--${prefix}-elevation-${n}: var(--${prefix}-elevation-${n}-${shadow});`),
+    `--${prefix}-panel-border: var(--${prefix}-panel-border-${shadow});`,
     `--${prefix}-fill-alpha: var(--${prefix}-fill-alpha-${alpha});`,
     `--${prefix}-tint-alpha: var(--${prefix}-tint-alpha-${alpha});`,
     `--${prefix}-bg-panel: var(--${prefix}-bg-panel-${alpha});`,
