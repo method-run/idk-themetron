@@ -16,6 +16,9 @@ Each version has a git tag, such as `v0.2.0`, and a GitHub release with these no
 
 ## Unreleased
 
+- **Fix: shadcn/ui rounded buttons and fields as panels.** With colors only, they took `--radius`, which is the panel radius. Now the export rounds buttons with the control radius, at each `data-size`, and inputs, text areas, and selects with the field radius. Cards keep `--radius`.
+- **Fix: in a pill theme, the daisyUI text area was a pill.** daisyUI rounds `.textarea` with `--radius-field`, which is `full` in a pill theme. Now the export rounds it with the field radius, so it is a rounded box, as with looks.
+
 ## 0.4.0
 
 Contract 0.4.0.

@@ -611,6 +611,14 @@ export function toShadcn(built, { classPrefix = 'theme-', set, looksCss } = {}) 
     ]),
   ];
   const out = [`/* Paste into your shadcn/ui globals.css, in place of its :root and .dark blocks. ${madeBy(set)} */\n`, ...withMoreContrast(pairs, block)];
+  // shadcn/ui rounds buttons and fields with --radius, as it does panels. Themetron rounds
+  // controls on their own, so a pill theme has pill buttons and rounded cards. These rules are
+  // outside Tailwind's layers, so they win over rounded-md. The plain size comes first.
+  const p = root.primitives;
+  const button = (size) => `[data-slot=button]${size ? `[data-size=${size.toLowerCase()}]` : ''}`;
+  out.push('/* Controls. shadcn/ui rounds them as panels, so these rules round them as controls. */\n',
+    ['', 'Sm', 'Lg'].map((size) => `${button(size)} { border-radius: ${px(p.radius[`control${size}`])}; }\n`).join(''),
+    `[data-slot=input], [data-slot=textarea], [data-slot=select-trigger] { border-radius: ${px(fieldRadius(p))}; }\n`);
   if (looksCss) out.push(shadcnLooks(built, looksCss, classPrefix));
   return out.join('\n');
 }
@@ -844,6 +852,9 @@ export function toDaisyui(built, { prefix = 'tm', classPrefix = 'theme-', set, n
     plugin(name, 'light'),
     plugin(`${name}-dark`, 'dark'),
     ...(children.length ? ['/* Each theme class sets the colors again, from its own variables. */', `${children.join(', ')} {\n${decls(own)}\n}\n`] : []),
+    // daisyUI rounds a text area with --radius-field, as it does a one-line field. In a pill
+    // theme, that makes the text area a pill too. This rule rounds it as a field.
+    `/* daisyUI rounds a text area as a one-line field, so this rule rounds it as a field. */\n.textarea { border-radius: ${px(fieldRadius(p))}; }\n`,
     ...(looksCss ? [daisyuiLooks(built, looksCss, classPrefix)] : []),
   ].join('\n');
 }

@@ -577,3 +577,11 @@
     --sidebar-accent-foreground: #ff804c;
   }
 }
+
+/* Controls. shadcn/ui rounds them as panels, so these rules round them as controls. */
+
+[data-slot=button] { border-radius: 6.3px; }
+[data-slot=button][data-size=sm] { border-radius: 4.9px; }
+[data-slot=button][data-size=lg] { border-radius: 7.7px; }
+
+[data-slot=input], [data-slot=textarea], [data-slot=select-trigger] { border-radius: 6.3px; }

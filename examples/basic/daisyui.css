@@ -90,3 +90,6 @@
   --color-info: var(--tm-fill-action);
   --color-info-content: var(--tm-on-fill-action);
 }
+
+/* daisyUI rounds a text area as a one-line field, so this rule rounds it as a field. */
+.textarea { border-radius: 6.3px; }
