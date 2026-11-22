@@ -789,6 +789,8 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
+  --tm-panel-border-normal: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border-flipped: light-dark(var(--tm-base-80), var(--tm-base-20));
 }
 
 .theme-success {
@@ -850,6 +852,8 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
+  --tm-panel-border-normal: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border-flipped: light-dark(var(--tm-base-80), var(--tm-base-20));
 }
 
 .theme-warning {
@@ -911,6 +915,8 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
+  --tm-panel-border-normal: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border-flipped: light-dark(var(--tm-base-80), var(--tm-base-20));
 }
 
 .theme-danger {
@@ -972,6 +978,8 @@
   --tm-bg-panel: var(--tm-bg-surface);
   --tm-bg-panel-normal: var(--tm-bg-surface);
   --tm-bg-panel-inverted: var(--tm-bg-surface);
+  --tm-panel-border-normal: light-dark(var(--tm-base-20), var(--tm-base-80));
+  --tm-panel-border-flipped: light-dark(var(--tm-base-80), var(--tm-base-20));
 }
 
 :root, .theme-default {
@@ -1688,8 +1696,8 @@
   --tm-tint-action-active-image: linear-gradient(var(--tm-action-angle) in oklch, var(--tm-tint-action-active-from), var(--tm-tint-action-active-to));
 }
 
-.tm-invert { --tm-elevation-1: var(--tm-elevation-1-flipped); --tm-elevation-2: var(--tm-elevation-2-flipped); --tm-elevation-3: var(--tm-elevation-3-flipped); --tm-fill-alpha: var(--tm-fill-alpha-inverted); --tm-tint-alpha: var(--tm-tint-alpha-inverted); --tm-bg-panel: var(--tm-bg-panel-inverted); }
-.tm-invert * { --tm-elevation-1: var(--tm-elevation-1-normal); --tm-elevation-2: var(--tm-elevation-2-normal); --tm-elevation-3: var(--tm-elevation-3-normal); --tm-fill-alpha: var(--tm-fill-alpha-normal); --tm-tint-alpha: var(--tm-tint-alpha-normal); --tm-bg-panel: var(--tm-bg-panel-normal); }
+.tm-invert { --tm-elevation-1: var(--tm-elevation-1-flipped); --tm-elevation-2: var(--tm-elevation-2-flipped); --tm-elevation-3: var(--tm-elevation-3-flipped); --tm-panel-border: var(--tm-panel-border-flipped); --tm-fill-alpha: var(--tm-fill-alpha-inverted); --tm-tint-alpha: var(--tm-tint-alpha-inverted); --tm-bg-panel: var(--tm-bg-panel-inverted); }
+.tm-invert * { --tm-elevation-1: var(--tm-elevation-1-normal); --tm-elevation-2: var(--tm-elevation-2-normal); --tm-elevation-3: var(--tm-elevation-3-normal); --tm-panel-border: var(--tm-panel-border-normal); --tm-fill-alpha: var(--tm-fill-alpha-normal); --tm-tint-alpha: var(--tm-tint-alpha-normal); --tm-bg-panel: var(--tm-bg-panel-normal); }
 
 .tm-over-media { --tm-backdrop: blur(4px); --tm-backdrop-control: blur(2px); }
 :where(.tm-over-media, .tm-over-media *) { text-shadow: var(--tm-text-halo); }
