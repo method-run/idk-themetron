@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@method-run/idk-plans/schema/config.schema.json",
+  "site": {
+    "theme": "docs/theme-inputs.json"
+  },
   "root": {
     "file": "README.md",
     "id": "idk-themetron"
