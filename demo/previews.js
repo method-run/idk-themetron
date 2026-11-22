@@ -196,6 +196,7 @@ function daisyuiSample(mode, children, name) {
     <div class="flex flex-col gap-3">
       <input class="input w-full" placeholder="ada@example.org">
       <select class="select w-full"><option>Harbor</option><option>Tide</option></select>
+      <textarea class="textarea w-full" rows="2" placeholder="Notes"></textarea>
       <div class="flex flex-wrap items-center gap-4"><input type="checkbox" class="checkbox checkbox-primary" checked><input type="radio" class="radio radio-primary" checked><input type="checkbox" class="toggle toggle-primary" checked></div>
       <input type="range" class="range range-primary range-sm" value="60">
     </div>

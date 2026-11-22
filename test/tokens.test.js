@@ -350,7 +350,16 @@ test('every framework\'s secondary button is the quiet button, and its controls 
   assert.equal(radius.control, radius.full, 'a pill theme\'s controls are pills at any height');
   assert.equal(mui.components.MuiOutlinedInput.styleOverrides.root.borderRadius, built.themes.default.primitives.control.height / 2, 'a field is no rounder than half its height, so a text area stays a box');
 
-  assert.match(toDaisyui(built), /--color-secondary: var\(--tm-fill-quiet\);/);
+  const field = built.themes.default.primitives.control.height / 2;
+  const daisyui = toDaisyui(built);
+  assert.match(daisyui, /--color-secondary: var\(--tm-fill-quiet\);/);
+  assert.match(daisyui, new RegExp(`^\\.textarea \\{ border-radius: ${field}px; \\}$`, 'm'), 'a text area is no pill');
+
+  const shadcn = toShadcn(built);
+  assert.match(shadcn, /--radius: \d+px;/, 'panels keep --radius');
+  assert.match(shadcn, new RegExp(`^\\[data-slot=button\\] \\{ border-radius: ${radius.control}px; \\}$`, 'm'));
+  assert.match(shadcn, new RegExp(`^\\[data-slot=input\\], \\[data-slot=textarea\\], \\[data-slot=select-trigger\\] \\{ border-radius: ${field}px; \\}$`, 'm'));
+  assert.ok(shadcn.indexOf('[data-slot=button] {') < shadcn.indexOf('[data-slot=button][data-size=sm]'), 'a size comes after, so it wins');
 
   const bootstrap = toBootstrapCss(built);
   assert.match(bootstrap, new RegExp(`^\\.btn \\{ --bs-btn-border-radius: ${radius.control}px; \\}$`, 'm'));
