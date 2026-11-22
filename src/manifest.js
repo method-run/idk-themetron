@@ -11,7 +11,7 @@ import { LOOKS, lookClass, parseLooks } from './looks.js';
 // Major: a stable token is removed or renamed, or its type or meaning changes.
 // Minor: a token is added, or an experimental token becomes stable.
 // Patch: values change, but names, types, and meanings stay the same.
-export const CONTRACT_VERSION = '0.4.0';
+export const CONTRACT_VERSION = '0.5.0';
 
 // The site publishes the generated files at fixed URLs, so that editors can fetch the schema
 // from a $schema link. scripts/build-site.js copies them.

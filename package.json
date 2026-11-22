@@ -1,6 +1,6 @@
 {
   "name": "@method-run/idk-themetron",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Make an accessible design-token theme from a few human-friendly inputs.",
   "keywords": [
     "design-tokens",
