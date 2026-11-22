@@ -12,7 +12,7 @@ aliases: [Using themetron in a site or library]
 # Using themetron in a site or library
 
 <!-- idk-plans:progress:start (generated) -->
-◐ 61% (11/18) · 1 dropped
+◐ 66% (12/18) · 1 dropped
 <!-- idk-plans:progress:end -->
 
 > **Status:** contract 0.2.0, first released with package 0.2.0. Until 1.0, a minor version can change stable tokens. Each change is listed in the [changelog](#changelog).
@@ -202,7 +202,7 @@ Add `--prefix <p>` for CSS made with another prefix. An unknown flag stops the c
 
 ## A worked example: idk-plans
 
-idk-plans makes doc sites with its own variables. This is a mapping that follows the contract. `themetron check` gives 12 stable tokens, 2 experimental, and 0 unknown. The experimental ones are `fg-action` and `tint-action`, and each has a fallback.
+idk-plans makes doc sites with its own variables. This is a mapping that follows the contract. On idk-plans' `site.css`, `themetron check` gives 42 stable tokens, 48 experimental, and 0 unknown. Most of the experimental tokens are ones that the looks read, such as the fills, the shine, and the motion. In the table, `fg-action` and `tint-action` are experimental, and each has a fallback.
 
 | idk-plans variable | themetron token | Notes |
 |---|---|---|
@@ -293,4 +293,4 @@ The contract started again at 0.1.0. The versions before it were drafts, and no 
 - [x] `themetron check`, for consumers
 - [x] A test that fails when a stable token goes away and the major version stays the same
 - [x] Publish the manifest and the schema at a fixed URL, so `$schema` links work in editors
-- [ ] Change idk-plans to read themetron tokens, with the mapping above
+- [x] Change idk-plans to read themetron tokens, with the mapping above
